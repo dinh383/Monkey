@@ -1,0 +1,3 @@
+[submodule "Puppy"]
+	path = Puppy
+	url = https://topnguyen@bitbucket.org/topnguyen/puppy.git
