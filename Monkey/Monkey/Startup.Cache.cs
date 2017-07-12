@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.DependencyInjection;
-using Puppy.Core.CacheUtils;
+//using Puppy.Core.CacheUtils;
 
 namespace Monkey
 {
@@ -26,7 +26,7 @@ namespace Monkey
                 });
 
                 // Add Redis as IDistributedCacheManager Service
-                services.AddScoped<IDistributedCacheManager, RedisCacheManager>();
+                //services.AddScoped<IDistributedCacheManager, RedisCacheManager>();
             }
         }
     }
