@@ -47,12 +47,6 @@ namespace Monkey
         {
             services.AddSingleton(ConfigurationRoot);
             services.AddSingleton(Environment);
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IViewRenderService, ViewRenderService>();
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-
-            services.AddScoped<DeveloperAccessFilter>();
-            services.AddScoped<ApiExceptionFilter>();
 
             Cros.Service(services);
 

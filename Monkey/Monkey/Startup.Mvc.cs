@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Monkey.Filters;
+using Puppy.Web.Render;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCore1;
 using WebMarkupMin.Core;
@@ -23,6 +26,12 @@ namespace Monkey
         {
             public static void Service(IServiceCollection services)
             {
+                services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+                services.AddSingleton<IViewRenderService, ViewRenderService>();
+                services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+                services.AddScoped<DeveloperAccessFilter>();
+                services.AddScoped<ApiExceptionFilter>();
+
                 services.AddSession();
 
                 services.AddResponseCaching();
