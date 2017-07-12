@@ -1,0 +1,130 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- Property Setup -->
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
+    <UserSecretsId>aspnet-Monkey-77d3f367-0ce6-4f02-9c7a-bbf2c778b9f5</UserSecretsId>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <OutputTypeEx>exe</OutputTypeEx>
+    <Copyright>http://topnguyen.net</Copyright>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>Monkey.xml</DocumentationFile>
+    <OutputPath>.\bin\</OutputPath>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>Monkey.xml</DocumentationFile>
+    <OutputPath>.\bin\</OutputPath>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+  <!-- Library -->
+  <ItemGroup>
+    
+    <!-- AspNetCore API -->
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCaching.Abstractions" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+
+    <!-- Swagger -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
+
+    <!-- AspNetCore WEB -->
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="1.1.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" PrivateAssets="All" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0-preview1-final" />
+
+    <!-- Secret -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
+
+    <!-- Write Log - Serilog -->
+    <PackageReference Include="Serilog" Version="2.5.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="2.4.0" />
+    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+
+    <!-- Caching -->
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="1.1.2" />
+    
+    <!-- Identity Server -->
+    <PackageReference Include="IdentityModel" Version="2.10.0" />
+    <PackageReference Include="IdentityServer4" Version="1.5.2" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="1.2.1" />
+    
+    <!--Authenticate Setting -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="1.1.2" />
+    
+    <!-- Auto Mapper -->
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.1" />
+
+    <!-- C# Utitlity -->
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+    <PackageReference Include="Enums.NET" Version="2.2.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.0" />
+
+    <!-- Markup Min -->
+    <PackageReference Include="WebMarkupMin.AspNetCore1" Version="2.4.0" />
+    <PackageReference Include="WebMarkupMin.NUglify" Version="2.4.1" />
+    
+  </ItemGroup>
+
+  <!-- Project -->
+  <ItemGroup>
+    <!-- Core -->
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
+    <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
+
+    <!-- Service -->
+    <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
+    <ProjectReference Include="..\Monkey.Service.Facade\Monkey.Service.Facade.csproj" />
+
+    <!-- Business -->
+    <ProjectReference Include="..\Monkey.Business\Monkey.Business.csproj" />
+    <ProjectReference Include="..\Monkey.Business.Logic\Monkey.Business.Logic.csproj" />
+
+    <!-- Data -->
+    <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
+    <ProjectReference Include="..\Monkey.Data.EF\Monkey.Data.EF.csproj" />
+  </ItemGroup>
+
+  <!-- Framework -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
