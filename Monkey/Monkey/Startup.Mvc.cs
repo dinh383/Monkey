@@ -7,17 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 using Monkey.Core;
-using Monkey.Filters;
 using Monkey.Model.Validators;
+using Monkey.Models.Filters;
 using Puppy.Core;
 using Puppy.Web.Render;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
-using WebMarkupMin.AspNet.Common.Compressors;
-using WebMarkupMin.AspNetCore1;
-using WebMarkupMin.NUglify;
 
 namespace Monkey
 {
@@ -44,11 +39,11 @@ namespace Monkey
                     .AddXmlDataContractSerializerFormatters()
                     .AddJsonOptions(options =>
                     {
-                        options.SerializerSettings.ReferenceLoopHandling = Constants.System.JsonSerializerSettings.ReferenceLoopHandling;
-                        options.SerializerSettings.NullValueHandling = Constants.System.JsonSerializerSettings.NullValueHandling;
-                        options.SerializerSettings.DateTimeZoneHandling = Constants.System.JsonSerializerSettings.DateTimeZoneHandling;
-                        options.SerializerSettings.Formatting = Constants.System.JsonSerializerSettings.Formatting;
-                        options.SerializerSettings.ContractResolver = Constants.System.JsonSerializerSettings.ContractResolver;
+                        options.SerializerSettings.ReferenceLoopHandling = Constants.Setting.JsonSerializerSettings.ReferenceLoopHandling;
+                        options.SerializerSettings.NullValueHandling = Constants.Setting.JsonSerializerSettings.NullValueHandling;
+                        options.SerializerSettings.DateTimeZoneHandling = Constants.Setting.JsonSerializerSettings.DateTimeZoneHandling;
+                        options.SerializerSettings.Formatting = Constants.Setting.JsonSerializerSettings.Formatting;
+                        options.SerializerSettings.ContractResolver = Constants.Setting.JsonSerializerSettings.ContractResolver;
                     })
                     .AddViewOptions(options =>
                     {
@@ -91,7 +86,7 @@ namespace Monkey
                 // Favicons Path and GZip
                 app.UseStaticFiles(new StaticFileOptions
                 {
-                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Constants.System.WebRoot, "images", "favicons")),
+                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Constants.Setting.WebRoot, "favicons")),
                     RequestPath = new PathString("/favicons"),
                     OnPrepareResponse = (context) =>
                     {

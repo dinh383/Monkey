@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 
 namespace Monkey
 {

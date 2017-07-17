@@ -32,6 +32,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Core", "5. Core", "{6126
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Core", "Monkey.Core\Monkey.Core.csproj", "{3DAA7A7B-00D3-4441-B7BA-3333A49F3C5F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Model", "Monkey.Model\Monkey.Model.csproj", "{82575A15-45C5-41B0-BABC-4ADC8549DA98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Mapper", "Monkey.Mapper\Monkey.Mapper.csproj", "{E38F476E-97F9-4CC9-8C69-01A099A53A2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Cache", "Monkey.Cache\Monkey.Cache.csproj", "{58E2C561-D800-44EE-A6B2-5186791251AC}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{1BAE0076-5EFF-432E-AB14-06CC66B6BF90}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Core", "..\Puppy\Puppy.Core\Puppy.Core.csproj", "{7699C430-9AC4-43EB-9887-4E8006FC2CC4}"
@@ -42,19 +48,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.EF", "..\Puppy\Puppy.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Web", "..\Puppy\Puppy.Web\Puppy.Web.csproj", "{6B085380-C6B5-4864-A461-028722127DBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Mapper", "Monkey.Mapper\Monkey.Mapper.csproj", "{E38F476E-97F9-4CC9-8C69-01A099A53A2F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.AutoMapper", "..\Puppy\Puppy.AutoMapper\Puppy.AutoMapper.csproj", "{5414E358-EFFD-45F8-9654-FAD40D768EDC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Search.Elastic", "..\Puppy\Puppy.Search.Elastic\Puppy.Search.Elastic.csproj", "{1CB5C99F-7106-4141-AF46-CC7879921558}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Coordinate", "..\Puppy\Puppy.Coordinate\Puppy.Coordinate.csproj", "{ED5A3A56-E503-45A8-A383-115385348AF2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Model", "Monkey.Model\Monkey.Model.csproj", "{82575A15-45C5-41B0-BABC-4ADC8549DA98}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.OneSignal", "..\Puppy\Puppy.OneSignal\Puppy.OneSignal.csproj", "{51AD9E1F-0140-4976-B73E-99C04FD71814}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Cache", "Monkey.Cache\Monkey.Cache.csproj", "{58E2C561-D800-44EE-A6B2-5186791251AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

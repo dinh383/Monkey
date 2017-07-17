@@ -19,10 +19,10 @@
 
 #endregion License
 
-using Puppy.Core.DateTimeUtils;
 using System;
+using Puppy.Core.DateTimeUtils;
 
-namespace Monkey.Core.Utils
+namespace Monkey.Core
 {
     public static class SystemUtils
     {
@@ -33,12 +33,12 @@ namespace Monkey.Core.Utils
 
         public static DateTime GetSystemTime(this DateTimeOffset dateTimeOffset)
         {
-            return dateTimeOffset.UtcDateTime.GetDateTimeFromUtc(Constants.System.TimeZoneInfo);
+            return dateTimeOffset.UtcDateTime.GetDateTimeFromUtc(Constants.Setting.TimeZoneInfo);
         }
 
         public static DateTime GetSystemTime(this DateTime dateTimeUtc)
         {
-            return dateTimeUtc.GetDateTimeFromUtc(Constants.System.TimeZoneInfo);
+            return dateTimeUtc.GetDateTimeFromUtc(Constants.Setting.TimeZoneInfo);
         }
     }
 }

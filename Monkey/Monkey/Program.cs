@@ -37,7 +37,7 @@ namespace Monkey
                     {
                         options.AddServerHeader = false;
                     })
-                    .UseWebRoot(Core.Constants.System.WebRoot)
+                    .UseWebRoot(Core.Constants.Setting.WebRoot)
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
                     .UseStartup<Startup>();

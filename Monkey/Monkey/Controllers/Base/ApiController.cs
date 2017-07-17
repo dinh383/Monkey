@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Filters;
+using Monkey.Models.Filters;
 using Puppy.Web;
 
 namespace Monkey.Controllers

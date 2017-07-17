@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO.Compression;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Serilog;
+using System.Collections.Generic;
+using System.IO.Compression;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCore1;
 using WebMarkupMin.NUglify;

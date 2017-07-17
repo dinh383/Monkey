@@ -16,7 +16,7 @@ namespace Monkey
                 //application to use cookie authentication
                 //app.UseCookieAuthentication(new CookieAuthenticationOptions
                 //{
-                //    AuthenticationScheme = Constants.System.CookieSchemaName,
+                //    AuthenticationScheme = Constants.Setting.CookieSchemaName,
                 //    AutomaticAuthenticate = true,
                 //    AutomaticChallenge = true,
                 //    LoginPath = new PathString("/Account/Login"),
@@ -43,7 +43,7 @@ namespace Monkey
                 //    RequireHttpsMetadata = false,
                 //    AuthenticationScheme = IdentityServerConstants.ProtocolTypes.OpenIdConnect,
                 //    GetClaimsFromUserInfoEndpoint = true,
-                //    SignInScheme = Constants.System.CookieSchemaName,
+                //    SignInScheme = Constants.Setting.CookieSchemaName,
 
                 //    Authority = ConfigurationRoot.GetValue<string>("IdentityServerUrl"),
                 //    PostLogoutRedirectUri = "/",

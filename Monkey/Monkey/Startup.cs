@@ -1,18 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
-using Monkey.Data.EF.Factory;
 using Monkey.Mapper;
-using Monkey.Models;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Monkey.Filters;
-using Puppy.Web.Render;
 
 namespace Monkey
 {
@@ -42,8 +33,8 @@ namespace Monkey
         {
             services.AddSession();
 
-            // [Configuration]
-            Configuration.Service(services);
+            // [SystemConfigs]
+            SystemConfigs.Service(services);
 
             // [Cros] Policy
             Cros.Service(services);
@@ -75,12 +66,14 @@ namespace Monkey
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
+            // [Important] The order of middleware very important for request and response handle! Don't mad it !!!
+
             // [Response] Information
             ProcessingTimeMiddleware.Middleware(app);
             SystemInfoMiddleware.Middleware(app);
 
-            // [Configuration]
-            Configuration.Middleware(app, loggerFactory);
+            // [SystemConfigs]
+            SystemConfigs.Middleware(app, loggerFactory);
 
             // [Cros] Policy
             Cros.Middleware(app);

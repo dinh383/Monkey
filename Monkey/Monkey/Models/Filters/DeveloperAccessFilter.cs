@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
-using Monkey.Models;
-using System.Net;
 
-namespace Monkey.Filters
+namespace Monkey.Models.Filters
 {
     public class DeveloperAccessFilter : ActionFilterAttribute
     {

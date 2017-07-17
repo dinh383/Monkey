@@ -13,13 +13,13 @@ namespace Monkey
     {
         public static class Hangfire
         {
-            private static readonly string HangfireDashboard = ConfigurationRoot.GetValue<string>("Developers:HangfireDashboard");
+            private static readonly string HangfireDashboard = ConfigurationRoot.GetValue<string>("Developers:HangfireDashboardUrl");
 
             public static void Service(IServiceCollection services)
             {
                 services.AddHangfire(config => config.UseSqlServerStorage(ConfigurationRoot.GetConnectionString(Environment.EnvironmentName)));
 
-                JobHelper.SetSerializerSettings(Core.Constants.System.JsonSerializerSettings);
+                JobHelper.SetSerializerSettings(Core.Constants.Setting.JsonSerializerSettings);
             }
 
             public static void Middleware(IApplicationBuilder app)

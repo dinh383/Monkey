@@ -26,23 +26,23 @@ namespace Monkey
 
                 services.AddCors(options =>
                 {
-                    options.AddPolicy(Constants.System.Cros.PolicyAllowAll, corsBuilder.Build());
+                    options.AddPolicy(Constants.Setting.Cros.PolicyAllowAll, corsBuilder.Build());
                 });
 
                 services.Configure<MvcOptions>(options =>
                 {
-                    options.Filters.Add(new CorsAuthorizationFilterFactory(Constants.System.Cros.PolicyAllowAll));
+                    options.Filters.Add(new CorsAuthorizationFilterFactory(Constants.Setting.Cros.PolicyAllowAll));
                 });
             }
 
             public static void Middleware(IApplicationBuilder app)
             {
-                app.UseCors(Constants.System.Cros.PolicyAllowAll);
+                app.UseCors(Constants.Setting.Cros.PolicyAllowAll);
                 app.UseMiddleware<ResponseMiddleware>();
             }
 
             /// <summary>
-            /// This middleware for hot fix API bug of current AspNetCore
+            ///     This middleware for hot fix API bug of current AspNetCore 
             /// </summary>
             public class ResponseMiddleware
             {

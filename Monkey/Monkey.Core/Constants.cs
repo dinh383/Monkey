@@ -26,9 +26,10 @@ namespace Monkey.Core
 {
     public static class Constants
     {
-        public static class System
+        public static class Setting
         {
             public const string WebRoot = "Assets";
+
             public const string CookieSchemaName = "Monkey_Cookie";
 
             public static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
@@ -40,6 +41,10 @@ namespace Monkey.Core
                 NullValueHandling = NullValueHandling.Ignore
             };
 
+            /// <summary>
+            ///     System Time Zone Info, Can Find Full list ID via
+            ///     "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones"
+            /// </summary>
             public static readonly TimeZoneInfo TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
 
             public static class Cros
@@ -51,7 +56,7 @@ namespace Monkey.Core
         /// <summary>
         ///     Use only Plural Noun for Endpoint 
         /// </summary>
-        public static class ApiEndPointsConst
+        public static class ApiEndPoints
         {
             public const string Base = "api";
             public const string Root = ".well-known/" + Base;
