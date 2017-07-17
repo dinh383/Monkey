@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 
 namespace Monkey
 {
@@ -15,12 +16,17 @@ namespace Monkey
 
             private readonly RequestDelegate _next;
 
+            public static void Middleware(IApplicationBuilder app)
+            {
+                app.UseMiddleware<SystemInfoMiddleware>();
+            }
+
             public SystemInfoMiddleware(RequestDelegate next)
             {
                 _next = next;
             }
 
-            public async Task Invoke(HttpContext context)
+            public Task InvokeAsync(HttpContext context)
             {
                 context.Response.OnStarting(state =>
                 {
@@ -45,7 +51,7 @@ namespace Monkey
                     return Task.CompletedTask;
                 }, context);
 
-                await _next(context);
+                return _next(context);
             }
         }
     }

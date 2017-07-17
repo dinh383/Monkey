@@ -7,6 +7,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Monkey.Models;
 
 namespace Monkey
 {
@@ -62,16 +63,18 @@ namespace Monkey
             {
                 app.UseSwagger(c =>
                 {
-                    c.RouteTemplate = DocumentUrlBase.TrimStart('/') + "/{documentName}/" + DocumentJsonFileName;
+                    c.RouteTemplate = $"{DocumentUrlBase.TrimStart('/')}/{{documentName}}/{DocumentJsonFileName}";
                     c.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Host = httpReq.Host.Value);
                 });
 
                 app.UseSwaggerUI(c =>
                 {
                     c.RoutePrefix = DocumentApiBaseUrl.TrimStart('/');
-                    c.SwaggerEndpoint(SwaggerEndpoint + "?key=" + DeveloperAccessKeyConfig,
-                        DocumentTitle);
+                    string accessKey = ConfigurationRoot.GetValue<string>("Developers:AccessKey");
+                    c.SwaggerEndpoint($"{SwaggerEndpoint}?key={accessKey}", DocumentTitle);
                 });
+
+                app.UseMiddleware<AccessMiddleware>();
             }
 
             public class AccessMiddleware
@@ -83,7 +86,7 @@ namespace Monkey
                     _next = next;
                 }
 
-                public Task Invoke(HttpContext context)
+                public Task InvokeAsync(HttpContext context)
                 {
                     if (IsSwaggerUi(context) || IsSwaggerEndpoint(context))
                         if (!IsCanAccessSwagger(context))
@@ -114,7 +117,7 @@ namespace Monkey
 
                 private static bool IsCanAccessSwagger(HttpContext httpContext)
                 {
-                    return IsDeveloperCanAccess(httpContext);
+                    return DeveloperHelper.IsCanAccess(httpContext, ConfigurationRoot);
                 }
             }
         }

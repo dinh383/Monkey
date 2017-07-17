@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Monkey.Models
 {
@@ -16,6 +17,12 @@ namespace Monkey.Models
             {
                 return false;
             }
+        }
+
+        public static bool IsCanAccess(HttpContext httpContext, IConfigurationRoot configurationRoot)
+        {
+            string accessKey = configurationRoot.GetValue<string>("Developers:AccessKey");
+            return IsCanAccess(httpContext, accessKey);
         }
     }
 }

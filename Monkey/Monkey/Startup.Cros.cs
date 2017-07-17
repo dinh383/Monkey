@@ -38,8 +38,12 @@ namespace Monkey
             public static void Middleware(IApplicationBuilder app)
             {
                 app.UseCors(Constants.System.Cros.PolicyAllowAll);
+                app.UseMiddleware<ResponseMiddleware>();
             }
 
+            /// <summary>
+            /// This middleware for hot fix API bug of current AspNetCore
+            /// </summary>
             public class ResponseMiddleware
             {
                 private static readonly string AccessControlAllowOrigin =

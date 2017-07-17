@@ -5,6 +5,7 @@ using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Monkey.Models;
 
 namespace Monkey
 {
@@ -35,7 +36,7 @@ namespace Monkey
                 public bool Authorize([NotNull] DashboardContext context)
                 {
                     var httpContext = context.GetHttpContext();
-                    return IsDeveloperCanAccess(httpContext);
+                    return DeveloperHelper.IsCanAccess(httpContext, ConfigurationRoot);
                 }
             }
         }

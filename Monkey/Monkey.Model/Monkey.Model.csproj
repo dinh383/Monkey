@@ -24,8 +24,4 @@
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validators\" />
-  </ItemGroup>
-
 </Project>

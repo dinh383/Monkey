@@ -4,5 +4,10 @@
         <name>Monkey</name>
     </assembly>
     <members>
+        <member name="T:Monkey.Startup.Cros.ResponseMiddleware">
+            <summary>
+            This middleware for hot fix API bug of current AspNetCore
+            </summary>
+        </member>
     </members>
 </doc>

@@ -10,6 +10,9 @@ using Monkey.Data.EF.Factory;
 using Monkey.Mapper;
 using Monkey.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Monkey.Filters;
+using Puppy.Web.Render;
 
 namespace Monkey
 {
@@ -27,46 +30,44 @@ namespace Monkey
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
+            {
                 builder.AddUserSecrets<Startup>();
+            }
 
             ConfigurationRoot = builder.Build();
             Environment = env;
         }
 
-        public static string DeveloperAccessKeyConfig => ConfigurationRoot.GetValue<string>("Developers:AccessKey");
-
-        public static bool IsDeveloperCanAccess(HttpContext httpContext)
-        {
-            return DeveloperHelper.IsCanAccess(httpContext, DeveloperAccessKeyConfig);
-        }
-
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
             services.AddSingleton(ConfigurationRoot);
             services.AddSingleton(Environment);
 
             Cros.Service(services);
 
+            // API Doc
             Swagger.Service(services);
 
+            // Background Job
             Hangfire.Service(services);
 
             Cache.Service(services);
 
-            Mvc.Service(services);
+            // Add Markup Min - Mini HTML, XML
+            WebMarkupMin.Service(services);
 
             MapperConfiguration.Add(services);
 
             MapperConfiguration.Configure();
 
-            // keep in last service
+            Mvc.Service(services);
+
+            // Keep in last
             DependencyInjection.Service(services);
 
             // Use Entity Framework
-            services.AddDbContext<DbContext>(builder =>
-                builder.UseSqlServer(
-                    ConfigurationRoot.GetConnectionString(Environment.EnvironmentName),
-                    options => options.MigrationsAssembly(typeof(IDataModule).GetTypeInfo().Assembly.GetName().Name)));
+            services.AddDbContext<DbContext>(builder => builder.UseSqlServer(ConfigurationRoot.GetConnectionString(Environment.EnvironmentName), options => options.MigrationsAssembly(typeof(IDataModule).GetTypeInfo().Assembly.GetName().Name)));
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime, IHttpContextAccessor httpContextAccessor, IHostingEnvironment env)
@@ -78,29 +79,32 @@ namespace Monkey
             // (see more: https://github.com/aspnet/Configuration/issues/624)
             ChangeToken.OnChange(ConfigurationRoot.GetReloadToken, () => loggerFactory.CreateLogger<Startup>().LogWarning("Configuration Changed"));
 
-            // [Important] Use Cros first
-            Cros.Middleware(app);
-            app.UseMiddleware<Cros.ResponseMiddleware>();
-
             // Response Information
-            app.UseMiddleware<SystemInfoMiddleware>();
-            app.UseMiddleware<ProcessingTimeMiddleware>();
+            ProcessingTimeMiddleware.Middleware(app);
+            SystemInfoMiddleware.Middleware(app);
+
+            // Cros
+            Cros.Middleware(app);
+
+            // Log
+            Log.Middleware(app, loggerFactory);
 
             // Exception
-            Log.Middleware(app, loggerFactory);
             Exception.Middleware(app);
-
-            // [Document API] Swagger
-            Swagger.Middleware(app);
-            app.UseMiddleware<Swagger.AccessMiddleware>();
-
-            // [Background Job] Hangfire
-            Hangfire.Middleware(app);
 
             // [Security] Identity Server
             IdentityServer.Middleware(app);
 
-            // [Final] Execute Middleware: MVC
+            // [Document API] Swagger
+            Swagger.Middleware(app);
+
+            // [Background Job] Hangfire
+            Hangfire.Middleware(app);
+
+            // [Mini Response]
+            WebMarkupMin.Middleware(app);
+
+            // [Final] MVC
             Mvc.Middleware(app);
         }
     }

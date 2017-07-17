@@ -1,6 +1,5 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -10,12 +9,12 @@ using Microsoft.Net.Http.Headers;
 using Monkey.Core;
 using Monkey.Filters;
 using Monkey.Model.Validators;
+using Puppy.Core;
 using Puppy.Web.Render;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using Puppy.Core;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCore1;
 using WebMarkupMin.NUglify;
@@ -28,51 +27,17 @@ namespace Monkey
         {
             public static void Service(IServiceCollection services)
             {
+                // Utility Services
                 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
                 services.AddSingleton<IViewRenderService, ViewRenderService>();
                 services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
                 services.AddScoped<DeveloperAccessFilter>();
                 services.AddScoped<ApiExceptionFilter>();
 
-                services.AddSession();
-
-                services.AddResponseCaching();
-
-                // Add Markup Min - Mini HTML, XML
-                services.AddWebMarkupMin(options =>
-                    {
-                        options.AllowMinificationInDevelopmentEnvironment = true;
-                        options.DisablePoweredByHttpHeaders = true;
-                        options.DisableCompression = true;
-                    })
-                    .AddHtmlMinification(options =>
-                    {
-                        options.MinificationSettings.RemoveRedundantAttributes = true;
-                        options.MinificationSettings.RemoveHttpProtocolFromAttributes = true;
-                        options.MinificationSettings.RemoveHttpsProtocolFromAttributes = true;
-                        options.MinificationSettings.MinifyEmbeddedCssCode = true;
-                        options.MinificationSettings.RemoveOptionalEndTags = true;
-                        options.CssMinifierFactory = new NUglifyCssMinifierFactory();
-                        options.JsMinifierFactory = new NUglifyJsMinifierFactory();
-                    })
-                    .AddXmlMinification(options =>
-                    {
-                        options.MinificationSettings.CollapseTagsWithoutContent = true;
-                    })
-                    .AddHttpCompression(options =>
-                    {
-                        options.CompressorFactories = new List<ICompressorFactory>
-                        {
-                            new DeflateCompressorFactory(new DeflateCompressionSettings
-                            {
-                                Level = CompressionLevel.Fastest
-                            }),
-                            new GZipCompressorFactory(new GZipCompressionSettings
-                            {
-                                Level = CompressionLevel.Fastest
-                            })
-                        };
-                    });
+                if (EnvironmentHelper.IsProduction())
+                {
+                    services.AddResponseCaching();
+                }
 
                 // Setup Mvc
                 services.AddMvc()
@@ -103,12 +68,12 @@ namespace Monkey
 
             public static void Middleware(IApplicationBuilder app)
             {
+                app.UseSession();
+
                 if (EnvironmentHelper.IsProduction())
                 {
                     app.UseResponseCaching();
                 }
-
-                app.UseSession();
 
                 // Root Path and GZip
                 app.UseStaticFiles(new StaticFileOptions
@@ -167,8 +132,6 @@ namespace Monkey
                         };
                     }
                 });
-
-                app.UseWebMarkupMin();
 
                 // Config Global Route
                 app.UseMvc(routes =>

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 
 namespace Monkey
 {
@@ -10,12 +11,17 @@ namespace Monkey
         {
             private readonly RequestDelegate _next;
 
+            public static void Middleware(IApplicationBuilder app)
+            {
+                app.UseMiddleware<ProcessingTimeMiddleware>();
+            }
+
             public ProcessingTimeMiddleware(RequestDelegate next)
             {
                 _next = next;
             }
 
-            public async Task Invoke(HttpContext context)
+            public Task InvokeAsync(HttpContext context)
             {
                 var watch = new Stopwatch();
                 context.Response.OnStarting(state =>
@@ -28,7 +34,7 @@ namespace Monkey
                 }, context);
 
                 watch.Start();
-                await _next(context);
+                return _next(context);
             }
         }
     }
