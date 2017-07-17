@@ -50,6 +50,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Search.Elastic", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Coordinate", "..\Puppy\Puppy.Coordinate\Puppy.Coordinate.csproj", "{ED5A3A56-E503-45A8-A383-115385348AF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Model", "Monkey.Model\Monkey.Model.csproj", "{82575A15-45C5-41B0-BABC-4ADC8549DA98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 		{ED5A3A56-E503-45A8-A383-115385348AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED5A3A56-E503-45A8-A383-115385348AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED5A3A56-E503-45A8-A383-115385348AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82575A15-45C5-41B0-BABC-4ADC8549DA98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82575A15-45C5-41B0-BABC-4ADC8549DA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82575A15-45C5-41B0-BABC-4ADC8549DA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82575A15-45C5-41B0-BABC-4ADC8549DA98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{5414E358-EFFD-45F8-9654-FAD40D768EDC} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{1CB5C99F-7106-4141-AF46-CC7879921558} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{ED5A3A56-E503-45A8-A383-115385348AF2} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
+		{82575A15-45C5-41B0-BABC-4ADC8549DA98} = {6126AA32-418B-454E-BB37-4478C308E5AD}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = eede38c5-a915-41d1-a0b0-d7eeaa0bcca9

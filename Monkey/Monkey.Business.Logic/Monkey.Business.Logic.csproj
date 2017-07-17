@@ -19,13 +19,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="HangFire" Version="1.6.14" />
-
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
     <PackageReference Include="Enums.NET" Version="2.2.0" />
-
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +31,6 @@
     <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
 
     <!-- Frameworks -->
-    <ProjectReference Include="..\..\Puppy\Puppy.Coordinate\Puppy.Coordinate.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
   </ItemGroup>

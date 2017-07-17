@@ -1,18 +1,24 @@
-﻿# Important Note
-> Project Created by **Top Nguyen** (http://topnguyen.net)
+﻿# Monkey.Data.EF
+> Project Created by [**Top Nguyen**](http://topnguyen.net)
+- This project is implementation of [`Monkey.Data`](../Monkey.Data/readme.md)
+- Use [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/index)
+  > EF Core is re-build, re-design version of Entity Framework. So, some function will not have and extra more feature in Core.
 
 ## Initial Database
 Setup by Command Windows of current project 
 
 ```markup
+<!-- Add migration via cmd (Initial is Name of the Migration) -->
 dotnet ef migrations add Initial -v
+
+<!-- Update/Sync code first to database via cmd -->
 dotnet ef database update  -v
 ```
 
 **Don't use/run Package Manager Console to do the above action**
 **It will hang the Console and never stop without any result.**
 
-# Important Thing about csproj
+# Special things in .csproj
 
 ```markup
   <PropertyGroup>
