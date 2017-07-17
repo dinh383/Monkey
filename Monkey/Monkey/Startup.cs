@@ -1,17 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Monkey.Data.EF.Factory;
-using Monkey.Filters;
 using Monkey.Mapper;
 using Monkey.Models;
-using Puppy.Web.Render;
 using System.Reflection;
 
 namespace Monkey
@@ -74,12 +71,12 @@ namespace Monkey
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime, IHttpContextAccessor httpContextAccessor, IHostingEnvironment env)
         {
-            // Currently, ASPNETCORE have a bug hit twice when change appsetting.json from 20/03/17
+            // [Important] The order of middleware very important for request and response handle!
+            // Don't mad it !!!
+
+            // Currently, ASPNETCORE have a BUG hit twice when change appsetting.json from 20/03/17
             // (see more: https://github.com/aspnet/Configuration/issues/624)
             ChangeToken.OnChange(ConfigurationRoot.GetReloadToken, () => loggerFactory.CreateLogger<Startup>().LogWarning("Configuration Changed"));
-
-            // [Important] The order of middleware very important for request and response handle!
-            // Don't mad it
 
             // [Important] Use Cros first
             Cros.Middleware(app);
@@ -93,17 +90,18 @@ namespace Monkey
             Log.Middleware(app, loggerFactory);
             Exception.Middleware(app);
 
-            // Swagger
+            // [Document API] Swagger
             Swagger.Middleware(app);
             app.UseMiddleware<Swagger.AccessMiddleware>();
 
-            // Hangfire
+            // [Background Job] Hangfire
             Hangfire.Middleware(app);
 
+            // [Security] Identity Server
             IdentityServer.Middleware(app);
 
             // [Final] Execute Middleware: MVC
-            Mvc.Middleware(app, httpContextAccessor, env);
+            Mvc.Middleware(app);
         }
     }
 }

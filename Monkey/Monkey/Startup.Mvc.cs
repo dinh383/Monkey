@@ -1,21 +1,23 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 using Monkey.Core;
+using Monkey.Filters;
+using Monkey.Model.Validators;
+using Puppy.Web.Render;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Monkey.Filters;
-using Puppy.Web.Render;
+using Puppy.Core;
 using WebMarkupMin.AspNet.Common.Compressors;
 using WebMarkupMin.AspNetCore1;
-using WebMarkupMin.Core;
 using WebMarkupMin.NUglify;
 
 namespace Monkey
@@ -36,6 +38,7 @@ namespace Monkey
 
                 services.AddResponseCaching();
 
+                // Add Markup Min - Mini HTML, XML
                 services.AddWebMarkupMin(options =>
                     {
                         options.AllowMinificationInDevelopmentEnvironment = true;
@@ -47,15 +50,14 @@ namespace Monkey
                         options.MinificationSettings.RemoveRedundantAttributes = true;
                         options.MinificationSettings.RemoveHttpProtocolFromAttributes = true;
                         options.MinificationSettings.RemoveHttpsProtocolFromAttributes = true;
-                        options.MinificationSettings.MinifyEmbeddedCssCode = false;
-                        options.MinificationSettings.RemoveOptionalEndTags = false;
+                        options.MinificationSettings.MinifyEmbeddedCssCode = true;
+                        options.MinificationSettings.RemoveOptionalEndTags = true;
                         options.CssMinifierFactory = new NUglifyCssMinifierFactory();
                         options.JsMinifierFactory = new NUglifyJsMinifierFactory();
                     })
                     .AddXmlMinification(options =>
                     {
-                        XmlMinificationSettings settings = options.MinificationSettings;
-                        settings.CollapseTagsWithoutContent = true;
+                        options.MinificationSettings.CollapseTagsWithoutContent = true;
                     })
                     .AddHttpCompression(options =>
                     {
@@ -72,22 +74,25 @@ namespace Monkey
                         };
                     });
 
+                // Setup Mvc
                 services.AddMvc()
                     .AddXmlDataContractSerializerFormatters()
                     .AddJsonOptions(options =>
                     {
-                        options.SerializerSettings.ReferenceLoopHandling = Core.Constants.System.JsonSerializerSettings.ReferenceLoopHandling;
-                        options.SerializerSettings.NullValueHandling = Core.Constants.System.JsonSerializerSettings.NullValueHandling;
-                        options.SerializerSettings.DateTimeZoneHandling = Core.Constants.System.JsonSerializerSettings.DateTimeZoneHandling;
-                        options.SerializerSettings.Formatting = Core.Constants.System.JsonSerializerSettings.Formatting;
-                        options.SerializerSettings.ContractResolver = Core.Constants.System.JsonSerializerSettings.ContractResolver;
-                    }).AddViewOptions(options =>
+                        options.SerializerSettings.ReferenceLoopHandling = Constants.System.JsonSerializerSettings.ReferenceLoopHandling;
+                        options.SerializerSettings.NullValueHandling = Constants.System.JsonSerializerSettings.NullValueHandling;
+                        options.SerializerSettings.DateTimeZoneHandling = Constants.System.JsonSerializerSettings.DateTimeZoneHandling;
+                        options.SerializerSettings.Formatting = Constants.System.JsonSerializerSettings.Formatting;
+                        options.SerializerSettings.ContractResolver = Constants.System.JsonSerializerSettings.ContractResolver;
+                    })
+                    .AddViewOptions(options =>
                     {
                         // Enable Microsoft.jQuery.Unobtrusive.Validation
                         options.HtmlHelperOptions.ClientValidationEnabled = true;
-                    });
-                //.AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<IValidator>());
+                    })
+                    .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<IValidator>());
 
+                // Setup Areas
                 services.Configure<RazorViewEngineOptions>(options =>
                 {
                     options.AreaViewLocationFormats.Clear();
@@ -96,15 +101,16 @@ namespace Monkey
                 });
             }
 
-            public static void Middleware(IApplicationBuilder app, IHttpContextAccessor httpContextAccessor, IHostingEnvironment env)
+            public static void Middleware(IApplicationBuilder app)
             {
-                if (!env.IsDevelopment())
+                if (EnvironmentHelper.IsProduction())
                 {
                     app.UseResponseCaching();
                 }
 
                 app.UseSession();
 
+                // Root Path and GZip
                 app.UseStaticFiles(new StaticFileOptions
                 {
                     OnPrepareResponse = (context) =>
@@ -117,6 +123,7 @@ namespace Monkey
                     }
                 });
 
+                // Favicons Path and GZip
                 app.UseStaticFiles(new StaticFileOptions
                 {
                     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Constants.System.WebRoot, "images", "favicons")),
@@ -131,6 +138,7 @@ namespace Monkey
                     }
                 });
 
+                // Developer Template Path and GZip
                 app.UseStaticFiles(new StaticFileOptions
                 {
                     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Areas", "Developers", "SwaggerTemplate")),
@@ -145,6 +153,7 @@ namespace Monkey
                     }
                 });
 
+                // Portal Asset Path and GZip
                 app.UseStaticFiles(new StaticFileOptions
                 {
                     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Areas", "Portal", "Assets")),
@@ -160,14 +169,13 @@ namespace Monkey
                 });
 
                 app.UseWebMarkupMin();
+
+                // Config Global Route
                 app.UseMvc(routes =>
                 {
-                    routes.MapRoute("areaRoute",
-                        "{area:exists}/{controller=Home}/{action=Index}");
+                    routes.MapRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}");
 
-                    routes.MapRoute(
-                        "default",
-                        "{controller=Home}/{action=Index}/{id?}");
+                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 });
             }
         }
