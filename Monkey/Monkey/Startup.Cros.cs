@@ -58,7 +58,7 @@ namespace Monkey
                     _next = next;
                 }
 
-                public Task Invoke(HttpContext context)
+                public Task InvokeAsync(HttpContext context)
                 {
                     context.Response.OnStarting(state =>
                     {

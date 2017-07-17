@@ -1,15 +1,19 @@
-﻿# Important Note
+﻿![Logo](favicon.ico)
+# Monkey.Mapper
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 
 ## Install Auto Mapper
+
 ```markup
 - Install-Package AutoMapper
 - Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection
 ```
+
 - https://www.nuget.org/packages/AutoMapper/
 - https://www.nuget.org/packages/AutoMapper.Extensions.Microsoft.DependencyInjection/
 
 ## Sample
+
 ```csharp
 using AutoMapper;
 using Puppy.AutoMapper;

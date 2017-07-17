@@ -1,4 +1,5 @@
-﻿# Monkey.Service
+﻿![Logo](favicon.ico)
+# Monkey.Service
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 
 - This project is **Business Flow** of System.

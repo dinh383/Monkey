@@ -5,7 +5,6 @@ using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace Monkey
 {
@@ -19,12 +18,7 @@ namespace Monkey
             {
                 services.AddHangfire(config => config.UseSqlServerStorage(ConfigurationRoot.GetConnectionString(Environment.EnvironmentName)));
 
-                var settings = new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                };
-
-                JobHelper.SetSerializerSettings(settings);
+                JobHelper.SetSerializerSettings(Core.Constants.System.JsonSerializerSettings);
             }
 
             public static void Middleware(IApplicationBuilder app)

@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
-using Monkey.Core.ViewModels.Api;
+using Monkey.ViewModels.Api;
+using Puppy.Core.XmlUtils;
+using Puppy.Web;
 using Serilog;
 using System;
 using System.Net;
+using Environment = System.Environment;
 
 namespace Monkey.Filters
 {
@@ -40,10 +43,23 @@ namespace Monkey.Filters
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 
+            // Log Error
             Log.Logger.Error(context.Exception, apiErrorViewModel.Message);
 
-            // always return a JSON result
-            context.Result = new JsonResult(apiErrorViewModel, Core.Constants.System.JsonSerializerSettings);
+            // Response
+            if (context.HttpContext.Request.ContentType == ContentType.Xml)
+            {
+                context.Result = new ContentResult
+                {
+                    ContentType = ContentType.Xml,
+                    StatusCode = context.HttpContext.Response.StatusCode,
+                    Content = XmlHelper.ToXmlString(apiErrorViewModel)
+                };
+            }
+            else
+            {
+                context.Result = new JsonResult(apiErrorViewModel, Core.Constants.System.JsonSerializerSettings);
+            }
 
             base.OnException(context);
         }

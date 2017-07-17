@@ -19,7 +19,7 @@
 
 #endregion License
 
-namespace Monkey.Core.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
     public class LinkViewModel : ILinkViewModel
     {

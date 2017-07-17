@@ -21,7 +21,7 @@
 
 using Newtonsoft.Json;
 
-namespace Monkey.Core.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
     public class FormFieldViewModel
     {

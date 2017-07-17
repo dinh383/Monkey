@@ -8,8 +8,8 @@ namespace Monkey.Areas.Developers.Controllers
     [Area("Developers")]
     [ServiceFilter(typeof(ApiExceptionFilter))]
     [ServiceFilter(typeof(DeveloperAccessFilter))]
-    [HideInDocs]
     [Produces(ContentType.Json, ContentType.Xml)]
+    [HideInDocs]
     public class DevelopersApiController : Controller
     {
     }

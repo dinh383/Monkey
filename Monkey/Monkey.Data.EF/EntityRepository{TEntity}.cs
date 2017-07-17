@@ -31,12 +31,12 @@ namespace Monkey.Data.EF
 {
     public class EntityRepository<TEntity> : BaseEntityRepository<TEntity> where TEntity : BaseEntity
     {
+        internal IDbContext DbContext { get; }
+
         internal EntityRepository(IDbContext dbContext) : base(dbContext)
         {
             DbContext = dbContext;
         }
-
-        internal IDbContext DbContext { get; }
 
         public void StandardizeEntities()
         {

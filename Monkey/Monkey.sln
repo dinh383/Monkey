@@ -50,7 +50,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Search.Elastic", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Coordinate", "..\Puppy\Puppy.Coordinate\Puppy.Coordinate.csproj", "{ED5A3A56-E503-45A8-A383-115385348AF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Model", "Monkey.Model\Monkey.Model.csproj", "{82575A15-45C5-41B0-BABC-4ADC8549DA98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Model", "Monkey.Model\Monkey.Model.csproj", "{82575A15-45C5-41B0-BABC-4ADC8549DA98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.OneSignal", "..\Puppy\Puppy.OneSignal\Puppy.OneSignal.csproj", "{51AD9E1F-0140-4976-B73E-99C04FD71814}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Cache", "Monkey.Cache\Monkey.Cache.csproj", "{58E2C561-D800-44EE-A6B2-5186791251AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +130,14 @@ Global
 		{82575A15-45C5-41B0-BABC-4ADC8549DA98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82575A15-45C5-41B0-BABC-4ADC8549DA98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82575A15-45C5-41B0-BABC-4ADC8549DA98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51AD9E1F-0140-4976-B73E-99C04FD71814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51AD9E1F-0140-4976-B73E-99C04FD71814}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51AD9E1F-0140-4976-B73E-99C04FD71814}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51AD9E1F-0140-4976-B73E-99C04FD71814}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58E2C561-D800-44EE-A6B2-5186791251AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E2C561-D800-44EE-A6B2-5186791251AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E2C561-D800-44EE-A6B2-5186791251AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E2C561-D800-44EE-A6B2-5186791251AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +160,8 @@ Global
 		{1CB5C99F-7106-4141-AF46-CC7879921558} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{ED5A3A56-E503-45A8-A383-115385348AF2} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{82575A15-45C5-41B0-BABC-4ADC8549DA98} = {6126AA32-418B-454E-BB37-4478C308E5AD}
+		{51AD9E1F-0140-4976-B73E-99C04FD71814} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
+		{58E2C561-D800-44EE-A6B2-5186791251AC} = {6126AA32-418B-454E-BB37-4478C308E5AD}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = eede38c5-a915-41d1-a0b0-d7eeaa0bcca9

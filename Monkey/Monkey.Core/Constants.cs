@@ -40,7 +40,6 @@ namespace Monkey.Core
                 NullValueHandling = NullValueHandling.Ignore
             };
 
-            // This system use Viet Nam time zone, alias "SE Asia Standard Time"
             public static readonly TimeZoneInfo TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
 
             public static class Cros

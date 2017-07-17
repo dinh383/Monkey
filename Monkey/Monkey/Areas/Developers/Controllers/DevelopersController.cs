@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Puppy.Core.StringUtils;
 
 namespace Monkey.Areas.Developers.Controllers
 {
@@ -20,15 +21,16 @@ namespace Monkey.Areas.Developers.Controllers
         [HttpGet]
         public IActionResult Index(string key)
         {
-            if (string.IsNullOrWhiteSpace(key))
-                key = string.Empty;
+            key = StringHelper.ReplaceNullOrWhiteSpaceToEmpty(key);
 
             var documentName = _configurationRoot.GetValue<string>("Developers:ApiDocumentName");
             var documentApiBaseUrl = _configurationRoot.GetValue<string>("Developers:ApiDocumentUrl") + documentName;
             var documentJsonFileName = _configurationRoot.GetValue<string>("Developers:ApiDocumentJsonFile");
+
             var documentUrlBase = documentApiBaseUrl.Replace(documentName, string.Empty).TrimEnd('/');
             var swaggerEndpoint = $"{documentUrlBase}/{documentName}/{documentJsonFileName}" + "?key=" + key;
-            ViewBag.ApiDocumentPath = _contextAccessor.HttpContext.Request.Scheme + "://" + _contextAccessor.HttpContext.Request.Host.Value + swaggerEndpoint;
+
+            ViewBag.ApiDocumentPath = $"{_contextAccessor.HttpContext.Request.Scheme }://{_contextAccessor.HttpContext.Request.Host.Value}{swaggerEndpoint}";
             ViewBag.ApiKey = key;
 
             return View();

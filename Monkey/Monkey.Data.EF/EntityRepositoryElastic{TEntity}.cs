@@ -25,9 +25,9 @@ using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Monkey.Core;
-using Monkey.Core.Utils;
 using Monkey.Data.Entities;
 using Monkey.Data.Interfaces;
+using Puppy.Core;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
 using Puppy.Search.Elastic;
@@ -54,10 +54,7 @@ namespace Monkey.Data.EF
         internal EntityRepositoryElastic(IDbContext dbContext, IConfigurationRoot configurationRoot) : base(dbContext)
         {
             _configurationRoot = configurationRoot;
-            DbContext = dbContext;
         }
-
-        private IDbContext DbContext { get; }
 
         #region Elastic Connection
 
@@ -68,7 +65,7 @@ namespace Monkey.Data.EF
             get
             {
                 if (string.IsNullOrWhiteSpace(_elasticConnectionString))
-                    _elasticConnectionString = _configurationRoot.GetSection("Elastic:ConnectionString").Value;
+                    _elasticConnectionString = _configurationRoot.GetValue<string>("Elastic:ConnectionString");
                 return _elasticConnectionString;
             }
         }
@@ -89,8 +86,7 @@ namespace Monkey.Data.EF
 
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (environment != "Production")
+                if (!EnvironmentHelper.IsProduction())
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
@@ -102,13 +98,15 @@ namespace Monkey.Data.EF
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (environment != "Production")
+                if (!EnvironmentHelper.IsProduction())
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
+
                 if (IsExistElasticMap())
+                {
                     context.DeleteIndex<TElastic>();
+                }
                 context.IndexCreate<TElastic>();
             }
         }
@@ -117,8 +115,7 @@ namespace Monkey.Data.EF
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (environment != "Production")
+                if (!EnvironmentHelper.IsProduction())
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
@@ -150,8 +147,7 @@ namespace Monkey.Data.EF
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (environment != "Production")
+                if (!EnvironmentHelper.IsProduction())
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
@@ -167,13 +163,15 @@ namespace Monkey.Data.EF
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (environment != "Production")
+                if (!EnvironmentHelper.IsProduction())
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
+
                 foreach (var elasticId in listElasticId)
+                {
                     context.DeleteDocument<TElastic>(elasticId);
+                }
 
                 context.SaveChanges();
             }
@@ -183,13 +181,18 @@ namespace Monkey.Data.EF
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (environment != "Production")
+                if (!EnvironmentHelper.IsProduction())
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
+
                 context.AllowDeleteForIndex = true;
-                if (!IsExistElasticMap()) return;
+
+                if (!IsExistElasticMap())
+                {
+                    return;
+                }
+
                 context.DeleteIndex<TElastic>();
                 IsExistElasticIndex = false;
             }
@@ -216,12 +219,16 @@ namespace Monkey.Data.EF
         public virtual IEnumerable<TElastic> GetElastic(string fieldName, List<object> listValue)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
+            {
                 throw new ArgumentException($"{nameof(fieldName)} is null or white space.");
+            }
 
             listValue = listValue?.Where(x => x != null).ToList();
 
             if (listValue == null || !listValue.Any())
+            {
                 throw new ArgumentException($"{nameof(listValue)} is null or empty.");
+            }
 
             fieldName = fieldName.ToLower();
 
@@ -321,41 +328,6 @@ namespace Monkey.Data.EF
             {
                 var listElasticDeletedId = listEntityDelete.Select(x => x.Id);
                 DeleteElastic(listElasticDeletedId);
-            }
-        }
-
-        private void StandardizeEntities()
-        {
-            var listEntryAddUpdate = DbContext.ChangeTracker.Entries()
-                .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified))
-                .Select(x => x).ToList();
-
-            foreach (var entry in listEntryAddUpdate)
-            {
-                var entity = entry.Entity as TEntity;
-
-                if (entity == null)
-                    continue;
-
-                if (entry.State == EntityState.Added)
-                {
-                    entity.IsDeleted = false;
-                    entity.LastUpdatedTime = null;
-                    entity.CreatedTime = entity.CreatedTime == default(DateTimeOffset)
-                        ? SystemUtils.GetSystemTimeNow()
-                        : entity.CreatedTime;
-                }
-                else
-                {
-                    if (entity.IsDeleted)
-                        entity.DeletedTime = entity.DeletedTime == default(DateTimeOffset)
-                            ? SystemUtils.GetSystemTimeNow()
-                            : entity.DeletedTime;
-                    else
-                        entity.LastUpdatedTime = entity.LastUpdatedTime == default(DateTimeOffset)
-                            ? SystemUtils.GetSystemTimeNow()
-                            : entity.LastUpdatedTime;
-                }
             }
         }
 

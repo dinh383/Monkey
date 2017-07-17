@@ -1,4 +1,5 @@
-﻿# Monkey.Model
+﻿![Logo](favicon.ico)
+# Monkey.Model
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 
 - This project is shared Model for [`Monkey.Service`](../Monkey.Service/Readme.md) and [`Monkey.Business`](../Monkey.Business/Readme.md).

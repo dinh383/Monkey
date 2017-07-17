@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
+    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
   </ItemGroup>
 
 </Project>

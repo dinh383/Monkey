@@ -1,4 +1,5 @@
-﻿# Monkey.Data.EF
+﻿![Logo](favicon.ico)
+# Monkey.Data.EF
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 - This project is implementation of [`Monkey.Data`](../Monkey.Data/readme.md)
 - Use [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/index)

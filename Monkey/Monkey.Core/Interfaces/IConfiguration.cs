@@ -1,30 +1,25 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Interface </Project>
 //     <File>
-//         <Name> PagedCollectionParameters.cs </Name>
-//         <Created> 24 Apr 17 1:15:01 AM </Created>
-//         <Key> 7bbbc234-4dcf-4df6-8690-ced4a8906583 </Key>
+//         <Name> IConfiguration.cs </Name>
+//         <Created> 17/07/17 5:17:38 PM </Created>
+//         <Key> e659514b-35fb-45e2-ab2a-481d75cef29b </Key>
 //     </File>
 //     <Summary>
-//         PagedCollectionParameters.cs
+//         IConfiguration.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
 
-namespace Monkey.Core.ViewModels.Api
+namespace Monkey.Core.Interfaces
 {
-    public class PagedCollectionParameters
+    public interface IConfiguration
     {
-        public int? Offset { get; set; }
-
-        public int? Limit { get; set; }
     }
 }

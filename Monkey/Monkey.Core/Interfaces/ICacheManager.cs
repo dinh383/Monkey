@@ -6,28 +6,22 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Interface </Project>
 //     <File>
-//         <Name> ICacheableRepository.cs </Name>
-//         <Created> 21/05/2017 6:49:21 PM </Created>
-//         <Key> 80aa509d-8129-4f3e-9623-4c3c6e6bc2d2 </Key>
+//         <Name> ICacheManager.cs </Name>
+//         <Created> 17/07/17 5:18:02 PM </Created>
+//         <Key> 6ba8510d-fae1-4818-ace2-a6eea4e17cba </Key>
 //     </File>
 //     <Summary>
-//         ICacheableRepository.cs
+//         ICacheManager.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
-using System.Collections.Generic;
+using Puppy.Core.CacheUtils;
 
-namespace Monkey.Data.Interfaces
+namespace Monkey.Core.Interfaces
 {
-    public interface ICacheableRepository<T> where T : class
+    public interface ICacheManager : IDistributedCacheHelper
     {
-        List<T> GetCache(Func<T, bool> predicate = null);
-
-        List<T> ReInitialCache();
-
-        void RemoveCache();
     }
 }

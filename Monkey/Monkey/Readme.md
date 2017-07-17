@@ -1,10 +1,54 @@
-﻿# Important Note
+﻿![Logo](favicon.ico)
+# Monkey
+
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 - Just add dependencies and use Framework, Core and Service (Contract only)
 - Don't add all other project dependencies (reference)
-- Follow Readme.md of Puppy.DependencyInjection
+- Follow [README](../../Puppy/Puppy.DependencyInjection/Readme.md) of `Puppy.DependencyInjection`
+
+# Region/Areas Note
+- We already have Area `Developers` for `API Docs` and `Background Job`
+- Api Docs
+  ![Swagger Api Doc](ReadmeResource/Swagger_Api_Doc.png)
+  + We use generate doc by [`Swagger AspNetCore`](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+  + Access via: [root]/developers?key=[developer access key] (Config it in [appsettings.json](appsettings.json) with KEY `Developers:AccessKey`)
+
+- Background Job
+  ![Backgroud Job Dashboard](ReadmeResource/Backgroud_Job_Dashboard.png)
+  + We use [Hangfire](https://www.hangfire.io/) with SQL Server (Can change it to Memory or Distribute Cache like Redis)
+  + Access via: [root]/developers/job?key=[developer access key]
+
+# API Note
+
+- For Paging: use search keyword by `terms`, page size and page number by `skip` and `take`
+- Api Response follow ViewModels\Api
+- 3 Types of Response
+  + [Success] Response `Collection`
+	```c#
+	var listSomeModel = await _someService.SomeMethodAsync(skip, take, terms).ConfigureAwait(true);
+
+		if (listSomeModel.Total == 0)
+		{ 
+			// Return 204 for No Data Case
+			return NoContent();
+		}
+
+		var collectionFactoryViewModel = new PagedCollectionFactoryViewModel<SomeModel>(PlaceholderLinkViewModel.ToCollection("<Api Pattern Endpoint>", HttpMethod.Get.Method, new { skip, take, terms }), "<Api Pattern Endpoint>");
+
+		var collectionViewModel = collectionFactoryViewModel.CreateFrom(listSomeModel.Data, skip, take, listSomeModel.Total);
+
+		return Ok(collectionViewModel);
+	}
+	```    
+
+  + [Success] Response `Single`
+    ```c#
+	return Ok(<data>);
+	```
+  + [Fail] Response `Error`: throw [`MonkeyException`](..\Monkey.Core\Exceptions\MonkeyException.cs) with [`ErrorCode`](..\Monkey.Core\Exceptions\ErrorCode.cs) and return [`ApiErrorModel`](ViewModels\Api\ApiErrorViewModel.cs). refer to view [`ApiExceptionFilter`](Filters\ApiExceptionFilter.cs)
 
 # Deploy Note
+
 1. Create Publish Profile to Server through Visual Studio (Remember Create Server User to use in create profile wizard)
    - Manual right click of folder and click publish for make sure all file is published
    - launchSettings.json
@@ -21,7 +65,8 @@
   - This action for test and view Console Log when start project in Server.
   - Final, `Ctrl + C` to shutdown test instance.
 
-# Db Note:
+# Db Note
+
 Remember to config DbContext if use Entity Framework in Startup, without it when run cmd in publish folder will throw null error
 ```csharp
 // Use Entity Framework
@@ -32,14 +77,16 @@ builder.UseSqlServer(
     options => options.MigrationsAssembly(typeof(IDataModule).GetTypeInfo().Assembly.GetName().Name)));
 ```
 
-# Restful Note:
+# Restful Note
+
 ```csharp
 return NotFound(404)/Ok(200)/Created(201)/BadRequest(400) and so on Don't put simple type like string or int ...
 Need create object/dynamic to response for aspcore can cast to json or xml (because http request header is json or xml)
 If not follow this rule, exception occur then return no content + header error
 ```
 
-# Hangfire Note:
+# Hangfire Note
+
 ```csharp
 // Let class PerResolveDependency if they have own method not in Interfaces
 BackgroundJob.Enqueue(() => Method));	 // make sure Method is public and allow access from external assembly.

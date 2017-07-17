@@ -1,4 +1,5 @@
-﻿# Monkey.Business
+﻿![Logo](favicon.ico)
+# Monkey.Business
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 
 - This project is **Business Unit** of System.

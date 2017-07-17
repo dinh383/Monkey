@@ -1,4 +1,5 @@
-﻿# Monkey.Data
+﻿![Logo](favicon.ico)
+# Monkey.Data
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 
 - This project is **Data Repository** of System.

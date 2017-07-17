@@ -24,9 +24,6 @@ namespace Monkey
 
                     return cache;
                 });
-
-                // Add Redis as IDistributedCacheManager Service
-                //services.AddScoped<IDistributedCacheManager, RedisCacheManager>();
             }
         }
     }
