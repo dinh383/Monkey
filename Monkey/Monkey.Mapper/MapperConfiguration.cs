@@ -26,9 +26,13 @@ namespace Monkey.Mapper
 {
     public class MapperConfiguration
     {
-        public static void Add(IServiceCollection services)
+        public static void Service(IServiceCollection services)
         {
+            // Add Auto Mapper
             services.AddAutoMapper();
+
+            // Add Config for Auto Mapper
+            Configure();
         }
 
         public static void Configure()

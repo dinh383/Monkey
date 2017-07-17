@@ -25,8 +25,8 @@ namespace Monkey
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
@@ -41,55 +41,54 @@ namespace Monkey
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession();
-            services.AddSingleton(ConfigurationRoot);
-            services.AddSingleton(Environment);
 
+            // [Configuration]
+            Configuration.Service(services);
+
+            // [Cros] Policy
             Cros.Service(services);
 
-            // API Doc
+            // [Document API] Swagger
             Swagger.Service(services);
 
-            // Background Job
+            // [Background Job] Hangfire
             Hangfire.Service(services);
 
+            // [Caching] Redis Cache
             Cache.Service(services);
 
-            // Add Markup Min - Mini HTML, XML
+            // [Mini Response] WebMarkup
             WebMarkupMin.Service(services);
 
-            MapperConfiguration.Add(services);
+            // [Mapper] Auto Mapper
+            MapperConfiguration.Service(services);
 
-            MapperConfiguration.Configure();
-
+            // [MVC]
             Mvc.Service(services);
 
-            // Keep in last
+            // [Injection] Keep In Last
             DependencyInjection.Service(services);
 
-            // Use Entity Framework
-            services.AddDbContext<DbContext>(builder => builder.UseSqlServer(ConfigurationRoot.GetConnectionString(Environment.EnvironmentName), options => options.MigrationsAssembly(typeof(IDataModule).GetTypeInfo().Assembly.GetName().Name)));
+            // [Database] Use Entity Framework
+            Database.Service(services);
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime, IHttpContextAccessor httpContextAccessor, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            // [Important] The order of middleware very important for request and response handle!
-            // Don't mad it !!!
-
-            // Currently, ASPNETCORE have a BUG hit twice when change appsetting.json from 20/03/17
-            // (see more: https://github.com/aspnet/Configuration/issues/624)
-            ChangeToken.OnChange(ConfigurationRoot.GetReloadToken, () => loggerFactory.CreateLogger<Startup>().LogWarning("Configuration Changed"));
-
-            // Response Information
+            // [Response] Information
             ProcessingTimeMiddleware.Middleware(app);
             SystemInfoMiddleware.Middleware(app);
 
-            // Cros
+            // [Configuration]
+            Configuration.Middleware(app, loggerFactory);
+
+            // [Cros] Policy
             Cros.Middleware(app);
 
-            // Log
+            // [Log] Serilog
             Log.Middleware(app, loggerFactory);
 
-            // Exception
+            // [Exception]
             Exception.Middleware(app);
 
             // [Security] Identity Server
@@ -101,10 +100,10 @@ namespace Monkey
             // [Background Job] Hangfire
             Hangfire.Middleware(app);
 
-            // [Mini Response]
+            // [Mini Response] WebMarkup
             WebMarkupMin.Middleware(app);
 
-            // [Final] MVC
+            // [MVC] Keep In Last
             Mvc.Middleware(app);
         }
     }

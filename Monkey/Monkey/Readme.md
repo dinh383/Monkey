@@ -7,7 +7,7 @@
 - Follow [README](../../Puppy/Puppy.DependencyInjection/Readme.md) of `Puppy.DependencyInjection`
 
 # Region/Areas Note
-- We already have Area `Developers` for `API Docs` and `Background Job`
+- I already have Area `Developers` for `API Docs` and `Background Job`
 - Api Docs
   ![Swagger Api Doc](ReadmeResource/Swagger_Api_Doc.png)
   + We use generate doc by [`Swagger AspNetCore`](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
@@ -17,6 +17,25 @@
   ![Backgroud Job Dashboard](ReadmeResource/Backgroud_Job_Dashboard.png)
   + We use [Hangfire](https://www.hangfire.io/) with SQL Server (Can change it to Memory or Distribute Cache like Redis)
   + Access via: [root]/developers/job?key=[developer access key]
+
+# Startup.cs Note
+- I use nested file to configure startup (because it comming big guy).
+- Each Startup Nested file will have 2 regions like example below
+```c#
+    public partial class Startup
+    {
+        public static class SomeConfig
+        {
+            public static void Service(IServiceCollection services)
+            {
+            }
+
+            public static void Middleware(IApplicationBuilder app)
+            {
+            }
+        }
+    }
+```
 
 # API Note
 

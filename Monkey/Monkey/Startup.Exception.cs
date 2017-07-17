@@ -11,10 +11,12 @@ namespace Monkey
             {
                 if (Environment.IsDevelopment())
                 {
-                    app.UseDeveloperExceptionPage(); 
+                    app.UseDeveloperExceptionPage();
                 }
                 else
-                    app.UseExceptionHandler("/Home/Error");
+                {
+                    app.UseExceptionHandler("/error");
+                }
             }
         }
     }

@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Monkey.Models;
 using Puppy.Web.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using Monkey.Models;
 
 namespace Monkey
 {
@@ -15,20 +15,15 @@ namespace Monkey
     {
         public static class Swagger
         {
-            private static readonly string DocumentTitle =
-                ConfigurationRoot.GetValue<string>("Developers:ApiDocumentTitle");
+            private static readonly string DocumentTitle = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentTitle");
 
-            private static readonly string DocumentName =
-                ConfigurationRoot.GetValue<string>("Developers:ApiDocumentName");
+            private static readonly string DocumentName = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentName");
 
-            private static readonly string DocumentApiBaseUrl =
-                ConfigurationRoot.GetValue<string>("Developers:ApiDocumentUrl") + DocumentName;
+            private static readonly string DocumentApiBaseUrl = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentUrl") + DocumentName;
 
-            private static readonly string DocumentJsonFileName =
-                ConfigurationRoot.GetValue<string>("Developers:ApiDocumentJsonFile");
+            private static readonly string DocumentJsonFileName = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentJsonFile");
 
-            private static readonly string DocumentUrlBase =
-                DocumentApiBaseUrl.Replace(DocumentName, string.Empty).TrimEnd('/');
+            private static readonly string DocumentUrlBase = DocumentApiBaseUrl.Replace(DocumentName, string.Empty).TrimEnd('/');
 
             private static readonly string SwaggerEndpoint = $"{DocumentUrlBase}/{DocumentName}/{DocumentJsonFileName}";
 

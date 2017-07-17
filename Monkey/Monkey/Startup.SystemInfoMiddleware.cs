@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 
 namespace Monkey
 {
@@ -33,19 +33,27 @@ namespace Monkey
                     var httpContext = (HttpContext)state;
 
                     if (httpContext.Response.Headers.ContainsKey("Server"))
+                    {
                         httpContext.Response.Headers.Remove("Server");
+                    }
                     httpContext.Response.Headers.Add("Server", ServerName);
 
                     if (httpContext.Response.Headers.ContainsKey("X-Powered-By"))
+                    {
                         httpContext.Response.Headers.Remove("X-Powered-By");
+                    }
                     httpContext.Response.Headers.Add("X-Powered-By", PoweredBy);
 
                     if (httpContext.Response.Headers.ContainsKey("X-Author-Name"))
+                    {
                         httpContext.Response.Headers.Remove("X-Author-Name");
+                    }
                     httpContext.Response.Headers.Add("X-Author-Name", AuthorName);
 
                     if (httpContext.Response.Headers.ContainsKey("X-Author-Website"))
+                    {
                         httpContext.Response.Headers.Remove("X-Author-Website");
+                    }
                     httpContext.Response.Headers.Add("X-Author-Website", AuthorWebsite);
 
                     return Task.CompletedTask;

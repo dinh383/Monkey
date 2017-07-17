@@ -16,12 +16,15 @@ namespace Monkey
         {
             public static void Service(IServiceCollection services)
             {
-                services.AddWebMarkupMin(options =>
+                services
+                    // Global
+                    .AddWebMarkupMin(options =>
                     {
                         options.AllowMinificationInDevelopmentEnvironment = true;
                         options.DisablePoweredByHttpHeaders = true;
                         options.DisableCompression = true;
                     })
+                    // HTML Mini
                     .AddHtmlMinification(options =>
                     {
                         options.MinificationSettings.RemoveRedundantAttributes = true;
@@ -32,10 +35,12 @@ namespace Monkey
                         options.CssMinifierFactory = new NUglifyCssMinifierFactory();
                         options.JsMinifierFactory = new NUglifyJsMinifierFactory();
                     })
+                    // XML Mini
                     .AddXmlMinification(options =>
                     {
                         options.MinificationSettings.CollapseTagsWithoutContent = true;
                     })
+                    // HTML Compress
                     .AddHttpCompression(options =>
                     {
                         options.CompressorFactories = new List<ICompressorFactory>
