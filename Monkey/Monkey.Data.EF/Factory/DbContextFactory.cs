@@ -21,6 +21,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Puppy.Core;
 
 namespace Monkey.Data.EF.Factory
 {
@@ -29,27 +30,41 @@ namespace Monkey.Data.EF.Factory
 
         public DbContext Create(DbContextFactoryOptions options)
         {
-            var connectionString = GetConnectionString(options);
-            return CreateCoreContext(connectionString);
+            return CreateCoreContext();
+        }
+
+        public static DbContext CreateCoreContext()
+        {
+            var builder = new DbContextOptionsBuilder<DbContext>();
+            builder.UseSqlServer(GetConnectionString(), optionsBuilder => optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName()));
+            return new DbContext(builder.Options);
         }
 
         /// <summary>
-        /// GetCache connection from DbContextFactoryOptions Environment
+        ///     Return 'Environment Name' connection string if Environment is "Production" or "Staging", else Machine Name
         /// </summary>
-        /// <param name="options"></param>
         /// <returns></returns>
-        private string GetConnectionString(DbContextFactoryOptions options)
+        public static string GetConnectionString()
         {
+            string connectionStringSection =
+                (EnvironmentHelper.IsProduction() || EnvironmentHelper.IsStaging())
+                    ? $"ConnectionStrings:{EnvironmentHelper.Name}"
+                    : $"ConnectionStrings:{EnvironmentHelper.MachineName}";
+
             IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-            var connectionString = config.GetSection($"ConnectionStrings:{options.EnvironmentName}").Value;
+            var connectionString = config.GetValue<string>(connectionStringSection);
+
             return connectionString;
         }
 
-        private static DbContext CreateCoreContext(string connectionString)
+        public static Assembly GetMigrationAssembly()
         {
-            var builder = new DbContextOptionsBuilder<DbContext>();
-            builder.UseSqlServer(connectionString, optionsBuilder => optionsBuilder.MigrationsAssembly(typeof(IDatabase).GetTypeInfo().Assembly.GetName().Name));
-            return new DbContext(builder.Options);
+            return typeof(IDatabase).GetTypeInfo().Assembly;
+        }
+
+        public static string GetMigrationAssemblyName()
+        {
+            return typeof(IDatabase).GetTypeInfo().Assembly.GetName().Name;
         }
     }
 }

@@ -1,28 +1,25 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Interface </Project>
+//     <Project> Monkey → Business Interface </Project>
 //     <File>
-//         <Name> IBaseElastic.cs </Name>
-//         <Created> 10 May 17 10:20:53 AM </Created>
-//         <Key> 419beb99-2307-4b2b-be05-482fc0c7e0b4 </Key>
+//         <Name> IUserBusiness.cs </Name>
+//         <Created> 18/07/17 4:49:26 PM </Created>
+//         <Key> 1a8c0357-4f32-42de-ade4-851e33d3adc2 </Key>
 //     </File>
 //     <Summary>
-//         IBaseElastic.cs
+//         IUserBusiness.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
 
-namespace Monkey.Data.Entities
+namespace Monkey.Business
 {
-    public interface IBaseElastic<T>
+    public interface IUserBusiness : IBaseBusiness
     {
-        T Id { get; set; }
     }
 }

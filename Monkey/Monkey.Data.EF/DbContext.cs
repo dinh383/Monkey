@@ -1,42 +1,35 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 using Monkey.Data.EF.Factory;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
 using Puppy.EF.Mapping;
-using System;
-using System.Linq;
-using System.Reflection;
 
 namespace Monkey.Data.EF
 {
     [PerResolveDependency(ServiceType = typeof(IDbContext))]
     public sealed partial class DbContext : BaseDbContext, IDbContext
     {
-        private readonly int cmdTimeoutInSecond = 12000; // 20 mins
+        /// <summary>
+        ///     Set CMD timeout is 20 minutes 
+        /// </summary>
+        public readonly int CmdTimeoutInSecond = 12000;
 
         public DbContext()
         {
-            Database.SetCommandTimeout(cmdTimeoutInSecond);
+            Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
 
         public DbContext(DbContextOptions options) : base(options)
         {
-            Database.SetCommandTimeout(cmdTimeoutInSecond);
+            Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-                IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-                var connectionString = config.GetSection($"ConnectionStrings:{environmentName}").Value;
-
-                optionsBuilder.UseSqlServer(connectionString,
-                    o => o.MigrationsAssembly(typeof(IDatabase).GetTypeInfo().Assembly.GetName().Name));
+                optionsBuilder.UseSqlServer(DbContextFactory.GetConnectionString(),
+                    o => o.MigrationsAssembly(DbContextFactory.GetMigrationAssemblyName()));
             }
         }
 
@@ -44,11 +37,17 @@ namespace Monkey.Data.EF
         {
             base.OnModelCreating(builder);
 
-            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            // [Important] Keep Under Base For Override And Make End Result
 
-            // Keep under base for override and make end result
-            builder.AddConfigFromAssembly(typeof(IDatabase).GetTypeInfo().Assembly);
+            // Scan and apply Config/Mapping for Tables/Entities (from folder "Map")
+            builder.AddConfigFromAssembly(DbContextFactory.GetMigrationAssembly());
+
+            // Set Delete Behavior as Restrict in Relationship
+            builder.SetDeleteBehaviorRestrict();
+
+            // Convention for Table name
+            builder.RemovePluralizingTableNameConvention();
+            builder.ReplaceTableNameConvention("Entity", string.Empty);
         }
     }
 }

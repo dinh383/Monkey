@@ -1,28 +1,33 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Interface </Project>
+//     <Project> Monkey </Project>
 //     <File>
-//         <Name> IBaseElastic.cs </Name>
-//         <Created> 10 May 17 10:20:53 AM </Created>
-//         <Key> 419beb99-2307-4b2b-be05-482fc0c7e0b4 </Key>
+//         <Name> UserEntity.cs </Name>
+//         <Created> 18/07/17 4:11:13 PM </Created>
+//         <Key> abe1ae76-0722-4dba-8ebf-51eb28f5796a </Key>
 //     </File>
 //     <Summary>
-//         IBaseElastic.cs
+//         UserEntity.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
+
+using Puppy.EF;
 
 namespace Monkey.Data.Entities
 {
-    public interface IBaseElastic<T>
+    public class UserEntity : BaseEntity
     {
-        T Id { get; set; }
+        public string UserName { get; set; }
+
+        /// <summary>
+        ///     Username Normalize 
+        /// </summary>
+        public string UserNameNorm { get; set; }
     }
 }
