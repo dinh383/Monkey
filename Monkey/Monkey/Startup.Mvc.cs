@@ -8,11 +8,11 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 using Monkey.Areas.Developers.Filters;
 using Monkey.Model.Validators;
-using Monkey.Models.Filters;
 using Puppy.Core;
 using Puppy.Web.Render;
 using System;
 using System.IO;
+using Monkey.Filters;
 
 namespace Monkey
 {

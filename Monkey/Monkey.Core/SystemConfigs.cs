@@ -27,7 +27,7 @@ namespace Monkey.Core
     public static class SystemConfigs
     {
         /// <summary>
-        ///     Production will read from key Production, else by MachineName 
+        ///     Production, Staging will read from key Environment Name, else by MachineName 
         /// </summary>
         public static string DatabaseConnectionString { get; set; }
 

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Models.Filters;
+using Monkey.Filters;
 using Puppy.Web;
 
 namespace Monkey.Controllers

@@ -1,32 +1,27 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey  → Entity </Project>
 //     <File>
-//         <Name> DbSet.cs </Name>
-//         <Created> 18/04/2017 10:46:11 AM </Created>
-//         <Key> 34786a69-00f1-46ef-b365-4414a7def4aa </Key>
+//         <Name> ProfileEntity.cs </Name>
+//         <Created> 18/07/17 5:32:53 PM </Created>
+//         <Key> 4ab352e8-6e3e-4978-acce-6db0007bf6d7 </Key>
 //     </File>
 //     <Summary>
-//         DbSet.cs
+//        ProfileEntity.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
 
-using Microsoft.EntityFrameworkCore;
-using Monkey.Data.Entities;
+using Puppy.EF;
 
-namespace Monkey.Data.EF
+namespace Monkey.Data.Entities
 {
-    public sealed partial class DbContext
+    public class ProfileEntity : BaseEntity
     {
-        public DbSet<UserEntity> Users { get; set; }
-        public DbSet<ProfileEntity> Profiles { get; set; }
     }
 }

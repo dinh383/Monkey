@@ -102,6 +102,7 @@
     <!-- Core -->
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
     <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
+    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
 
     <!-- Service -->
     <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
@@ -122,12 +123,5 @@
     <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Areas\Portal\Assets\" />
-  </ItemGroup>
+  
 </Project>
