@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
-using Monkey.Core;
+using Monkey.Areas.Developers.Filters;
 using Monkey.Model.Validators;
 using Monkey.Models.Filters;
 using Puppy.Core;
@@ -39,11 +39,11 @@ namespace Monkey
                     .AddXmlDataContractSerializerFormatters()
                     .AddJsonOptions(options =>
                     {
-                        options.SerializerSettings.ReferenceLoopHandling = Constants.Setting.JsonSerializerSettings.ReferenceLoopHandling;
-                        options.SerializerSettings.NullValueHandling = Constants.Setting.JsonSerializerSettings.NullValueHandling;
-                        options.SerializerSettings.DateTimeZoneHandling = Constants.Setting.JsonSerializerSettings.DateTimeZoneHandling;
-                        options.SerializerSettings.Formatting = Constants.Setting.JsonSerializerSettings.Formatting;
-                        options.SerializerSettings.ContractResolver = Constants.Setting.JsonSerializerSettings.ContractResolver;
+                        options.SerializerSettings.ReferenceLoopHandling = Core.Constants.Setting.JsonSerializerSettings.ReferenceLoopHandling;
+                        options.SerializerSettings.NullValueHandling = Core.Constants.Setting.JsonSerializerSettings.NullValueHandling;
+                        options.SerializerSettings.DateTimeZoneHandling = Core.Constants.Setting.JsonSerializerSettings.DateTimeZoneHandling;
+                        options.SerializerSettings.Formatting = Core.Constants.Setting.JsonSerializerSettings.Formatting;
+                        options.SerializerSettings.ContractResolver = Core.Constants.Setting.JsonSerializerSettings.ContractResolver;
                     })
                     .AddViewOptions(options =>
                     {
@@ -63,8 +63,6 @@ namespace Monkey
 
             public static void Middleware(IApplicationBuilder app)
             {
-                app.UseSession();
-
                 if (EnvironmentHelper.IsProduction())
                 {
                     app.UseResponseCaching();
@@ -86,7 +84,7 @@ namespace Monkey
                 // Favicons Path and GZip
                 app.UseStaticFiles(new StaticFileOptions
                 {
-                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Constants.Setting.WebRoot, "favicons")),
+                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), Core.Constants.Setting.WebRoot, "favicons")),
                     RequestPath = new PathString("/favicons"),
                     OnPrepareResponse = (context) =>
                     {

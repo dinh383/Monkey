@@ -9,12 +9,12 @@
 # Region/Areas Note
 - I already have Area `Developers` for `API Docs` and `Background Job`
 - Api Docs
-  ![Swagger Api Doc](ReadmeResource/Swagger_Api_Doc.png)
+  ![Swagger Api Doc](Assets/readme/Swagger_Api_Doc.png)
   + We use generate doc by [`Swagger AspNetCore`](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
   + Access via: [root]/developers?key=[developer access key] (Config it in [appsettings.json](appsettings.json) with KEY `Developers:AccessKey`)
 
 - Background Job
-  ![Backgroud Job Dashboard](ReadmeResource/Backgroud_Job_Dashboard.png)
+  ![Backgroud Job Dashboard](Assets/readme/Backgroud_Job_Dashboard.png)
   + We use [Hangfire](https://www.hangfire.io/) with SQL Server (Can change it to Memory or Distribute Cache like Redis)
   + Access via: [root]/developers/job?key=[developer access key]
 
@@ -40,7 +40,7 @@
 # API Note
 
 - For Paging: use search keyword by `terms`, page size and page number by `skip` and `take`
-- Api Response follow `Models\ViewModels\Api`
+- Api Response follow `ViewModels/Api`
 - 3 Types of Response
   + [Success] Response `Collection`
 	```c#
@@ -64,7 +64,7 @@
     ```c#
 	return Ok(<data>);
 	```
-  + [Fail] Response `Error`: throw [`MonkeyException`](..\Monkey.Core\Exceptions\MonkeyException.cs) with [`ErrorCode`](..\Monkey.Core\Exceptions\ErrorCode.cs) and return [`ApiErrorModel`](ViewModels\Api\ApiErrorViewModel.cs). refer to view [`ApiExceptionFilter`](Filters\ApiExceptionFilter.cs)
+  + [Fail] Response `Error`: throw [`MonkeyException`](../Monkey.Core/Exceptions/MonkeyException.cs) with [`ErrorCode`](../Monkey.Core/Exceptions/ErrorCode.cs) and return [`ApiErrorModel`](ViewModels/Api/ApiErrorViewModel.cs). refer to view [`ApiExceptionFilter`](ViewModels/Filters/ApiExceptionFilter.cs)
 
 # Deploy Note
 

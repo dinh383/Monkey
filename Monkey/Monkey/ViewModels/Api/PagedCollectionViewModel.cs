@@ -19,7 +19,7 @@
 
 #endregion License
 
-namespace Monkey.Models.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
     public class PagedCollectionViewModel<T> : CollectionViewModel<T>
     {

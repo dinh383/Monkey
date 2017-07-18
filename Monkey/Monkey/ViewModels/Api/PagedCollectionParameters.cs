@@ -7,28 +7,24 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> Resource.cs </Name>
-//         <Created> 24 Apr 17 1:05:53 AM </Created>
-//         <Key> b2f2acdd-380c-419b-992f-5252286c2571 </Key>
+//         <Name> PagedCollectionParameters.cs </Name>
+//         <Created> 24 Apr 17 1:15:01 AM </Created>
+//         <Key> 7bbbc234-4dcf-4df6-8690-ced4a8906583 </Key>
 //     </File>
 //     <Summary>
-//         Resource.cs
+//         PagedCollectionParameters.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 
 #endregion License
 
-using Newtonsoft.Json;
-
-namespace Monkey.Models.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
-    public abstract class ResourceViewModel
+    public class PagedCollectionParameters
     {
-        [JsonProperty(Order = -2)]
-        public ILinkViewModel Meta { get; set; }
+        public int? Offset { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public FormViewModel[] Forms { get; set; }
+        public int? Limit { get; set; }
     }
 }

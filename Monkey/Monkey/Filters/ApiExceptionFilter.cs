@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
-using Monkey.Models.ViewModels.Api;
+using Monkey.ViewModels.Api;
 using Puppy.Core.XmlUtils;
 using Puppy.Web;
 using Serilog;
 using System;
 using System.Net;
+using Monkey.ViewModels.Api;
 
 namespace Monkey.Models.Filters
 {

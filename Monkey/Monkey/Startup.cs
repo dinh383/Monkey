@@ -31,8 +31,6 @@ namespace Monkey
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSession();
-
             // [SystemConfigs]
             SystemConfigs.Service(services);
 
@@ -69,12 +67,12 @@ namespace Monkey
             // [Important] The order of middleware very important for request and response handle!
             // Don't mad it !!!
 
+            // [SystemConfigs]
+            SystemConfigs.Middleware(app, loggerFactory);
+
             // [Response] Information
             ProcessingTimeMiddleware.Middleware(app);
             SystemInfoMiddleware.Middleware(app);
-
-            // [SystemConfigs]
-            SystemConfigs.Middleware(app, loggerFactory);
 
             // [Cros] Policy
             Cros.Middleware(app);

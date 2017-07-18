@@ -24,6 +24,10 @@ using System;
 
 namespace Monkey.Core
 {
+    /// <summary>
+    ///     System Setting/Constant like <c>appsetting.json</c> but this information <c>very important and not allow</c>
+    ///     for Edit in run-time
+    /// </summary>
     public static class Constants
     {
         public static class Setting
@@ -31,6 +35,11 @@ namespace Monkey.Core
             public const string WebRoot = "Assets";
 
             public const string CookieSchemaName = "Monkey_Cookie";
+
+            public static class Cros
+            {
+                public const string PolicyAllowAll = "CrosPolicyAllowAll";
+            }
 
             public static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
             {
@@ -40,26 +49,14 @@ namespace Monkey.Core
                 DateTimeZoneHandling = DateTimeZoneHandling.Utc,
                 NullValueHandling = NullValueHandling.Ignore
             };
-
-            /// <summary>
-            ///     System Time Zone Info, Can Find Full list ID via
-            ///     "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones"
-            /// </summary>
-            public static readonly TimeZoneInfo TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
-
-            public static class Cros
-            {
-                public const string PolicyAllowAll = "CrosPolicyAllowAll";
-            }
         }
 
-        /// <summary>
-        ///     Use only Plural Noun for Endpoint 
-        /// </summary>
-        public static class ApiEndPoints
+        public static class ElasticSearch
         {
-            public const string Base = "api";
-            public const string Root = ".well-known/" + Base;
+            /// <summary>
+            ///     Maximum record take when use elastic, do not change this 
+            /// </summary>
+            public const int MaxTakeRecord = 10000;
         }
 
         /// <summary>
@@ -91,12 +88,13 @@ namespace Monkey.Core
             };
         }
 
-        public static class ElasticSearch
+        /// <summary>
+        ///     Use only Plural Noun for Endpoint 
+        /// </summary>
+        public static class ApiEndPoints
         {
-            /// <summary>
-            ///     Maximum record take when use elastic, do not change this 
-            /// </summary>
-            public const int MaxTakeRecord = 10000;
+            public const string Base = "api";
+            public const string Root = ".well-known/" + Base;
         }
     }
 }

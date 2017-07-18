@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Puppy.Web.Swagger;
 
-namespace Monkey.Controllers
+namespace Monkey.Areas.Portal.Controllers
 {
+    [Area("Portal")]
     [HideInDocs]
     [AllowAnonymous]
-    public class MvcController : Controller
+    public class PortalMvcController : Controller
     {
     }
 }

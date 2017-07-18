@@ -21,7 +21,7 @@ namespace Monkey
                 _next = next;
             }
 
-            public Task InvokeAsync(HttpContext context)
+            public Task Invoke(HttpContext context)
             {
                 var watch = new Stopwatch();
                 context.Response.OnStarting(state =>

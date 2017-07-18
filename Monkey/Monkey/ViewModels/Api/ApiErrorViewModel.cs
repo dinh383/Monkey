@@ -17,11 +17,11 @@
 
 #endregion License
 
+using System.Collections.Generic;
 using EnumsNET;
 using Monkey.Core.Exceptions;
-using System.Collections.Generic;
 
-namespace Monkey.Models.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
     public class ApiErrorViewModel
     {

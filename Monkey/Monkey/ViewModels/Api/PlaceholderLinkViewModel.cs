@@ -21,7 +21,7 @@
 
 using Microsoft.AspNetCore.Routing;
 
-namespace Monkey.Models.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
     public class PlaceholderLinkViewModel : ILinkViewModel
     {

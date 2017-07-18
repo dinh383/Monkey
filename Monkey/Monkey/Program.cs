@@ -29,7 +29,8 @@ namespace Monkey
         public static void Main(string[] args)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Console.Title = "Monkey Web API";
+
+            Console.Title = $"[{Puppy.Core.EnvironmentHelper.Name}] {nameof(Monkey)}";
 
             IWebHostBuilder hostBuilder =
                 new WebHostBuilder()

@@ -7,26 +7,24 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> LinkViewModel.cs </Name>
-//         <Created> 24 Apr 17 12:57:27 AM </Created>
-//         <Key> fddb64c4-2447-4b5d-afe7-fe7abc6ccdf2 </Key>
+//         <Name> CollectionViewModel.cs </Name>
+//         <Created> 24 Apr 17 1:05:24 AM </Created>
+//         <Key> 13589257-5e1a-4121-8340-c73a422b2e38 </Key>
 //     </File>
 //     <Summary>
-//         LinkViewModel.cs
+//         CollectionViewModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 
 #endregion License
 
-namespace Monkey.Models.ViewModels.Api
+using System.Collections.Generic;
+
+namespace Monkey.ViewModels.Api
 {
-    public class LinkViewModel : ILinkViewModel
+    public class CollectionViewModel<T> : ResourceViewModel
     {
-        public string Href { get; set; }
-
-        public string[] Relations { get; set; }
-
-        public string Method { get; set; }
+        public ICollection<T> Items { get; set; }
     }
 }

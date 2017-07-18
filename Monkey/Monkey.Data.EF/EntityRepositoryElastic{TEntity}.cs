@@ -65,7 +65,7 @@ namespace Monkey.Data.EF
             get
             {
                 if (string.IsNullOrWhiteSpace(_elasticConnectionString))
-                    _elasticConnectionString = _configurationRoot.GetValue<string>("Elastic:ConnectionString");
+                    _elasticConnectionString = _configurationRoot.GetValue<string>("Elastic:DatabaseConnectionString");
                 return _elasticConnectionString;
             }
         }

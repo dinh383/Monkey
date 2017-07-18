@@ -25,5 +25,10 @@ namespace Monkey.Core.ConfigModels
         ///     Root Endpoint (Domain) of Identity Server (SSO) 
         /// </summary>
         public string ConnectionString { get; set; }
+
+        /// <summary>
+        ///     Api Name (Audience Name - Name of this system register with SSO)
+        /// </summary>
+        public string ApiName { get; set; }
     }
 }

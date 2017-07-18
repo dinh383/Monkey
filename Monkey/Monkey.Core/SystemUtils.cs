@@ -33,12 +33,12 @@ namespace Monkey.Core
 
         public static DateTime GetSystemTime(this DateTimeOffset dateTimeOffset)
         {
-            return dateTimeOffset.UtcDateTime.GetDateTimeFromUtc(Constants.Setting.TimeZoneInfo);
+            return dateTimeOffset.UtcDateTime.GetDateTimeFromUtc(SystemConfigs.Server.TimeZoneInfo);
         }
 
         public static DateTime GetSystemTime(this DateTime dateTimeUtc)
         {
-            return dateTimeUtc.GetDateTimeFromUtc(Constants.Setting.TimeZoneInfo);
+            return dateTimeUtc.GetDateTimeFromUtc(SystemConfigs.Server.TimeZoneInfo);
         }
     }
 }

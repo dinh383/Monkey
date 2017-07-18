@@ -1,4 +1,49 @@
-﻿@{
-    ViewData["Title"] = "Dashboard";
+﻿@using Newtonsoft.Json
+@using Constants = Monkey.Constants
+@{
+    ViewData[Constants.ViewDataKey.Title] = "Landing Home";
 }
-Home Page
+
+@ViewData[Constants.ViewDataKey.Title]
+
+<pre>
+<code>
+@nameof(SystemConfigs.DatabaseConnectionString) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.DatabaseConnectionString, Formatting.Indented))
+</code>
+</pre>
+
+<pre>
+<code>
+@nameof(SystemConfigs.Serilog) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Serilog, Formatting.Indented))
+</code>
+</pre>
+
+<pre>
+<code>
+@nameof(SystemConfigs.Developers) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Developers, Formatting.Indented))
+</code>
+</pre>
+
+<pre>
+<code>
+@nameof(SystemConfigs.Server) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Server, Formatting.Indented))
+</code>
+</pre>
+
+<pre>
+<code>
+@nameof(SystemConfigs.IdentityServer) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.IdentityServer, Formatting.Indented))
+</code>
+</pre>
+
+<pre>
+<code>
+@nameof(SystemConfigs.Redis) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Redis, Formatting.Indented))
+</code>
+</pre>
+
+<pre>
+<code>
+@nameof(SystemConfigs.Elastic) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Elastic, Formatting.Indented))
+</code>
+</pre>

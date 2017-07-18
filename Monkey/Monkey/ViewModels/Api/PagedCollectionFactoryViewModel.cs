@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 
-namespace Monkey.Models.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
     public class PagedCollectionFactoryViewModel<T>
     {

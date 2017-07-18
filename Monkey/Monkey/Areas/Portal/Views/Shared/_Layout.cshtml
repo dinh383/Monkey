@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @{
+        await Html.RenderPartialAsync("_SEO").ConfigureAwait(true);
+        await Html.RenderPartialAsync("_Favicon").ConfigureAwait(true);
+    }
+    @await RenderSectionAsync("Styles", required: false).ConfigureAwait(true)
+</head>
+<body>
+    @RenderBody()
+    @await RenderSectionAsync("Scripts", required: false).ConfigureAwait(true)
+</body>
+</html>

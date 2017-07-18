@@ -36,7 +36,7 @@ namespace Monkey.Data.EF
                 var connectionString = config.GetSection($"ConnectionStrings:{environmentName}").Value;
 
                 optionsBuilder.UseSqlServer(connectionString,
-                    o => o.MigrationsAssembly(typeof(IDataModule).GetTypeInfo().Assembly.GetName().Name));
+                    o => o.MigrationsAssembly(typeof(IDatabase).GetTypeInfo().Assembly.GetName().Name));
             }
         }
 
@@ -48,7 +48,7 @@ namespace Monkey.Data.EF
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
 
             // Keep under base for override and make end result
-            builder.AddConfigFromAssembly(typeof(IDataModule).GetTypeInfo().Assembly);
+            builder.AddConfigFromAssembly(typeof(IDatabase).GetTypeInfo().Assembly);
         }
     }
 }

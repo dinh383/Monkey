@@ -1,20 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Configuration;
 using System.Net;
 
-namespace Monkey.Models.Filters
+namespace Monkey.Areas.Developers.Filters
 {
     public class DeveloperAccessFilter : ActionFilterAttribute
     {
-        private readonly IConfigurationRoot _configurationRoot;
-
-        public DeveloperAccessFilter(IConfigurationRoot configurationRoot)
-        {
-            _configurationRoot = configurationRoot;
-        }
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!IsValidDeveloperRequest(context.HttpContext))
@@ -29,8 +21,7 @@ namespace Monkey.Models.Filters
 
         private bool IsValidDeveloperRequest(HttpContext context)
         {
-            var developerKey = _configurationRoot.GetValue<string>("Developers:AccessKey");
-            return DeveloperHelper.IsCanAccess(context, developerKey);
+            return DeveloperHelper.IsCanAccess(context, Core.SystemConfigs.Developers.AccessKey);
         }
     }
 }

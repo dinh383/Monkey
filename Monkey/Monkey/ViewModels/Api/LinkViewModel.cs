@@ -7,24 +7,26 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> PagedCollectionParameters.cs </Name>
-//         <Created> 24 Apr 17 1:15:01 AM </Created>
-//         <Key> 7bbbc234-4dcf-4df6-8690-ced4a8906583 </Key>
+//         <Name> LinkViewModel.cs </Name>
+//         <Created> 24 Apr 17 12:57:27 AM </Created>
+//         <Key> fddb64c4-2447-4b5d-afe7-fe7abc6ccdf2 </Key>
 //     </File>
 //     <Summary>
-//         PagedCollectionParameters.cs
+//         LinkViewModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 
 #endregion License
 
-namespace Monkey.Models.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
-    public class PagedCollectionParameters
+    public class LinkViewModel : ILinkViewModel
     {
-        public int? Offset { get; set; }
+        public string Href { get; set; }
 
-        public int? Limit { get; set; }
+        public string[] Relations { get; set; }
+
+        public string Method { get; set; }
     }
 }

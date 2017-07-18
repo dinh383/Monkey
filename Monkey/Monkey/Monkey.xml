@@ -9,5 +9,13 @@
                 This middleware for hot fix API bug of current AspNetCore 
             </summary>
         </member>
+        <member name="M:Monkey.Startup.SystemConfigs.Service(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                I will add config into 2 places: <br />
+                - First place is in SystemConfig object: this will content all config. <br />
+                - Second place is in separate object: this for lightweight inject and read data.
+            </summary>
+            <param name="services"></param>
+        </member>
     </members>
 </doc>

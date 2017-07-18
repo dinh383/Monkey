@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Monkey.Models;
+using Monkey.Areas.Developers;
 using Puppy.Web.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
@@ -15,16 +14,11 @@ namespace Monkey
     {
         public static class Swagger
         {
-            private static readonly string DocumentTitle = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentTitle");
-
-            private static readonly string DocumentName = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentName");
-
-            private static readonly string DocumentApiBaseUrl = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentUrl") + DocumentName;
-
-            private static readonly string DocumentJsonFileName = ConfigurationRoot.GetValue<string>("Developers:ApiDocumentJsonFile");
-
+            private static readonly string DocumentTitle = Core.SystemConfigs.Developers.ApiDocumentTitle;
+            private static readonly string DocumentName = Core.SystemConfigs.Developers.ApiDocumentName;
+            private static readonly string DocumentApiBaseUrl = Core.SystemConfigs.Developers.ApiDocumentUrl;
+            private static readonly string DocumentJsonFileName = Core.SystemConfigs.Developers.ApiDocumentJsonFile;
             private static readonly string DocumentUrlBase = DocumentApiBaseUrl.Replace(DocumentName, string.Empty).TrimEnd('/');
-
             private static readonly string SwaggerEndpoint = $"{DocumentUrlBase}/{DocumentName}/{DocumentJsonFileName}";
 
             public static void Service(IServiceCollection services)
@@ -37,12 +31,13 @@ namespace Monkey
                         Version = DocumentName,
                         Contact = new Contact
                         {
-                            Name = "Top Nguyen",
-                            Email = "TopNguyen92@gmail.com",
-                            Url = "http://topnguyen.net"
+                            Name = Core.SystemConfigs.Server.AuthorName,
+                            Url = Core.SystemConfigs.Server.AuthorWebsite,
+                            Email = Core.SystemConfigs.Server.AuthorEmail
                         }
                     });
 
+                    // File Path follow config from .csproj, not from appsettings.json
                     var apiDocumentFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Monkey.xml");
 
                     options.IncludeXmlComments(apiDocumentFilePath);
@@ -58,15 +53,14 @@ namespace Monkey
             {
                 app.UseSwagger(c =>
                 {
-                    c.RouteTemplate = $"{DocumentUrlBase.TrimStart('/')}/{{documentName}}/{DocumentJsonFileName}";
+                    c.RouteTemplate = DocumentUrlBase.TrimStart('/') + "/" + "{documentName}" + "/" + DocumentJsonFileName;
                     c.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Host = httpReq.Host.Value);
                 });
 
                 app.UseSwaggerUI(c =>
                 {
-                    c.RoutePrefix = DocumentApiBaseUrl.TrimStart('/');
-                    string accessKey = ConfigurationRoot.GetValue<string>("Developers:AccessKey");
-                    c.SwaggerEndpoint($"{SwaggerEndpoint}?key={accessKey}", DocumentTitle);
+                    c.RoutePrefix = DocumentApiBaseUrl.Trim('/');
+                    c.SwaggerEndpoint($"{SwaggerEndpoint}?key={Core.SystemConfigs.Developers.AccessKey}", DocumentTitle);
                 });
 
                 app.UseMiddleware<AccessMiddleware>();
@@ -81,7 +75,7 @@ namespace Monkey
                     _next = next;
                 }
 
-                public Task InvokeAsync(HttpContext context)
+                public Task Invoke(HttpContext context)
                 {
                     if (IsSwaggerUi(context) || IsSwaggerEndpoint(context))
                         if (!IsCanAccessSwagger(context))

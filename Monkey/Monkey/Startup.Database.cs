@@ -13,9 +13,8 @@ namespace Monkey
             public static void Service(IServiceCollection services)
             {
                 services.AddDbContext<DbContext>(
-                    builder => builder.UseSqlServer(ConfigurationRoot.GetConnectionString(Environment.EnvironmentName),
-                        options => options.MigrationsAssembly(typeof(IDataModule).GetTypeInfo().Assembly.GetName()
-                            .Name)));
+                    builder => builder.UseSqlServer(Core.SystemConfigs.DatabaseConnectionString,
+                        options => options.MigrationsAssembly(typeof(IDatabase).GetTypeInfo().Assembly.GetName().Name)));
             }
         }
     }

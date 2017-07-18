@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace Monkey.Models
+namespace Monkey.Areas.Developers
 {
     public static class DeveloperHelper
     {

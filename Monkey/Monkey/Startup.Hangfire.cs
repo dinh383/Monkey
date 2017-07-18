@@ -5,7 +5,9 @@ using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Monkey.Areas.Developers;
 using Monkey.Models;
+using Monkey.ViewModels;
 
 namespace Monkey
 {
@@ -17,7 +19,7 @@ namespace Monkey
 
             public static void Service(IServiceCollection services)
             {
-                services.AddHangfire(config => config.UseSqlServerStorage(ConfigurationRoot.GetConnectionString(Environment.EnvironmentName)));
+                services.AddHangfire(config => config.UseSqlServerStorage(Core.SystemConfigs.DatabaseConnectionString));
 
                 JobHelper.SetSerializerSettings(Core.Constants.Setting.JsonSerializerSettings);
             }

@@ -2,8 +2,6 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.DependencyInjection;
 
-//using Puppy.Core.CacheUtils;
-
 namespace Monkey
 {
     public partial class Startup
@@ -12,15 +10,12 @@ namespace Monkey
         {
             public static void Service(IServiceCollection services)
             {
-                var redisConnection = ConfigurationRoot["Redis:ConnectionString"];
-                var redisInstance = ConfigurationRoot["Redis:InstanceName"];
-
                 services.AddSingleton<IDistributedCache>(factory =>
                 {
                     var cache = new RedisCache(new RedisCacheOptions
                     {
-                        Configuration = redisConnection,
-                        InstanceName = redisInstance
+                        Configuration = Core.SystemConfigs.Redis.ConnectionString,
+                        InstanceName = Core.SystemConfigs.Redis.InstanceName
                     });
 
                     return cache;

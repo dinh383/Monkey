@@ -24,42 +24,42 @@ namespace Monkey.Core
     /// <summary>
     ///     Setting configuration sync from appsettings.json of Main project 
     /// </summary>
-    public class SystemConfigs
+    public static class SystemConfigs
     {
         /// <summary>
         ///     Production will read from key Production, else by MachineName 
         /// </summary>
-        public string ConnectionString { get; set; }
-
-        /// <summary>
-        ///     System Time Zone Info, Can Find Full list ID via Current Machine System
-        /// </summary>
-        /// <remarks>System store list Time Zone Info in <c>Regedit Key</c>: "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones"</remarks>
-        public string TimeZoneId { get; set; }
+        public static string DatabaseConnectionString { get; set; }
 
         /// <summary>
         ///     Log to File, Console 
         /// </summary>
-        public SerilogConfigModel Serilog { get; set; }
+        public static SerilogConfigModel Serilog { get; set; }   
+        
+        
+        /// <summary>
+        ///     Developer Config, API Document and Background Job
+        /// </summary>
+        public static DevelopersConfigModel Developers { get; set; }
 
         /// <summary>
         ///     Extra Server Info when Response created 
         /// </summary>
-        public ServerConfigModel Server { get; set; }
+        public static ServerConfigModel Server { get; set; }
 
         /// <summary>
-        /// Identity Server - SSO - Scalable System
+        ///     Identity Server - SSO - Scalable System 
         /// </summary>
-        public IdentityServerConfigModel IdentityServer { get; set; }
+        public static IdentityServerConfigModel IdentityServer { get; set; }
 
         /// <summary>
         ///     Redis Distributed Caching 
         /// </summary>
-        public RedisConfigModel Redis { get; set; }
+        public static RedisConfigModel Redis { get; set; }
 
         /// <summary>
         ///     Elastic Search Engine 
         /// </summary>
-        public ElasticConfigModel Elastic { get; set; }
+        public static ElasticConfigModel Elastic { get; set; }
     }
 }

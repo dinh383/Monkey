@@ -21,7 +21,7 @@
 
 using Newtonsoft.Json;
 
-namespace Monkey.Models.ViewModels.Api
+namespace Monkey.ViewModels.Api
 {
     public interface ILinkViewModel
     {

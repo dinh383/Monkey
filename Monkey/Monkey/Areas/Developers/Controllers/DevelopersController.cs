@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Puppy.Core.StringUtils;
 
 namespace Monkey.Areas.Developers.Controllers
@@ -9,12 +8,10 @@ namespace Monkey.Areas.Developers.Controllers
     public class DevelopersController : DevelopersMvcController
     {
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IConfigurationRoot _configurationRoot;
 
-        public DevelopersController(IHttpContextAccessor contextAccessor, IConfigurationRoot configurationRoot)
+        public DevelopersController(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
-            _configurationRoot = configurationRoot;
         }
 
         [Route("")]
@@ -23,13 +20,11 @@ namespace Monkey.Areas.Developers.Controllers
         {
             key = StringHelper.ReplaceNullOrWhiteSpaceToEmpty(key);
 
-            var documentName = _configurationRoot.GetValue<string>("Developers:ApiDocumentName");
-            var documentApiBaseUrl = _configurationRoot.GetValue<string>("Developers:ApiDocumentUrl") + documentName;
-            var documentJsonFileName = _configurationRoot.GetValue<string>("Developers:ApiDocumentJsonFile");
-
+            var documentName = Core.SystemConfigs.Developers.ApiDocumentName;
+            var documentApiBaseUrl = Core.SystemConfigs.Developers.ApiDocumentUrl + documentName;
+            var documentJsonFileName = Core.SystemConfigs.Developers.ApiDocumentJsonFile;
             var documentUrlBase = documentApiBaseUrl.Replace(documentName, string.Empty).TrimEnd('/');
             var swaggerEndpoint = $"{documentUrlBase}/{documentName}/{documentJsonFileName}" + "?key=" + key;
-
             ViewBag.ApiDocumentPath = $"{_contextAccessor.HttpContext.Request.Scheme }://{_contextAccessor.HttpContext.Request.Host.Value}{swaggerEndpoint}";
             ViewBag.ApiKey = key;
 
