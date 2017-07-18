@@ -7,24 +7,24 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> PagedCollectionParameters.cs </Name>
-//         <Created> 24 Apr 17 1:15:01 AM </Created>
-//         <Key> 7bbbc234-4dcf-4df6-8690-ced4a8906583 </Key>
+//         <Name> CollectionViewModel.cs </Name>
+//         <Created> 24 Apr 17 1:05:24 AM </Created>
+//         <Key> 13589257-5e1a-4121-8340-c73a422b2e38 </Key>
 //     </File>
 //     <Summary>
-//         PagedCollectionParameters.cs
+//         CollectionViewModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 
 #endregion License
 
-namespace Monkey.ViewModels.Api
-{
-    public class PagedCollectionParameters
-    {
-        public int? Offset { get; set; }
+using System.Collections.Generic;
 
-        public int? Limit { get; set; }
+namespace Monkey.Models.ViewModels.Api
+{
+    public class CollectionViewModel<T> : ResourceViewModel
+    {
+        public ICollection<T> Items { get; set; }
     }
 }

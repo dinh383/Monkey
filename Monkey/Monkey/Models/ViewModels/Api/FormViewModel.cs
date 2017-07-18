@@ -25,7 +25,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Monkey.ViewModels.Api
+namespace Monkey.Models.ViewModels.Api
 {
     public class FormViewModel : CollectionViewModel<FormFieldViewModel>
     {

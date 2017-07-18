@@ -6,22 +6,23 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> SerilogConfigModel.cs </Name>
-//         <Created> 17/07/17 8:47:09 PM </Created>
-//         <Key> ce9000f9-30cf-47fe-9203-18f1ac937955 </Key>
+//         <Name> CrosConfigModel.cs </Name>
+//         <Created> 18/07/17 11:59:55 AM </Created>
+//         <Key> 6fa8500b-a4b1-41da-adee-d2af676d3206 </Key>
 //     </File>
 //     <Summary>
-//         SerilogConfigModel.cs
+//         CrosConfigModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Core.ConfigModels.Serilog
+namespace Monkey.Core.ConfigModels.Server
 {
-    public class MinimumlevelConfigModel
+    public class CrosConfigModel
     {
-        public string Default { get; set; }
-        public OverrideConfigModel Override { get; set; }
+        public string AccessControlAllowOrigin { get; set; }
+        public string AccessControlAllowHeaders { get; set; }
+        public string AccessControlAllowMethods { get; set; }
     }
 }

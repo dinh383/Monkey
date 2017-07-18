@@ -34,17 +34,17 @@ namespace Monkey.Core.ConfigModels
         public string ApiDocumentUrl { get; set; }
 
         /// <summary>
-        /// Api Document Name. Ex: api
+        ///     Api Document Name. Ex: api 
         /// </summary>
         public string ApiDocumentName { get; set; }
 
         /// <summary>
-        /// Api Document Title. Ex: Monkey API
+        ///     Api Document Title. Ex: Monkey API 
         /// </summary>
         public string ApiDocumentTitle { get; set; }
 
         /// <summary>
-        ///     Api Document Json File Name . Ex: api
+        ///     Api Document Json File Name . Ex: api 
         /// </summary>
         public string ApiDocumentJsonFile { get; set; }
 

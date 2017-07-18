@@ -6,27 +6,27 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> SerilogConfigModel.cs </Name>
-//         <Created> 17/07/17 8:47:09 PM </Created>
-//         <Key> ce9000f9-30cf-47fe-9203-18f1ac937955 </Key>
+//         <Name> ServerConfigModel.cs </Name>
+//         <Created> 18/07/17 11:53:42 AM </Created>
+//         <Key> 01bc1c56-5f44-486c-855a-32c070298040 </Key>
 //     </File>
 //     <Summary>
-//         SerilogConfigModel.cs
+//         ServerConfigModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.ConfigModels.Serilog;
-using System.Collections.Generic;
+using Monkey.Core.ConfigModels.Server;
 
 namespace Monkey.Core.ConfigModels
 {
-    public class SerilogConfigModel
+    public class ServerConfigModel
     {
-        public MinimumlevelConfigModel MinimumLevel { get; set; }
-        public List<string> Using { get; set; }
-        public List<string> Enrich { get; set; }
-        public List<WriteToConfigModel> WriteTo { get; set; }
+        public string AuthorName { get; set; }
+        public string AuthorWebsite { get; set; }
+        public string PoweredBy { get; set; }
+        public string Name { get; set; }
+        public CrosConfigModel CrosConfigModel { get; set; }
     }
 }

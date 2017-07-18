@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-
 namespace Monkey.Core.ConfigModels.Serilog
 {
     public class WriteToConfigModel

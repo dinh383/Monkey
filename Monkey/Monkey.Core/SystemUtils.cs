@@ -19,8 +19,8 @@
 
 #endregion License
 
-using System;
 using Puppy.Core.DateTimeUtils;
+using System;
 
 namespace Monkey.Core
 {

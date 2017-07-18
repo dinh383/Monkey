@@ -20,12 +20,12 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
+using Monkey.Core;
 using Puppy.EF;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Monkey.Core;
 
 namespace Monkey.Data.EF
 {

@@ -19,11 +19,11 @@
 
 #endregion License
 
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Routing;
 
-namespace Monkey.ViewModels.Api
+namespace Monkey.Models.ViewModels.Api
 {
     public class PagedCollectionFactoryViewModel<T>
     {

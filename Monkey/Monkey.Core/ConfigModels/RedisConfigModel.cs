@@ -1,5 +1,4 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
@@ -7,24 +6,26 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> CollectionViewModel.cs </Name>
-//         <Created> 24 Apr 17 1:05:24 AM </Created>
-//         <Key> 13589257-5e1a-4121-8340-c73a422b2e38 </Key>
+//         <Name> RedisConfigModel.cs </Name>
+//         <Created> 18/07/17 12:02:55 PM </Created>
+//         <Key> e5beb171-1270-48c0-956c-4d77a9c5d849 </Key>
 //     </File>
 //     <Summary>
-//         CollectionViewModel.cs
+//         RedisConfigModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
 
-using System.Collections.Generic;
-
-namespace Monkey.ViewModels.Api
+namespace Monkey.Core.ConfigModels
 {
-    public class CollectionViewModel<T> : ResourceViewModel
+    public class RedisConfigModel
     {
-        public ICollection<T> Items { get; set; }
+        /// <summary>
+        ///     Elastic Search Endpoint 
+        /// </summary>
+        public string ConnectionString { get; set; }
+
+        public string InstanceName { get; set; }
     }
 }

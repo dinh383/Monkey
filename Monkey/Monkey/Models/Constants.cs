@@ -25,6 +25,7 @@ namespace Monkey.Models
         {
             // Common
             public const string Title = "Title";
+
             public const string Description = "Description";
             public const string PageUrl = "PageUrl";
             public const string ImageUrl = "ImageUrl";
@@ -34,6 +35,7 @@ namespace Monkey.Models
 
             // Twitter
             public const string TwitterType = "TwitterType";
+
             public const string TwitterSite = "TwitterSite";
         }
     }

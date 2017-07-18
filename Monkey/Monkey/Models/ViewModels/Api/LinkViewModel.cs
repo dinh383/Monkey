@@ -1,4 +1,5 @@
 ﻿#region	License
+
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
@@ -6,22 +7,26 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> SerilogConfigModel.cs </Name>
-//         <Created> 17/07/17 8:47:09 PM </Created>
-//         <Key> ce9000f9-30cf-47fe-9203-18f1ac937955 </Key>
+//         <Name> LinkViewModel.cs </Name>
+//         <Created> 24 Apr 17 12:57:27 AM </Created>
+//         <Key> fddb64c4-2447-4b5d-afe7-fe7abc6ccdf2 </Key>
 //     </File>
 //     <Summary>
-//         SerilogConfigModel.cs
+//         LinkViewModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
+
 #endregion License
 
-namespace Monkey.Core.ConfigModels.Serilog
+namespace Monkey.Models.ViewModels.Api
 {
-    public class MinimumlevelConfigModel
+    public class LinkViewModel : ILinkViewModel
     {
-        public string Default { get; set; }
-        public OverrideConfigModel Override { get; set; }
+        public string Href { get; set; }
+
+        public string[] Relations { get; set; }
+
+        public string Method { get; set; }
     }
 }

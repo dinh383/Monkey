@@ -28,7 +28,7 @@ namespace Monkey
 
                 app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
                 {
-                    Authority = ConfigurationRoot.GetValue<string>("IdentityServerUrl"),
+                    Authority = ConfigurationRoot.GetValue<string>("IdentityServer:ConnectionString"),
                     ApiName = "Monkey_Api",
                     EnableCaching = true,
                     CacheDuration = TimeSpan.FromMinutes(10),

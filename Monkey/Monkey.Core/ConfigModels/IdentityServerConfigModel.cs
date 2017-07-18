@@ -1,5 +1,4 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
@@ -7,26 +6,24 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> LinkViewModel.cs </Name>
-//         <Created> 24 Apr 17 12:57:27 AM </Created>
-//         <Key> fddb64c4-2447-4b5d-afe7-fe7abc6ccdf2 </Key>
+//         <Name> IdentityServerConfigModel.cs </Name>
+//         <Created> 18/07/17 12:01:42 PM </Created>
+//         <Key> a0fb5a2f-81b9-4c25-8f49-08c23f61e831 </Key>
 //     </File>
 //     <Summary>
-//         LinkViewModel.cs
+//         IdentityServerConfigModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
 
-namespace Monkey.ViewModels.Api
+namespace Monkey.Core.ConfigModels
 {
-    public class LinkViewModel : ILinkViewModel
+    public class IdentityServerConfigModel
     {
-        public string Href { get; set; }
-
-        public string[] Relations { get; set; }
-
-        public string Method { get; set; }
+        /// <summary>
+        ///     Root Endpoint (Domain) of Identity Server (SSO) 
+        /// </summary>
+        public string ConnectionString { get; set; }
     }
 }

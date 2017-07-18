@@ -32,14 +32,34 @@ namespace Monkey.Core
         public string ConnectionString { get; set; }
 
         /// <summary>
-        ///     System Time Zone Info, Can Find Full list ID via
-        ///     "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones"
+        ///     System Time Zone Info, Can Find Full list ID via Current Machine System
         /// </summary>
+        /// <remarks>System store list Time Zone Info in <c>Regedit Key</c>: "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones"</remarks>
         public string TimeZoneId { get; set; }
 
         /// <summary>
         ///     Log to File, Console 
         /// </summary>
         public SerilogConfigModel Serilog { get; set; }
+
+        /// <summary>
+        ///     Extra Server Info when Response created 
+        /// </summary>
+        public ServerConfigModel Server { get; set; }
+
+        /// <summary>
+        /// Identity Server - SSO - Scalable System
+        /// </summary>
+        public IdentityServerConfigModel IdentityServer { get; set; }
+
+        /// <summary>
+        ///     Redis Distributed Caching 
+        /// </summary>
+        public RedisConfigModel Redis { get; set; }
+
+        /// <summary>
+        ///     Elastic Search Engine 
+        /// </summary>
+        public ElasticConfigModel Elastic { get; set; }
     }
 }

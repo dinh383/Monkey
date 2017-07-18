@@ -6,22 +6,24 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> SerilogConfigModel.cs </Name>
-//         <Created> 17/07/17 8:47:09 PM </Created>
-//         <Key> ce9000f9-30cf-47fe-9203-18f1ac937955 </Key>
+//         <Name> ElasticConfigModel.cs </Name>
+//         <Created> 18/07/17 12:03:17 PM </Created>
+//         <Key> 9ea0e466-03ef-4eb0-896d-9c4b5b7d0c1f </Key>
 //     </File>
 //     <Summary>
-//         SerilogConfigModel.cs
+//         ElasticConfigModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Core.ConfigModels.Serilog
+namespace Monkey.Core.ConfigModels
 {
-    public class MinimumlevelConfigModel
+    public class ElasticConfigModel
     {
-        public string Default { get; set; }
-        public OverrideConfigModel Override { get; set; }
+        /// <summary>
+        ///     Elastic Search Endpoint 
+        /// </summary>
+        public string ConnectionString { get; set; }
     }
 }

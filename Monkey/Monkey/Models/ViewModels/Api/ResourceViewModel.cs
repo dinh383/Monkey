@@ -5,14 +5,14 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Interface </Project>
+//     <Project> Monkey </Project>
 //     <File>
-//         <Name> ILinkViewModel.cs </Name>
-//         <Created> 24 Apr 17 12:56:59 AM </Created>
-//         <Key> 19ef9707-265d-4ab2-b985-edd907535350 </Key>
+//         <Name> Resource.cs </Name>
+//         <Created> 24 Apr 17 1:05:53 AM </Created>
+//         <Key> b2f2acdd-380c-419b-992f-5252286c2571 </Key>
 //     </File>
 //     <Summary>
-//         ILinkViewModel.cs
+//         Resource.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -21,16 +21,14 @@
 
 using Newtonsoft.Json;
 
-namespace Monkey.ViewModels.Api
+namespace Monkey.Models.ViewModels.Api
 {
-    public interface ILinkViewModel
+    public abstract class ResourceViewModel
     {
-        string Href { get; set; }
-
-        [JsonProperty(PropertyName = "rel", NullValueHandling = NullValueHandling.Ignore)]
-        string[] Relations { get; set; }
+        [JsonProperty(Order = -2)]
+        public ILinkViewModel Meta { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        string Method { get; set; }
+        public FormViewModel[] Forms { get; set; }
     }
 }
