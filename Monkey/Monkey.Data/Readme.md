@@ -1,4 +1,5 @@
-﻿![Logo](favicon.ico)
+﻿
+![Logo](favicon.ico)
 # Monkey.Data
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 

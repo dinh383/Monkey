@@ -1,0 +1,864 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAAAYcAA0AAAAACjQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABMAAAABwAAAAca8vGTk9TLzIAAAFMAAAARAAAAFZG1VHVY21hcAAAAZAAAAA+AAABQgAP9AdjdnQgAAAB0AAAAAQAAAAEACICiGdhc3AAAAHUAAAACAAAAAj//wADZ2x5ZgAAAdwAAADRAAABEKyikaNoZWFkAAACsAAAAC0AAAA2AtXoA2hoZWEAAALgAAAAHAAAACQHngNFaG10eAAAAvwAAAAQAAAAEAwAACJsb2NhAAADDAAAAAoAAAAKALIAVG1heHAAAAMYAAAAHwAAACABEAB2bmFtZQAAAzgAAALBAAAFu3I9x/Nwb3N0AAAF/AAAAB0AAAAvaoFvbwAAAAEAAAAAzBdyYwAAAADP2IQvAAAAAM/bz7t4nGNgZGFgnMDAysDB1Ml0hoGBoR9CM75mMGLkYGBgYmBlZsAKAtJcUxgcPsR8iGF2+O/AEMPsznAYKMwIkgMA5REMOXicY2BgYGaAYBkGRgYQsAHyGMF8FgYFIM0ChED+h5j//yEk/3KoSgZGNgYYk4GRCUgwMaACRoZhDwCs7QgGAAAAIgKIAAAAAf//AAJ4nHWMMQrCQBBF/0zWrCCIKUQsTDCL2EXMohYGSSmorScInsRGL2DOYJe0Ntp7BK+gJ1BxF1stZvjz/v8DRghQzEc4kIgKwiAppcA9LtzKLSkdNhKFY3HF4lK69ExKslx7Xa+vPRVS43G98vG1DnkDMIBUgFN0MDXflU8tbaZOUkXUH0+U27RoRpOIyCKjbMCVejwypzJJG4jIwb43rfl6wbwanocrJm9XFYfskuVC5K/TPyczNU7b84CXcbxks1Un6H6tLH9vf2LRnn8Ax7A5WQAAAHicY2BkYGAA4teL1+yI57f5ysDNwgAC529f0kOmWRiYVgEpDgYmEA8AUzEKsQAAAHicY2BkYGB2+O/AEMPCAAJAkpEBFbAAADgKAe0EAAAiAAAAAAQAAAAEAAAAAAAAKgAqACoAiAAAeJxjYGRgYGBhsGFgYgABEMkFhAwM/xn0QAIAD6YBhwB4nI1Ty07cMBS9QwKlQapQW3VXySvEqDCZGbGaHULiIQ1FKgjWMxknMfLEke2A+IJu+wntrt/QbVf9gG75jK577Lg8K1qQPCfnnnt8fX1NRC/pmjrk/zprC+8D7tBy9DHgBXoWfQ44Av8t4Bj4Z8CLtBL9CniJluPXASf0Lm4CXqFX8Q84dOLnMB17N4c7tBo1AS/Qi+hTwBH4rwHHwN8DXqQ30XXAS7QaLwSc0Gn8NuAVWou/gFmnjLrEaEh9GmDdDGgL3B4JsrRPDU2hTOiMSuJUIdKQQayiAth69r6akSSFqIJuA19TrzCIaY8sIoxyrNIrL//pw7A2iMygkX5vDj+G+kuoLdX4GlGK/8Lnlz6/h9MpmoO9rafrz7ILXEHHaAx95s9lsI7AHNMBWEZHULnfAXwG9/ZqdzLI08iuwRloXE8kfhXYAvE23+23DU3t626rbs8/8adv+9DWknsHp3E17oCf+Z48rvEQNZ78paYM38qfk3v/u3l3u3GXN2Dmvmvpf1Srwk3pB/VSsp512bA/GG5i2WJ7wu430yQ5K3nFGiOqgtmSB5pJVSizwaacmUZzZhXLlZTq8qGGFY2YcSkqbth6aW1tRmlaCFs2016m5qn36SbJrqosG4uMV4aP2PHBmB3tjtmgN2izkGQyLWprekbIntJFing32a5rKWCN/SdSoga45EJykyQ7asZvHQ8PTm6cslIpwyeyjbVltNikc2HTR7YKh9LBl9DADC0U/jLcBZDKrMhUBfQBvXRzLtFtjU9eNHKin0x5InTqb8lNpfKv1s1xHzTXRqgKzek/mb7nB8RZTCDhGEX3kK/8Q75AmUM/eLkfA+0Hi908Kx4eNsMgudg5GLdRD7a84npi+YxNr5i5KIbW5izXas7cHXIMAau1OueZhfj+cOcP3P8MNIWLyYOBuxL6DRylJ4cAAAB4nGNgYoAALjDJyIAOWMCiTIxMLDmZedkABtIBygAAAA==) format('woff');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 980px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+body .markdown-body {
+    padding: 45px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    word-wrap: break-word;
+}
+
+pre {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.markdown-body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background-color: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body input {
+  font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.markdown-body a {
+  color: #4078c0;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before {
+  display: table;
+  content: "";
+}
+
+.markdown-body hr:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.markdown-body .select::-ms-expand {
+  opacity: 0;
+}
+
+.markdown-body .octicon {
+  font: normal normal normal 16px/1 octicons-anchor;
+  display: inline-block;
+  text-decoration: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.markdown-body .octicon-link:before {
+  content: '\f05c';
+}
+
+.markdown-body:before {
+  display: table;
+  content: "";
+}
+
+.markdown-body:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.markdown-body .anchor {
+  display: inline-block;
+  padding-right: 2px;
+  margin-left: -18px;
+}
+
+.markdown-body .anchor:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .octicon-link,
+.markdown-body h2 .octicon-link,
+.markdown-body h3 .octicon-link,
+.markdown-body h4 .octicon-link,
+.markdown-body h5 .octicon-link,
+.markdown-body h6 .octicon-link {
+  color: #000;
+  vertical-align: middle;
+  visibility: hidden;
+}
+
+.markdown-body h1:hover .anchor,
+.markdown-body h2:hover .anchor,
+.markdown-body h3:hover .anchor,
+.markdown-body h4:hover .anchor,
+.markdown-body h5:hover .anchor,
+.markdown-body h6:hover .anchor {
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .anchor .octicon-link,
+.markdown-body h2:hover .anchor .octicon-link,
+.markdown-body h3:hover .anchor .octicon-link,
+.markdown-body h4:hover .anchor .octicon-link,
+.markdown-body h5:hover .anchor .octicon-link,
+.markdown-body h6:hover .anchor .octicon-link {
+  visibility: visible;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h1 .anchor {
+  line-height: 1;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 .anchor {
+  line-height: 1;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h3 .anchor {
+  line-height: 1.2;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h4 .anchor {
+  line-height: 1.2;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h5 .anchor {
+  line-height: 1.1;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body h6 .anchor {
+  line-height: 1.1;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  box-sizing: content-box;
+  background-color: #fff;
+}
+
+.markdown-body code {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .highlight {
+  margin-bottom: 16px;
+}
+
+.markdown-body .highlight pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+.markdown-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+
+.markdown-body .pl-c {
+  color: #969896;
+}
+
+.markdown-body .pl-c1,
+.markdown-body .pl-s .pl-v {
+  color: #0086b3;
+}
+
+.markdown-body .pl-e,
+.markdown-body .pl-en {
+  color: #795da3;
+}
+
+.markdown-body .pl-s .pl-s1,
+.markdown-body .pl-smi {
+  color: #333;
+}
+
+.markdown-body .pl-ent {
+  color: #63a35c;
+}
+
+.markdown-body .pl-k {
+  color: #a71d5d;
+}
+
+.markdown-body .pl-pds,
+.markdown-body .pl-s,
+.markdown-body .pl-s .pl-pse .pl-s1,
+.markdown-body .pl-sr,
+.markdown-body .pl-sr .pl-cce,
+.markdown-body .pl-sr .pl-sra,
+.markdown-body .pl-sr .pl-sre {
+  color: #183691;
+}
+
+.markdown-body .pl-v {
+  color: #ed6a43;
+}
+
+.markdown-body .pl-id {
+  color: #b52a1d;
+}
+
+.markdown-body .pl-ii {
+  background-color: #b52a1d;
+  color: #f8f8f8;
+}
+
+.markdown-body .pl-sr .pl-cce {
+  color: #63a35c;
+  font-weight: bold;
+}
+
+.markdown-body .pl-ml {
+  color: #693a17;
+}
+
+.markdown-body .pl-mh,
+.markdown-body .pl-mh .pl-en,
+.markdown-body .pl-ms {
+  color: #1d3e81;
+  font-weight: bold;
+}
+
+.markdown-body .pl-mq {
+  color: #008080;
+}
+
+.markdown-body .pl-mi {
+  color: #333;
+  font-style: italic;
+}
+
+.markdown-body .pl-mb {
+  color: #333;
+  font-weight: bold;
+}
+
+.markdown-body .pl-md {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.markdown-body .pl-mi1 {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.markdown-body .pl-mdr {
+  color: #795da3;
+  font-weight: bold;
+}
+
+.markdown-body .pl-mo {
+  color: #1d3e81;
+}
+
+.markdown-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+
+.markdown-body .plan-price-unit {
+  color: #767676;
+  font-weight: normal;
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 0.35em 0.25em -1.6em;
+  vertical-align: middle;
+}
+
+.markdown-body .plan-choice {
+  padding: 15px;
+  padding-left: 40px;
+  display: block;
+  border: 1px solid #e0e0e0;
+  position: relative;
+  font-weight: normal;
+  background-color: #fafafa;
+}
+
+.markdown-body .plan-choice.open {
+  background-color: #fff;
+}
+
+.markdown-body .plan-choice.open .plan-choice-seat-breakdown {
+  display: block;
+}
+
+.markdown-body .plan-choice-free {
+  border-radius: 3px 3px 0 0;
+}
+
+.markdown-body .plan-choice-paid {
+  border-radius: 0 0 3px 3px;
+  border-top: 0;
+  margin-bottom: 20px;
+}
+
+.markdown-body .plan-choice-radio {
+  position: absolute;
+  left: 15px;
+  top: 18px;
+}
+
+.markdown-body .plan-choice-exp {
+  color: #999;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.markdown-body .plan-choice-seat-breakdown {
+  margin-top: 10px;
+  display: none;
+}
+
+.markdown-body :checked+.radio-label {
+  z-index: 1;
+  position: relative;
+  border-color: #4078c0;
+}
+</style><title>Readme</title></head><body><article class="markdown-body"><p><a href="///D://Projects/TOP/aspnetcore/Monkey/Monkey/favicon.ico" target="_blank"><img src="///D://Projects/TOP/aspnetcore/Monkey/Monkey/favicon.ico" alt="Logo" style="max-width:100%;"></a></p>
+<h1>
+<a id="user-content-monkey" class="anchor" href="#monkey" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Monkey</h1>
+<blockquote>
+<p>Project Created by <a href="http://topnguyen.net"><strong>Top Nguyen</strong></a></p>
+</blockquote>
+<ul>
+<li>Just add dependencies and use Framework, Core and Service (Contract only)</li>
+<li>Don't add all other project dependencies (reference)</li>
+<li>Follow <a href="///D://Projects/TOP/aspnetcore/Puppy/Puppy.DependencyInjection/Readme.md">README</a> of <code>Puppy.DependencyInjection</code>
+</li>
+</ul>
+<h1>
+<a id="user-content-regionareas-note" class="anchor" href="#regionareas-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Region/Areas Note</h1>
+<ul>
+<li>
+<p>I already have Area <code>Developers</code> for <code>API Docs</code> and <code>Background Job</code></p>
+</li>
+<li>
+<p>Api Docs</p>
+<p><a href="///D://Projects/TOP/aspnetcore/Monkey/Monkey/Assets/readme/Swagger_Api_Doc.png" target="_blank"><img src="///D://Projects/TOP/aspnetcore/Monkey/Monkey/Assets/readme/Swagger_Api_Doc.png" alt="Swagger Api Doc" style="max-width:100%;"></a></p>
+<ul>
+<li>We use generate doc by <a href="https://github.com/domaindrivendev/Swashbuckle.AspNetCore"><code>Swagger AspNetCore</code></a>
+</li>
+<li>Access via: [root]/developers?key=[developer access key] (Config it in <a href="///D://Projects/TOP/aspnetcore/Monkey/Monkey/appsettings.json">appsettings.json</a> with KEY <code>Developers:AccessKey</code>)</li>
+</ul>
+</li>
+<li>
+<p>Background Job</p>
+<p><a href="///D://Projects/TOP/aspnetcore/Monkey/Monkey/Assets/readme/Backgroud_Job_Dashboard.png" target="_blank"><img src="///D://Projects/TOP/aspnetcore/Monkey/Monkey/Assets/readme/Backgroud_Job_Dashboard.png" alt="Backgroud Job Dashboard" style="max-width:100%;"></a></p>
+<ul>
+<li>We use <a href="https://www.hangfire.io/">Hangfire</a> with SQL Server (Can change it to Memory or Distribute Cache like Redis)</li>
+<li>Access via: [root]/developers/job?key=[developer access key]</li>
+</ul>
+</li>
+</ul>
+<h1>
+<a id="user-content-startupcs-note" class="anchor" href="#startupcs-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Startup.cs Note</h1>
+<ul>
+<li>I use nested file to configure startup (because it comming big guy).</li>
+<li>Each Startup Nested file will have 2 regions like example below</li>
+</ul>
+<div class="highlight highlight-source-cs"><pre>    <span class="pl-k">public</span> <span class="pl-k">partial</span> <span class="pl-k">class</span> <span class="pl-en">Startup</span>
+    {
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">SomeConfig</span>
+        {
+            <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Service</span>(<span class="pl-en">IServiceCollection</span> <span class="pl-smi">services</span>)
+            {
+            }
+
+            <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Middleware</span>(<span class="pl-en">IApplicationBuilder</span> <span class="pl-smi">app</span>)
+            {
+            }
+        }
+    }</pre></div>
+<h1>
+<a id="user-content-api-note" class="anchor" href="#api-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API Note</h1>
+<ul>
+<li>For Paging: use search keyword by <code>terms</code>, page size and page number by <code>skip</code> and <code>take</code>
+</li>
+<li>Api Response follow <code>ViewModels/Api</code>
+</li>
+<li>3 Types of Response
+<ul>
+<li>
+<p>[Success] Response <code>Collection</code></p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-en">listSomeModel </span>= <span class="pl-k">await</span> _someService.<span class="pl-en">SomeMethodAsync</span>(skip, take, terms).<span class="pl-en">ConfigureAwait</span>(<span class="pl-c1">true</span>);
+
+	<span class="pl-k">if</span> (<span class="pl-en">listSomeModel.Total</span> == 0)
+	{ 
+		<span class="pl-c">// Return 204 for No Data Case</span>
+		<span class="pl-k">return</span> NoContent();
+	}
+
+	<span class="pl-k">var</span> <span class="pl-en">collectionFactoryViewModel </span>= <span class="pl-k">new</span> <span class="pl-en">PagedCollectionFactoryViewModel</span>&lt;<span class="pl-en">SomeModel</span>&gt;(PlaceholderLinkViewModel.<span class="pl-en">ToCollection</span>(<span class="pl-s"><span class="pl-pds">"</span>&lt;Api Pattern Endpoint&gt;<span class="pl-pds">"</span></span>, HttpMethod.Get.Method, new { skip, take, terms }), "&lt;Api Pattern Endpoint&gt;");
+
+	<span class="pl-k">var</span> <span class="pl-en">collectionViewModel </span>= <span class="pl-en">collectionFactoryViewModel.CreateFrom</span>(listSomeModel.Data, skip, take, listSomeModel.Total);
+
+	<span class="pl-k">return</span> Ok(collectionViewModel);
+}</pre></div>
+</li>
+<li>
+<p>[Success] Response <code>Single</code></p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">return</span> Ok(&lt;data&gt;);</pre></div>
+</li>
+<li>
+<p>[Fail] Response <code>Error</code>: throw <a href="///D://Projects/TOP/aspnetcore/Monkey/Monkey.Core/Exceptions/MonkeyException.cs"><code>MonkeyException</code></a> with <a href="///D://Projects/TOP/aspnetcore/Monkey/Monkey.Core/Exceptions/ErrorCode.cs"><code>ErrorCode</code></a> and return <a href="///D://Projects/TOP/aspnetcore/Monkey/Monkey/ViewModels/Api/ApiErrorViewModel.cs"><code>ApiErrorModel</code></a>. refer to view <a href="ViewModels/Filters/ApiExceptionFilter.cs"><code>ApiExceptionFilter</code></a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h1>
+<a id="user-content-deploy-note" class="anchor" href="#deploy-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Deploy Note</h1>
+<ol>
+<li>Create Publish Profile to Server through Visual Studio (Remember Create Server User to use in create profile wizard)
+<ul>
+<li>Manual right click of folder and click publish for make sure all file is published</li>
+<li>launchSettings.json</li>
+<li>Assets</li>
+<li>template</li>
+<li>api-doc.xml file</li>
+<li>Files for SEO</li>
+</ul>
+</li>
+<li>Go to server Set <code>Application Pool .NET CLR Version</code> to <code>No Managed Code</code>
+</li>
+<li>Advance Setting: <code>Always Running</code>, Load User Profile: <code>true</code>.</li>
+<li>Go to deployed folder check and set full permission for users you use such as Default IIS user, Application Pool User.
+<blockquote>
+<p>If it not working, change user of application in IIS to <code>Local System</code></p>
+</blockquote>
+</li>
+<li>Test</li>
+</ol>
+<ul>
+<li>Go to deployed folder run CMD: dotnet &lt;project dll/exe name&gt;. Ex: dotnet Monkey.dll.</li>
+<li>This action for test and view Console Log when start project in Server.</li>
+<li>Final, <code>Ctrl + C</code> to shutdown test instance.</li>
+</ul>
+<h1>
+<a id="user-content-db-note" class="anchor" href="#db-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Db Note</h1>
+<p>Remember to config DbContext if use Entity Framework in Startup, without it when run cmd in publish folder will throw null error</p>
+<div class="highlight highlight-source-cs"><pre><span class="pl-c">// Use Entity Framework</span>
+<span class="pl-c">// We can use EnvironmentName or MachineName to detect correct connection string.</span>
+<span class="pl-en">services.AddDbContext</span>&lt;<span class="pl-en">Data</span>.<span class="pl-en">EF</span>.<span class="pl-en">DbContext</span>&gt;(builder =&gt;
+builder.UseSqlServer(
+    ConfigureHelper.Configuration.GetConnectionString(ConfigureHelper.Environment.EnvironmentName),
+    options =&gt; options.MigrationsAssembly(<span class="pl-k">typeof</span>(<span class="pl-en">IDataModule</span>).GetTypeInfo().Assembly.GetName().Name)));</pre></div>
+<h1>
+<a id="user-content-restful-note" class="anchor" href="#restful-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Restful Note</h1>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">return</span> NotFound(<span class="pl-c1">404</span>)/Ok(<span class="pl-c1">200</span>)/Created(<span class="pl-c1">201</span>)/BadRequest(<span class="pl-c1">400</span>) <span class="pl-en">and</span> so on Don't put simple type like string or int ...
+Need create object/dynamic to response for aspcore can cast to json or <span class="pl-en">xml</span> (<span class="pl-en">because</span> <span class="pl-smi">http</span> request header is json or xml)
+If not follow this rule, exception occur then return no content + header error</pre></div>
+<h1>
+<a id="user-content-hangfire-note" class="anchor" href="#hangfire-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hangfire Note</h1>
+<div class="highlight highlight-source-cs"><pre><span class="pl-c">// Let class PerResolveDependency if they have own method not in Interfaces</span>
+<span class="pl-en">BackgroundJob.Enqueue</span>(() =&gt; Method));	 <span class="pl-c">// make sure Method is public and allow access from external assembly.</span>
+
+<span class="pl-c">// Let use Job with Interface by DI</span>
+<span class="pl-en">BackgroundJob.Enqueue</span>&lt;<span class="pl-en">Interface</span>&gt;(x =&gt; x.Method));</pre></div>
+</article></body></html>
