@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Monkey.Redis</title>
+</head>
+<body>
+
+    <h1 id="monkey.redis">Monkey.Redis</h1>
+<blockquote>
+<p>Created by <strong>Top Nguyen</strong> (<a href="http://topnguyen.net">http://topnguyen.net</a>)</p>
+</blockquote>
+<ul>
+<li>use appsettings.json to config default cache duration</li>
+</ul>
+<pre><code class="language-json">  &quot;Redis&quot;: {
+    &quot;ConnectionString&quot;: &quot;localhost:&lt;redis service port&gt;&quot;,
+    &quot;InstanceName&quot;: &quot;Monkey&quot;
+  }
+
+</code></pre>
+<ul>
+<li>In Startup.cs</li>
+</ul>
+<pre><code class="language-csharp">	string redisConnection = Configuration[&quot;Redis:ConnectionString&quot;];
+	string redisInstance = Configuration[&quot;Redis:InstanceName&quot;];
+
+	services.AddSingleton&lt;IDistributedCache&gt;(factory =&gt;
+	{
+		var cache = new RedisCache(new RedisCacheOptions
+		{
+			Configuration = redisConnection,
+			InstanceName = redisInstance
+		});
+
+		return cache;
+	});
+</code></pre>
+
+
+</body>
+</html>

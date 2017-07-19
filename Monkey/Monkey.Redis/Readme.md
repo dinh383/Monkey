@@ -1,4 +1,4 @@
-﻿# Important Note
+﻿# Monkey.Redis
 >  Created by **Top Nguyen** (http://topnguyen.net)
 
 - use appsettings.json to config default cache duration

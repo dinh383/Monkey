@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Model", "Monkey.Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Mapper", "Monkey.Mapper\Monkey.Mapper.csproj", "{E38F476E-97F9-4CC9-8C69-01A099A53A2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Cache", "Monkey.Cache\Monkey.Cache.csproj", "{58E2C561-D800-44EE-A6B2-5186791251AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monkey.Redis", "Monkey.Redis\Monkey.Redis.csproj", "{58E2C561-D800-44EE-A6B2-5186791251AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{1BAE0076-5EFF-432E-AB14-06CC66B6BF90}"
 EndProject

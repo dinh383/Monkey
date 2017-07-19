@@ -7,33 +7,33 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> Provider.cs </Name>
+//         <Name> RedisCacheManager.cs </Name>
 //         <Created> 02 May 17 7:53:18 PM </Created>
 //         <Key> 2a645ff7-b65d-47f9-9874-437ad2d21c06 </Key>
 //     </File>
 //     <Summary>
-//         Provider.cs
+//         RedisCacheManager.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 
 #endregion License
 
-using Monkey.Core.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
+using Monkey.Core.Interfaces;
 using Newtonsoft.Json;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Text;
 
-namespace Monkey.CacheProvider.Redis
+namespace Monkey.Redis
 {
     [SingletonDependency(ServiceType = typeof(ICacheManager))]
-    public class Provider : ICacheManager
+    public class RedisCacheManager : ICacheManager
     {
         protected IDistributedCache Cache;
 
-        public Provider(IDistributedCache cache)
+        public RedisCacheManager(IDistributedCache cache)
         {
             Cache = cache;
         }
