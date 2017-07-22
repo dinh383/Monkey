@@ -19,7 +19,7 @@
 
 using Puppy.Core.CacheUtils;
 
-namespace Monkey.Core.Interfaces
+namespace Monkey.Core
 {
     public interface ICacheManager : IDistributedCacheHelper
     {
