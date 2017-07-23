@@ -43,7 +43,7 @@ namespace Monkey.Data.EF
             builder.AddConfigFromAssembly(DbContextFactory.GetMigrationAssembly());
 
             // Set Delete Behavior as Restrict in Relationship
-            builder.SetDeleteBehaviorRestrict();
+            builder.DisableCascadingDelete();
 
             // Convention for Table name
             builder.RemovePluralizingTableNameConvention();
