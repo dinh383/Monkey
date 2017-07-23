@@ -80,7 +80,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.GoogleMap", "..\Puppy
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Social", "Social", "{FA33E82F-D198-409B-8CF0-3175C41FF376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puppy.Instagram", "..\Puppy\Puppy.Instagram\Puppy.Instagram.csproj", "{368826F0-732A-4BFB-8201-2A66424FFC8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Instagram", "..\Puppy\Puppy.Instagram\Puppy.Instagram.csproj", "{368826F0-732A-4BFB-8201-2A66424FFC8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puppy.GenFu", "..\Puppy\Puppy.GenFu\Puppy.GenFu.csproj", "{93B8DC30-5A1E-4EF3-B9BB-44A0A8AA7920}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -176,6 +178,10 @@ Global
 		{368826F0-732A-4BFB-8201-2A66424FFC8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{368826F0-732A-4BFB-8201-2A66424FFC8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{368826F0-732A-4BFB-8201-2A66424FFC8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93B8DC30-5A1E-4EF3-B9BB-44A0A8AA7920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93B8DC30-5A1E-4EF3-B9BB-44A0A8AA7920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93B8DC30-5A1E-4EF3-B9BB-44A0A8AA7920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93B8DC30-5A1E-4EF3-B9BB-44A0A8AA7920}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,6 +219,7 @@ Global
 		{DB26A32C-80F0-45C1-ABD7-8A764BB02FD2} = {6BD649FC-056A-4BBF-81CC-0D9CD2DB6176}
 		{FA33E82F-D198-409B-8CF0-3175C41FF376} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{368826F0-732A-4BFB-8201-2A66424FFC8C} = {FA33E82F-D198-409B-8CF0-3175C41FF376}
+		{93B8DC30-5A1E-4EF3-B9BB-44A0A8AA7920} = {8F3FB4A4-9288-4E11-B047-819F90D5D787}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = eede38c5-a915-41d1-a0b0-d7eeaa0bcca9
