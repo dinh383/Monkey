@@ -50,7 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Web", "..\Puppy\Puppy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.AutoMapper", "..\Puppy\Puppy.AutoMapper\Puppy.AutoMapper.csproj", "{5414E358-EFFD-45F8-9654-FAD40D768EDC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Elastic", "..\Puppy\Puppy.Search.Elastic\Puppy.Elastic.csproj", "{1CB5C99F-7106-4141-AF46-CC7879921558}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Elastic", "..\Puppy\Puppy.Elastic\Puppy.Elastic.csproj", "{1CB5C99F-7106-4141-AF46-CC7879921558}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Coordinate", "..\Puppy\Puppy.Coordinate\Puppy.Coordinate.csproj", "{ED5A3A56-E503-45A8-A383-115385348AF2}"
 EndProject
