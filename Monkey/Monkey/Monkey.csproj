@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <!-- Property Setup -->
+  <!-- Project Main Information -->
   <PropertyGroup>
+    <Authors>Top Nguyen</Authors>
+    <Copyright>http://topnguyen.net</Copyright>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
-    <UserSecretsId>aspnet-Monkey-77d3f367-0ce6-4f02-9c7a-bbf2c778b9f5</UserSecretsId>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
     <OutputTypeEx>exe</OutputTypeEx>
-    <Copyright>http://topnguyen.net</Copyright>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+    <UserSecretsId>aspnet-Monkey-77d3f367-0ce6-4f02-9c7a-bbf2c778b9f5</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -31,10 +32,36 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  
-  <!-- Library -->
+
+  <!-- Puppy -->
   <ItemGroup>
-    
+    <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
+  </ItemGroup>
+
+  <!-- Monkey -->
+  <ItemGroup>
+    <!-- Core -->
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
+    <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
+    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
+
+    <!-- Service -->
+    <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
+    <ProjectReference Include="..\Monkey.Service.Facade\Monkey.Service.Facade.csproj" />
+
+    <!-- Business -->
+    <ProjectReference Include="..\Monkey.Business\Monkey.Business.csproj" />
+    <ProjectReference Include="..\Monkey.Business.Logic\Monkey.Business.Logic.csproj" />
+
+    <!-- Data -->
+    <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
+    <ProjectReference Include="..\Monkey.Data.EF\Monkey.Data.EF.csproj" />
+  </ItemGroup>
+
+  <!-- External Libraries -->
+  <ItemGroup>
     <!-- AspNetCore API -->
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.2" />
@@ -94,34 +121,6 @@
     <!-- Markup Min -->
     <PackageReference Include="WebMarkupMin.AspNetCore1" Version="2.4.0" />
     <PackageReference Include="WebMarkupMin.NUglify" Version="2.4.1" />
-    
   </ItemGroup>
 
-  <!-- Project -->
-  <ItemGroup>
-    <!-- Core -->
-    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-    <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
-    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
-
-    <!-- Service -->
-    <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
-    <ProjectReference Include="..\Monkey.Service.Facade\Monkey.Service.Facade.csproj" />
-
-    <!-- Business -->
-    <ProjectReference Include="..\Monkey.Business\Monkey.Business.csproj" />
-    <ProjectReference Include="..\Monkey.Business.Logic\Monkey.Business.Logic.csproj" />
-
-    <!-- Data -->
-    <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
-    <ProjectReference Include="..\Monkey.Data.EF\Monkey.Data.EF.csproj" />
-  </ItemGroup>
-
-  <!-- Framework -->
-  <ItemGroup>
-    <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
-  </ItemGroup>
-  
 </Project>

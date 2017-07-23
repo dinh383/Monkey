@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Project Main Information -->
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <Authors>Top Nguyen</Authors>
     <Copyright>http://topnguyen.net</Copyright>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -16,14 +18,16 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <!-- Puppy -->
   <ItemGroup>
-    <!-- Projects -->
-    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-
-    <!-- Frameworks -->
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.Search.Elastic\Puppy.Search.Elastic.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Elastic\Puppy.Elastic.csproj" />
+  </ItemGroup>
+
+  <!-- Monkey -->
+  <ItemGroup>
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
   </ItemGroup>
 
 </Project>

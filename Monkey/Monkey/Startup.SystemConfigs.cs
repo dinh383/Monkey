@@ -4,7 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using Puppy.Core;
+using Puppy.Core.ConfigUtils;
+using Puppy.Core.EnvironmentUtils;
 
 namespace Monkey
 {
@@ -26,7 +27,7 @@ namespace Monkey
                 services.AddSingleton<IConfiguration>(ConfigurationRoot);
 
                 // Build System Config
-                BuildSystemConfig();
+                BuildSystemConfig(ConfigurationRoot);
             }
 
             public static void Middleware(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -40,30 +41,48 @@ namespace Monkey
                 ChangeToken.OnChange(ConfigurationRoot.GetReloadToken, () =>
                 {
                     // Build System Config
-                    BuildSystemConfig();
+                    BuildSystemConfig(ConfigurationRoot);
 
                     loggerFactory.CreateLogger<Startup>().LogWarning($"{nameof(Core.SystemConfigs)} Changed!");
                 });
             }
 
-            private static void BuildSystemConfig()
+            public static void BuildSystemConfig(IConfiguration configuration)
             {
                 // Database Connection String
+                GetDatabaseConnectionStringConfig(configuration);
+
+                GetMvcPathConfig(configuration);
+
+                Core.SystemConfigs.Serilog = configuration.GetSection<Core.ConfigModels.SerilogConfigModel>(nameof(Core.SystemConfigs.Serilog));
+
+                Core.SystemConfigs.Developers = configuration.GetSection<Core.ConfigModels.DevelopersConfigModel>(nameof(Core.SystemConfigs.Developers));
+
+                Core.SystemConfigs.Server = configuration.GetSection<Core.ConfigModels.ServerConfigModel>(nameof(Core.SystemConfigs.Server));
+
+                Core.SystemConfigs.IdentityServer = configuration.GetSection<Core.ConfigModels.IdentityServerConfigModel>(nameof(Core.SystemConfigs.IdentityServer));
+
+                Core.SystemConfigs.Redis = configuration.GetSection<Core.ConfigModels.RedisConfigModel>(nameof(Core.SystemConfigs.Redis));
+
+                Core.SystemConfigs.Elastic = configuration.GetSection<Core.ConfigModels.ElasticConfigModel>(nameof(Core.SystemConfigs.Elastic));
+            }
+
+            private static void GetDatabaseConnectionStringConfig(IConfiguration configuration)
+            {
                 string databaseConnectionString =
-                    ConfigurationRoot
+                    configuration
                         .GetValue<string>(
-                            (Environment.IsProduction() || Environment.IsStaging())
-                                ? $"ConnectionStrings:{Environment.EnvironmentName}"
+                            (EnvironmentHelper.IsProduction() || EnvironmentHelper.IsStaging())
+                                ? $"ConnectionStrings:{EnvironmentHelper.Name}"
                                 : $"ConnectionStrings:{EnvironmentHelper.MachineName}");
 
                 // Database Connection String is Simple Type so it still exist in SystemConfig object
                 Core.SystemConfigs.DatabaseConnectionString = databaseConnectionString;
-                Core.SystemConfigs.Serilog = ConfigurationRoot.GetSection<Core.ConfigModels.SerilogConfigModel>(nameof(Core.SystemConfigs.Serilog));
-                Core.SystemConfigs.Developers = ConfigurationRoot.GetSection<Core.ConfigModels.DevelopersConfigModel>(nameof(Core.SystemConfigs.Developers));
-                Core.SystemConfigs.Server = ConfigurationRoot.GetSection<Core.ConfigModels.ServerConfigModel>(nameof(Core.SystemConfigs.Server));
-                Core.SystemConfigs.IdentityServer = ConfigurationRoot.GetSection<Core.ConfigModels.IdentityServerConfigModel>(nameof(Core.SystemConfigs.IdentityServer));
-                Core.SystemConfigs.Redis = ConfigurationRoot.GetSection<Core.ConfigModels.RedisConfigModel>(nameof(Core.SystemConfigs.Redis));
-                Core.SystemConfigs.Elastic = ConfigurationRoot.GetSection<Core.ConfigModels.ElasticConfigModel>(nameof(Core.SystemConfigs.Elastic));
+            }
+
+            private static void GetMvcPathConfig(IConfiguration configuration)
+            {
+                Core.SystemConfigs.MvcPath = configuration.GetSection<Core.ConfigModels.MvcPathConfigModel>(nameof(Core.SystemConfigs.MvcPath));
             }
         }
     }

@@ -17,6 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System;
+
 namespace Monkey.Core.ConfigModels
 {
     public class IdentityServerConfigModel
@@ -27,8 +29,13 @@ namespace Monkey.Core.ConfigModels
         public string ConnectionString { get; set; }
 
         /// <summary>
-        ///     Api Name (Audience Name - Name of this system register with SSO)
+        ///     Api Name (Audience Name - Name of this system register with SSO) 
         /// </summary>
         public string ApiName { get; set; }
+
+        /// <summary>
+        ///     Cache Duration for Request send to Identity Server
+        /// </summary>
+        public TimeSpan CacheDuration { get; set; } = TimeSpan.FromMinutes(10);
     }
 }

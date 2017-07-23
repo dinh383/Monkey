@@ -19,7 +19,7 @@ namespace Monkey
             {
                 services.AddHangfire(config => config.UseSqlServerStorage(Core.SystemConfigs.DatabaseConnectionString));
 
-                JobHelper.SetSerializerSettings(Core.Constants.Setting.JsonSerializerSettings);
+                JobHelper.SetSerializerSettings(Core.Constants.JsonSerializerSettings);
             }
 
             public static void Middleware(IApplicationBuilder app)

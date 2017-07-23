@@ -1,12 +1,12 @@
-﻿using System;
-using System.Net;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.ViewModels.Api;
 using Puppy.Core.XmlUtils;
 using Puppy.Web;
 using Serilog;
+using System;
+using System.Net;
 
 namespace Monkey.Filters
 {
@@ -57,7 +57,7 @@ namespace Monkey.Filters
             }
             else
             {
-                context.Result = new JsonResult(apiErrorViewModel, Core.Constants.Setting.JsonSerializerSettings);
+                context.Result = new JsonResult(apiErrorViewModel, Core.Constants.JsonSerializerSettings);
             }
 
             base.OnException(context);

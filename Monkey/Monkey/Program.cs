@@ -20,7 +20,11 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.PlatformAbstractions;
+using Puppy.Core.EnvironmentUtils;
 
 namespace Monkey
 {
@@ -29,8 +33,13 @@ namespace Monkey
         public static void Main(string[] args)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Console.Title =
+                $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
 
-            Console.Title = $"[{Puppy.Core.EnvironmentHelper.Name}] {nameof(Monkey)}";
+            // Build System Config at first time for config Root, in Startup will build again with reload update features
+            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+            IConfiguration configuration = builder.Build();
+            Startup.SystemConfigs.BuildSystemConfig(configuration);
 
             IWebHostBuilder hostBuilder =
                 new WebHostBuilder()
@@ -38,7 +47,7 @@ namespace Monkey
                     {
                         options.AddServerHeader = false;
                     })
-                    .UseWebRoot(Core.Constants.Setting.WebRoot)
+                    .UseWebRoot(Core.SystemConfigs.MvcPath.WebRootFolderName)
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
                     .UseStartup<Startup>();

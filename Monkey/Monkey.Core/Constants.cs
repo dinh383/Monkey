@@ -25,31 +25,19 @@ using System;
 namespace Monkey.Core
 {
     /// <summary>
-    ///     System Setting/Constant like <c>appsetting.json</c> but this information <c>very important and not allow</c>
-    ///     for Edit in run-time
+    ///     System Setting/Constant like <c> appsetting.json </c> but this information <c> very
+    ///     important and not allow </c> for Edit in run-time
     /// </summary>
     public static class Constants
     {
-        public static class Setting
+        public static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
-            public const string WebRoot = "Assets";
-
-            public const string CookieSchemaName = "Monkey_Cookie";
-
-            public static class Cros
-            {
-                public const string PolicyAllowAll = "CrosPolicyAllowAll";
-            }
-
-            public static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
-            {
-                Formatting = Formatting.None,
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                NullValueHandling = NullValueHandling.Ignore
-            };
-        }
+            Formatting = Formatting.None,
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+            NullValueHandling = NullValueHandling.Ignore
+        };
 
         public static class ElasticSearch
         {

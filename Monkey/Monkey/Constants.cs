@@ -17,6 +17,10 @@
 
 #endregion License
 
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
+
 namespace Monkey
 {
     public static class Constants
@@ -24,17 +28,21 @@ namespace Monkey
         public static class ViewDataKey
         {
             // Common
-            public const string Title = "Title";
-            public const string Description = "Description";
-            public const string PageUrl = "PageUrl";
-            public const string ImageUrl = "ImageUrl";
+            public const string Title = nameof(Title);
+
+            public const string Description = nameof(Description);
+
+            public const string PageUrl = nameof(PageUrl);
+
+            public const string ImageUrl = nameof(ImageUrl);
 
             // Facebook
-            public const string FacebookType = "FacebookType";
+            public const string FacebookType = nameof(FacebookType);
 
             // Twitter
-            public const string TwitterType = "TwitterType";
-            public const string TwitterSite = "TwitterSite";
+            public const string TwitterType = nameof(TwitterType);
+
+            public const string TwitterSite = nameof(TwitterSite);
         }
     }
 }

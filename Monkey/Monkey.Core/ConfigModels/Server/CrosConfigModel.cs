@@ -21,6 +21,7 @@ namespace Monkey.Core.ConfigModels.Server
 {
     public class CrosConfigModel
     {
+        public string PolicyAllowAllName { get; set; }
         public string AccessControlAllowOrigin { get; set; }
         public string AccessControlAllowHeaders { get; set; }
         public string AccessControlAllowMethods { get; set; }

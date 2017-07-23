@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Project Main Information -->
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <Authors>Top Nguyen</Authors>
     <Copyright>http://topnguyen.net</Copyright>
-    <AssemblyName>Monkey.Data.EF</AssemblyName>
-    <RootNamespace>Monkey.Data.EF</RootNamespace>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <!-- Enable runtime config and runtime version, Need for entity framework DonetClioTool -->
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\Monkey\bin\</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
@@ -20,6 +20,26 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <!-- Publish Configuration -->
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToPublishDirectory>None</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- Puppy -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Elastic\Puppy.Elastic.csproj" />
+  </ItemGroup>
+
+  <!-- Monkey -->
+  <ItemGroup>
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
+    <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="Enums.NET" Version="2.2.0" />
@@ -29,33 +49,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
-    <PackageReference Include="NEST" Version="5.4.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
-
     <!-- START Keep Runtime version is 1.0.0-* -->
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-*" />
-  </ItemGroup>
-
-  <ItemGroup>
-
-  	<ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-    <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
-
-    <ProjectReference Include="..\..\Puppy\Puppy.Search.Elastic\Puppy.Search.Elastic.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
- 
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
+    
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
 </Project>

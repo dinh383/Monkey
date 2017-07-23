@@ -32,13 +32,17 @@ namespace Monkey.Core
         public static string DatabaseConnectionString { get; set; }
 
         /// <summary>
+        ///     Folder Name of wwwroot, Areas and Areas name and request path Config 
+        /// </summary>
+        public static MvcPathConfigModel MvcPath { get; set; }
+
+        /// <summary>
         ///     Log to File, Console 
         /// </summary>
-        public static SerilogConfigModel Serilog { get; set; }   
-        
-        
+        public static SerilogConfigModel Serilog { get; set; }
+
         /// <summary>
-        ///     Developer Config, API Document and Background Job
+        ///     Developer Config, API Document and Background Job 
         /// </summary>
         public static DevelopersConfigModel Developers { get; set; }
 

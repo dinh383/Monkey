@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
 using Monkey.Core.ConfigModels.Server;
+using System;
 
 namespace Monkey.Core.ConfigModels
 {
@@ -59,6 +59,11 @@ namespace Monkey.Core.ConfigModels
         public string TimeZoneId { get; set; }
 
         public TimeZoneInfo TimeZoneInfo => TimeZoneInfo.FindSystemTimeZoneById(TimeZoneId);
+
+        /// <summary>
+        ///     Cookie Schema Name should unique in server machine between web applications 
+        /// </summary>
+        public string CookieSchemaName { get; set; }
 
         /// <summary>
         ///     Cros Policy 

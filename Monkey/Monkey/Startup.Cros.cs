@@ -24,18 +24,18 @@ namespace Monkey
 
                 services.AddCors(options =>
                 {
-                    options.AddPolicy(Core.Constants.Setting.Cros.PolicyAllowAll, corsBuilder.Build());
+                    options.AddPolicy(Core.SystemConfigs.Server.Cros.PolicyAllowAllName, corsBuilder.Build());
                 });
 
                 services.Configure<MvcOptions>(options =>
                 {
-                    options.Filters.Add(new CorsAuthorizationFilterFactory(Core.Constants.Setting.Cros.PolicyAllowAll));
+                    options.Filters.Add(new CorsAuthorizationFilterFactory(Core.SystemConfigs.Server.Cros.PolicyAllowAllName));
                 });
             }
 
             public static void Middleware(IApplicationBuilder app)
             {
-                app.UseCors(Core.Constants.Setting.Cros.PolicyAllowAll);
+                app.UseCors(Core.SystemConfigs.Server.Cros.PolicyAllowAllName);
                 app.UseMiddleware<ResponseMiddleware>();
             }
 
