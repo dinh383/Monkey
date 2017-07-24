@@ -110,7 +110,6 @@
     
     <!-- Auto Mapper -->
     <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="2.0.1" />
 
     <!-- C# Utitlity -->
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />

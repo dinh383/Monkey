@@ -50,7 +50,7 @@ namespace Monkey
             WebMarkupMin.Service(services);
 
             // [Mapper] Auto Mapper
-            MapperConfiguration.Service(services);
+            services.AddAutoMapper();
 
             // [MVC]
             Mvc.Service(services);

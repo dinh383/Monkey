@@ -10,7 +10,6 @@
 ```
 
 - https://www.nuget.org/packages/AutoMapper/
-- https://www.nuget.org/packages/AutoMapper.Extensions.Microsoft.DependencyInjection/
 
 ## Sample
 
