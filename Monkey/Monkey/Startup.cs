@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Mapper;
+using Puppy.EF;
 
 namespace Monkey
 {
@@ -69,6 +70,8 @@ namespace Monkey
 
             // [SystemConfigs]
             SystemConfigs.Middleware(app, loggerFactory);
+
+            app.DatabaseMigrate();
 
             // [Response] Information
             ProcessingTimeMiddleware.Middleware(app);
