@@ -24,14 +24,14 @@ namespace Monkey.Core.ConfigModels.MvcPath
     public class StaticsContentConfigModel
     {
         /// <summary>
-        ///     Area
+        ///     Area 
         /// </summary>
         public string Area { get; set; }
 
         /// <summary>
         ///     Use exactly folder name case in explorer 
         /// </summary>
-        /// <remarks> Relative path from <see cref="Area"/></remarks>
+        /// <remarks> Relative path from <see cref="Area" /> </remarks>
         public string FolderRelativePath { get; set; }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace Monkey.Core.ConfigModels.MvcPath
         public string HttpRequestPath { get; set; }
 
         /// <summary>
-        /// Max Age in Cache Control Header
+        ///     Max Age in Cache Control Header 
         /// </summary>
-        /// <remarks>Use the . separator between days and hours, see more: https://msdn.microsoft.com/en-us/library/system.timespan.aspx </remarks>
+        /// <remarks> Use the . separator between days and hours, see more: https://msdn.microsoft.com/en-us/library/system.timespan.aspx </remarks>
         public TimeSpan? MaxAgeResponseHeader { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Monkey.Core.ConfigModels
         public string ApiName { get; set; }
 
         /// <summary>
-        ///     Cache Duration for Request send to Identity Server
+        ///     Cache Duration for Request send to Identity Server 
         /// </summary>
         public TimeSpan CacheDuration { get; set; } = TimeSpan.FromMinutes(10);
     }

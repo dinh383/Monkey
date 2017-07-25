@@ -17,10 +17,6 @@
 
 #endregion License
 
-using System.IO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.FileProviders;
-
 namespace Monkey
 {
     public static class Constants

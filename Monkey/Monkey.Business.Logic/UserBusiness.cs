@@ -23,13 +23,13 @@ using Puppy.DependencyInjection.Attributes;
 namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IUserBusiness))]
-    public class UserBusiness: IUserBusiness
-	{
-		private readonly IUserRepository _userRepository;
+    public class UserBusiness : IUserBusiness
+    {
+        private readonly IUserRepository _userRepository;
 
         public UserBusiness(IUserRepository userRepository)
         {
-        	_userRepository = userRepository;
+            _userRepository = userRepository;
         }
     }
 }

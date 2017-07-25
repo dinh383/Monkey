@@ -30,7 +30,7 @@ public class ClassAToClassBProfile : Profile
             .ForMember(dest =&gt; dest.PropertyOne, opt =&gt; opt.MapFrom(src =&gt; src.PropertyTwo))
             .BeforeMap((src, dest) =&gt;
             {
-               // Do Some Logic Before map data 
+               // Do Some Logic Before map data
             })
             .AfterMap((src, dest) =&gt;
             {
@@ -39,7 +39,5 @@ public class ClassAToClassBProfile : Profile
     }
 }
 </code></pre>
-
-
 </body>
 </html>

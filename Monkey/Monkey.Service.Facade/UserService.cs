@@ -17,16 +17,16 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Puppy.DependencyInjection.Attributes;
 using Monkey.Business;
-using System.Threading.Tasks;
+using Puppy.DependencyInjection.Attributes;
 
 namespace Monkey.Service.Facade
 {
     [PerRequestDependency(ServiceType = typeof(IUserService))]
-    public class UserService: IUserService
-	{
+    public class UserService : IUserService
+    {
         private readonly IUserBusiness _userBusiness;
+
         public UserService(IUserBusiness userBusiness)
         {
             _userBusiness = userBusiness;

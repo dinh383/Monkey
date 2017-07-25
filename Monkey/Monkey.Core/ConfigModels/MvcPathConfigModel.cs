@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
 using Monkey.Core.ConfigModels.MvcPath;
+using System;
 using System.Collections.Generic;
 
 namespace Monkey.Core.ConfigModels
@@ -30,9 +30,9 @@ namespace Monkey.Core.ConfigModels
         public string AreasRootFolderName { get; set; } = "Areas";
 
         /// <summary>
-        /// Max Age in Cache Control Header
+        ///     Max Age in Cache Control Header 
         /// </summary>
-        /// <remarks>Use the . separator between days and hours, see more: https://msdn.microsoft.com/en-us/library/system.timespan.aspx </remarks>
+        /// <remarks> Use the . separator between days and hours, see more: https://msdn.microsoft.com/en-us/library/system.timespan.aspx </remarks>
         public TimeSpan? MaxAgeResponseHeader { get; set; }
 
         public List<StaticsContentConfigModel> StaticsContents { get; set; }
