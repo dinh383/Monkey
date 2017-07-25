@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monkey.Data;
 using Monkey.Mapper;
 using Puppy.EF;
 
@@ -71,6 +72,7 @@ namespace Monkey
             // [SystemConfigs]
             SystemConfigs.Middleware(app, loggerFactory);
 
+            // Migrate Database
             app.DatabaseMigrate();
 
             // [Response] Information
