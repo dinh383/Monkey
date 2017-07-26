@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Data;
 using Monkey.Mapper;
-using Puppy.EF;
+using Monkey.Redis;
 
 namespace Monkey
 {
@@ -46,7 +46,7 @@ namespace Monkey
             Hangfire.Service(services);
 
             // [Caching] Redis Cache
-            Cache.Service(services);
+            services.AddRedisCache();
 
             // [Mini Response] WebMarkup
             WebMarkupMin.Service(services);

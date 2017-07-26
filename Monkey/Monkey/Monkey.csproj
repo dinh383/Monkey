@@ -46,6 +46,7 @@
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
     <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
     <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
+    <ProjectReference Include="..\Monkey.Redis\Monkey.Redis.csproj" />
 
     <!-- Service -->
     <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
@@ -94,10 +95,6 @@
     <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
 
-    <!-- Caching -->
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="1.1.2" />
-    
     <!-- Identity Server -->
     <PackageReference Include="IdentityModel" Version="2.10.0" />
     <PackageReference Include="IdentityServer4" Version="1.5.2" />
