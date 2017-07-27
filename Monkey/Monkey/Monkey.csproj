@@ -113,7 +113,7 @@
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
    
     <PackageReference Include="Enums.NET" Version="2.2.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.1" />
 
     <!-- Markup Min -->
     <PackageReference Include="WebMarkupMin.AspNetCore1" Version="2.4.0" />
