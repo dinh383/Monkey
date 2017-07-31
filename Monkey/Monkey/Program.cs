@@ -24,6 +24,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
+using Monkey.Extensions;
 using Puppy.Core.EnvironmentUtils;
 
 namespace Monkey
@@ -38,8 +39,10 @@ namespace Monkey
 
             // Build System Config at first time for config Root, in Startup will build again with reload update features
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+
             IConfiguration configuration = builder.Build();
-            Startup.SystemConfigs.BuildSystemConfig(configuration);
+
+            SystemConfigurationHelper.BuildSystemConfig(configuration);
 
             IWebHostBuilder hostBuilder =
                 new WebHostBuilder()

@@ -82,6 +82,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Social", "Social", "{FA33E8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Instagram", "..\Puppy\Puppy.Instagram\Puppy.Instagram.csproj", "{368826F0-732A-4BFB-8201-2A66424FFC8C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{C0A99CEA-B726-45F3-8BA4-C14D73F7AE67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -213,6 +215,7 @@ Global
 		{DB26A32C-80F0-45C1-ABD7-8A764BB02FD2} = {6BD649FC-056A-4BBF-81CC-0D9CD2DB6176}
 		{FA33E82F-D198-409B-8CF0-3175C41FF376} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{368826F0-732A-4BFB-8201-2A66424FFC8C} = {FA33E82F-D198-409B-8CF0-3175C41FF376}
+		{C0A99CEA-B726-45F3-8BA4-C14D73F7AE67} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = eede38c5-a915-41d1-a0b0-d7eeaa0bcca9

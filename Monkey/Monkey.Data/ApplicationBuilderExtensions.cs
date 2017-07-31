@@ -31,7 +31,7 @@ namespace Monkey.Data
         ///         database if it does not already exist.
         ///     </para>
         /// </summary>
-        public static IApplicationBuilder DatabaseMigrate(this IApplicationBuilder app)
+        public static IApplicationBuilder MigrateDatabase(this IApplicationBuilder app)
         {
             IDatabaseFactory databaseFactory = app.ApplicationServices.GetService<IDatabaseFactory>();
             return databaseFactory.MigrateDatabase(app);

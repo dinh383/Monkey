@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+using Monkey.Core;
 
 namespace Monkey.Areas.Developers
 {
@@ -19,10 +19,9 @@ namespace Monkey.Areas.Developers
             }
         }
 
-        public static bool IsCanAccess(HttpContext httpContext, IConfigurationRoot configurationRoot)
+        public static bool IsCanAccess(HttpContext httpContext)
         {
-            string accessKey = configurationRoot.GetValue<string>("Developers:AccessKey");
-            return IsCanAccess(httpContext, accessKey);
+            return IsCanAccess(httpContext, SystemConfigs.Developers.AccessKey);
         }
     }
 }

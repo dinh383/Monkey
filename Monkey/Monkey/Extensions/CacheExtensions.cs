@@ -1,5 +1,4 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
@@ -7,29 +6,31 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> ServiceCollectionExtensions.cs </Name>
-//         <Created> 22 Apr 17 8:02:59 PM </Created>
-//         <Key> 50e7f986-c196-4507-accf-e02189d15c7d </Key>
+//         <Name> CacheExtensions.cs </Name>
+//         <Created> 31/07/17 11:38:36 PM </Created>
+//         <Key> fa0f418e-6fa5-44d4-b4ce-9b84d8e41ae9 </Key>
 //     </File>
 //     <Summary>
-//         ServiceCollectionExtensions.cs
+//         CacheExtensions.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
 
 using Microsoft.Extensions.DependencyInjection;
-using Monkey.Mapper.Profiles;
-using Puppy.AutoMapper;
+using Monkey.Redis;
 
-namespace Monkey.Mapper
+namespace Monkey.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class CacheExtensions
     {
-        public static IServiceCollection AddAutoMapperMonkey(this IServiceCollection services)
+        public static IServiceCollection AddCacheMonkey(this IServiceCollection services)
         {
-            services.AddAutoMapper(isAssertConfigurationIsValid: true, isCompileMappings: true, profileAssemblyMarkerTypes: typeof(IAutoMapperProfile));
+            // In-memory cache
+            services.AddMemoryCache();
+
+            // Distributed cache by Redis
+            services.AddRedisCache();
 
             return services;
         }
