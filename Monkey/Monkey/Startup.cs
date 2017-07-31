@@ -45,7 +45,7 @@ namespace Monkey
             // [Background Job] Hangfire
             Hangfire.Service(services);
 
-            // [Caching] Redis Cache
+            // [Caching] DistributedCache Cache
             services.AddRedisCache();
 
             // [Mini Response] WebMarkup

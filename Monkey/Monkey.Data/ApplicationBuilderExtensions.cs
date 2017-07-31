@@ -19,6 +19,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Monkey.Data.Interfaces;
 
 namespace Monkey.Data
 {
@@ -32,7 +33,7 @@ namespace Monkey.Data
         /// </summary>
         public static IApplicationBuilder DatabaseMigrate(this IApplicationBuilder app)
         {
-            Interfaces.IDatabaseFactory databaseFactory = app.ApplicationServices.GetService<Interfaces.IDatabaseFactory>();
+            IDatabaseFactory databaseFactory = app.ApplicationServices.GetService<IDatabaseFactory>();
             return databaseFactory.MigrateDatabase(app);
         }
     }

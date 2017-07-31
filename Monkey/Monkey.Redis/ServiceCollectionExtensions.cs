@@ -34,17 +34,17 @@ namespace Monkey.Redis
             {
                 var cache = new RedisCache(new RedisCacheOptions
                 {
-                    Configuration = SystemConfigs.Redis.ConnectionString,
-                    InstanceName = SystemConfigs.Redis.InstanceName
+                    Configuration = SystemConfigs.DistributedCache.ConnectionString,
+                    InstanceName = SystemConfigs.DistributedCache.InstanceName
                 });
 
                 return cache;
             });
         }
 
-        public static void AddRedisCache(this IServiceCollection services, Action<RedisConfigModel> setupAction)
+        public static void AddRedisCache(this IServiceCollection services, Action<DistributedCacheConfigModel> options)
         {
-            RedisConfigModel config = (RedisConfigModel)setupAction.Target;
+            DistributedCacheConfigModel config = (DistributedCacheConfigModel)options.Target;
             services.AddSingleton<IDistributedCache>(factory =>
             {
                 var cache = new RedisCache(new RedisCacheOptions

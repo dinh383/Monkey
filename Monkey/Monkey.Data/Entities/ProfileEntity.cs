@@ -21,7 +21,7 @@ using Puppy.EF;
 
 namespace Monkey.Data.Entities
 {
-    public class ProfileEntity : BaseEntity
+    public class ProfileEntity : Entity
     {
     }
 }

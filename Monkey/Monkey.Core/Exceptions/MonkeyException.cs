@@ -18,6 +18,7 @@
 #endregion License
 
 using System;
+using System.Collections.Generic;
 
 namespace Monkey.Core.Exceptions
 {
@@ -28,21 +29,21 @@ namespace Monkey.Core.Exceptions
             Code = code;
         }
 
-        public MonkeyException(ErrorCode code, params (string Key, object Value)[] arrayKeyValue)
+        public MonkeyException(ErrorCode code, params KeyValuePair<string, object>[] arrayKeyValue)
         {
             Code = code;
             ArrayKeyValue = arrayKeyValue;
         }
 
         public MonkeyException(ErrorCode code, string message,
-            params (string Key, object Value)[] arrayKeyValue) : base(message)
+            params KeyValuePair<string, object>[] arrayKeyValue) : base(message)
         {
             Code = code;
             ArrayKeyValue = arrayKeyValue;
         }
 
         public MonkeyException(ErrorCode code, string message, Exception innerException,
-            params (string Key, object Value)[] arrayKeyValue) : base(message, innerException)
+            params KeyValuePair<string, object>[] arrayKeyValue) : base(message, innerException)
         {
             Code = code;
             ArrayKeyValue = arrayKeyValue;
@@ -50,6 +51,6 @@ namespace Monkey.Core.Exceptions
 
         public ErrorCode Code { get; }
 
-        public (string Key, object Value)[] ArrayKeyValue { get; }
+        public KeyValuePair<string, object>[] ArrayKeyValue { get; }
     }
 }

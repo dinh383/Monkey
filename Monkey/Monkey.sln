@@ -3,32 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. WEB", "1. WEB", "{E9E0E23C-8584-46E1-9C51-33C3E699A39C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Web", "1. Web", "{E9E0E23C-8584-46E1-9C51-33C3E699A39C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey", "Monkey\Monkey.csproj", "{FDAF49AC-B1D2-492C-A7E7-137EA19BB00C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0F5BE69E-8BF1-45A2-8027-7BE66B0E9E48} = {0F5BE69E-8BF1-45A2-8027-7BE66B0E9E48}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Service", "2. Service", "{61D58289-3E2A-4D42-969D-F71CFC28D462}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Services", "2. Services", "{61D58289-3E2A-4D42-969D-F71CFC28D462}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Service", "Monkey.Service\Monkey.Service.csproj", "{E88A84C2-6E76-4535-ACB6-59605DE8A80A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Service.Facade", "Monkey.Service.Facade\Monkey.Service.Facade.csproj", "{3EB28BF2-4207-4520-A73E-8D1093665814}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. BLL", "3. BLL", "{9ABEABAC-0375-4CAA-9166-577A74878433}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Business", "3. Business", "{9ABEABAC-0375-4CAA-9166-577A74878433}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Business", "Monkey.Business\Monkey.Business.csproj", "{BA4FB700-3F62-4054-A53A-B7FCDD2C60C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Business.Logic", "Monkey.Business.Logic\Monkey.Business.Logic.csproj", "{8C5FE621-7A92-4942-959C-752BE6D8F074}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. DAL", "4. DAL", "{51CABEFC-3C8B-4599-88FB-D3E29734B372}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Data", "4. Data", "{51CABEFC-3C8B-4599-88FB-D3E29734B372}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Data", "Monkey.Data\Monkey.Data.csproj", "{4C2BA34E-B545-48CC-8C80-E8B1C41605DE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Data.EF", "Monkey.Data.EF\Monkey.Data.EF.csproj", "{54131D1D-4721-49B8-8CD5-18B4E194782A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Core", "5. Core", "{6126AA32-418B-454E-BB37-4478C308E5AD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Cross", "5. Cross", "{6126AA32-418B-454E-BB37-4478C308E5AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Core", "Monkey.Core\Monkey.Core.csproj", "{3DAA7A7B-00D3-4441-B7BA-3333A49F3C5F}"
 EndProject

@@ -23,9 +23,7 @@
 
   <!-- Monkey -->
   <ItemGroup>
-    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-    <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
-    <ProjectReference Include="..\Monkey.Business\Monkey.Business.csproj" />
+    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
     <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
   </ItemGroup>
 
@@ -33,6 +31,5 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.1" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
 </Project>

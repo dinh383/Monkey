@@ -21,7 +21,7 @@ using Puppy.EF;
 
 namespace Monkey.Data.Entities
 {
-    public class UserEntity : BaseEntity
+    public class UserEntity : Entity
     {
         public string UserName { get; set; }
 

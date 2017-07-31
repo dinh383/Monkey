@@ -18,11 +18,11 @@
 #endregion License
 
 using Monkey.Data.Entities;
-using Puppy.EF.Interfaces;
+using Puppy.EF.Interfaces.Repository;
 
 namespace Monkey.Data.Interfaces
 {
-    public interface IUserRepository : IBaseEntityRepository<UserEntity>
+    public interface IUserRepository : IEntityRepository<UserEntity>
     {
     }
 }

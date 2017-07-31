@@ -39,6 +39,7 @@ using Puppy.Elastic.Model.Units;
 using Puppy.Elastic.Tracing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,8 +47,7 @@ using System.Threading.Tasks;
 namespace Monkey.Data.EF
 {
     [PerResolveDependency]
-    public class EntityRepositoryElastic<TEntity, TElastic> : EntityRepository<TEntity>, ISearchableRepository<TElastic>
-        where TEntity : BaseEntity, IBaseEntity where TElastic : class, IBaseElastic<int>
+    public class EntityRepositoryElastic<TEntity, TElastic> : EntityRepository<TEntity>, ISearchableRepository<TElastic> where TEntity : Entity where TElastic : class, IBaseElastic<int>
     {
         private readonly IConfigurationRoot _configurationRoot;
 
@@ -297,15 +297,15 @@ namespace Monkey.Data.EF
         public virtual void GetAddUpdateDeleteEntity(out List<TEntity> listEntityAddUpdate, out List<TEntity> listEntityDelete)
         {
             listEntityAddUpdate = DbContext.ChangeTracker.Entries()
-                .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified))
+                .Where(x => x.Entity is Entity && (x.State == EntityState.Added || x.State == EntityState.Modified))
                 .Select(x => x.Entity as TEntity).Where(x => x != null).ToList();
 
             listEntityDelete = DbContext.ChangeTracker.Entries()
-                .Where(x => x.Entity is BaseEntity && x.State == EntityState.Deleted).Select(x => x.Entity as TEntity)
+                .Where(x => x.Entity is Entity && x.State == EntityState.Deleted).Select(x => x.Entity as TEntity)
                 .Where(x => x != null).ToList();
         }
 
-        public virtual void SaveElastics<T>(List<T> listEntityAddUpdate, List<T> listEntityDelete) where T : BaseEntity, IBaseEntity
+        public virtual void SaveElastics<T>(List<T> listEntityAddUpdate, List<T> listEntityDelete) where T : Entity
         {
             InitElasticMap();
 
@@ -331,6 +331,7 @@ namespace Monkey.Data.EF
             }
         }
 
+        [DebuggerStepThrough]
         public override int SaveChanges()
         {
             StandardizeEntities();
@@ -340,6 +341,7 @@ namespace Monkey.Data.EF
             return result;
         }
 
+        [DebuggerStepThrough]
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             StandardizeEntities();
@@ -349,6 +351,7 @@ namespace Monkey.Data.EF
             return result;
         }
 
+        [DebuggerStepThrough]
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             StandardizeEntities();
@@ -358,8 +361,8 @@ namespace Monkey.Data.EF
             return result;
         }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
-            CancellationToken cancellationToken = new CancellationToken())
+        [DebuggerStepThrough]
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
         {
             StandardizeEntities();
             GetAddUpdateDeleteEntity(out List<TEntity> listEntityAddUpdate, out List<TEntity> listEntityDelete);

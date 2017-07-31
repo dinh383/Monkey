@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using Monkey.Core.ConfigModels;
+using Monkey.Redis;
 using Puppy.Core.ConfigUtils;
 using Puppy.Core.EnvironmentUtils;
 
@@ -61,7 +63,7 @@ namespace Monkey
 
                 Core.SystemConfigs.IdentityServer = configuration.GetSection<Core.ConfigModels.IdentityServerConfigModel>(nameof(Core.SystemConfigs.IdentityServer));
 
-                Core.SystemConfigs.Redis = configuration.GetSection<Core.ConfigModels.RedisConfigModel>(nameof(Core.SystemConfigs.Redis));
+                Core.SystemConfigs.DistributedCache = configuration.GetSection<DistributedCacheConfigModel>(nameof(Core.SystemConfigs.DistributedCache));
 
                 Core.SystemConfigs.Elastic = configuration.GetSection<Core.ConfigModels.ElasticConfigModel>(nameof(Core.SystemConfigs.Elastic));
             }

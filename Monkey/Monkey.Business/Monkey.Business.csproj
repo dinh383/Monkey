@@ -19,14 +19,7 @@
 
   <!-- Monkey -->
   <ItemGroup>
-    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
     <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
-  </ItemGroup>
-
-  <!-- External Libraries -->
-  <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
-    <PackageReference Include="Enums.NET" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

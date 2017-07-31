@@ -28,19 +28,6 @@ namespace Monkey.Data.EF.Factory
 {
     public class DbContextFactory : IDbContextFactory<DbContext>
     {
-
-        public DbContext Create(DbContextFactoryOptions options)
-        {
-            return CreateCoreContext();
-        }
-
-        public static DbContext CreateCoreContext()
-        {
-            var builder = new DbContextOptionsBuilder<DbContext>();
-            builder.UseSqlServer(GetConnectionString(), optionsBuilder => optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName()));
-            return new DbContext(builder.Options);
-        }
-
         /// <summary>
         ///     Return 'Environment Name' connection string if Environment is "Production" or "Staging", else Machine Name
         /// </summary>
@@ -54,8 +41,19 @@ namespace Monkey.Data.EF.Factory
 
             IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
             var connectionString = config.GetValue<string>(connectionStringSection);
-
             return connectionString;
+        }
+
+        public DbContext Create(DbContextFactoryOptions options)
+        {
+            return CreateCoreContext();
+        }
+
+        public static DbContext CreateCoreContext()
+        {
+            var builder = new DbContextOptionsBuilder<DbContext>();
+            builder.UseSqlServer(GetConnectionString(), optionsBuilder => optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName()));
+            return new DbContext(builder.Options);
         }
 
         public static Assembly GetMigrationAssembly()

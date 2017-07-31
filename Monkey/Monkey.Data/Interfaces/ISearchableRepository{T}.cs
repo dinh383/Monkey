@@ -87,7 +87,6 @@ namespace Monkey.Data.Interfaces
 
         TElastic GetElastic(object id);
 
-        void SaveElastics<TEntity>(List<TEntity> listEntityAddUpdate, List<TEntity> listEntityDelete)
-            where TEntity : BaseEntity, IBaseEntity;
+        void SaveElastics<TEntity>(List<TEntity> listEntityAddUpdate, List<TEntity> listEntityDelete) where TEntity : Entity;
     }
 }

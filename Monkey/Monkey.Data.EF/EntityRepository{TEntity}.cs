@@ -23,13 +23,14 @@ using Microsoft.EntityFrameworkCore;
 using Monkey.Core;
 using Puppy.EF;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monkey.Data.EF
 {
-    public class EntityRepository<TEntity> : BaseEntityRepository<TEntity> where TEntity : BaseEntity
+    public class EntityRepository<TEntity> : Puppy.EF.EntityRepository<TEntity> where TEntity : Entity
     {
         internal IDbContext DbContext { get; }
 
@@ -41,7 +42,7 @@ namespace Monkey.Data.EF
         public void StandardizeEntities()
         {
             var listEntryAddUpdate = DbContext.ChangeTracker.Entries()
-                .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified))
+                .Where(x => x.Entity is Entity && (x.State == EntityState.Added || x.State == EntityState.Modified))
                 .Select(x => x).ToList();
 
             foreach (var entry in listEntryAddUpdate)
@@ -73,26 +74,29 @@ namespace Monkey.Data.EF
             }
         }
 
+        [DebuggerStepThrough]
         public override int SaveChanges()
         {
             StandardizeEntities();
             return base.SaveChanges();
         }
 
+        [DebuggerStepThrough]
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             StandardizeEntities();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
+        [DebuggerStepThrough]
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             StandardizeEntities();
             return base.SaveChangesAsync(cancellationToken);
         }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
-            CancellationToken cancellationToken = new CancellationToken())
+        [DebuggerStepThrough]
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
         {
             StandardizeEntities();
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);

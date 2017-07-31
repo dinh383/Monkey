@@ -26,11 +26,11 @@ public class ClassAToClassBProfile : Profile
     public ClassAToClassBProfile()
     {
         CreateMap&lt;ClassA, ClassB&gt;()
-            .IgnoreAllNonExisting()
+            .IgnoreAllNonExisting() // Remember this in the first line
             .ForMember(dest =&gt; dest.PropertyOne, opt =&gt; opt.MapFrom(src =&gt; src.PropertyTwo))
             .BeforeMap((src, dest) =&gt;
             {
-               // Do Some Logic Before map data
+               // Do Some Logic Before map data 
             })
             .AfterMap((src, dest) =&gt;
             {
@@ -39,5 +39,7 @@ public class ClassAToClassBProfile : Profile
     }
 }
 </code></pre>
+
+
 </body>
 </html>

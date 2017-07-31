@@ -28,8 +28,7 @@ namespace Monkey.Data.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(DbContextFactory.GetConnectionString(),
-                    o => o.MigrationsAssembly(DbContextFactory.GetMigrationAssemblyName()));
+                optionsBuilder.UseSqlServer(DbContextFactory.GetConnectionString(), o => o.MigrationsAssembly(DbContextFactory.GetMigrationAssemblyName()));
             }
         }
 
@@ -47,6 +46,7 @@ namespace Monkey.Data.EF
 
             // Convention for Table name
             builder.RemovePluralizingTableNameConvention();
+
             builder.ReplaceTableNameConvention("Entity", string.Empty);
         }
     }

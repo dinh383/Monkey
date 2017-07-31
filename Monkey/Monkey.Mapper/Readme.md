@@ -22,7 +22,7 @@ public class ClassAToClassBProfile : Profile
     public ClassAToClassBProfile()
     {
         CreateMap<ClassA, ClassB>()
-            .IgnoreAllNonExisting()
+            .IgnoreAllNonExisting() // Remember this in the first line
             .ForMember(dest => dest.PropertyOne, opt => opt.MapFrom(src => src.PropertyTwo))
             .BeforeMap((src, dest) =>
             {

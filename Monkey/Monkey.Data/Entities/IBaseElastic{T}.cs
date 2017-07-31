@@ -21,7 +21,7 @@
 
 namespace Monkey.Data.Entities
 {
-    public interface IBaseElastic<T>
+    public interface IBaseElastic<T> where T : struct
     {
         T Id { get; set; }
     }
