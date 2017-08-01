@@ -22,6 +22,7 @@
 using Microsoft.EntityFrameworkCore;
 using Monkey.Core;
 using Puppy.EF;
+using Puppy.EF.Interfaces.Entity;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -30,7 +31,7 @@ using System.Threading.Tasks;
 
 namespace Monkey.Data.EF
 {
-    public class EntityRepository<TEntity> : Puppy.EF.EntityRepository<TEntity> where TEntity : Entity
+    public class EntityRepository<TEntity, TKey> : Puppy.EF.EntityRepository<TEntity, TKey> where TEntity : Entity, ISoftDeletableEntity<TKey>, IAuditableEntity<TKey> where TKey : struct
     {
         internal IDbContext DbContext { get; }
 

@@ -26,7 +26,7 @@ using System.Collections.Generic;
 
 namespace Monkey.Data.Interfaces
 {
-    public interface ISearchableRepository<TElastic> where TElastic : class, IBaseElastic<int>
+    public interface ISearchableRepository<TElastic, TKey> where TElastic : Entity, IBaseElastic<TKey> where TKey : struct
     {
         /// <summary>
         ///     Initial Elastic Map if not exist 

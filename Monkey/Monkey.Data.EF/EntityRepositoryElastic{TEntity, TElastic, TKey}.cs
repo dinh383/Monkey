@@ -30,6 +30,7 @@ using Monkey.Data.Interfaces;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
+using Puppy.EF.Interfaces.Entity;
 using Puppy.Elastic;
 using Puppy.Elastic.ContextSearch;
 using Puppy.Elastic.Model.SearchModel;
@@ -47,7 +48,11 @@ using System.Threading.Tasks;
 namespace Monkey.Data.EF
 {
     [PerResolveDependency]
-    public class EntityRepositoryElastic<TEntity, TElastic> : EntityRepository<TEntity>, ISearchableRepository<TElastic> where TEntity : Entity where TElastic : class, IBaseElastic<int>
+    public class EntityRepositoryElastic<TEntity, TKey> :
+        EntityRepository<TEntity, TKey>,
+        ISearchableRepository<TEntity, TKey>
+        where TEntity : Entity, IBaseElastic<TKey>, ISoftDeletableEntity<TKey>, IAuditableEntity<TKey>
+        where TKey : struct
     {
         private readonly IConfigurationRoot _configurationRoot;
 
@@ -74,7 +79,7 @@ namespace Monkey.Data.EF
 
         public ElasticSerializerConfiguration Config => new ElasticSerializerConfiguration(_elasticMappingResolver);
 
-        public bool? IsExistElasticIndex { get; private set; }
+        public bool? IsExisTEntityIndex { get; private set; }
 
         #endregion
 
@@ -90,7 +95,7 @@ namespace Monkey.Data.EF
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
-                context.IndexCreate<TElastic>();
+                context.IndexCreate<TEntity>();
             }
         }
 
@@ -105,9 +110,9 @@ namespace Monkey.Data.EF
 
                 if (IsExistElasticMap())
                 {
-                    context.DeleteIndex<TElastic>();
+                    context.DeleteIndex<TEntity>();
                 }
-                context.IndexCreate<TElastic>();
+                context.IndexCreate<TEntity>();
             }
         }
 
@@ -119,8 +124,8 @@ namespace Monkey.Data.EF
                 {
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
-                IsExistElasticIndex = context.IndexExists<TElastic>();
-                return IsExistElasticIndex == true;
+                IsExisTEntityIndex = context.IndexExists<TEntity>();
+                return IsExisTEntityIndex == true;
             }
         }
 
@@ -131,19 +136,19 @@ namespace Monkey.Data.EF
             var total = Get().Count();
             while (skip < total)
             {
-                var listElastic =
+                var lisTEntity =
                     Get()
-                        .ProjectTo<TElastic>()
+                        .ProjectTo<TEntity>()
                         .Skip(skip)
                         .Take(take)
                         .ToList();
 
-                AddUpdateElastic(listElastic);
+                AddUpdateElastic(lisTEntity);
                 skip = skip + take;
             }
         }
 
-        public virtual void AddUpdateElastic(IEnumerable<TElastic> listElastic)
+        public virtual void AddUpdateElastic(IEnumerable<TEntity> lisTEntity)
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
@@ -152,14 +157,14 @@ namespace Monkey.Data.EF
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
 
-                foreach (var elastic in listElastic)
+                foreach (var elastic in lisTEntity)
                     context.AddUpdateDocument(elastic, elastic.Id);
 
                 context.SaveChanges();
             }
         }
 
-        public virtual void DeleteElastic(IEnumerable<int> listElasticId)
+        public virtual void DeleteElastic(IEnumerable<int> lisTEntityId)
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
@@ -168,9 +173,9 @@ namespace Monkey.Data.EF
                     context.TraceProvider = new ConsoleTraceProvider();
                 }
 
-                foreach (var elasticId in listElasticId)
+                foreach (var elasticId in lisTEntityId)
                 {
-                    context.DeleteDocument<TElastic>(elasticId);
+                    context.DeleteDocument<TEntity>(elasticId);
                 }
 
                 context.SaveChanges();
@@ -193,12 +198,32 @@ namespace Monkey.Data.EF
                     return;
                 }
 
-                context.DeleteIndex<TElastic>();
-                IsExistElasticIndex = false;
+                context.DeleteIndex<TEntity>();
+                IsExisTEntityIndex = false;
             }
         }
 
-        public virtual IEnumerable<TElastic> GetElastic(out int total, int skip, int take = Constants.ElasticSearch.MaxTakeRecord)
+        public IEnumerable<TEntity> GetElastic(out int total, int skip, int take = Constants.ElasticSearch.MaxTakeRecord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<TEntity> GetElastic(string fieldName, List<object> listValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsExistElastic(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TEntity GetElastic(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IEnumerable<TEntity> GeTEntity(out int total, int skip, int take = Constants.ElasticSearch.MaxTakeRecord)
         {
             var search = new Search
             {
@@ -209,14 +234,14 @@ namespace Monkey.Data.EF
 
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                var searchResult = context.Search<TElastic>(search);
-                var listElastic = searchResult.PayloadResult?.Hits?.HitsResult?.Select(x => x.Source);
+                var searchResult = context.Search<TEntity>(search);
+                var lisTEntity = searchResult.PayloadResult?.Hits?.HitsResult?.Select(x => x.Source);
                 total = searchResult.PayloadResult?.Hits?.Total ?? 0;
-                return listElastic;
+                return lisTEntity;
             }
         }
 
-        public virtual IEnumerable<TElastic> GetElastic(string fieldName, List<object> listValue)
+        public virtual IEnumerable<TEntity> GeTEntity(string fieldName, List<object> listValue)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
             {
@@ -244,44 +269,44 @@ namespace Monkey.Data.EF
                     })
             };
 
-            var listElastic = new List<TElastic>();
+            var lisTEntity = new List<TEntity>();
 
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
                 var scanScrollConfig =
                     new ScanAndScrollConfiguration(new TimeUnitMinute(1), Constants.ElasticSearch.MaxTakeRecord);
-                var searchResult = context.SearchCreateScanAndScroll<TElastic>(search, scanScrollConfig);
+                var searchResult = context.SearchCreateScanAndScroll<TEntity>(search, scanScrollConfig);
                 var scrollId = searchResult.PayloadResult?.ScrollId;
 
                 var total = searchResult.PayloadResult?.Hits?.Total ?? 0;
                 var processedResults = 0;
                 while (total > processedResults)
                 {
-                    var resultCollection = context.SearchScanAndScroll<TElastic>(scrollId, scanScrollConfig);
+                    var resultCollection = context.SearchScanAndScroll<TEntity>(scrollId, scanScrollConfig);
                     scrollId = resultCollection.PayloadResult?.ScrollId;
 
-                    listElastic.AddRange(resultCollection.PayloadResult?.Hits?.HitsResult?.Select(x => x.Source));
-                    processedResults = listElastic.Count;
+                    lisTEntity.AddRange(resultCollection.PayloadResult?.Hits?.HitsResult?.Select(x => x.Source));
+                    processedResults = lisTEntity.Count;
                 }
 
-                return listElastic;
+                return lisTEntity;
             }
         }
 
-        public virtual bool IsExistElastic(object id)
+        public virtual bool IsExisTEntity(object id)
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                bool isExist = context.DocumentExists<TElastic>(id);
+                bool isExist = context.DocumentExists<TEntity>(id);
                 return isExist;
             }
         }
 
-        public virtual TElastic GetElastic(object id)
+        public virtual TEntity GeTEntity(object id)
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
-                var elastic = context.GetDocument<TElastic>(id);
+                var elastic = context.GetDocument<TEntity>(id);
                 return elastic;
             }
         }
@@ -312,22 +337,22 @@ namespace Monkey.Data.EF
             if (listEntityAddUpdate != null && listEntityAddUpdate.Any())
             {
                 // Also Delete case if IsDeleted == true
-                var listElasticDeletedId = listEntityAddUpdate.Where(x => x.IsDeleted).Select(x => x.Id).ToList();
-                if (listElasticDeletedId?.Any() == true)
+                var lisTEntityDeletedId = listEntityAddUpdate.Where(x => x.IsDeleted).Select(x => x.Id).ToList();
+                if (lisTEntityDeletedId?.Any() == true)
                 {
-                    DeleteElastic(listElasticDeletedId);
-                    listEntityAddUpdate = listEntityAddUpdate.Where(x => !listElasticDeletedId.Contains(x.Id)).ToList();
+                    DeleteElastic(lisTEntityDeletedId);
+                    listEntityAddUpdate = listEntityAddUpdate.Where(x => !lisTEntityDeletedId.Contains(x.Id)).ToList();
                 }
 
                 // Add or Update
-                var listElastic = Mapper.Map<List<TElastic>>(listEntityAddUpdate);
-                AddUpdateElastic(listElastic);
+                var lisTEntity = Mapper.Map<List<TEntity>>(listEntityAddUpdate);
+                AddUpdateElastic(lisTEntity);
             }
 
             if (listEntityDelete != null && listEntityDelete.Any())
             {
-                var listElasticDeletedId = listEntityDelete.Select(x => x.Id);
-                DeleteElastic(listElasticDeletedId);
+                var lisTEntityDeletedId = listEntityDelete.Select(x => x.Id);
+                DeleteElastic(lisTEntityDeletedId);
             }
         }
 
