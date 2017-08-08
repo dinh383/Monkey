@@ -27,6 +27,12 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="Documentation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <!-- Puppy -->
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
@@ -105,9 +111,6 @@
     <!-- Markup Min -->
     <PackageReference Include="WebMarkupMin.AspNetCore1" Version="2.4.0" />
     <PackageReference Include="WebMarkupMin.NUglify" Version="2.4.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Areas\Portal\wwwroot\" />
   </ItemGroup>
 
 </Project>

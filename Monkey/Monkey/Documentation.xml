@@ -4,6 +4,12 @@
         <name>Monkey</name>
     </assembly>
     <members>
+        <member name="M:Monkey.Controllers.Api.TestApiController.Get">
+            <summary>
+                Test Get 
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Monkey.Extensions.CorsExtensions.CorsMiddlewareMonkey">
             <summary>
                 This middleware for hot fix current issue of AspNetCore Cors 

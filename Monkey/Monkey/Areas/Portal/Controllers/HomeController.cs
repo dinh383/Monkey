@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Monkey.Areas.Portal.Controllers
 {
     [Route("portal")]
-    public class HomeController : PortalMvcController
+    public class HomeController : MvcController
     {
         [Route("")]
         [HttpGet]

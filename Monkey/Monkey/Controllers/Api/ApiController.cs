@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Monkey.Filters;
 using Puppy.Web;
 
-namespace Monkey.Areas.Portal.Controllers
+namespace Monkey.Controllers.Api
 {
-    [Area("Portal")]
     [ServiceFilter(typeof(ApiExceptionFilter))]
     [Produces(ContentType.Json, ContentType.Xml)]
     [AllowAnonymous]
-    public class PortalApiController : Controller
+    public class ApiController : Controller
     {
     }
 }

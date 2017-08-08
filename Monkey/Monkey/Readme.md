@@ -10,14 +10,14 @@
 - I already have Area `Developers` for `API Docs` and `Background Job`
 - Api Docs
 
-  ![Swagger Api Doc](Assets/readme/Swagger_Api_Doc.png)
+  ![Swagger Api Doc](wwwroot/readme/Swagger_Api_Doc.png)
 
   + We use generate doc by [`Swagger AspNetCore`](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
   + Access via: [root]/developers?key=[developer access key] (Config it in [appsettings.json](appsettings.json) with KEY `Developers:AccessKey`)
 
 - Background Job
 
-  ![Backgroud Job Dashboard](Assets/readme/Backgroud_Job_Dashboard.png)
+  ![Backgroud Job Dashboard](wwwroot/readme/Backgroud_Job_Dashboard.png)
 
   + We use [Hangfire](https://www.hangfire.io/) with SQL Server (Can change it to Memory or Distribute Cache like Redis)
   + Access via: [root]/developers/job?key=[developer access key]
@@ -78,7 +78,7 @@
 1. Create Publish Profile to Server through Visual Studio (Remember Create Server User to use in create profile wizard)
    - Manual right click of folder and click publish for make sure all file is published
    - launchSettings.json
-   - Assets
+   - wwwroot
    - template
    - api-doc.xml file
    - Files for SEO
