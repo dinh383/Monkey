@@ -38,15 +38,19 @@
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
+    <ProjectReference Include="..\Monkey.Business.Logic\Monkey.Business.Logic.csproj" />
+    <ProjectReference Include="..\Monkey.Business\Monkey.Business.csproj" />
   </ItemGroup>
 
   <!-- Monkey -->
   <ItemGroup>
     <!-- Core -->
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
+    <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
     <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
     <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
     <ProjectReference Include="..\Monkey.Redis\Monkey.Redis.csproj" />
+    <ProjectReference Include="..\Monkey.Service.Facade\Monkey.Service.Facade.csproj" />
 
     <!-- Service -->
     <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
