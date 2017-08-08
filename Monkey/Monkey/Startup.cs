@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;
+using Puppy.Swagger;
+using System.IO;
 
 namespace Monkey
 {
@@ -54,8 +56,8 @@ namespace Monkey
                 // [Cros Policy]
                 .AddCorsMonkey()
 
-                // [Document API]
-                .AddSwaggerMonkey()
+                // [API Document] Swagger
+                .AddApiDocument(Path.Combine(Directory.GetCurrentDirectory(), "Documentation.xml"), ConfigurationRoot)
 
                 // [Background Job]
                 .AddHangfireMonkey()
@@ -97,8 +99,8 @@ namespace Monkey
                 // [Security] Identity Server
                 .UseIdentityServerMonkey()
 
-                // [Document API] Swagger
-                .UseSwaggerMonkey()
+                // [API Document] Swagger
+                .UseApiDocument()
 
                 // [Background Job] Hangfire
                 .UseHangfireMonkey()

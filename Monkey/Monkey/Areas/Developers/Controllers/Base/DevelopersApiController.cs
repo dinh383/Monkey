@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Areas.Developers.Filters;
 using Monkey.Filters;
+using Puppy.Swagger.Filters;
 using Puppy.Web;
-using Puppy.Web.Swagger;
 
 namespace Monkey.Areas.Developers.Controllers
 {

@@ -34,8 +34,7 @@ namespace Monkey
         public static void Main(string[] args)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Console.Title =
-                $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
+            Console.Title = $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
 
             // Build System Config at first time for config Root, in Startup will build again with reload update features
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);

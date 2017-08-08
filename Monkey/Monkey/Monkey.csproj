@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>Monkey.xml</DocumentationFile>
+    <DocumentationFile>Documentation.xml</DocumentationFile>
     <OutputPath>.\bin\</OutputPath>
     <NoWarn>1701;1702;1705;1591</NoWarn>
     <PlatformTarget>x64</PlatformTarget>
@@ -27,16 +27,11 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
   <!-- Puppy -->
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Swagger\Puppy.Swagger.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
     <ProjectReference Include="..\Monkey.Business.Logic\Monkey.Business.Logic.csproj" />
     <ProjectReference Include="..\Monkey.Business\Monkey.Business.csproj" />
@@ -71,9 +66,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.2" />
     
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-
-    <!-- Swagger -->
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
 
     <!-- AspNetCore WEB -->
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
@@ -113,6 +105,9 @@
     <!-- Markup Min -->
     <PackageReference Include="WebMarkupMin.AspNetCore1" Version="2.4.0" />
     <PackageReference Include="WebMarkupMin.NUglify" Version="2.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Portal\wwwroot\" />
   </ItemGroup>
 
 </Project>

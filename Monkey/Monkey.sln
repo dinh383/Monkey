@@ -88,6 +88,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Cleaner", "..\Puppy\P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Cloner", "..\Puppy\Puppy.Cloner\Puppy.Cloner.csproj", "{79ED2AB5-6B4C-4854-9C3A-49321916C49A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puppy.Swagger", "..\Puppy\Puppy.Swagger\Puppy.Swagger.csproj", "{18C185D7-8DC7-4195-BCA7-B3329CA76C66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -190,6 +192,10 @@ Global
 		{79ED2AB5-6B4C-4854-9C3A-49321916C49A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79ED2AB5-6B4C-4854-9C3A-49321916C49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79ED2AB5-6B4C-4854-9C3A-49321916C49A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18C185D7-8DC7-4195-BCA7-B3329CA76C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18C185D7-8DC7-4195-BCA7-B3329CA76C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18C185D7-8DC7-4195-BCA7-B3329CA76C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18C185D7-8DC7-4195-BCA7-B3329CA76C66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,6 +236,7 @@ Global
 		{C0A99CEA-B726-45F3-8BA4-C14D73F7AE67} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{B351070B-C3C0-44B4-8C6F-98D03630BBF0} = {C0A99CEA-B726-45F3-8BA4-C14D73F7AE67}
 		{79ED2AB5-6B4C-4854-9C3A-49321916C49A} = {C0A99CEA-B726-45F3-8BA4-C14D73F7AE67}
+		{18C185D7-8DC7-4195-BCA7-B3329CA76C66} = {8F3FB4A4-9288-4E11-B047-819F90D5D787}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = eede38c5-a915-41d1-a0b0-d7eeaa0bcca9

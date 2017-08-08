@@ -1,4 +1,5 @@
 ﻿@using Newtonsoft.Json
+@using Puppy.Swagger
 @using Constants = Monkey.Constants
 @{
     ViewData[Constants.ViewDataKey.Title] = "Landing Home";
@@ -16,6 +17,10 @@
     ViewData["MarkdownContent"] = "*Italic*, **bold**, and `monospace`";
 }
 <markdown asp-for="@ViewData["MarkdownContent"]" />
+
+@SwaggerConfig.SwaggerEndpoint <br />
+@SwaggerConfig.RouteTemplateEndpoint <br />
+@SwaggerConfig.RoutePrefix <br />
 
 <p markdown>```json
 @nameof(SystemConfigs.DatabaseConnectionString) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.DatabaseConnectionString, Formatting.Indented))

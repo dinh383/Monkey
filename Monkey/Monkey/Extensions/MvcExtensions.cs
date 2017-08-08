@@ -31,6 +31,7 @@ using Monkey.Model.Validators;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Web.Render;
 using System.IO;
+using System.Reflection;
 
 namespace Monkey.Extensions
 {
@@ -149,6 +150,7 @@ namespace Monkey.Extensions
 
             // Path and GZip for Statics Content
             string currentDirectory = Directory.GetCurrentDirectory();
+            string executedAssemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             foreach (var staticsContent in Core.SystemConfigs.MvcPath.StaticsContents)
             {
@@ -160,8 +162,18 @@ namespace Monkey.Extensions
 
                 if (!Directory.Exists(fileProviderPath))
                 {
+                    // Try to get folder in executed assembly
+                    fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
+                        ? Path.Combine(executedAssemblyDirectory, staticsContent.FolderRelativePath)
+                        : Path.Combine(executedAssemblyDirectory, Core.SystemConfigs.MvcPath.AreasRootFolderName,
+                            staticsContent.Area,
+                            staticsContent.FolderRelativePath);
+
                     // Skip if Directory is not exists
-                    continue;
+                    if (!Directory.Exists(fileProviderPath))
+                    {
+                        continue;
+                    }
                 }
 
                 PhysicalFileProvider fileProvider = new PhysicalFileProvider(fileProviderPath);
@@ -187,7 +199,6 @@ namespace Monkey.Extensions
             app.UseMvc(routes =>
             {
                 routes.MapRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}");
-
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
