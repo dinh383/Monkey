@@ -6,7 +6,10 @@ using Microsoft.Extensions.Logging;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;
+using Puppy.DependencyInjection;
+using Puppy.Redis;
 using Puppy.Swagger;
+using System;
 using System.IO;
 
 namespace Monkey
@@ -48,7 +51,8 @@ namespace Monkey
                 .AddAutoMapperMonkey()
 
                 // [Caching]
-                .AddCacheMonkey()
+                .AddMemoryCache()
+                .AddRedisCache(ConfigurationRoot)
 
                 // [Database]
                 .AddDatabaseMonkey()
@@ -119,6 +123,9 @@ namespace Monkey
         {
             // Migrate Database
             app.MigrateDatabase();
+
+            IRedisCacheManager redisCacheManager = app.Resolve<IRedisCacheManager>();
+            redisCacheManager.Set("Test", "Test Cache Data", TimeSpan.FromDays(1));
         }
     }
 }

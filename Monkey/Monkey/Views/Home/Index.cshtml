@@ -18,9 +18,11 @@
 }
 <markdown asp-for="@ViewData["MarkdownContent"]" />
 
-@SwaggerConfig.SwaggerEndpoint <br />
-@SwaggerConfig.RouteTemplateEndpoint <br />
-@SwaggerConfig.RoutePrefix <br />
+Cache Data: @ViewBag.Cache <br />
+
+SwaggerEndpoint: @SwaggerConfig.SwaggerEndpoint <br />
+RouteTemplateEndpoint: @SwaggerConfig.RouteTemplateEndpoint <br />
+RoutePrefix: @SwaggerConfig.RoutePrefix <br />
 
 <p markdown>```json
 @nameof(SystemConfigs.DatabaseConnectionString) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.DatabaseConnectionString, Formatting.Indented))
@@ -29,7 +31,6 @@
 @nameof(SystemConfigs.Developers) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Developers, Formatting.Indented))
 @nameof(SystemConfigs.Server) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Server, Formatting.Indented))
 @nameof(SystemConfigs.IdentityServer) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.IdentityServer, Formatting.Indented))
-@nameof(SystemConfigs.DistributedCache) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.DistributedCache, Formatting.Indented))
 @nameof(SystemConfigs.Elastic) : @Html.Raw(JsonConvert.SerializeObject(SystemConfigs.Elastic, Formatting.Indented))
 ```
 </p>

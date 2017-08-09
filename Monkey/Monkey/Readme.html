@@ -856,7 +856,7 @@ MathJax.Hub.Config({
     {
         <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">SomeConfig</span>
         {
-            <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Service</span>(<span class="pl-en">IServiceCollection</span> <span class="pl-smi">services</span>)
+            <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">Service</span>(<span class="pl-en">IServiceCollection</span> <span class="pl-smi">applicationBuilder</span>)
             {
             }
 
@@ -934,7 +934,7 @@ MathJax.Hub.Config({
 <p>Remember to config DbContext if use Entity Framework in Startup, without it when run cmd in publish folder will throw null error</p>
 <div class="highlight highlight-source-cs"><pre><span class="pl-c">// Use Entity Framework</span>
 <span class="pl-c">// We can use EnvironmentName or MachineName to detect correct connection string.</span>
-<span class="pl-en">services.AddDbContext</span>&lt;<span class="pl-en">Data</span>.<span class="pl-en">EF</span>.<span class="pl-en">DbContext</span>&gt;(builder =&gt;
+<span class="pl-en">applicationBuilder.AddDbContext</span>&lt;<span class="pl-en">Data</span>.<span class="pl-en">EF</span>.<span class="pl-en">DbContext</span>&gt;(builder =&gt;
 builder.UseSqlServer(
     ConfigureHelper.Configuration.GetConnectionString(ConfigureHelper.Environment.EnvironmentName),
     options =&gt; options.MigrationsAssembly(<span class="pl-k">typeof</span>(<span class="pl-en">IDataModule</span>).GetTypeInfo().Assembly.GetName().Name)));</pre></div>

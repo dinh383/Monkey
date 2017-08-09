@@ -61,7 +61,7 @@ namespace Monkey.Extensions
             // of Injection I assumption configuration is singleton and use Statics class to do it.
             // Keep Simple everything Possible.
 
-            IConfigurationRoot configurationRoot = app.ApplicationServices.Resolve<IConfigurationRoot>();
+            IConfigurationRoot configurationRoot = app.Resolve<IConfigurationRoot>();
 
             ChangeToken.OnChange(configurationRoot.GetReloadToken, () =>
             {
@@ -91,8 +91,6 @@ namespace Monkey.Extensions
             Core.SystemConfigs.Server = configuration.GetSection<ServerConfigModel>(nameof(Core.SystemConfigs.Server));
 
             Core.SystemConfigs.IdentityServer = configuration.GetSection<IdentityServerConfigModel>(nameof(Core.SystemConfigs.IdentityServer));
-
-            Core.SystemConfigs.DistributedCache = configuration.GetSection<DistributedCacheConfigModel>(nameof(Core.SystemConfigs.DistributedCache));
 
             Core.SystemConfigs.Elastic = configuration.GetSection<ElasticConfigModel>(nameof(Core.SystemConfigs.Elastic));
         }

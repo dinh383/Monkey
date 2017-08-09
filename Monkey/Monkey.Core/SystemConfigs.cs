@@ -57,11 +57,6 @@ namespace Monkey.Core
         public static IdentityServerConfigModel IdentityServer { get; set; }
 
         /// <summary>
-        ///     Distributed Caching 
-        /// </summary>
-        public static DistributedCacheConfigModel DistributedCache { get; set; }
-
-        /// <summary>
         ///     Elastic Search Engine 
         /// </summary>
         public static ElasticConfigModel Elastic { get; set; }
