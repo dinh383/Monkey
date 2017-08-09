@@ -27,18 +27,6 @@
             </summary>
             <param name="services"></param>
         </member>
-        <member name="M:Monkey.Extensions.HangfireExtensions.AddHangfireMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-                [Background Job] Hangfire 
-            </summary>
-            <param name="services"></param>
-        </member>
-        <member name="M:Monkey.Extensions.HangfireExtensions.UseHangfireMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-                [Background Job] Hangfire Use dashboard and server 
-            </summary>
-            <param name="app"></param>
-        </member>
         <member name="M:Monkey.Extensions.IdentityServerExtensions.UseIdentityServerMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
                 [Security] Identity Server 

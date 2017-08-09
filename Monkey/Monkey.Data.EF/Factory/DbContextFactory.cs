@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Puppy.Core;
+using Puppy.Core.ConfigUtils;
 using Puppy.Core.EnvironmentUtils;
 
 namespace Monkey.Data.EF.Factory
@@ -34,13 +35,8 @@ namespace Monkey.Data.EF.Factory
         /// <returns></returns>
         public static string GetConnectionString()
         {
-            string connectionStringSection =
-                (EnvironmentHelper.IsProduction() || EnvironmentHelper.IsStaging())
-                    ? $"ConnectionStrings:{EnvironmentHelper.Name}"
-                    : $"ConnectionStrings:{EnvironmentHelper.MachineName}";
-
             IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-            var connectionString = config.GetValue<string>(connectionStringSection);
+            var connectionString = config.GetValueByMachineAndEnv<string>("ConnectionStrings");
             return connectionString;
         }
 

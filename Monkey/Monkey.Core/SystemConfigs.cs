@@ -37,16 +37,6 @@ namespace Monkey.Core
         public static MvcPathConfigModel MvcPath { get; set; }
 
         /// <summary>
-        ///     Log to File, Console 
-        /// </summary>
-        public static SerilogConfigModel Serilog { get; set; }
-
-        /// <summary>
-        ///     Developer Config, API Document and Background Job 
-        /// </summary>
-        public static DevelopersConfigModel Developers { get; set; }
-
-        /// <summary>
         ///     Extra Server Info when Response created 
         /// </summary>
         public static ServerConfigModel Server { get; set; }
@@ -55,10 +45,5 @@ namespace Monkey.Core
         ///     Identity Server - SSO - Scalable System 
         /// </summary>
         public static IdentityServerConfigModel IdentityServer { get; set; }
-
-        /// <summary>
-        ///     Elastic Search Engine 
-        /// </summary>
-        public static ElasticConfigModel Elastic { get; set; }
     }
 }

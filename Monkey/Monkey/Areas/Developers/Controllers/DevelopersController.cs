@@ -8,12 +8,12 @@ namespace Monkey.Areas.Developers.Controllers
     [Route("Developers")]
     public class DevelopersController : DevelopersMvcController
     {
-        [Route("")]
+        [Route("~/developers")]
         [HttpGet]
         [ServiceFilter(typeof(ApiDocAccessFilter))]
         public IActionResult Index() => Helper.GetApiDocHtml(Url, Url.AbsoluteAction("JsonViewer", "Developers", new { area = "Developers" }));
 
-        [Route("JsonViewer")]
+        [Route("~/developers/json-viewer")]
         [HttpGet]
         [ServiceFilter(typeof(ApiDocAccessFilter))]
         public IActionResult JsonViewer() => Helper.GetApiJsonViewerHtml(Url);

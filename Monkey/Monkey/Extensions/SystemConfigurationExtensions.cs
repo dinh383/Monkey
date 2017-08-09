@@ -25,7 +25,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Monkey.Core.ConfigModels;
 using Puppy.Core.ConfigUtils;
-using Puppy.Core.EnvironmentUtils;
 using Puppy.DependencyInjection;
 
 namespace Monkey.Extensions
@@ -81,31 +80,14 @@ namespace Monkey.Extensions
         {
             // Database Connection String
             GetDatabaseConnectionStringConfig(configuration);
-
             GetMvcPathConfig(configuration);
-
-            Core.SystemConfigs.Serilog = configuration.GetSection<SerilogConfigModel>(nameof(Core.SystemConfigs.Serilog));
-
-            Core.SystemConfigs.Developers = configuration.GetSection<DevelopersConfigModel>(nameof(Core.SystemConfigs.Developers));
-
             Core.SystemConfigs.Server = configuration.GetSection<ServerConfigModel>(nameof(Core.SystemConfigs.Server));
-
             Core.SystemConfigs.IdentityServer = configuration.GetSection<IdentityServerConfigModel>(nameof(Core.SystemConfigs.IdentityServer));
-
-            Core.SystemConfigs.Elastic = configuration.GetSection<ElasticConfigModel>(nameof(Core.SystemConfigs.Elastic));
         }
 
         private static void GetDatabaseConnectionStringConfig(IConfiguration configuration)
         {
-            string databaseConnectionString =
-                configuration
-                    .GetValue<string>(
-                        (EnvironmentHelper.IsProduction() || EnvironmentHelper.IsStaging())
-                            ? $"ConnectionStrings:{EnvironmentHelper.Name}"
-                            : $"ConnectionStrings:{EnvironmentHelper.MachineName}");
-
-            // Database Connection String is Simple Type so it still exist in SystemConfig object
-            Core.SystemConfigs.DatabaseConnectionString = databaseConnectionString;
+            Core.SystemConfigs.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
         }
 
         private static void GetMvcPathConfig(IConfiguration configuration)

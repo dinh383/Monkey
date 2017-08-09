@@ -11,6 +11,8 @@ using Puppy.Redis;
 using Puppy.Swagger;
 using System;
 using System.IO;
+using Monkey.Core;
+using Puppy.Hangfire;
 
 namespace Monkey
 {
@@ -64,7 +66,7 @@ namespace Monkey
                 .AddApiDocument(Path.Combine(Directory.GetCurrentDirectory(), "Documentation.xml"), ConfigurationRoot)
 
                 // [Background Job]
-                .AddHangfireMonkey()
+                .AddHangfire(SystemConfigs.DatabaseConnectionString, ConfigurationRoot)
 
                 // [Mini Response]
                 .AddWebMarkupMinMonkey()
@@ -107,7 +109,7 @@ namespace Monkey
                 .UseApiDocument()
 
                 // [Background Job] Hangfire
-                .UseHangfireMonkey()
+                .UseHangfire()
 
                 // [Mini Response] WebMarkup
                 .UseWebMarkupMinMonkey()

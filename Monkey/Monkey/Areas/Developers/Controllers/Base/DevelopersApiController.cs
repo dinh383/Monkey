@@ -7,7 +7,7 @@ using Puppy.Web;
 
 namespace Monkey.Areas.Developers.Controllers
 {
-    [Area("Developers")]
+    [Area("Hangfire")]
     [ServiceFilter(typeof(ApiExceptionFilter))]
     [ServiceFilter(typeof(DeveloperAccessFilter))]
     [Produces(ContentType.Json, ContentType.Xml)]

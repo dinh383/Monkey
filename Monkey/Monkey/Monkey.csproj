@@ -37,6 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Hangfire\Puppy.Hangfire.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Redis\Puppy.Redis.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Swagger\Puppy.Swagger.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
@@ -63,6 +64,7 @@
   <!-- External Libraries -->
   <ItemGroup>
     <!-- AspNetCore API -->
+    <PackageReference Include="IdentityModel" Version="2.10.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="1.1.2" />
@@ -95,7 +97,6 @@
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
 
     <!-- Identity Server -->
-    <PackageReference Include="IdentityModel" Version="2.10.0" />
     <PackageReference Include="IdentityServer4" Version="1.5.2" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="1.2.1" />
     
