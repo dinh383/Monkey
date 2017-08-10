@@ -32,6 +32,8 @@ using Puppy.Core.EnvironmentUtils;
 using Puppy.Web.Render;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
+using Puppy.Web;
 
 namespace Monkey.Extensions
 {
@@ -59,7 +61,12 @@ namespace Monkey.Extensions
 
             // Setup Mvc
             services
-                .AddMvc()
+                .AddMvc(options =>
+                {
+                    options.RespectBrowserAcceptHeader = true;
+                    options.Filters.Add(new ProducesAttribute(ContentType.Xml));
+                    options.Filters.Add(new ProducesAttribute(ContentType.Json));
+                })
                 .AddXmlDataContractSerializerFormatters()
                 .AddJsonOptions(options =>
                 {

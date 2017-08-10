@@ -21,24 +21,21 @@ namespace Monkey
 {
     public static class Constants
     {
+        /// <summary>
+        ///     Configuration Endpoint for Area and Controller 
+        /// </summary>
+        public static class Endpoint
+        {
+            public static class DevelopersArea
+            {
+                public const string Root = "developers";
+                public const string Developers = "developers";
+            }
+        }
+
         public static class ViewDataKey
         {
-            // Common
             public const string Title = nameof(Title);
-
-            public const string Description = nameof(Description);
-
-            public const string PageUrl = nameof(PageUrl);
-
-            public const string ImageUrl = nameof(ImageUrl);
-
-            // Facebook
-            public const string FacebookType = nameof(FacebookType);
-
-            // Twitter
-            public const string TwitterType = nameof(TwitterType);
-
-            public const string TwitterSite = nameof(TwitterSite);
         }
     }
 }

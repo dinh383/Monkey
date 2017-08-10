@@ -25,19 +25,32 @@ namespace Monkey.ViewModels.Api
 {
     public class ApiErrorViewModel
     {
+        public ApiErrorViewModel()
+        {
+        }
+
         public ApiErrorViewModel(ErrorCode code, string message)
         {
             Code = code;
             Message = string.IsNullOrWhiteSpace(message) ? code.AsString(EnumFormat.Description) : message;
-            Module = code.AsString(EnumFormat.DisplayName); ;
+            Module = code.AsString(EnumFormat.DisplayName);
         }
 
-        public ErrorCode Code { get; set; }
+        /// <summary>
+        ///     Unique Code for each Business 
+        /// </summary>
+        public ErrorCode Code { get; set; } = ErrorCode.Unknown;
 
+        /// <summary>
+        ///     Message description for Client App Developer 
+        /// </summary>
         public string Message { get; set; }
 
+        /// <summary>
+        ///     Module of business 
+        /// </summary>
         public string Module { get; set; }
 
-        public List<(string PropertyName, object value)> ListPropertyValue { get; set; }
+        public List<KeyValuePair<string, dynamic>> ListKeyValue { get; set; }
     }
 }

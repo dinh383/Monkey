@@ -38,6 +38,7 @@
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Hangfire\Puppy.Hangfire.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Logger\Puppy.Logger.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Redis\Puppy.Redis.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Swagger\Puppy.Swagger.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
@@ -88,13 +89,6 @@
     <!-- Secret -->
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
-
-    <!-- Write Log - Serilog -->
-    <PackageReference Include="Serilog" Version="2.5.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="1.4.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="2.4.0" />
-    <PackageReference Include="Serilog.Sinks.ColoredConsole" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
 
     <!-- Identity Server -->
     <PackageReference Include="IdentityServer4" Version="1.5.2" />

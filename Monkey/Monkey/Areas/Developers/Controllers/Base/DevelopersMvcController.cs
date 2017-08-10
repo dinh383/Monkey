@@ -5,7 +5,7 @@ using Puppy.Swagger.Filters;
 
 namespace Monkey.Areas.Developers.Controllers
 {
-    [Area("Developers")]
+    [Area(Constants.Endpoint.DevelopersArea.Root)]
     [ServiceFilter(typeof(DeveloperAccessFilter))]
     [AllowAnonymous]
     [HideInDocs]

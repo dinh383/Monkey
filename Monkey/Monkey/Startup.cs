@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using Monkey.Core;
 using Puppy.Hangfire;
+using Puppy.Logger;
 
 namespace Monkey
 {
@@ -94,7 +95,7 @@ namespace Monkey
                 .UseSystemInfo()
 
                 // [Log] Serilog
-                .UseLogMonkey(loggerFactory, ConfigurationRoot)
+                .UseLogger(loggerFactory, ConfigurationRoot)
 
                 // [Cros] Policy
                 .UseCorsMonkey()

@@ -4,6 +4,11 @@
         <name>Monkey</name>
     </assembly>
     <members>
+        <member name="T:Monkey.Constants.Endpoint">
+            <summary>
+                Configuration Endpoint for Area and Controller 
+            </summary>
+        </member>
         <member name="M:Monkey.Controllers.Api.TestApiController.Get">
             <summary>
                 Test Get 
@@ -32,14 +37,6 @@
                 [Security] Identity Server 
             </summary>
             <param name="app"></param>
-        </member>
-        <member name="M:Monkey.Extensions.LogExtensions.UseLogMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Configuration.IConfigurationRoot)">
-            <summary>
-                [Log] Serilog 
-            </summary>
-            <param name="app">              </param>
-            <param name="loggerFactory">    </param>
-            <param name="configurationRoot"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddMvcMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
@@ -75,6 +72,21 @@
             <param name="services">          </param>
             <param name="hostingEnvironment"></param>
             <param name="configurationRoot"> </param>
+        </member>
+        <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">
+            <summary>
+                Unique Code for each Business 
+            </summary>
+        </member>
+        <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Message">
+            <summary>
+                Message description for Client App Developer 
+            </summary>
+        </member>
+        <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Module">
+            <summary>
+                Module of business 
+            </summary>
         </member>
     </members>
 </doc>

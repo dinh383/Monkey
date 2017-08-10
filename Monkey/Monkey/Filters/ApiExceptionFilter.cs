@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.ViewModels.Api;
 using Puppy.Core.XmlUtils;
+using Puppy.Logger;
 using Puppy.Web;
-using Serilog;
 using System;
 using System.Net;
 
@@ -43,10 +43,10 @@ namespace Monkey.Filters
             }
 
             // Log Error
-            Log.Logger.Error(context.Exception, apiErrorViewModel.Message);
+            Log.Error(context.Exception);
 
             // Response
-            if (context.HttpContext.Request.ContentType == ContentType.Xml)
+            if (context.HttpContext.Request.Headers[HttpRequestHeader.Accept.ToString()] == ContentType.Xml)
             {
                 context.Result = new ContentResult
                 {

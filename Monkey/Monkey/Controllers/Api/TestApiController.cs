@@ -16,6 +16,7 @@ namespace Monkey.Controllers.Api
         [SwaggerResponse((int)HttpStatusCode.OK, typeof(string), "Data")]
         public IActionResult Get()
         {
+            var a = int.Parse("a");
             return Ok(new
             {
                 Data = "Sample Data"

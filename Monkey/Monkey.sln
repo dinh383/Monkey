@@ -94,7 +94,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Redis", "..\Puppy\Pup
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundJob", "BackgroundJob", "{3DB6AB5B-FAF8-4DE9-BA40-109075669AFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puppy.Hangfire", "..\Puppy\Puppy.Hangfire\Puppy.Hangfire.csproj", "{98C27193-2F71-474D-B3D3-8BA084EBD115}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Hangfire", "..\Puppy\Puppy.Hangfire\Puppy.Hangfire.csproj", "{98C27193-2F71-474D-B3D3-8BA084EBD115}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logger", "Logger", "{F1E65356-CCD1-4C2C-9FF4-85C64352F2F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puppy.Logger", "..\Puppy\Puppy.Logger\Puppy.Logger.csproj", "{6EAB5380-6752-4823-A219-979A7B141D9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -206,6 +210,10 @@ Global
 		{98C27193-2F71-474D-B3D3-8BA084EBD115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98C27193-2F71-474D-B3D3-8BA084EBD115}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98C27193-2F71-474D-B3D3-8BA084EBD115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EAB5380-6752-4823-A219-979A7B141D9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EAB5380-6752-4823-A219-979A7B141D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EAB5380-6752-4823-A219-979A7B141D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EAB5380-6752-4823-A219-979A7B141D9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +258,8 @@ Global
 		{81420E45-C0E5-4C42-8A6B-919014B951B5} = {D1573FBD-33B4-44DC-B289-480EB6B791B6}
 		{3DB6AB5B-FAF8-4DE9-BA40-109075669AFA} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
 		{98C27193-2F71-474D-B3D3-8BA084EBD115} = {3DB6AB5B-FAF8-4DE9-BA40-109075669AFA}
+		{F1E65356-CCD1-4C2C-9FF4-85C64352F2F8} = {1BAE0076-5EFF-432E-AB14-06CC66B6BF90}
+		{6EAB5380-6752-4823-A219-979A7B141D9B} = {F1E65356-CCD1-4C2C-9FF4-85C64352F2F8}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = eede38c5-a915-41d1-a0b0-d7eeaa0bcca9

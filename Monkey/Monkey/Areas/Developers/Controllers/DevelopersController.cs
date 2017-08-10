@@ -5,15 +5,17 @@ using Puppy.Web;
 
 namespace Monkey.Areas.Developers.Controllers
 {
-    [Route("Developers")]
+    [Route(Constants.Endpoint.DevelopersArea.Developers)]
     public class DevelopersController : DevelopersMvcController
     {
-        [Route("~/developers")]
+        [Route("")]
         [HttpGet]
         [ServiceFilter(typeof(ApiDocAccessFilter))]
-        public IActionResult Index() => Helper.GetApiDocHtml(Url, Url.AbsoluteAction("JsonViewer", "Developers", new { area = "Developers" }));
+        public IActionResult Index() => Helper.GetApiDocHtml(Url,
+            Url.AbsoluteAction(nameof(JsonViewer), Constants.Endpoint.DevelopersArea.Developers,
+                new {area = Constants.Endpoint.DevelopersArea.Root}));
 
-        [Route("~/developers/json-viewer")]
+        [Route("json-viewer")]
         [HttpGet]
         [ServiceFilter(typeof(ApiDocAccessFilter))]
         public IActionResult JsonViewer() => Helper.GetApiJsonViewerHtml(Url);
