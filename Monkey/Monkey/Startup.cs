@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monkey.Core;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;
 using Puppy.DependencyInjection;
+using Puppy.Hangfire;
+using Puppy.Logger;
 using Puppy.Redis;
 using Puppy.Swagger;
 using System;
 using System.IO;
-using Monkey.Core;
-using Puppy.Hangfire;
-using Puppy.Logger;
 
 namespace Monkey
 {
@@ -53,6 +53,9 @@ namespace Monkey
                 // [Mapper]
                 .AddAutoMapperMonkey()
 
+                // [Logger]
+                .AddLogger(ConfigurationRoot)
+
                 // [Caching]
                 .AddMemoryCache()
                 .AddRedisCache(ConfigurationRoot)
@@ -85,6 +88,9 @@ namespace Monkey
             // Don't mad it !!!
 
             app
+                // [Logger]
+                .UseLogger(loggerFactory)
+
                 // [System Configs]
                 .UseSystemConfigurationMonkey(loggerFactory)
 
@@ -93,9 +99,6 @@ namespace Monkey
 
                 // [Response] System Information
                 .UseSystemInfo()
-
-                // [Log] Serilog
-                .UseLogger(loggerFactory, ConfigurationRoot)
 
                 // [Cros] Policy
                 .UseCorsMonkey()

@@ -12,6 +12,7 @@ namespace Monkey.Controllers.Mvc
         {
             _redisCacheManager = redisCacheManager;
         }
+
         [Route("")]
         [HttpGet]
         public IActionResult Index()
