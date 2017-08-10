@@ -107,5 +107,13 @@
     <PackageReference Include="WebMarkupMin.AspNetCore1" Version="2.4.0" />
     <PackageReference Include="WebMarkupMin.NUglify" Version="2.4.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+  </ItemGroup>
 
 </Project>

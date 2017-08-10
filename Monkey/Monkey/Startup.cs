@@ -12,7 +12,6 @@ using Puppy.Hangfire;
 using Puppy.Logger;
 using Puppy.Redis;
 using Puppy.Swagger;
-using System;
 using System.IO;
 
 namespace Monkey
@@ -127,11 +126,12 @@ namespace Monkey
 
         public static void ApplicationStart(IApplicationBuilder app)
         {
+            // Verify Redis Setting is Fine
+            IRedisCacheManager redisCacheManager = app.Resolve<IRedisCacheManager>();
+            redisCacheManager.VerifySetup();
+
             // Migrate Database
             app.MigrateDatabase();
-
-            IRedisCacheManager redisCacheManager = app.Resolve<IRedisCacheManager>();
-            redisCacheManager.Set("Test", "Test Cache Data", TimeSpan.FromDays(1));
         }
     }
 }

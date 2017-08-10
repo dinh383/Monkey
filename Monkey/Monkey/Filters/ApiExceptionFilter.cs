@@ -42,8 +42,9 @@ namespace Monkey.Filters
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 
-            // Log Error
-            Log.Error(context.Exception);
+            // Log
+            Guid errorLogId = Log.Error(context.Exception);
+            Guid fatalLogId = Log.Fatal(context.Exception);
 
             // Response
             if (context.HttpContext.Request.Headers[HttpRequestHeader.Accept.ToString()] == ContentType.Xml)
