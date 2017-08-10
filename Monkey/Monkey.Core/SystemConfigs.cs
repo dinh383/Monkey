@@ -37,11 +37,6 @@ namespace Monkey.Core
         public static MvcPathConfigModel MvcPath { get; set; }
 
         /// <summary>
-        ///     Extra Server Info when Response created 
-        /// </summary>
-        public static ServerConfigModel Server { get; set; }
-
-        /// <summary>
         ///     Identity Server - SSO - Scalable System 
         /// </summary>
         public static IdentityServerConfigModel IdentityServer { get; set; }

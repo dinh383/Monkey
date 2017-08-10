@@ -15,11 +15,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Monkey.Extensions.CorsExtensions.CorsMiddlewareMonkey">
-            <summary>
-                This middleware for hot fix current issue of AspNetCore Cors 
-            </summary>
-        </member>
         <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabaseMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Database] Use Entity Framework 
@@ -54,12 +49,6 @@
         <member name="M:Monkey.Extensions.MvcExtensions.UseMvcMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
                 [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
-            </summary>
-            <param name="app"></param>
-        </member>
-        <member name="M:Monkey.Extensions.ProcessingTimeExtensions.UseProcessingTimeMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-                [Response] Information about executed time 
             </summary>
             <param name="app"></param>
         </member>

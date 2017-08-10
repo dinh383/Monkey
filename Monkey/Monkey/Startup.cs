@@ -12,6 +12,9 @@ using Puppy.Hangfire;
 using Puppy.Logger;
 using Puppy.Redis;
 using Puppy.Swagger;
+using Puppy.Web.Middlewares;
+using Puppy.Web.Middlewares.Cros;
+using Puppy.Web.Middlewares.ServerInfo;
 using System.IO;
 
 namespace Monkey
@@ -43,6 +46,9 @@ namespace Monkey
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                // [API Cros]
+                .AddCors(ConfigurationRoot)
+
                 // [System Configs]
                 .AddSystemConfigurationMonkey(Environment, ConfigurationRoot)
 
@@ -62,9 +68,6 @@ namespace Monkey
                 // [Database]
                 .AddDatabaseMonkey()
 
-                // [Cros Policy]
-                .AddCorsMonkey()
-
                 // [API Document] Swagger
                 .AddApiDocument(Path.Combine(Directory.GetCurrentDirectory(), "Documentation.xml"), ConfigurationRoot)
 
@@ -81,26 +84,26 @@ namespace Monkey
                 .AddMvcMonkey();
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
             // [Important] The order of middleware very important for request and response handle!
             // Don't mad it !!!
 
             app
+                // [API Cros]
+                .UseCors()
+
                 // [Logger]
-                .UseLogger(loggerFactory)
+                .UseLogger(loggerFactory, appLifetime)
 
                 // [System Configs]
                 .UseSystemConfigurationMonkey(loggerFactory)
 
                 // [Response] Time Executed Information
-                .UseProcessingTimeMonkey()
+                .UseProcessingTime()
 
-                // [Response] System Information
-                .UseSystemInfo()
-
-                // [Cros] Policy
-                .UseCorsMonkey()
+                // [Server Info]
+                .UseServerInfo(ConfigurationRoot)
 
                 // [Exception]
                 .UseExceptionMonkey()

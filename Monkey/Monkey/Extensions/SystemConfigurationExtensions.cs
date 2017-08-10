@@ -81,7 +81,6 @@ namespace Monkey.Extensions
             // Database Connection String
             GetDatabaseConnectionStringConfig(configuration);
             GetMvcPathConfig(configuration);
-            Core.SystemConfigs.Server = configuration.GetSection<ServerConfigModel>(nameof(Core.SystemConfigs.Server));
             Core.SystemConfigs.IdentityServer = configuration.GetSection<IdentityServerConfigModel>(nameof(Core.SystemConfigs.IdentityServer));
         }
 
