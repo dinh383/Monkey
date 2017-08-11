@@ -4,9 +4,9 @@ using Puppy.Swagger.Filters;
 
 namespace Monkey.Areas.Portal.Controllers
 {
-    [Area("Portal")]
-    [HideInDocs]
     [AllowAnonymous]
+    [HideInDocs]
+    [Area(Constants.Endpoint.PortalArea.Root)]
     public class MvcController : Controller
     {
     }

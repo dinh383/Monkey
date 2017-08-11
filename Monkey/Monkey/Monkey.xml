@@ -6,42 +6,42 @@
     <members>
         <member name="T:Monkey.ServiceCollectionExtensions.CorsServiceCollectionExtensions.CorsMiddlewareMonkey">
             <summary>
-                This middleware for hot fix current issue of AspNetCore Cors 
+                This middleware for hot fix current issue of AspNetCore Cors
             </summary>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.DatabaseServiceCollectionExtensions.AddDatabaseMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Database] Use Entity Framework 
+                [Database] Use Entity Framework
             </summary>
             <param name="applicationBuilder"></param>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.DependencyInjectionServiceCollectionExtensions.AddDependencyInjectionMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Dependency Injection] 
+                [Dependency Injection]
             </summary>
             <param name="applicationBuilder"></param>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.HangfireServiceCollectionExtensions.AddHangfireMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Background Job] Hangfire 
+                [Background Job] Hangfire
             </summary>
             <param name="applicationBuilder"></param>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.HangfireServiceCollectionExtensions.UseHangfireMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Background Job] Hangfire Use dashboard and server 
+                [Background Job] Hangfire Use dashboard and server
             </summary>
             <param name="app"></param>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.IdentityServerServiceCollectionExtensions.UseIdentityServerMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Security] Identity Server 
+                [Security] Identity Server
             </summary>
             <param name="app"></param>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.LogServiceCollectionExtensions.UseLogMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.ServiceCollectionExtensions.Logging.ILoggerFactory,Microsoft.ServiceCollectionExtensions.Configuration.IConfigurationRoot)">
             <summary>
-                [Log] Serilog 
+                [Log] Serilog
             </summary>
             <param name="app">              </param>
             <param name="loggerFactory">    </param>
@@ -49,26 +49,26 @@
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.MvcServiceCollectionExtensions.AddMvcMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Mvc] Json, Xml serialize, area and response caching 
+                [Mvc] Json, Xml serialize, area and response caching
             </summary>
             <param name="applicationBuilder"></param>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.MvcServiceCollectionExtensions.AddAntiforgeryTokenMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
             <summary>
-                Configures the anti-forgery tokens for better security. 
+                Configures the anti-forgery tokens for better security.
             </summary>
             <param name="applicationBuilder"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.MvcServiceCollectionExtensions.UseMvcMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
+                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing
             </summary>
             <param name="app"></param>
         </member>
         <member name="M:Monkey.ServiceCollectionExtensions.ProcessingTimeServiceCollectionExtensions.UseProcessingTime(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Response] Information about executed time 
+                [Response] Information about executed time
             </summary>
             <param name="app"></param>
         </member>

@@ -20,6 +20,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,11 +30,10 @@ using Monkey.Areas.Developers.Filters;
 using Monkey.Filters;
 using Monkey.Model.Validators;
 using Puppy.Core.EnvironmentUtils;
+using Puppy.Web;
 using Puppy.Web.Render;
 using System.IO;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
-using Puppy.Web;
 
 namespace Monkey.Extensions
 {

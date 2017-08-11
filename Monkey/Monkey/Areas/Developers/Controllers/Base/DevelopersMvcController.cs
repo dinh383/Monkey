@@ -5,10 +5,10 @@ using Puppy.Swagger.Filters;
 
 namespace Monkey.Areas.Developers.Controllers
 {
-    [Area(Constants.Endpoint.DevelopersArea.Root)]
-    [ServiceFilter(typeof(DeveloperAccessFilter))]
     [AllowAnonymous]
     [HideInDocs]
+    [Area(Constants.Endpoint.DevelopersArea.Root)]
+    [ServiceFilter(typeof(DeveloperAccessFilter))]
     public class DevelopersMvcController : Controller
     {
     }

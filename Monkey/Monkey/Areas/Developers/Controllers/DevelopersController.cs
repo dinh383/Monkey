@@ -13,7 +13,7 @@ namespace Monkey.Areas.Developers.Controllers
         [ServiceFilter(typeof(ApiDocAccessFilter))]
         public IActionResult Index() => Helper.GetApiDocHtml(Url,
             Url.AbsoluteAction(nameof(JsonViewer), Constants.Endpoint.DevelopersArea.Developers,
-                new {area = Constants.Endpoint.DevelopersArea.Root}));
+                new { area = Constants.Endpoint.DevelopersArea.Root }));
 
         [Route("json-viewer")]
         [HttpGet]

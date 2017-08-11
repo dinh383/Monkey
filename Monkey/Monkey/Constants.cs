@@ -31,6 +31,12 @@ namespace Monkey
                 public const string Root = "developers";
                 public const string Developers = "developers";
             }
+
+            public static class PortalArea
+            {
+                public const string Root = "portal";
+                public const string Home = "portal";
+            }
         }
 
         public static class ViewDataKey
