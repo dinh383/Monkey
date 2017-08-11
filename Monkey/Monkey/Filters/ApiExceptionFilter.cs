@@ -43,8 +43,10 @@ namespace Monkey.Filters
             }
 
             // Log
-            Guid errorLogId = Log.Error(context.Exception);
-            Guid fatalLogId = Log.Fatal(context.Exception);
+            string logId = Log.Error(context);
+
+            // Update ID of error model as log id
+            apiErrorViewModel.Id = logId;
 
             // Response
             if (context.HttpContext.Request.Headers[HttpRequestHeader.Accept.ToString()] == ContentType.Xml)

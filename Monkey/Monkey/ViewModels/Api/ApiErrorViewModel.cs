@@ -36,6 +36,8 @@ namespace Monkey.ViewModels.Api
             Module = code.AsString(EnumFormat.DisplayName);
         }
 
+        public string Id { get; set; }
+
         /// <summary>
         ///     Unique Code for each Business 
         /// </summary>

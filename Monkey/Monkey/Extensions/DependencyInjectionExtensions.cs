@@ -2,7 +2,7 @@
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
-//     <Url> http://topnguyen.net/ </Url>
+//     <DisplayUrl> http://topnguyen.net/ </DisplayUrl>
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>

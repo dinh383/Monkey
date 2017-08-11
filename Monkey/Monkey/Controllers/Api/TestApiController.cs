@@ -11,16 +11,21 @@ namespace Monkey.Controllers.Api
         ///     Test Get 
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("")]
         [SwaggerResponse((int)HttpStatusCode.OK, typeof(string), "Data")]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery]string data, [FromBody] TestData testData)
         {
             var a = int.Parse("a");
             return Ok(new
             {
                 Data = "Sample Data"
             });
+        }
+
+        public class TestData
+        {
+            public string Data { get; set; }
         }
     }
 }

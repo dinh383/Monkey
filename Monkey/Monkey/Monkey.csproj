@@ -32,6 +32,10 @@
   <ItemGroup>
     <Folder Include="Logs\" />
     <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Logs\" />
     <Folder Include="wwwroot\">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Folder>

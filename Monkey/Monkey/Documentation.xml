@@ -9,7 +9,7 @@
                 Configuration Endpoint for Area and Controller 
             </summary>
         </member>
-        <member name="M:Monkey.Controllers.Api.TestApiController.Get">
+        <member name="M:Monkey.Controllers.Api.TestApiController.Get(System.String,Monkey.Controllers.Api.TestApiController.TestData)">
             <summary>
                 Test Get 
             </summary>
