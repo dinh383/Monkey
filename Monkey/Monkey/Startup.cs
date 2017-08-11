@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Monkey.Core;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;
@@ -71,8 +70,9 @@ namespace Monkey
                 // [API Document] Swagger
                 .AddApiDocument(Path.Combine(Directory.GetCurrentDirectory(), "Documentation.xml"), ConfigurationRoot)
 
-                // [Background Job]
-                .AddHangfire(SystemConfigs.DatabaseConnectionString, ConfigurationRoot)
+                // [Background Job] Store Job in Memory. Add param
+                // SystemConfigs.DatabaseConnectionString to store job in Sql Server
+                .AddHangfire(ConfigurationRoot)
 
                 // [Mini Response]
                 .AddWebMarkupMinMonkey()
