@@ -9,6 +9,12 @@
                 Configuration Endpoint for Area and Controller 
             </summary>
         </member>
+        <member name="M:Monkey.Controllers.Api.TestApiController.Get">
+            <summary>
+                Test Exception 
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabaseMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Database] Use Entity Framework 

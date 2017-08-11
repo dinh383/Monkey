@@ -30,27 +30,20 @@
   <!-- Copy Output folder -->
   <!-- <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> -->
   <ItemGroup>
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Logs\" />
     <Folder Include="wwwroot\">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Folder>
     <None Update="wwwroot\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+
     <Folder Include="Areas\Portal\wwwroot\">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Folder>
     <None Update="Areas\Portal\wwwroot\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

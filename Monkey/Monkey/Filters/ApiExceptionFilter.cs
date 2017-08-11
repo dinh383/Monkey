@@ -7,6 +7,7 @@ using Puppy.Logger;
 using Puppy.Web;
 using System;
 using System.Net;
+using Puppy.Logger.Log;
 
 namespace Monkey.Filters
 {

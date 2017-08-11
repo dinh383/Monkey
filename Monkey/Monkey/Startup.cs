@@ -57,6 +57,10 @@ namespace Monkey
                 // [Mapper]
                 .AddAutoMapperMonkey()
 
+                // [Background Job] Store Job in Memory. Add param
+                // SystemConfigs.DatabaseConnectionString to store job in Sql Server
+                .AddHangfire(ConfigurationRoot)
+
                 // [Logger]
                 .AddLogger(ConfigurationRoot)
 
@@ -69,10 +73,6 @@ namespace Monkey
 
                 // [API Document] Swagger
                 .AddApiDocument(Path.Combine(Directory.GetCurrentDirectory(), "Documentation.xml"), ConfigurationRoot)
-
-                // [Background Job] Store Job in Memory. Add param
-                // SystemConfigs.DatabaseConnectionString to store job in Sql Server
-                .AddHangfire(ConfigurationRoot)
 
                 // [Mini Response]
                 .AddWebMarkupMinMonkey()
@@ -92,6 +92,9 @@ namespace Monkey
             app
                 // [API Cros]
                 .UseCors()
+
+                // [Background Job] Hangfire
+                .UseHangfire()
 
                 // [Logger]
                 .UseLogger(loggerFactory, appLifetime)
@@ -114,9 +117,6 @@ namespace Monkey
                 // [API Document] Swagger
                 .UseApiDocument()
 
-                // [Background Job] Hangfire
-                .UseHangfire()
-
                 // [Mini Response] WebMarkup
                 .UseWebMarkupMinMonkey()
 
@@ -131,6 +131,7 @@ namespace Monkey
         {
             // Verify Redis Setting is Fine
             IRedisCacheManager redisCacheManager = app.Resolve<IRedisCacheManager>();
+
             redisCacheManager.VerifySetup();
 
             // Migrate Database
