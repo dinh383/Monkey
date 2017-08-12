@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.ViewModels.Api;
+using Newtonsoft.Json;
 using Puppy.Core.XmlUtils;
 using Puppy.Logger;
 using Puppy.Web;
 using System;
 using System.Net;
-using Puppy.Logger.Log;
 
 namespace Monkey.Filters
 {
@@ -32,24 +32,31 @@ namespace Monkey.Filters
             }
             else
             {
-                // Unhandled errors
-#if !DEBUG
-                var msg = "An unhandled error occurred.";
+#if DEBUG
+                object debugMessage = new
+                {
+                    context.Exception.Message,
+                    context.Exception.StackTrace,
+                    InternalMessage = context.Exception.InnerException?.Message
+                };
+
+                var msg = JsonConvert.SerializeObject(debugMessage, Formatting.Indented, Core.Constants.JsonSerializerSettings);
 #else
-                var msg = context.Exception.GetBaseException().Message + Environment.NewLine + context.Exception.StackTrace;
+                // Friendly message for Publish version.
+                var msg = "Oh no! You broke the system. The features do not write themselves, you know what I say, you get what you pay for....";
 #endif
 
                 apiErrorViewModel = new ApiErrorViewModel(ErrorCode.Unknown, msg);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 
-            // Log
+            // Log with Logger
             string logId = Log.Error(context);
 
             // Update ID of error model as log id
             apiErrorViewModel.Id = logId;
 
-            // Response
+            // Response Result
             if (context.HttpContext.Request.Headers[HttpRequestHeader.Accept.ToString()] == ContentType.Xml)
             {
                 context.Result = new ContentResult
@@ -64,6 +71,7 @@ namespace Monkey.Filters
                 context.Result = new JsonResult(apiErrorViewModel, Core.Constants.JsonSerializerSettings);
             }
 
+            // Keep base Exception
             base.OnException(context);
         }
     }
