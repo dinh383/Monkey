@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.ViewModels.Api;
-using Newtonsoft.Json;
+using Puppy.Core.EnvironmentUtils;
 using Puppy.Core.XmlUtils;
 using Puppy.Logger;
 using Puppy.Web;
@@ -16,10 +16,14 @@ namespace Monkey.Filters
         public override void OnException(ExceptionContext context)
         {
             ApiErrorViewModel apiErrorViewModel;
-            var exception = context.Exception as MonkeyException;
+            MonkeyException exception = context.Exception as MonkeyException;
+            string logId;
 
             if (exception != null)
             {
+                // Log with Logger
+                logId = Log.Error(context);
+
                 var ex = exception;
                 context.Exception = null;
                 apiErrorViewModel = new ApiErrorViewModel(ex.Code, ex.Message);
@@ -27,31 +31,33 @@ namespace Monkey.Filters
             }
             else if (context.Exception is UnauthorizedAccessException)
             {
+                // Log with Logger
+                logId = Log.Error(context);
+
                 apiErrorViewModel = new ApiErrorViewModel(ErrorCode.Unauthorized, "Unauthorized Access");
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             }
             else
             {
-#if DEBUG
-                object debugMessage = new
+                // Log with Logger
+                logId = Log.Fatal(context);
+
+                var message = EnvironmentHelper.IsDevelopment()
+                    ? context.Exception.Message
+                    : "Oh no! You broke the system. The features do not write themselves, you know what I say, you get what you pay for....";
+
+                apiErrorViewModel = new ApiErrorViewModel(ErrorCode.Unknown, message);
+
+                if (EnvironmentHelper.IsDevelopment())
                 {
-                    context.Exception.Message,
-                    context.Exception.StackTrace,
-                    InternalMessage = context.Exception.InnerException?.Message
-                };
+                    // Add additional data
+                    apiErrorViewModel.AdditionalData.Add("StackTrace", context.Exception.StackTrace);
+                    apiErrorViewModel.AdditionalData.Add("InnerException", context.Exception.InnerException?.Message);
+                    apiErrorViewModel.AdditionalData.Add("Note", "The message is exception message and additional data such as 'StackTrace', 'InternalException' and 'Note' only have in [Development Environment].");
+                }
 
-                var msg = JsonConvert.SerializeObject(debugMessage, Formatting.Indented, Core.Constants.JsonSerializerSettings);
-#else
-                // Friendly message for Publish version.
-                var msg = "Oh no! You broke the system. The features do not write themselves, you know what I say, you get what you pay for....";
-#endif
-
-                apiErrorViewModel = new ApiErrorViewModel(ErrorCode.Unknown, msg);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
-
-            // Log with Logger
-            string logId = Log.Error(context);
 
             // Update ID of error model as log id
             apiErrorViewModel.Id = logId;

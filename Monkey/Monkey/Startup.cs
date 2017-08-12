@@ -15,6 +15,8 @@ using Puppy.Web.Middlewares;
 using Puppy.Web.Middlewares.Cros;
 using Puppy.Web.Middlewares.ServerInfo;
 using System.IO;
+using System.Reflection;
+using Puppy.Core.TypeUtils;
 
 namespace Monkey
 {
@@ -72,7 +74,7 @@ namespace Monkey
                 .AddDatabaseMonkey()
 
                 // [API Document] Swagger
-                .AddApiDocument(Path.Combine(Directory.GetCurrentDirectory(), "Documentation.xml"), ConfigurationRoot)
+                .AddApiDocument(typeof(Startup).GetAssembly(), ConfigurationRoot)
 
                 // [Mini Response]
                 .AddWebMarkupMinMonkey()

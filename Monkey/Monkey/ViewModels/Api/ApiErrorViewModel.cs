@@ -20,6 +20,7 @@
 using EnumsNET;
 using Monkey.Core.Exceptions;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Monkey.ViewModels.Api
 {
@@ -53,6 +54,7 @@ namespace Monkey.ViewModels.Api
         /// </summary>
         public string Module { get; set; }
 
-        public List<KeyValuePair<string, dynamic>> ListKeyValue { get; set; }
+        [JsonExtensionData]
+        public Dictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
     }
 }
