@@ -51,9 +51,9 @@ namespace Monkey.Filters
                 if (EnvironmentHelper.IsDevelopment())
                 {
                     // Add additional data
-                    apiErrorViewModel.AdditionalData.Add("StackTrace", context.Exception.StackTrace);
-                    apiErrorViewModel.AdditionalData.Add("InnerException", context.Exception.InnerException?.Message);
-                    apiErrorViewModel.AdditionalData.Add("Note", "The message is exception message and additional data such as 'StackTrace', 'InternalException' and 'Note' only have in [Development Environment].");
+                    apiErrorViewModel.AdditionalData.Add("stackTrace", context.Exception.StackTrace);
+                    apiErrorViewModel.AdditionalData.Add("innerException", context.Exception.InnerException?.Message);
+                    apiErrorViewModel.AdditionalData.Add("note", "The message is exception message and additional data such as 'stackTrace', 'internalException' and 'note' only have in [Development Environment].");
                 }
 
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
