@@ -119,7 +119,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="1.1.2" />
 
     <!-- C# Utitlity -->
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.3.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.1" />
 
     <!-- Markup Min -->
