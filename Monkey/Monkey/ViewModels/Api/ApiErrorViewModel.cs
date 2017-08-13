@@ -19,8 +19,8 @@
 
 using EnumsNET;
 using Monkey.Core.Exceptions;
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Monkey.ViewModels.Api
 {
@@ -35,6 +35,11 @@ namespace Monkey.ViewModels.Api
             Code = code;
             Message = string.IsNullOrWhiteSpace(message) ? code.AsString(EnumFormat.Description) : message;
             Module = code.AsString(EnumFormat.DisplayName);
+        }
+
+        public ApiErrorViewModel(ErrorCode code, string message, Dictionary<string, object> additionalData) : this(code, message)
+        {
+            AdditionalData = additionalData;
         }
 
         public string Id { get; set; }

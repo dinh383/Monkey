@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;
+using Puppy.Core.TypeUtils;
 using Puppy.DependencyInjection;
 using Puppy.Hangfire;
 using Puppy.Logger;
@@ -14,9 +15,6 @@ using Puppy.Swagger;
 using Puppy.Web.Middlewares;
 using Puppy.Web.Middlewares.Cros;
 using Puppy.Web.Middlewares.ServerInfo;
-using System.IO;
-using System.Reflection;
-using Puppy.Core.TypeUtils;
 
 namespace Monkey
 {

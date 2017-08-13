@@ -7,6 +7,7 @@ using Puppy.Core.XmlUtils;
 using Puppy.Logger;
 using Puppy.Web;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace Monkey.Filters
@@ -26,7 +27,13 @@ namespace Monkey.Filters
 
                 var ex = exception;
                 context.Exception = null;
-                apiErrorViewModel = new ApiErrorViewModel(ex.Code, ex.Message);
+                apiErrorViewModel = new ApiErrorViewModel(ex.Code, ex.Message, exception.AdditionalData);
+
+                if (exception.AdditionalData?.Any() == true)
+                {
+                    apiErrorViewModel.AdditionalData = exception.AdditionalData;
+                }
+
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
             else if (context.Exception is UnauthorizedAccessException)

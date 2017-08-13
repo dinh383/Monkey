@@ -17,6 +17,7 @@
 
 #endregion License
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -29,28 +30,18 @@ namespace Monkey.Core.Exceptions
             Code = code;
         }
 
-        public MonkeyException(ErrorCode code, params KeyValuePair<string, object>[] arrayKeyValue)
+        public MonkeyException(ErrorCode code, Dictionary<string, object> additionalData) : this(code)
         {
-            Code = code;
-            ArrayKeyValue = arrayKeyValue;
+            AdditionalData = additionalData;
         }
 
-        public MonkeyException(ErrorCode code, string message,
-            params KeyValuePair<string, object>[] arrayKeyValue) : base(message)
+        public MonkeyException(ErrorCode code, string message, Dictionary<string, object> additionalData) : this(code, message)
         {
-            Code = code;
-            ArrayKeyValue = arrayKeyValue;
+            AdditionalData = additionalData;
         }
-
-        public MonkeyException(ErrorCode code, string message, Exception innerException,
-            params KeyValuePair<string, object>[] arrayKeyValue) : base(message, innerException)
-        {
-            Code = code;
-            ArrayKeyValue = arrayKeyValue;
-        }
-
         public ErrorCode Code { get; }
 
-        public KeyValuePair<string, object>[] ArrayKeyValue { get; }
+        [JsonExtensionData]
+        public Dictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
     }
 }
