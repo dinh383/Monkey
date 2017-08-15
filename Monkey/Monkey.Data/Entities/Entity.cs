@@ -4,14 +4,14 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Repository </Project>
 //     <File>
-//         <Name> UserEntity.cs </Name>
-//         <Created> 18/07/17 4:11:13 PM </Created>
-//         <Key> abe1ae76-0722-4dba-8ebf-51eb28f5796a </Key>
+//         <Name> Entity.cs </Name>
+//         <Created> 15/08/17 12:40:40 PM </Created>
+//         <Key> 62331d34-8570-4240-9ce8-47c093e0f664 </Key>
 //     </File>
 //     <Summary>
-//         UserEntity.cs
+//         Entity.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -19,13 +19,7 @@
 
 namespace Monkey.Data.Entities
 {
-    public class UserEntity : Entity
+    public class Entity : Puppy.EF.Entity
     {
-        public string UserName { get; set; }
-
-        /// <summary>
-        ///     Username Normalize 
-        /// </summary>
-        public string UserNameNorm { get; set; }
     }
 }

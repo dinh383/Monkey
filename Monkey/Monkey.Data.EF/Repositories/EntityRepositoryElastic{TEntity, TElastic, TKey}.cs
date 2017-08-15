@@ -29,7 +29,6 @@ using Monkey.Data.Entities;
 using Monkey.Data.Interfaces;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.DependencyInjection.Attributes;
-using Puppy.EF;
 using Puppy.EF.Interfaces.Entity;
 using Puppy.Elastic;
 using Puppy.Elastic.ContextSearch;
@@ -45,13 +44,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Monkey.Data.EF
+namespace Monkey.Data.EF.Repositories
 {
     [PerResolveDependency]
-    public class EntityRepositoryElastic<TEntity, TKey> :
-        EntityRepository<TEntity, TKey>,
-        ISearchableRepository<TEntity, TKey>
-        where TEntity : Entity, IBaseElastic<TKey>, ISoftDeletableEntity<TKey>, IAuditableEntity<TKey>
+    public class EntityRepositoryElastic<TEntity, TKey> : EntityRepository<TEntity>, ISearchableRepository<TEntity, TKey>
+        where TEntity : Puppy.EF.Entity, IBaseElastic<TKey>, ISoftDeletableEntity<TKey>, IAuditableEntity<TKey>
         where TKey : struct
     {
         private readonly IConfigurationRoot _configurationRoot;
@@ -203,27 +200,7 @@ namespace Monkey.Data.EF
             }
         }
 
-        public IEnumerable<TEntity> GetElastic(out int total, int skip, int take = Constants.ElasticSearch.MaxTakeRecord)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TEntity> GetElastic(string fieldName, List<object> listValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsExistElastic(object id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TEntity GetElastic(object id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual IEnumerable<TEntity> GeTEntity(out int total, int skip, int take = Constants.ElasticSearch.MaxTakeRecord)
+        public virtual IEnumerable<TEntity> GetElastic(out int total, int skip, int take = Constants.ElasticSearch.MaxTakeRecord)
         {
             var search = new Search
             {
@@ -241,7 +218,7 @@ namespace Monkey.Data.EF
             }
         }
 
-        public virtual IEnumerable<TEntity> GeTEntity(string fieldName, List<object> listValue)
+        public virtual IEnumerable<TEntity> GetElastic(string fieldName, List<object> listValue)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
             {
@@ -293,7 +270,7 @@ namespace Monkey.Data.EF
             }
         }
 
-        public virtual bool IsExisTEntity(object id)
+        public virtual bool IsExistElastic(object id)
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
@@ -302,7 +279,7 @@ namespace Monkey.Data.EF
             }
         }
 
-        public virtual TEntity GeTEntity(object id)
+        public virtual TEntity GetElastic(object id)
         {
             using (var context = new ElasticContext(ElasticConnectionString, Config))
             {
@@ -330,7 +307,7 @@ namespace Monkey.Data.EF
                 .Where(x => x != null).ToList();
         }
 
-        public virtual void SaveElastics<T>(List<T> listEntityAddUpdate, List<T> listEntityDelete) where T : Entity
+        public virtual void SaveElastics<T>(List<T> listEntityAddUpdate, List<T> listEntityDelete) where T : Puppy.EF.Entity
         {
             InitElasticMap();
 

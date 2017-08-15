@@ -17,8 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Puppy.EF;
-
 namespace Monkey.Data.Entities
 {
     public class ProfileEntity : Entity

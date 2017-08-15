@@ -20,12 +20,11 @@
 using Monkey.Data.Entities;
 using Monkey.Data.Interfaces;
 using Puppy.DependencyInjection.Attributes;
-using Puppy.EF;
 
 namespace Monkey.Data.EF.Repositories
 {
     [PerRequestDependency(ServiceType = typeof(IUserRepository))]
-    public class UserRepository : Puppy.EF.EntityRepository<UserEntity, int>, IUserRepository
+    public class UserRepository : EntityRepository<UserEntity>, IUserRepository
     {
         public UserRepository(IDbContext dbContext) : base(dbContext)
         {

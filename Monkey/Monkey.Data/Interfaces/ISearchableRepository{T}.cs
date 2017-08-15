@@ -26,7 +26,7 @@ using System.Collections.Generic;
 
 namespace Monkey.Data.Interfaces
 {
-    public interface ISearchableRepository<TElastic, TKey> where TElastic : Entity, IBaseElastic<TKey> where TKey : struct
+    public interface ISearchableRepository<TElastic, TKey> where TElastic : Puppy.EF.Entity, IBaseElastic<TKey> where TKey : struct
     {
         /// <summary>
         ///     Initial Elastic Map if not exist 
@@ -87,6 +87,6 @@ namespace Monkey.Data.Interfaces
 
         TElastic GetElastic(object id);
 
-        void SaveElastics<TEntity>(List<TEntity> listEntityAddUpdate, List<TEntity> listEntityDelete) where TEntity : Entity;
+        void SaveElastics<TEntity>(List<TEntity> listEntityAddUpdate, List<TEntity> listEntityDelete) where TEntity : Puppy.EF.Entity;
     }
 }

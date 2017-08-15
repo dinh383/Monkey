@@ -22,15 +22,12 @@
 using Puppy.EF;
 using Puppy.EF.Interfaces.Entity;
 
-namespace Monkey.Data.EF
+namespace Monkey.Data.EF.Repositories
 {
-    public class EntityRepository<TEntity, TKey> : Puppy.EF.EntityRepository<TEntity, TKey> where TEntity : Entity, ISoftDeletableEntity<TKey>, IAuditableEntity<TKey> where TKey : struct
+    public class EntityRepository<TEntity> : Puppy.EF.EntityRepository<TEntity, int> where TEntity : Entity, ISoftDeletableEntity<int>, IAuditableEntity<int>
     {
-        internal IDbContext DbContext { get; }
-
         internal EntityRepository(IDbContext dbContext) : base(dbContext)
         {
-            DbContext = dbContext;
         }
     }
 }
