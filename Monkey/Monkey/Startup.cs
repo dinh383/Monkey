@@ -75,7 +75,7 @@ namespace Monkey
                 .AddApiDocument(typeof(Startup).GetAssembly(), ConfigurationRoot)
 
                 // [Mini Response]
-                .AddWebMarkupMinMonkey()
+                .AddMinResponse()
 
                 // [MVC] Anti Forgery
                 .AddAntiforgeryTokenMonkey()
@@ -117,8 +117,8 @@ namespace Monkey
                 // [API Document] Swagger
                 .UseApiDocument()
 
-                // [Mini Response] WebMarkup
-                .UseWebMarkupMinMonkey()
+                // [Mini Response]
+                .UseMinResponse()
 
                 // [MVC] Keep In Last
                 .UseMvcMonkey();
