@@ -100,7 +100,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logger", "Logger", "{F1E653
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Logger", "..\Puppy\Puppy.Logger\Puppy.Logger.csproj", "{6EAB5380-6752-4823-A219-979A7B141D9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Puppy.Logger.Core", "..\Puppy\Puppy.Logger.Core\Puppy.Logger.Core.csproj", "{5EFF4EA2-3C57-4811-A304-17D044A4563F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Logger.Core", "..\Puppy\Puppy.Logger.Core\Puppy.Logger.Core.csproj", "{5EFF4EA2-3C57-4811-A304-17D044A4563F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
