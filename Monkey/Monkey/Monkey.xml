@@ -4,83 +4,78 @@
         <name>Monkey</name>
     </assembly>
     <members>
-        <member name="T:Monkey.ServiceCollectionExtensions.CorsServiceCollectionExtensions.CorsMiddlewareMonkey">
+        <member name="T:Monkey.Constants.Endpoint">
             <summary>
-                This middleware for hot fix current issue of AspNetCore Cors
+                Configuration Endpoint for Area and Controller 
             </summary>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.DatabaseServiceCollectionExtensions.AddDatabaseMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Monkey.Controllers.Api.TestApiController.Get">
             <summary>
-                [Database] Use Entity Framework
+                Test Exception 
             </summary>
-            <param name="applicationBuilder"></param>
+            <returns></returns>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.DependencyInjectionServiceCollectionExtensions.AddDependencyInjectionMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabaseMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Dependency Injection]
+                [Database] Use Entity Framework 
             </summary>
-            <param name="applicationBuilder"></param>
+            <param name="services"></param>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.HangfireServiceCollectionExtensions.AddHangfireMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Monkey.Extensions.DependencyInjectionExtensions.AddDependencyInjectionMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Background Job] Hangfire
+                [Dependency Injection] 
             </summary>
-            <param name="applicationBuilder"></param>
+            <param name="services"></param>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.HangfireServiceCollectionExtensions.UseHangfireMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Monkey.Extensions.IdentityServerExtensions.UseIdentityServerMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Background Job] Hangfire Use dashboard and server
+                [Security] Identity Server 
             </summary>
             <param name="app"></param>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.IdentityServerServiceCollectionExtensions.UseIdentityServerMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Monkey.Extensions.MvcExtensions.AddMvcMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Security] Identity Server
+                [Mvc] Json, Xml serialize, area and response caching 
             </summary>
-            <param name="app"></param>
+            <param name="services"></param>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.LogServiceCollectionExtensions.UseLogMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.ServiceCollectionExtensions.Logging.ILoggerFactory,Microsoft.ServiceCollectionExtensions.Configuration.IConfigurationRoot)">
+        <member name="M:Monkey.Extensions.MvcExtensions.AddAntiforgeryTokenMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Log] Serilog
+                Configures the anti-forgery tokens for better security. 
             </summary>
-            <param name="app">              </param>
-            <param name="loggerFactory">    </param>
-            <param name="configurationRoot"></param>
-        </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.MvcServiceCollectionExtensions.AddMvcMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
-            <summary>
-                [Mvc] Json, Xml serialize, area and response caching
-            </summary>
-            <param name="applicationBuilder"></param>
-        </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.MvcServiceCollectionExtensions.AddAntiforgeryTokenMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection)">
-            <summary>
-                Configures the anti-forgery tokens for better security.
-            </summary>
-            <param name="applicationBuilder"></param>
+            <param name="services"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.MvcServiceCollectionExtensions.UseMvcMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Monkey.Extensions.MvcExtensions.UseMvcMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing
+                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
             </summary>
             <param name="app"></param>
         </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.ProcessingTimeServiceCollectionExtensions.UseProcessingTime(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-                [Response] Information about executed time
-            </summary>
-            <param name="app"></param>
-        </member>
-        <member name="M:Monkey.ServiceCollectionExtensions.SystemConfigurationServiceCollectionExtensions.AddSystemConfigurationMonkey(Microsoft.ServiceCollectionExtensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.ServiceCollectionExtensions.Configuration.IConfigurationRoot)">
+        <member name="M:Monkey.Extensions.SystemConfigurationExtensions.AddSystemConfigurationMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Configuration.IConfigurationRoot)">
             <summary>
                 I will add config into 2 places: <br />
                 - First place is in SystemConfig object: this will content all config. <br />
                 - Second place is in separate object: this for lightweight inject and read data.
             </summary>
-            <param name="applicationBuilder">          </param>
+            <param name="services">          </param>
             <param name="hostingEnvironment"></param>
             <param name="configurationRoot"> </param>
+        </member>
+        <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">
+            <summary>
+                Unique Code for each Business 
+            </summary>
+        </member>
+        <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Message">
+            <summary>
+                Message description for Client App Developer 
+            </summary>
+        </member>
+        <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Module">
+            <summary>
+                Module of business 
+            </summary>
         </member>
     </members>
 </doc>
