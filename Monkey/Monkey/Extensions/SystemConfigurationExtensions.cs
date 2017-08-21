@@ -31,15 +31,7 @@ namespace Monkey.Extensions
 {
     public static class SystemConfigurationExtensions
     {
-        /// <summary>
-        ///     I will add config into 2 places: <br />
-        ///     - First place is in SystemConfig object: this will content all config. <br />
-        ///     - Second place is in separate object: this for lightweight inject and read data.
-        /// </summary>
-        /// <param name="services">          </param>
-        /// <param name="hostingEnvironment"></param>
-        /// <param name="configurationRoot"> </param>
-        public static IServiceCollection AddSystemConfigurationMonkey(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IConfigurationRoot configurationRoot)
+        public static IServiceCollection AddSystemConfiguration(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IConfigurationRoot configurationRoot)
         {
             // Add Service
             services.AddSingleton(hostingEnvironment);
@@ -52,7 +44,7 @@ namespace Monkey.Extensions
             return services;
         }
 
-        public static IApplicationBuilder UseSystemConfigurationMonkey(this IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public static IApplicationBuilder UseSystemConfiguration(this IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             // Currently, ASPNETCORE have an issue hit twice when change appsetting.json from
             // 20/03/17 (see more: https://github.com/aspnet/SystemConfigs/issues/624) And please

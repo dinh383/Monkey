@@ -43,7 +43,7 @@ namespace Monkey.Extensions
         ///     [Mvc] Json, Xml serialize, area and response caching 
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddMvcMonkey(this IServiceCollection services)
+        public static IServiceCollection AddMvcCustom(this IServiceCollection services)
         {
             // Mvc Services
             services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
@@ -95,43 +95,10 @@ namespace Monkey.Extensions
         }
 
         /// <summary>
-        ///     Configures the anti-forgery tokens for better security. 
-        /// </summary>
-        /// <param name="services"></param>
-        /// <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
-        public static IServiceCollection AddAntiforgeryTokenMonkey(this IServiceCollection services)
-        {
-            services.AddAntiforgery(
-                options =>
-                {
-                    // Rename the Anti-Forgery cookie from "__RequestVerificationToken" to "ape".
-                    // This adds a little security through obscurity and also saves sending a few
-                    // characters over the wire.
-                    options.CookieName = "ape";
-
-                    // Rename the form input name from "__RequestVerificationToken" to "ape" for the
-                    // same reason above e.g.
-                    // <input name="__RequestVerificationToken" type="hidden" value="..." />
-                    options.FormFieldName = "ape";
-
-                    // Rename the Anti-Forgery HTTP header from RequestVerificationToken to
-                    // X-XSRF-TOKEN. X-XSRF-TOKEN is not a standard but a common name given to this
-                    // HTTP header popularized by Angular.
-                    options.HeaderName = "X-XSRF-TOKEN";
-
-                    // If you have enabled SSL/TLS. Uncomment this line to ensure that the
-                    // Anti-Forgery cookie requires SSL /TLS to be sent across the wire.
-                    options.RequireSsl = true;
-                });
-
-            return services;
-        }
-
-        /// <summary>
         ///     [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
         /// </summary>
         /// <param name="app"></param>
-        public static IApplicationBuilder UseMvcMonkey(this IApplicationBuilder app)
+        public static IApplicationBuilder UseMvcCustom(this IApplicationBuilder app)
         {
             if (EnvironmentHelper.IsProduction())
             {
@@ -210,6 +177,39 @@ namespace Monkey.Extensions
             });
 
             return app;
+        }
+
+        /// <summary>
+        ///     Configures the anti-forgery tokens for better security. 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
+        public static IServiceCollection AddAntiforgeryToken(this IServiceCollection services)
+        {
+            services.AddAntiforgery(
+                options =>
+                {
+                    // Rename the Anti-Forgery cookie from "__RequestVerificationToken" to "ape".
+                    // This adds a little security through obscurity and also saves sending a few
+                    // characters over the wire.
+                    options.CookieName = "ape";
+
+                    // Rename the form input name from "__RequestVerificationToken" to "ape" for the
+                    // same reason above e.g.
+                    // <input name="__RequestVerificationToken" type="hidden" value="..." />
+                    options.FormFieldName = "ape";
+
+                    // Rename the Anti-Forgery HTTP header from RequestVerificationToken to
+                    // X-XSRF-TOKEN. X-XSRF-TOKEN is not a standard but a common name given to this
+                    // HTTP header popularized by Angular.
+                    options.HeaderName = "X-XSRF-TOKEN";
+
+                    // If you have enabled SSL/TLS. Uncomment this line to ensure that the
+                    // Anti-Forgery cookie requires SSL /TLS to be sent across the wire.
+                    options.RequireSsl = true;
+                });
+
+            return services;
         }
     }
 }

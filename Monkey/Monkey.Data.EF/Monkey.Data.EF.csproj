@@ -6,27 +6,17 @@
     <Copyright>http://topnguyen.net</Copyright>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <OutputType>Library</OutputType>
+    <PreserveCompilationContext>false</PreserveCompilationContext>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>..\Monkey\bin\</OutputPath>
     <!-- Enable runtime config and runtime version, Need for entity framework DonetClioTool -->
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\Monkey\bin\</OutputPath>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Monkey\bin\</OutputPath>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-
-  <!-- Publish Configuration -->
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToPublishDirectory>None</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-
   <!-- Puppy -->
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />

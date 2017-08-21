@@ -30,13 +30,13 @@ namespace Monkey.Extensions
         ///     [Database] Use Entity Framework 
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddDatabaseMonkey(this IServiceCollection services)
+        public static IServiceCollection AddDatabase(this IServiceCollection services)
         {
-            services.AddDbContext<DbContext>(
-                builder =>
-                    builder.UseSqlServer(Core.SystemConfigs.DatabaseConnectionString,
-                    options => options.MigrationsAssembly(typeof(IDatabase).GetAssemblySimpleName())));
-
+            services
+                .AddDbContext<DbContext>(builder =>
+                    builder
+                        .UseSqlServer(Core.SystemConfigs.DatabaseConnectionString,
+                            options => options.MigrationsAssembly(typeof(IDatabase).GetAssemblySimpleName())));
             return services;
         }
     }

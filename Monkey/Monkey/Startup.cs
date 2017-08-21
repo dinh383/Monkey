@@ -49,10 +49,10 @@ namespace Monkey
                 .AddCors(ConfigurationRoot)
 
                 // [System Configs]
-                .AddSystemConfigurationMonkey(Environment, ConfigurationRoot)
+                .AddSystemConfiguration(Environment, ConfigurationRoot)
 
                 // [Injection]
-                .AddDependencyInjectionMonkey()
+                .AddDependencyInjection(nameof(Monkey))
 
                 // [Mapper]
                 .AddAutoMapperMonkey()
@@ -69,7 +69,7 @@ namespace Monkey
                 .AddRedisCache(ConfigurationRoot)
 
                 // [Database]
-                .AddDatabaseMonkey()
+                .AddDatabase()
 
                 // [API Document] Swagger
                 .AddApiDocument(typeof(Startup).GetAssembly(), ConfigurationRoot)
@@ -78,10 +78,10 @@ namespace Monkey
                 .AddMinResponse()
 
                 // [MVC] Anti Forgery
-                .AddAntiforgeryTokenMonkey()
+                .AddAntiforgeryToken()
 
                 // [MVC]
-                .AddMvcMonkey();
+                .AddMvcCustom();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
@@ -100,7 +100,7 @@ namespace Monkey
                 .UseLogger(loggerFactory, appLifetime)
 
                 // [System Configs]
-                .UseSystemConfigurationMonkey(loggerFactory)
+                .UseSystemConfiguration(loggerFactory)
 
                 // [Response] Time Executed Information
                 .UseProcessingTime()
@@ -111,9 +111,6 @@ namespace Monkey
                 // [Exception]
                 .UseExceptionMonkey()
 
-                // [Security] Identity Server
-                .UseIdentityServerMonkey()
-
                 // [API Document] Swagger
                 .UseApiDocument()
 
@@ -121,7 +118,7 @@ namespace Monkey
                 .UseMinResponse()
 
                 // [MVC] Keep In Last
-                .UseMvcMonkey();
+                .UseMvcCustom();
 
             // [Application Start] Initial functions
             ApplicationStart(app);

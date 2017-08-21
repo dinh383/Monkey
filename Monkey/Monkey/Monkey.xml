@@ -15,52 +15,30 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabaseMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Database] Use Entity Framework 
             </summary>
             <param name="services"></param>
         </member>
-        <member name="M:Monkey.Extensions.DependencyInjectionExtensions.AddDependencyInjectionMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-                [Dependency Injection] 
-            </summary>
-            <param name="services"></param>
-        </member>
-        <member name="M:Monkey.Extensions.IdentityServerExtensions.UseIdentityServerMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-                [Security] Identity Server 
-            </summary>
-            <param name="app"></param>
-        </member>
-        <member name="M:Monkey.Extensions.MvcExtensions.AddMvcMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Monkey.Extensions.MvcExtensions.AddMvcCustom(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Mvc] Json, Xml serialize, area and response caching 
             </summary>
             <param name="services"></param>
         </member>
-        <member name="M:Monkey.Extensions.MvcExtensions.AddAntiforgeryTokenMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-                Configures the anti-forgery tokens for better security. 
-            </summary>
-            <param name="services"></param>
-            <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
-        </member>
-        <member name="M:Monkey.Extensions.MvcExtensions.UseMvcMonkey(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Monkey.Extensions.MvcExtensions.UseMvcCustom(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
                 [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
             </summary>
             <param name="app"></param>
         </member>
-        <member name="M:Monkey.Extensions.SystemConfigurationExtensions.AddSystemConfigurationMonkey(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Configuration.IConfigurationRoot)">
+        <member name="M:Monkey.Extensions.MvcExtensions.AddAntiforgeryToken(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                I will add config into 2 places: <br />
-                - First place is in SystemConfig object: this will content all config. <br />
-                - Second place is in separate object: this for lightweight inject and read data.
+                Configures the anti-forgery tokens for better security. 
             </summary>
-            <param name="services">          </param>
-            <param name="hostingEnvironment"></param>
-            <param name="configurationRoot"> </param>
+            <param name="services"></param>
+            <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">
             <summary>
