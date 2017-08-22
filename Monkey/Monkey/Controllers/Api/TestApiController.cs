@@ -12,11 +12,11 @@ namespace Monkey.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("")]
+        [Route("exception")]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
-        public IActionResult Get()
+        public IActionResult TestException()
         {
-            int a = int.Parse("Not a Number");
+            int nAn = int.Parse("Not a Number");
             return NoContent();
         }
     }

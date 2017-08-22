@@ -9,9 +9,15 @@
                 Configuration Endpoint for Area and Controller 
             </summary>
         </member>
-        <member name="M:Monkey.Controllers.Api.TestApiController.Get">
+        <member name="M:Monkey.Controllers.Api.TestApiController.TestException">
             <summary>
                 Test Exception 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Monkey.Controllers.Api.TestApiController.TestGetLogFile">
+            <summary>
+                Test Read Log 
             </summary>
             <returns></returns>
         </member>
