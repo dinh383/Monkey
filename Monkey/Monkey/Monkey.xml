@@ -15,12 +15,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Controllers.Api.TestApiController.TestGetLogFile">
-            <summary>
-                Test Read Log 
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Database] Use Entity Framework 
