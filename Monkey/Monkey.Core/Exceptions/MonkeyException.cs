@@ -39,6 +39,7 @@ namespace Monkey.Core.Exceptions
         {
             AdditionalData = additionalData;
         }
+
         public ErrorCode Code { get; }
 
         [JsonExtensionData]

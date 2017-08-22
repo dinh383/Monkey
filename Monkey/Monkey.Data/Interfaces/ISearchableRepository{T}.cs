@@ -21,7 +21,6 @@
 
 using Monkey.Core;
 using Monkey.Data.Entities;
-using Puppy.EF;
 using System.Collections.Generic;
 
 namespace Monkey.Data.Interfaces

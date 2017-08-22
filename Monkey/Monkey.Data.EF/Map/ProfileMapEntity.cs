@@ -24,8 +24,8 @@ using Puppy.EF.Mapping;
 
 namespace Monkey.Data.EF.Map
 {
-    public class ProfileMapEntity: IEntityTypeConfiguration<ProfileEntity>
-	{
+    public class ProfileMapEntity : IEntityTypeConfiguration<ProfileEntity>
+    {
         public void Map(EntityTypeBuilder<ProfileEntity> builder)
         {
             builder.ToTable(nameof(ProfileMapEntity));
