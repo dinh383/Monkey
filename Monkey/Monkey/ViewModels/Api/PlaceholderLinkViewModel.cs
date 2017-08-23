@@ -77,7 +77,7 @@ namespace Monkey.ViewModels.Api
             {
                 var hrefKey = "{" + newLinkValue.Key + "}";
                 placeholderLinkViewModel.Href =
-                    placeholderLinkViewModel.Href.Replace(hrefKey, newLinkValue.Value.ToString());
+                    placeholderLinkViewModel.Href.Replace(hrefKey, newLinkValue.Value?.ToString() ?? string.Empty);
             }
 
             return placeholderLinkViewModel;

@@ -25,7 +25,7 @@ namespace Monkey.ViewModels.Api
     {
         public string HrefPattern { get; set; }
 
-        public int Total { get; set; }
+        public long Total { get; set; }
 
         public int Skip { get; set; }
 

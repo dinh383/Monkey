@@ -15,7 +15,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Controllers.Api.TestApiController.GetLogs">
+        <member name="M:Monkey.Controllers.Api.TestApiController.GetLogs(System.Int32,System.Int32,System.String)">
             <summary>
                 Test Get Log 
             </summary>

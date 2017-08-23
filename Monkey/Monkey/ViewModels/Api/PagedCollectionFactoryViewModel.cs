@@ -36,7 +36,7 @@ namespace Monkey.ViewModels.Api
             _hrefPattern = hrefPattern;
         }
 
-        public PagedCollectionViewModel<T> CreateFrom(ICollection<T> items, int skip, int take, int total)
+        public PagedCollectionViewModel<T> CreateFrom(ICollection<T> items, int skip, int take, long total)
         {
             return new PagedCollectionViewModel<T>
             {
@@ -62,7 +62,7 @@ namespace Monkey.ViewModels.Api
             return newLink;
         }
 
-        private ILinkViewModel GetLastLink(int total, int take)
+        private ILinkViewModel GetLastLink(long total, int take)
         {
             if (total <= take)
                 return null;
@@ -78,7 +78,7 @@ namespace Monkey.ViewModels.Api
             return newLink;
         }
 
-        private ILinkViewModel GetNextLink(int total, int skip, int take)
+        private ILinkViewModel GetNextLink(long total, int skip, int take)
         {
             var nextPage = skip + take;
 
@@ -93,7 +93,7 @@ namespace Monkey.ViewModels.Api
             return newLink;
         }
 
-        private ILinkViewModel GetPreviousLink(int total, int skip, int take)
+        private ILinkViewModel GetPreviousLink(long total, int skip, int take)
         {
             if (skip == 0)
                 return null;
@@ -127,7 +127,7 @@ namespace Monkey.ViewModels.Api
             foreach (var newLinkValue in routeValueDictionary)
             {
                 var hrefKey = "{" + newLinkValue.Key + "}";
-                href = href.Replace(hrefKey, newLinkValue.Value.ToString());
+                href = href.Replace(hrefKey, newLinkValue.Value?.ToString() ?? string.Empty);
             }
 
             return href;
