@@ -36,6 +36,12 @@ namespace Monkey.Areas.Developers.Controllers
         /// <summary>
         ///     Logs 
         /// </summary>
+        /// <param name="skip"> </param>
+        /// <param name="take"> </param>
+        /// <param name="terms">
+        ///     terms do contains search for Id, Message, Level, CreatedTime (with string format is
+        ///     "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", ex: "2017-08-24T00:56:29.6271125+07:00")
+        /// </param>
         /// <returns></returns>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
         [HttpGet]
@@ -51,7 +57,7 @@ namespace Monkey.Areas.Developers.Controllers
         /// <summary>
         ///     Log 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id"> Id should be a guid string with format "N" </param>
         /// <returns></returns>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
         [HttpGet]

@@ -8,13 +8,18 @@
             <summary>
                 Logs 
             </summary>
+            <param name="skip"> </param>
+            <param name="take"> </param>
+            <param name="terms">
+                terms do contains search for Id, Message, Level, CreatedTime (with string format is "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK")
+            </param>
             <returns></returns>
         </member>
         <member name="M:Monkey.Areas.Developers.Controllers.DevelopersController.SingleLog(System.String)">
             <summary>
                 Log 
             </summary>
-            <param name="id"></param>
+            <param name="id"> Id should be a guid string with format "N" </param>
             <returns></returns>
         </member>
         <member name="T:Monkey.Constants.Endpoint">
