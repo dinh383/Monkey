@@ -5,7 +5,7 @@ using Monkey.Filters;
 using Puppy.Swagger.Filters;
 using Puppy.Web;
 
-namespace Monkey.Areas.Developers.Controllers
+namespace Monkey.Areas.Developers.Controllers.Base
 {
     [AllowAnonymous]
     [HideInDocs]

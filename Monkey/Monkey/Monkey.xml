@@ -4,6 +4,19 @@
         <name>Monkey</name>
     </assembly>
     <members>
+        <member name="M:Monkey.Areas.Developers.Controllers.DevelopersController.Logs(System.Int32,System.Int32,System.String)">
+            <summary>
+                Logs 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Monkey.Areas.Developers.Controllers.DevelopersController.SingleLog(System.String)">
+            <summary>
+                Log 
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:Monkey.Constants.Endpoint">
             <summary>
                 Configuration Endpoint for Area and Controller 
@@ -12,12 +25,6 @@
         <member name="M:Monkey.Controllers.Api.TestApiController.TestException">
             <summary>
                 Test Exception 
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Monkey.Controllers.Api.TestApiController.GetLogs(System.Int32,System.Int32,System.String)">
-            <summary>
-                Test Get Log 
             </summary>
             <returns></returns>
         </member>

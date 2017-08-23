@@ -70,13 +70,13 @@ namespace Monkey.Filters
             apiErrorViewModel.Id = logId;
 
             // Response Result
-            if (context.HttpContext.Request.Headers[HttpRequestHeader.Accept.ToString()] == ContentType.Xml)
+            if (context.HttpContext.Request.Headers[HeaderKey.Accept] == ContentType.Xml || context.HttpContext.Request.Headers[HeaderKey.ContentType] == ContentType.Xml)
             {
                 context.Result = new ContentResult
                 {
                     ContentType = ContentType.Xml,
                     StatusCode = context.HttpContext.Response.StatusCode,
-                    Content = XmlHelper.ToXmlString(apiErrorViewModel)
+                    Content = XmlHelper.ToXmlStringViaJson(apiErrorViewModel, "Error")
                 };
             }
             else

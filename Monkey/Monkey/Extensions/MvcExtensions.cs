@@ -63,7 +63,7 @@ namespace Monkey.Extensions
             services
                 .AddMvc(options =>
                 {
-                    options.RespectBrowserAcceptHeader = true;
+                    options.RespectBrowserAcceptHeader = true; // false by default
                     options.Filters.Add(new ProducesAttribute(ContentType.Xml));
                     options.Filters.Add(new ProducesAttribute(ContentType.Json));
                 })
@@ -173,7 +173,7 @@ namespace Monkey.Extensions
             app.UseMvc(routes =>
             {
                 routes.MapRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}");
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute("default", "{controller=Home}/{action=Index}");
             });
 
             return app;
