@@ -8,7 +8,7 @@ namespace Monkey.Controllers.Api
     public class TestApiController : ApiController
     {
         /// <summary>
-        ///     Test ExceptionInfo 
+        ///     Test Exception 
         /// </summary>
         /// <returns></returns>
         [HttpGet]

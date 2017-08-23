@@ -84,7 +84,7 @@ namespace Monkey.Filters
                 context.Result = new JsonResult(apiErrorViewModel, Core.Constants.JsonSerializerSettings);
             }
 
-            // Keep base ExceptionInfo
+            // Keep base Exception
             base.OnException(context);
         }
     }

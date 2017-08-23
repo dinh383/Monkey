@@ -11,7 +11,7 @@
         </member>
         <member name="M:Monkey.Controllers.Api.TestApiController.TestException">
             <summary>
-                Test ExceptionInfo 
+                Test Exception 
             </summary>
             <returns></returns>
         </member>
