@@ -1,12 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Monkey.ViewModels.Api;
-using Puppy.Logger;
-using Puppy.Logger.Core.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Linq.Expressions;
 using System.Net;
-using System.Net.Http;
 
 namespace Monkey.Controllers.Api
 {
