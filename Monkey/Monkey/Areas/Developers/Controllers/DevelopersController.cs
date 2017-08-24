@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Areas.Developers.Controllers.Base;
 using Puppy.Logger;
+using Puppy.Logger.Core.Models;
 using Puppy.Logger.Filters;
 using Puppy.Swagger;
 using Puppy.Swagger.Filters;
 using Puppy.Web;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using System.Net;
 
 namespace Monkey.Areas.Developers.Controllers
 {
@@ -18,8 +22,8 @@ namespace Monkey.Areas.Developers.Controllers
         [Route("")]
         [HttpGet]
         public IActionResult Index() => Helper.GetApiDocHtml(Url,
-                Url.AbsoluteAction(nameof(JsonViewer), Constants.Endpoint.DevelopersArea.Developers,
-                    new { area = Constants.Endpoint.DevelopersArea.Root }));
+            Url.AbsoluteAction(nameof(JsonViewer), Constants.Endpoint.DevelopersArea.Developers,
+                new { area = Constants.Endpoint.DevelopersArea.Root }));
 
         [HideInDocs]
         [ServiceFilter(typeof(ApiDocAccessFilter))]
@@ -33,7 +37,9 @@ namespace Monkey.Areas.Developers.Controllers
 
         public const string LogsEndpointPattern = "logs/{skip:int}/{take:int}";
 
-        /// <summary> Logs </summary>
+        /// <summary>
+        ///     Logs 
+        /// </summary>
         /// <param name="skip"> </param>
         /// <param name="take"> </param>
         /// <param name="terms">
@@ -41,30 +47,34 @@ namespace Monkey.Areas.Developers.Controllers
         ///     **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK"**, ex: "2017-08-24T00:56:29.6271125+07:00")
         /// </param>
         /// <returns></returns>
+        /// <remarks>
+        ///     <para>
+        ///         Logger write Log with `message queue` so when create a log, it **near real-time log**
+        ///     </para>
+        /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
         [HttpGet]
         [Route(LogsEndpointPattern)]
         [Produces(ContentType.Json, ContentType.Xml)]
-        public IActionResult Logs([FromRoute]int skip, [FromRoute]int take, [FromQuery]string terms)
-        {
-            // Base on "httpContext" will return ContentType XML when Request Header Accept or
-            // ContentType is XML, else return ContentType Json
-            return Log.GetLogsContentResult(HttpContext, LogsEndpointPattern, skip, take, terms);
-        }
+        [SwaggerResponse((int)HttpStatusCode.OK, typeof(ICollection<LogEntity>))]
+        public IActionResult Logs([FromRoute] int skip, [FromRoute] int take, [FromQuery] string terms) => Log.GetLogsContentResult(HttpContext, LogsEndpointPattern, skip, take, terms);
 
-        /// <summary> Log </summary>
+        /// <summary>
+        ///     Log 
+        /// </summary>
         /// <param name="id"> Id should be a `guid string` with format [**"N"**](https://goo.gl/pYVXKd) </param>
         /// <returns></returns>
+        /// <remarks>
+        ///     <para>
+        ///         Logger write Log with `message queue` so when create a log, it **near real-time log**
+        ///     </para>
+        /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
         [HttpGet]
         [Route("logs/{id}")]
         [Produces(ContentType.Json, ContentType.Xml)]
-        public IActionResult SingleLog([FromRoute]string id)
-        {
-            // Base on "httpContext" will return ContentType XML when Request Header Accept or
-            // ContentType is XML, else return ContentType Json
-            return Log.GetLogContentResult(HttpContext, id);
-        }
+        [SwaggerResponse((int)HttpStatusCode.OK, typeof(LogEntity))]
+        public IActionResult SingleLog([FromRoute]string id) => Log.GetLogContentResult(HttpContext, id);
 
         #endregion Log
     }
