@@ -104,10 +104,6 @@ namespace Monkey.Extensions
             {
                 app.UseResponseCaching();
             }
-            else
-            {
-                app.UseBrowserLink();
-            }
 
             // Root Path and GZip
             app.UseStaticFiles(new StaticFileOptions
