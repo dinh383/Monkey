@@ -19,6 +19,19 @@ dotnet ef database update  -v
 **Don't use/run Package Manager Console to do the above action**
 **It will hang the Console and never stop without any result.**
 
+# Mapping
+- Sample Entity Map
+```csharp
+public class UserMap : EntityTypeConfiguration<UserEntity>
+{
+    public override void Map(EntityTypeBuilder<UserEntity> builder)
+    {
+        base.Map(builder);
+        builder.ToTable(nameof(UserEntity));
+    }
+}
+```
+
 # Special things in .csproj
 
 ```markup

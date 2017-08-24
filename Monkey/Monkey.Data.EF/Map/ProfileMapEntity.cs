@@ -24,13 +24,13 @@ using Puppy.EF.Mapping;
 
 namespace Monkey.Data.EF.Map
 {
-    public class ProfileMapEntity : IEntityTypeConfiguration<ProfileEntity>
+    public class ProfileMap : EntityTypeConfiguration<ProfileEntity>
     {
-        public void Map(EntityTypeBuilder<ProfileEntity> builder)
+        public override void Map(EntityTypeBuilder<ProfileEntity> builder)
         {
-            builder.ToTable(nameof(ProfileMapEntity));
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Version).IsRowVersion();
+            base.Map(builder);
+
+            builder.ToTable(nameof(ProfileMap));
         }
     }
 }
