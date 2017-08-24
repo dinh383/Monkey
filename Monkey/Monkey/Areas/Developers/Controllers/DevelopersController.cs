@@ -33,14 +33,12 @@ namespace Monkey.Areas.Developers.Controllers
 
         public const string LogsEndpointPattern = "logs/{skip:int}/{take:int}";
 
-        /// <summary>
-        ///     Logs 
-        /// </summary>
+        /// <summary> Logs </summary>
         /// <param name="skip"> </param>
         /// <param name="take"> </param>
         /// <param name="terms">
-        ///     terms do contains search for Id, Message, Level, CreatedTime (with string format is
-        ///     "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", ex: "2017-08-24T00:56:29.6271125+07:00")
+        ///     Search for `Id`, `Message`, `Level`, `CreatedTime` (with format
+        ///     **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK"**, ex: "2017-08-24T00:56:29.6271125+07:00")
         /// </param>
         /// <returns></returns>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
@@ -54,10 +52,8 @@ namespace Monkey.Areas.Developers.Controllers
             return Log.GetLogsContentResult(HttpContext, LogsEndpointPattern, skip, take, terms);
         }
 
-        /// <summary>
-        ///     Log 
-        /// </summary>
-        /// <param name="id"> Id should be a guid string with format "N" </param>
+        /// <summary> Log </summary>
+        /// <param name="id"> Id should be a `guid string` with format [**"N"**](https://goo.gl/pYVXKd) </param>
         /// <returns></returns>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
         [HttpGet]

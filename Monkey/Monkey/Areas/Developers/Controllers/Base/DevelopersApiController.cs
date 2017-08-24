@@ -7,8 +7,6 @@ using Puppy.Web;
 
 namespace Monkey.Areas.Developers.Controllers.Base
 {
-    [AllowAnonymous]
-    [HideInDocs]
     [Area(Constants.Endpoint.DevelopersArea.Root)]
     [ServiceFilter(typeof(ApiExceptionFilter))]
     [ServiceFilter(typeof(DeveloperAccessFilter))]
