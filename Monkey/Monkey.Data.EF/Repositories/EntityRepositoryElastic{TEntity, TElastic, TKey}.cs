@@ -29,6 +29,7 @@ using Monkey.Data.Entities;
 using Monkey.Data.Interfaces;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.DependencyInjection.Attributes;
+using Puppy.EF.Extensions;
 using Puppy.EF.Interfaces.Entity;
 using Puppy.Elastic;
 using Puppy.Elastic.ContextSearch;
@@ -314,7 +315,7 @@ namespace Monkey.Data.EF.Repositories
             if (listEntityAddUpdate != null && listEntityAddUpdate.Any())
             {
                 // Also Delete case if IsDeleted == true
-                var lisTEntityDeletedId = listEntityAddUpdate.Where(x => x.IsDeleted).Select(x => x.Id).ToList();
+                var lisTEntityDeletedId = listEntityAddUpdate.Where(x => x.IsDeleted()).Select(x => x.Id).ToList();
                 if (lisTEntityDeletedId?.Any() == true)
                 {
                     DeleteElastic(lisTEntityDeletedId);
