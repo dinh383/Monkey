@@ -49,7 +49,7 @@ namespace Monkey.Data.EF.Repositories
 {
     [PerResolveDependency]
     public class EntityRepositoryElastic<TEntity, TKey> : EntityRepository<TEntity>, ISearchableRepository<TEntity, TKey>
-        where TEntity : Puppy.EF.Entity, IBaseElastic<TKey>, ISoftDeletableEntity<TKey>, IAuditableEntity<TKey>
+        where TEntity : Puppy.EF.Entity, IBaseElastic<TKey>, ISoftDeletableEntity<TKey>, IAuditableEntity<TKey>, new()
         where TKey : struct
     {
         private readonly IConfigurationRoot _configurationRoot;

@@ -24,7 +24,7 @@ using Puppy.EF.Interfaces.Entity;
 
 namespace Monkey.Data.EF.Repositories
 {
-    public class EntityRepository<TEntity> : Puppy.EF.EntityRepository<TEntity, int> where TEntity : Entity, ISoftDeletableEntity<int>, IAuditableEntity<int>
+    public class EntityRepository<TEntity> : EntityRepository<TEntity, int> where TEntity : Entity, ISoftDeletableEntity<int>, IAuditableEntity<int>, new()
     {
         internal EntityRepository(IDbContext dbContext) : base(dbContext)
         {
