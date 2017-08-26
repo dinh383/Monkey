@@ -74,6 +74,7 @@ namespace Monkey.Extensions
             GetDatabaseConnectionStringConfig(configuration);
             GetMvcPathConfig(configuration);
             Core.SystemConfigs.IdentityServer = configuration.GetSection<IdentityServerConfigModel>(nameof(Core.SystemConfigs.IdentityServer));
+            Core.SystemConfigs.PagedCollectionParameters = configuration.GetSection<PagedCollectionParametersConfigModel>(nameof(Core.SystemConfigs.PagedCollectionParameters)) ?? new PagedCollectionParametersConfigModel();
         }
 
         private static void GetDatabaseConnectionStringConfig(IConfiguration configuration)

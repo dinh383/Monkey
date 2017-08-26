@@ -5,7 +5,7 @@ using Monkey.ViewModels.Api;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Core.XmlUtils;
 using Puppy.Logger;
-using Puppy.Web;
+using Puppy.Web.Constants;
 using System;
 using System.Linq;
 using System.Net;

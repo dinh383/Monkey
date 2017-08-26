@@ -40,5 +40,7 @@ namespace Monkey.Core
         ///     Identity Server - SSO - Scalable System 
         /// </summary>
         public static IdentityServerConfigModel IdentityServer { get; set; }
+
+        public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; }
     }
 }

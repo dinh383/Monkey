@@ -15,6 +15,10 @@
     <OutputPath>.\bin\</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
+  </ItemGroup>
+  
   <!-- External Libraries -->
   <ItemGroup>
     <PackageReference Include="Enums.NET" Version="2.2.0" />

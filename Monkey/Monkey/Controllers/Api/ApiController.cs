@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Filters;
-using Puppy.Web;
+using Puppy.Web.Constants;
 
 namespace Monkey.Controllers.Api
 {

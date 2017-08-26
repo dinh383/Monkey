@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Areas.Developers.Controllers.Base;
+using Monkey.Model.Models;
 using Puppy.Logger;
 using Puppy.Logger.Core.Models;
 using Puppy.Logger.Filters;
 using Puppy.Swagger;
 using Puppy.Swagger.Filters;
 using Puppy.Web;
+using Puppy.Web.Constants;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Net;
@@ -35,29 +37,28 @@ namespace Monkey.Areas.Developers.Controllers
 
         #region Log
 
-        public const string LogsEndpointPattern = "logs/{skip:int}/{take:int}";
-
         /// <summary>
         ///     Logs 
         /// </summary>
-        /// <param name="skip"> </param>
-        /// <param name="take"> </param>
-        /// <param name="terms">
-        ///     Search for `Id`, `Message`, `Level`, `CreatedTime` (with format
-        ///     **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK"**, ex: "2017-08-24T00:56:29.6271125+07:00")
-        /// </param>
+        /// <param name="pagedCollectionParametersModel"></param>
         /// <returns></returns>
         /// <remarks>
         ///     <para>
         ///         Logger write Log with `message queue` so when create a log, it **near real-time log**
         ///     </para>
+        ///     <para>
+        ///         Search for <see cref="LogEntity.Id" />, <see cref="LogEntity.Message" />,
+        ///         <see cref="LogEntity.Level" />, <see cref="LogEntity.CreatedTime" /> (with string
+        ///         format is <c> "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK" </c>, ex: "2017-08-24T00:56:29.6271125+07:00")
+        ///     </para>
         /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
         [HttpGet]
-        [Route(LogsEndpointPattern)]
+        [Route("logs")]
         [Produces(ContentType.Json, ContentType.Xml)]
         [SwaggerResponse((int)HttpStatusCode.OK, typeof(ICollection<LogEntity>))]
-        public IActionResult Logs([FromRoute] int skip, [FromRoute] int take, [FromQuery] string terms) => Log.GetLogsContentResult(HttpContext, LogsEndpointPattern, skip, take, terms);
+        public IActionResult Logs([FromQuery]PagedCollectionParametersModel pagedCollectionParametersModel)
+            => Log.GetLogsContentResult(Url, pagedCollectionParametersModel.Skip, pagedCollectionParametersModel.Take, pagedCollectionParametersModel.Terms);
 
         /// <summary>
         ///     Log 

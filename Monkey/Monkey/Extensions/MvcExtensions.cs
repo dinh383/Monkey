@@ -26,11 +26,10 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
-using Monkey.Areas.Developers.Filters;
 using Monkey.Filters;
 using Monkey.Model.Validators;
 using Puppy.Core.EnvironmentUtils;
-using Puppy.Web;
+using Puppy.Web.Constants;
 using Puppy.Web.Render;
 using System.IO;
 using System.Reflection;
@@ -51,7 +50,6 @@ namespace Monkey.Extensions
             services.AddScoped<IViewRenderService, ViewRenderService>();
 
             // Filters
-            services.AddScoped<DeveloperAccessFilter>();
             services.AddScoped<ApiExceptionFilter>();
 
             if (EnvironmentHelper.IsProduction())
