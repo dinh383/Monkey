@@ -315,7 +315,7 @@ namespace Monkey.Data.EF.Repositories
             if (listEntityAddUpdate != null && listEntityAddUpdate.Any())
             {
                 // Also Delete case if IsDeleted == true
-                var lisTEntityDeletedId = listEntityAddUpdate.Where(x => x.IsDeleted()).Select(x => x.Id).ToList();
+                var lisTEntityDeletedId = listEntityAddUpdate.WhereNotDeleted().Select(x => x.Id).ToList();
                 if (lisTEntityDeletedId?.Any() == true)
                 {
                     DeleteElastic(lisTEntityDeletedId);
