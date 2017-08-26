@@ -47,9 +47,8 @@ namespace Monkey.Areas.Developers.Controllers
         ///         Logger write Log with `message queue` so when create a log, it **near real-time log**
         ///     </para>
         ///     <para>
-        ///         Search for <see cref="LogEntity.Id" />, <see cref="LogEntity.Message" />,
-        ///         <see cref="LogEntity.Level" />, <see cref="LogEntity.CreatedTime" /> (with string
-        ///         format is <c> "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK" </c>, ex: "2017-08-24T00:56:29.6271125+07:00")
+        ///         Search for `Id`, `Message`, `Level`, `CreatedTime` (with string format is
+        ///         `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK`, ex: "2017-08-24T00:56:29.6271125+07:00")
         ///     </para>
         /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
