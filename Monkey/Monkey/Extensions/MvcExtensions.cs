@@ -52,6 +52,8 @@ namespace Monkey.Extensions
             // Filters
             services.AddScoped<ApiExceptionFilter>();
 
+            services.AddScoped<ApiModelValidateFilter>();
+
             if (EnvironmentHelper.IsProduction())
             {
                 services.AddResponseCaching();

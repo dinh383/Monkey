@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Areas.Developers.Controllers.Base;
+using Monkey.Filters;
 using Monkey.Model.Models;
 using Puppy.Logger;
 using Puppy.Logger.Core.Models;
@@ -48,6 +49,7 @@ namespace Monkey.Areas.Developers.Controllers
         ///     is `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK`, ex: "2017-08-24T00:56:29.6271125+07:00")
         /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
+        [ServiceFilter(typeof(ApiModelValidateFilter))]
         [HttpGet]
         [Route("logs")]
         [Produces(ContentType.Json, ContentType.Xml)]
@@ -66,6 +68,7 @@ namespace Monkey.Areas.Developers.Controllers
         ///     </para>
         /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
+        [ServiceFilter(typeof(ApiModelValidateFilter))]
         [HttpGet]
         [Route("logs/{id}")]
         [Produces(ContentType.Json, ContentType.Xml)]
