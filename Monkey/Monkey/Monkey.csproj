@@ -27,6 +27,9 @@
   <!--<CopyToOutputDirectory>Always/PreserveNewest</CopyToOutputDirectory>-->
   <ItemGroup>
     <!-- Documentation XML -->
+    <Content Include="Monkey.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
 
     <!-- Root -->
     <Content Include="appsettings.json">
@@ -94,7 +97,7 @@
     <!-- Secret -->
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
-    
+
     <!-- C# Utitlity -->
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
