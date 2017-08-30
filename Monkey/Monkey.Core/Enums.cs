@@ -25,7 +25,7 @@ namespace Monkey.Core
 {
     public class Enums
     {
-        public enum UserRole
+        public enum Permission
         {
             [Display(Name = "Developer")]
             Developer = 1000,

@@ -16,7 +16,15 @@
     <!-- Enable runtime config and runtime version, Need for entity framework DonetClioTool -->
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
-  
+
+  <!-- Copy Output folder -->
+  <!--<CopyToOutputDirectory>Always/PreserveNewest</CopyToOutputDirectory>-->
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <!-- Puppy -->
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />
@@ -29,19 +37,19 @@
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
     <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="Enums.NET" Version="2.2.0" />
     <PackageReference Include="HangFire" Version="1.6.15" />
-    
+
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
     <!-- START Keep Runtime version is 1.0.0-* -->
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-*" />
-    
+
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />

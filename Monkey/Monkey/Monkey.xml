@@ -64,6 +64,11 @@
             <param name="services"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
+        <member name="T:Monkey.Filters.Authorize.OverrideAuthorizeAttribute">
+            <summary>
+                Attribute to mark clear higher level AuthorizeAttribute setup 
+            </summary>
+        </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">
             <summary>
                 Unique Code for each Business 
