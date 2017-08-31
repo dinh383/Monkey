@@ -23,7 +23,7 @@ namespace Monkey.Filters.Authorize
                 return;
 
             // Check is user pass authentication
-            if (!context.HttpContext.User.Identity.IsAuthenticated)
+            if (!IsAuthenticated(context.HttpContext))
             {
                 context.Result = new UnauthorizedResult();
                 return;
@@ -83,6 +83,11 @@ namespace Monkey.Filters.Authorize
             }
 
             return false;
+        }
+
+        private static bool IsAuthenticated(HttpContext context)
+        {
+            return context.User.Identity.IsAuthenticated;
         }
 
         private static List<Enums.Permission> GetUserListPermission(HttpContext context)
