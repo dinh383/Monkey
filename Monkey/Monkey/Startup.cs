@@ -80,6 +80,9 @@ namespace Monkey
                 // [MVC] Anti Forgery
                 .AddAntiforgeryToken()
 
+                // [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
+                .AddApiFilter()
+
                 // [MVC]
                 .AddMvcCustom();
         }
@@ -116,6 +119,9 @@ namespace Monkey
 
                 // [Mini Response]
                 .UseMinResponse()
+
+                // [HttpContext]
+                .UseHttpContextAccessor()
 
                 // [MVC] Keep In Last
                 .UseMvcCustom();

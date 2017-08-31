@@ -6,7 +6,7 @@ namespace Monkey.Areas.Developers.Controllers.Base
 {
     [Area(Constants.Endpoint.DevelopersArea.Root)]
     [ServiceFilter(typeof(ApiExceptionFilter))]
-    [ServiceFilter(typeof(ApiModelValidateFilter))]
+    [ServiceFilter(typeof(ApiModelValidationActionFilter))]
     [Produces(ContentType.Json, ContentType.Xml)]
     public class DevelopersApiController : Controller
     {

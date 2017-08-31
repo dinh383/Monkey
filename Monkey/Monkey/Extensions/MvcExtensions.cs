@@ -26,7 +26,6 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
-using Monkey.Filters;
 using Monkey.Model.Validators;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Web.Constants;
@@ -45,14 +44,8 @@ namespace Monkey.Extensions
         public static IServiceCollection AddMvcCustom(this IServiceCollection services)
         {
             // Mvc Services
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
-
-            // Filters
-            services.AddScoped<ApiExceptionFilter>();
-
-            services.AddScoped<ApiModelValidateFilter>();
 
             if (EnvironmentHelper.IsProduction())
             {

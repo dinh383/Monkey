@@ -11,7 +11,7 @@ using System.Net;
 
 namespace Monkey.Filters
 {
-    public class ApiModelValidateFilter : IActionFilter
+    public class ApiModelValidationActionFilter : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {

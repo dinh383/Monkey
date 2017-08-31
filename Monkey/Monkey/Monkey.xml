@@ -39,6 +39,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Monkey.Extensions.ApiExtensions.AddApiFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                [Api Filter] Model Validation, Global Exception Filer and Authorize Filter 
+            </summary>
+            <param name="services"></param>
+        </member>
         <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Database] Use Entity Framework 
@@ -64,9 +70,9 @@
             <param name="services"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
-        <member name="T:Monkey.Filters.Authorize.OverrideAuthorizeAttribute">
+        <member name="T:Monkey.Filters.Authorize.CombineAuthorizeAttribute">
             <summary>
-                Attribute to mark clear higher level AuthorizeAttribute setup 
+                Attribute to mark combine (OR conditional) with higher level AuthorizeAttribute 
             </summary>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">

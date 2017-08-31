@@ -49,7 +49,7 @@ namespace Monkey.Areas.Developers.Controllers
         ///     is `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK`, ex: "2017-08-24T00:56:29.6271125+07:00")
         /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
-        [ServiceFilter(typeof(ApiModelValidateFilter))]
+        [ServiceFilter(typeof(ApiModelValidationActionFilter))]
         [HttpGet]
         [Route("logs")]
         [Produces(ContentType.Json, ContentType.Xml)]
@@ -68,7 +68,7 @@ namespace Monkey.Areas.Developers.Controllers
         ///     </para>
         /// </remarks>
         [ServiceFilter(typeof(ViewLogViaUrlAccessFilter))]
-        [ServiceFilter(typeof(ApiModelValidateFilter))]
+        [ServiceFilter(typeof(ApiModelValidationActionFilter))]
         [HttpGet]
         [Route("logs/{id}")]
         [Produces(ContentType.Json, ContentType.Xml)]
