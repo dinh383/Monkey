@@ -34,13 +34,13 @@ namespace Monkey.Core
         /// <summary>
         ///     Folder Name of wwwroot, Areas and Areas name and request path Config 
         /// </summary>
-        public static MvcPathConfigModel MvcPath { get; set; }
+        public static MvcPathConfigModel MvcPath { get; set; } = new MvcPathConfigModel();
 
         /// <summary>
         ///     Identity Server - SSO - Scalable System 
         /// </summary>
-        public static IdentityServerConfigModel IdentityServer { get; set; }
+        public static IdentityServerConfigModel IdentityServer { get; set; } = new IdentityServerConfigModel();
 
-        public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; }
+        public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; } = new PagedCollectionParametersConfigModel();
     }
 }
