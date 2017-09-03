@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monkey.Authentication;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;
@@ -83,6 +84,9 @@ namespace Monkey
                 // [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
                 .AddApiFilter()
 
+                // [Authentication]
+                .AddAuthentication(ConfigurationRoot)
+
                 // [MVC]
                 .AddMvcCustom();
         }
@@ -123,6 +127,9 @@ namespace Monkey
                 // [HttpContext]
                 .UseHttpContextAccessor()
 
+                // [Authentication]
+                .UseAuthentication()
+
                 // [MVC] Keep In Last
                 .UseMvcCustom();
 
@@ -139,6 +146,12 @@ namespace Monkey
 
             // Migrate Database
             app.MigrateDatabase();
+
+            string token = AuthenticationHelper.GenerateToken(new
+            {
+                userId = 123456,
+                userName = "tonguyen"
+            });
         }
     }
 }

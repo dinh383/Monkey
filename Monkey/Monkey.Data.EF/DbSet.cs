@@ -27,7 +27,5 @@ namespace Monkey.Data.EF
     public sealed partial class DbContext
     {
         public DbSet<UserEntity> Users { get; set; }
-
-        public DbSet<ProfileEntity> Profiles { get; set; }
     }
 }

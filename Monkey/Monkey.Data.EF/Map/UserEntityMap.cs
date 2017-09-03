@@ -29,8 +29,9 @@ namespace Monkey.Data.EF.Map
         public override void Map(EntityTypeBuilder<UserEntity> builder)
         {
             base.Map(builder);
-
             builder.ToTable(nameof(UserEntity));
+            builder.HasIndex(x => x.UserNameNorm);
+            builder.HasIndex(x => x.PasswordHash);
         }
     }
 }

@@ -23,9 +23,10 @@ namespace Monkey.Data.Entities
     {
         public string UserName { get; set; }
 
-        /// <summary>
-        ///     Username Normalize 
-        /// </summary>
         public string UserNameNorm { get; set; }
+
+        public string PasswordHash { get; set; }
+
+        public string PasswordSalt { get; set; }
     }
 }

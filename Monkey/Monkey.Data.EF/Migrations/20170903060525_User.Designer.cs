@@ -8,7 +8,7 @@ using Monkey.Data.EF;
 namespace Monkey.Data.EF.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20170718093549_User")]
+    [Migration("20170903060525_User")]
     partial class User
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,21 +32,29 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<string>("GlobalId");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int?>("LastUpdatedBy");
 
                     b.Property<DateTimeOffset?>("LastUpdatedTime");
 
-                    b.Property<int?>("UpdatedBy");
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PasswordSalt");
 
                     b.Property<string>("UserName");
 
                     b.Property<string>("UserNameNorm");
 
-                    b.Property<byte[]>("Version")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DeletedTime");
+
+                    b.HasIndex("GlobalId");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("PasswordHash");
+
+                    b.HasIndex("UserNameNorm");
 
                     b.ToTable("User");
                 });

@@ -64,6 +64,7 @@
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
     <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
     <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
+    <ProjectReference Include="..\Monkey.Authentication\Monkey.Authentication.csproj" />
 
     <!-- Service -->
     <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />

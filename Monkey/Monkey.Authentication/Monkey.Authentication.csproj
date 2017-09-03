@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Project Main Information -->
+  <PropertyGroup>
+    <Authors>Top Nguyen</Authors>
+    <Copyright>http://topnguyen.net</Copyright>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <OutputType>Library</OutputType>
+    <PreserveCompilationContext>false</PreserveCompilationContext>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>.\bin\</OutputPath>
+  </PropertyGroup>
+
+  <!-- Puppy -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
+  </ItemGroup>
+  
+  <!-- Monkey -->
+  <ItemGroup>
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
+    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
+  </ItemGroup>
+
+  <!-- External Libraries -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />
+
+    <!-- Configuration -->
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="1.1.2" />
+  </ItemGroup>
+</Project>

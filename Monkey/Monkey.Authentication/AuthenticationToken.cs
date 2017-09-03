@@ -1,5 +1,4 @@
 ﻿#region	License
-
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
@@ -7,26 +6,31 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> EntityRepository.cs </Name>
-//         <Created> 02 May 17 12:52:21 PM </Created>
-//         <Key> fe2d39e6-5f2e-4cfd-ad5f-8f588be696fe </Key>
+//         <Name> AuthenticationToken.cs </Name>
+//         <Created> 03/09/17 2:44:22 PM </Created>
+//         <Key> be00166a-7aff-4e8a-abae-dc5b0625ee4a </Key>
 //     </File>
 //     <Summary>
-//         EntityRepository.cs
+//         AuthenticationToken.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
-
 #endregion License
 
-using Puppy.EF;
+using System;
 
-namespace Monkey.Data.EF.Repositories
+namespace Monkey.Authentication
 {
-    public class EntityRepository<TEntity> : EntityRepository<TEntity, int> where TEntity : Entity, new()
+    public class AuthenticationToken
     {
-        internal EntityRepository(IDbContext dbContext) : base(dbContext)
-        {
-        }
+        public string Token { get; set; }
+
+        public string RefreshToken { get; set; }
+
+        public DateTimeOffset? ExpireOn { get; set; }
+
+        public DateTimeOffset CreatedTime { get; set; }
+
+        public string Type { get; set; }
     }
 }
