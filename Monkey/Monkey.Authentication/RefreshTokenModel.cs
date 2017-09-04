@@ -6,12 +6,12 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> AuthenticationToken.cs </Name>
-//         <Created> 03/09/17 2:44:22 PM </Created>
-//         <Key> be00166a-7aff-4e8a-abae-dc5b0625ee4a </Key>
+//         <Name> RefreshTokenModel.cs </Name>
+//         <Created> 04/09/17 8:22:56 PM </Created>
+//         <Key> 37243802-c119-4166-b9d2-98c2433a89b4 </Key>
 //     </File>
 //     <Summary>
-//         AuthenticationToken.cs
+//         RefreshTokenModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -21,16 +21,17 @@ using System;
 
 namespace Monkey.Authentication
 {
-    public class AuthenticationToken
+    public class RefreshTokenModel
     {
-        public string Token { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString("D");
 
-        public string RefreshToken { get; set; }
+        public DateTimeOffset IssuedAt { get; set; } = DateTimeOffset.UtcNow;
 
-        public DateTimeOffset? ExpireOn { get; set; }
+        public string AccessTokenJwt { get; set; }
 
-        public DateTimeOffset CreatedTime { get; set; }
-
-        public string Type { get; set; }
+        public RefreshTokenModel(string accessTokenJwt)
+        {
+            AccessTokenJwt = accessTokenJwt;
+        }
     }
 }

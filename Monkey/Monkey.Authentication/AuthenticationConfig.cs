@@ -18,9 +18,9 @@
 #endregion License
 
 using Microsoft.IdentityModel.Tokens;
+using Puppy.Core.StringUtils;
 using System;
 using System.Text;
-using Puppy.Core.StringUtils;
 
 namespace Monkey.Authentication
 {
@@ -46,7 +46,7 @@ namespace Monkey.Authentication
 
         public static SigningCredentials SigningCredentials { get; private set; }
 
-        public static string TokenType { get; } = "Bearer";
+        public static string TokenType { get; } = Constants.Oauth.Bearer;
 
         public static TimeSpan ExpiresSpan { get; } = TimeSpan.FromMinutes(30);
     }

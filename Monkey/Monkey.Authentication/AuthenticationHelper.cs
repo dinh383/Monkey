@@ -27,11 +27,61 @@ namespace Monkey.Authentication
 {
     public static class AuthenticationHelper
     {
-        public static string GenerateToken<T>(T data)
+        public static AccessTokenModel GenerateToken<T>(T data, string issuer = null)
         {
-            var dateTimeutcNow = DateTime.UtcNow;
+            var token = new AccessTokenModel
+            {
+                IssuedAt = DateTimeOffset.UtcNow,
+                ExpireIn = AuthenticationConfig.ExpiresSpan.TotalMilliseconds,
+            };
 
-            // Generate Dictionary from T
+            var identityClaims = GetClaimsIdentity(data);
+            token.ExpireOn = token.IssuedAt.AddMilliseconds(token.ExpireIn).DateTime;
+
+            // Generate access token jwt
+            var handler = new JwtSecurityTokenHandler();
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Subject = identityClaims,
+                SigningCredentials = AuthenticationConfig.SigningCredentials,
+                Expires = token.ExpireOn?.DateTime,
+                NotBefore = token.IssuedAt.DateTime,
+                IssuedAt = token.IssuedAt.DateTime,
+                Issuer = issuer
+            });
+
+            token.AccessToken = handler.WriteToken(securityToken);
+            token.RefreshToken = GenerateRefreshToken(token.AccessToken, out var refreshTokenId, issuer);
+            token.RefreshTokenId = refreshTokenId;
+
+            return token;
+        }
+
+        private static string GenerateRefreshToken(string accessTokenJwt, out string refreshTokenId, string issuer = null)
+        {
+            var refreshToken = new RefreshTokenModel(accessTokenJwt);
+            var identityClaims = GetClaimsIdentity(refreshToken);
+
+            var handler = new JwtSecurityTokenHandler();
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Subject = identityClaims,
+                SigningCredentials = AuthenticationConfig.SigningCredentials,
+                NotBefore = refreshToken.IssuedAt.DateTime,
+                IssuedAt = refreshToken.IssuedAt.DateTime,
+                Issuer = issuer,
+                Expires = null
+            });
+
+            string refreshTokenJwt = handler.WriteToken(securityToken);
+
+            refreshTokenId = refreshToken.Id;
+
+            return refreshTokenJwt;
+        }
+
+        private static ClaimsIdentity GetClaimsIdentity<T>(T data)
+        {
             Dictionary<string, string> dictionary;
 
             var dataStr = data as string;
@@ -53,18 +103,7 @@ namespace Monkey.Authentication
             {
                 identity.AddClaim(new Claim(key, dictionary[key]));
             }
-
-            var handler = new JwtSecurityTokenHandler();
-            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
-            {
-                Subject = identity,
-                SigningCredentials = AuthenticationConfig.SigningCredentials,
-                Expires = dateTimeutcNow.AddTicks(AuthenticationConfig.ExpiresSpan.Ticks),
-                NotBefore = dateTimeutcNow,
-                IssuedAt = dateTimeutcNow
-            });
-
-            return handler.WriteToken(securityToken);
+            return identity;
         }
     }
 }
