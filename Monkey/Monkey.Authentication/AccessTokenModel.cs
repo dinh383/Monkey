@@ -27,8 +27,7 @@ namespace Monkey.Authentication
     /// </summary>
     public class AccessTokenModel
     {
-        [JsonProperty(Constants.Oauth.Id, Order = -1)]
-        public string Id { get; set; } = Guid.NewGuid().ToString("D");
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
         [JsonProperty(Constants.Oauth.AccessToken, Order = 1)]
         public string AccessToken { get; set; }

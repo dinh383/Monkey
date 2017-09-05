@@ -23,20 +23,12 @@ using System.Collections.Generic;
 
 namespace Monkey.Authentication
 {
-    public abstract class RequestTokenBaseModel
+    public abstract class RequestTokenModel
     {
         [JsonProperty(Constants.Oauth.GrantType)]
         [JsonConverter(typeof(StringEnumConverter))]
         public GrantType GrantType { get; set; }
 
-        protected RequestTokenBaseModel(GrantType grantType)
-        {
-            GrantType = grantType;
-        }
-    }
-
-    public class ImplicitRequestModel : RequestTokenBaseModel
-    {
         [JsonProperty(Constants.Oauth.ClientId)]
         public string ClientId { get; set; }
 
@@ -45,35 +37,6 @@ namespace Monkey.Authentication
 
         [JsonProperty(Constants.Oauth.ResponseType)]
         public string ResponseType { get; } = Constants.Oauth.AuthorizationCodeResponseType;
-
-        public ImplicitRequestModel() : base(GrantType.Implicit)
-        {
-        }
-    }
-
-    public class AuthorizationRequestCodeModel : RequestTokenBaseModel
-    {
-        [JsonProperty(Constants.Oauth.ClientId)]
-        public string ClientId { get; set; }
-
-        [JsonProperty(Constants.Oauth.RedirectUri)]
-        public string RedirectUri { get; set; }
-
-        [JsonProperty(Constants.Oauth.ResponseType)]
-        public string ResponseType { get; } = Constants.Oauth.AuthorizationCodeResponseType;
-
-        public AuthorizationRequestCodeModel() : base(GrantType.AuthorizationCode)
-        {
-        }
-    }
-
-    public class AuthorizationRequestTokenModel : RequestTokenBaseModel
-    {
-        [JsonProperty(Constants.Oauth.ClientId)]
-        public string ClientId { get; set; }
-
-        [JsonProperty(Constants.Oauth.ClientSecret)]
-        public string ClientSecret { get; set; }
 
         [JsonProperty(Constants.Oauth.Scopes)]
         public List<string> Scopes { get; set; }
@@ -81,59 +44,13 @@ namespace Monkey.Authentication
         [JsonProperty(Constants.Oauth.Code)]
         public string Code { get; set; }
 
-        public AuthorizationRequestTokenModel() : base(GrantType.AuthorizationCode)
-        {
-        }
-    }
-
-    public class ResourceOwnerPasswordRequestModel : RequestTokenBaseModel
-    {
-        [JsonProperty(Constants.Oauth.ClientId)]
-        public string ClientId { get; set; }
-
-        [JsonProperty(Constants.Oauth.ClientSecret)]
-        public string ClientSecret { get; set; }
-
-        [JsonProperty(Constants.Oauth.Scopes)]
-        public List<string> Scopes { get; set; }
-
         [JsonProperty(Constants.Oauth.Username)]
         public string Username { get; set; }
 
         [JsonProperty(Constants.Oauth.Password)]
         public string Password { get; set; }
 
-        public ResourceOwnerPasswordRequestModel() : base(GrantType.ResourceOwnerPassword)
-        {
-        }
-    }
-
-    public class ClientCredentialsRequestModel : RequestTokenBaseModel
-    {
-        [JsonProperty(Constants.Oauth.ClientId)]
-        public string ClientId { get; set; }
-
-        [JsonProperty(Constants.Oauth.ClientSecret)]
-        public string ClientSecret { get; set; }
-
-        public ClientCredentialsRequestModel() : base(GrantType.ClientCredentials)
-        {
-        }
-    }
-
-    public class RefreshTokenRequestModel : RequestTokenBaseModel
-    {
-        [JsonProperty(Constants.Oauth.ClientId)]
-        public string ClientId { get; set; }
-
-        [JsonProperty(Constants.Oauth.ClientSecret)]
-        public string ClientSecret { get; set; }
-
         [JsonProperty(Constants.Oauth.RefreshToken)]
         public string RefreshToken { get; set; }
-
-        public RefreshTokenRequestModel() : base(GrantType.RefreshToken)
-        {
-        }
     }
 }

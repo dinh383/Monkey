@@ -27,7 +27,30 @@ namespace Monkey.Authentication
 {
     public static class AuthenticationHelper
     {
-        public static AccessTokenModel GenerateToken<T>(T data, string issuer = null)
+        public static string GenerateToken<T>(T data, DateTime? expireOn, DateTime? issuedAt = null, DateTime? notBefore = null, string issuer = null)
+        {
+            var identityClaims = GetClaimsIdentity(data);
+
+            var dateTimeUtcNow = DateTime.UtcNow;
+
+            var handler = new JwtSecurityTokenHandler();
+
+            SecurityToken securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Subject = identityClaims,
+                SigningCredentials = AuthenticationConfig.SigningCredentials,
+                Expires = expireOn ?? dateTimeUtcNow,
+                NotBefore = notBefore ?? dateTimeUtcNow,
+                IssuedAt = issuedAt ?? dateTimeUtcNow,
+                Issuer = issuer
+            });
+
+            var token = handler.WriteToken(securityToken);
+
+            return token;
+        }
+
+        public static AccessTokenModel GenerateAccessToken<T>(T data, string issuer = null)
         {
             var token = new AccessTokenModel
             {
@@ -35,45 +58,22 @@ namespace Monkey.Authentication
                 ExpireIn = AuthenticationConfig.ExpiresSpan.TotalMilliseconds,
             };
 
-            var identityClaims = GetClaimsIdentity(data);
             token.ExpireOn = token.IssuedAt.AddMilliseconds(token.ExpireIn).DateTime;
 
-            // Generate access token jwt
-            var handler = new JwtSecurityTokenHandler();
-            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
-            {
-                Subject = identityClaims,
-                SigningCredentials = AuthenticationConfig.SigningCredentials,
-                Expires = token.ExpireOn?.DateTime,
-                NotBefore = token.IssuedAt.DateTime,
-                IssuedAt = token.IssuedAt.DateTime,
-                Issuer = issuer
-            });
+            token.AccessToken = GenerateToken(data, token.ExpireOn?.DateTime, token.IssuedAt.DateTime, token.IssuedAt.DateTime, issuer);
 
-            token.AccessToken = handler.WriteToken(securityToken);
-            token.RefreshToken = GenerateRefreshToken(token.AccessToken, out var refreshTokenId, issuer);
+            token.RefreshToken = GenerateRefreshAccessToken(token.AccessToken, out var refreshTokenId, issuer);
+
             token.RefreshTokenId = refreshTokenId;
 
             return token;
         }
 
-        private static string GenerateRefreshToken(string accessTokenJwt, out string refreshTokenId, string issuer = null)
+        private static string GenerateRefreshAccessToken(string accessTokenJwt, out string refreshTokenId, string issuer = null)
         {
             var refreshToken = new RefreshTokenModel(accessTokenJwt);
-            var identityClaims = GetClaimsIdentity(refreshToken);
 
-            var handler = new JwtSecurityTokenHandler();
-            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
-            {
-                Subject = identityClaims,
-                SigningCredentials = AuthenticationConfig.SigningCredentials,
-                NotBefore = refreshToken.IssuedAt.DateTime,
-                IssuedAt = refreshToken.IssuedAt.DateTime,
-                Issuer = issuer,
-                Expires = null
-            });
-
-            string refreshTokenJwt = handler.WriteToken(securityToken);
+            string refreshTokenJwt = GenerateToken(refreshToken, null, refreshToken.IssuedAt.DateTime, refreshToken.IssuedAt.DateTime, issuer);
 
             refreshTokenId = refreshToken.Id;
 

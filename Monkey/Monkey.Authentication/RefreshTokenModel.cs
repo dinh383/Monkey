@@ -23,7 +23,7 @@ namespace Monkey.Authentication
 {
     public class RefreshTokenModel
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString("D");
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
         public DateTimeOffset IssuedAt { get; set; } = DateTimeOffset.UtcNow;
 

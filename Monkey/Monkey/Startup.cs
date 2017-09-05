@@ -147,7 +147,7 @@ namespace Monkey
             // Migrate Database
             app.MigrateDatabase();
 
-            var token = AuthenticationHelper.GenerateToken(new
+            var token = AuthenticationHelper.GenerateAccessToken(new
             {
                 userId = 123456,
                 userName = "tonguyen"
