@@ -18,15 +18,8 @@
   <!-- Puppy -->
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
   </ItemGroup>
   
-  <!-- Monkey -->
-  <ItemGroup>
-    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
-  </ItemGroup>
-
   <!-- External Libraries -->
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />

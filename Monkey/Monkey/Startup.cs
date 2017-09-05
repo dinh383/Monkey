@@ -84,8 +84,11 @@ namespace Monkey
                 // [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
                 .AddApiFilter()
 
-                // [Authentication]
-                .AddAuthentication(ConfigurationRoot)
+                // [Authentication] Json Web Token
+                .AddJwtBearerAuthen(ConfigurationRoot)
+
+                // [HttpContext]
+                .AddHttpContextAccessor()
 
                 // [MVC]
                 .AddMvcCustom();
@@ -124,11 +127,11 @@ namespace Monkey
                 // [Mini Response]
                 .UseMinResponse()
 
+                // [Authentication] Json Web Token
+                .UseJwtBearerAuthen()
+
                 // [HttpContext]
                 .UseHttpContextAccessor()
-
-                // [Authentication]
-                .UseAuthentication()
 
                 // [MVC] Keep In Last
                 .UseMvcCustom();
@@ -146,12 +149,6 @@ namespace Monkey
 
             // Migrate Database
             app.MigrateDatabase();
-
-            var token = AuthenticationHelper.GenerateAccessToken(new
-            {
-                userId = 123456,
-                userName = "tonguyen"
-            });
         }
     }
 }

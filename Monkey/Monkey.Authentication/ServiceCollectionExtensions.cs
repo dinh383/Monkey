@@ -20,8 +20,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Linq;
 
 namespace Monkey.Authentication
@@ -29,39 +27,30 @@ namespace Monkey.Authentication
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        ///     [Authentication] 
+        ///     [Authentication] Json Web Token 
         /// </summary>
         /// <param name="services">     </param>
         /// <param name="configuration"></param>
         /// <param name="configSection"></param>
         /// <returns></returns>
-        public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.DefaultConfigSection)
+        public static IServiceCollection AddJwtBearerAuthen(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.DefaultConfigSection)
         {
             configuration.BuildConfig(configSection);
             return services;
         }
 
         /// <summary>
-        ///     [Authentication] 
+        ///     [Authentication] Json Web Token 
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseAuthentication(this IApplicationBuilder app)
+        public static IApplicationBuilder UseJwtBearerAuthen(this IApplicationBuilder app)
         {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = AuthenticationConfig.SecurityKey,
-                RequireExpirationTime = true,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-            };
-
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                TokenValidationParameters = tokenValidationParameters
+                TokenValidationParameters = AuthenticationConfig.TokenValidationParameters
             });
 
             return app;

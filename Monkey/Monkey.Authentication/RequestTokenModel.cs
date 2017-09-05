@@ -23,34 +23,23 @@ using System.Collections.Generic;
 
 namespace Monkey.Authentication
 {
-    public abstract class RequestTokenModel
+    public class RequestTokenModel
     {
-        [JsonProperty(Constants.Oauth.GrantType)]
         [JsonConverter(typeof(StringEnumConverter))]
         public GrantType GrantType { get; set; }
 
-        [JsonProperty(Constants.Oauth.ClientId)]
         public string ClientId { get; set; }
 
-        [JsonProperty(Constants.Oauth.RedirectUri)]
         public string RedirectUri { get; set; }
 
-        [JsonProperty(Constants.Oauth.ResponseType)]
-        public string ResponseType { get; } = Constants.Oauth.AuthorizationCodeResponseType;
-
-        [JsonProperty(Constants.Oauth.Scopes)]
         public List<string> Scopes { get; set; }
 
-        [JsonProperty(Constants.Oauth.Code)]
         public string Code { get; set; }
 
-        [JsonProperty(Constants.Oauth.Username)]
         public string Username { get; set; }
 
-        [JsonProperty(Constants.Oauth.Password)]
         public string Password { get; set; }
 
-        [JsonProperty(Constants.Oauth.RefreshToken)]
         public string RefreshToken { get; set; }
     }
 }

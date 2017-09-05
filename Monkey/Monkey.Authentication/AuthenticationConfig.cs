@@ -46,8 +46,18 @@ namespace Monkey.Authentication
 
         public static SigningCredentials SigningCredentials { get; private set; }
 
-        public static string TokenType { get; } = Constants.Oauth.Bearer;
-
         public static TimeSpan ExpiresSpan { get; } = TimeSpan.FromMinutes(30);
+
+        public static TokenValidationParameters TokenValidationParameters => new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = SecurityKey,
+
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateActor = false,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
     }
 }

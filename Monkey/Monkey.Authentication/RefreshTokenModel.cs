@@ -25,6 +25,9 @@ namespace Monkey.Authentication
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
+        /// <summary>
+        ///     Issued at UTC 
+        /// </summary>
         public DateTimeOffset IssuedAt { get; set; } = DateTimeOffset.UtcNow;
 
         public string AccessTokenJwt { get; set; }

@@ -12,12 +12,12 @@
 
 - Add Services in Startup
 ```csharp
-// [Authentication]
-services.AddAuthentication(ConfigurationRoot)
+// [Authentication] Json Web Token
+services.AddJwtBearerAuthen(ConfigurationRoot)
 ```
 
 - Use Application Builder, please use Authentication before MVC
 ```csharp
-// [Authentication]
-app.UseAuthentication()
+// [Authentication] Json Web Token
+app.UseJwtBearerAuthen()
 ```
