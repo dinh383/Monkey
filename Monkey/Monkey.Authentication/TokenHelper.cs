@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
@@ -48,6 +49,14 @@ namespace Monkey.Authentication
             var token = handler.WriteToken(securityToken);
 
             return token;
+        }
+
+        public static TokenModel<T> GetTokenData<T>(HttpRequest request) where T : class
+        {
+            var authenticationHeader = request.Headers["Authorization"].ToString();
+            var token = authenticationHeader.Replace(Constants.TokenType.Bearer, string.Empty)?.Trim();
+            var tokenData = GetTokenData<T>(token);
+            return tokenData;
         }
 
         public static TokenModel<T> GetTokenData<T>(string token) where T : class
