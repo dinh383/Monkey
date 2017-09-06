@@ -19,12 +19,12 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Monkey.Data.EF.Map.Base;
 using Monkey.Data.Entities;
-using Puppy.EF.Mapping;
 
 namespace Monkey.Data.EF.Map
 {
-    public class UserMap : EntityTypeConfiguration<UserEntity>
+    public class UserMap : EntityMap<UserEntity>
     {
         public override void Map(EntityTypeBuilder<UserEntity> builder)
         {

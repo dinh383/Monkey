@@ -29,7 +29,9 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedTime");
 
-                    b.Property<string>("GlobalId");
+                    b.Property<string>("GlobalId")
+                        .IsRequired()
+                        .HasMaxLength(68);
 
                     b.Property<int?>("LastUpdatedBy");
 

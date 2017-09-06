@@ -8,8 +8,8 @@ using Monkey.Data.EF;
 namespace Monkey.Data.EF.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20170903060525_User")]
-    partial class User
+    [Migration("20170906083700_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,7 +30,9 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedTime");
 
-                    b.Property<string>("GlobalId");
+                    b.Property<string>("GlobalId")
+                        .IsRequired()
+                        .HasMaxLength(68);
 
                     b.Property<int?>("LastUpdatedBy");
 

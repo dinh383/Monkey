@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Monkey.Data.EF.Migrations
 {
-    public partial class User : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,7 +19,7 @@ namespace Monkey.Data.EF.Migrations
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
                     DeletedBy = table.Column<int>(nullable: true),
                     DeletedTime = table.Column<DateTimeOffset>(nullable: true),
-                    GlobalId = table.Column<string>(nullable: true),
+                    GlobalId = table.Column<string>(maxLength: 68, nullable: false),
                     LastUpdatedBy = table.Column<int>(nullable: true),
                     LastUpdatedTime = table.Column<DateTimeOffset>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: true),
