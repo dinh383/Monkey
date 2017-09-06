@@ -78,7 +78,7 @@ namespace Monkey.Filters.Authorize
 
             if (!isActionHaveAnyPermission)
             {
-                var isControllerHaveAnyPermission = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AuthorizeAttribute>(true).Any();
+                var isControllerHaveAnyPermission = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes<AuthorizeAttribute>(true).Any();
                 return !isControllerHaveAnyPermission;
             }
 
