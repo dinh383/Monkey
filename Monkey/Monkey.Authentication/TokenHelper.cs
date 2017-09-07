@@ -157,23 +157,6 @@ namespace Monkey.Authentication
             return accessToken;
         }
 
-        public static string GenerateRefreshAccessToken(out RefreshTokenModel refreshTokenData, TimeSpan? expiresSpan = null, string issuer = null)
-        {
-            refreshTokenData = new RefreshTokenModel(issuer, expiresSpan);
-
-            var tokenData = new TokenModel<RefreshTokenModel>(refreshTokenData)
-            {
-                IssuedAt = refreshTokenData.IssuedAt,
-                ExpireOn = refreshTokenData.ExpireOn,
-                Issuer = refreshTokenData.Issuer,
-                TokenType = Constants.TokenType.Refresh
-            };
-
-            string refreshTokenJwt = GenerateToken(tokenData);
-
-            return refreshTokenJwt;
-        }
-
         private static ClaimsIdentity GetClaimsIdentity<T>(T data)
         {
             Dictionary<string, string> dictionary;
