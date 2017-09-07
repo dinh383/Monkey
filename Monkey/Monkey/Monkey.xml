@@ -33,9 +33,9 @@
                 Configuration Endpoint for Area and Controller 
             </summary>
         </member>
-        <member name="M:Monkey.Controllers.Api.TestApiController.TestException">
+        <member name="M:Monkey.Controllers.Api.TestApiController.Test">
             <summary>
-                Test Exception 
+                Test 
             </summary>
             <returns></returns>
         </member>
