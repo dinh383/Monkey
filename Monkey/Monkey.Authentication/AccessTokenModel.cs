@@ -48,7 +48,7 @@ namespace Monkey.Authentication
         public double? ExpireIn { get; set; }
 
         [JsonIgnore]
-        public string RefreshTokenId { get; set; }
+        public RefreshTokenModel RefreshTokenData { get; set; }
 
         public string RefreshToken { get; set; }
     }

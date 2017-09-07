@@ -30,11 +30,21 @@ namespace Monkey.Authentication
         /// </summary>
         public DateTimeOffset IssuedAt { get; set; } = DateTimeOffset.UtcNow;
 
-        public string AccessTokenJwt { get; set; }
+        public string Issuer { get; set; }
 
-        public RefreshTokenModel(string accessTokenJwt)
+        /// <summary>
+        ///     Expire on UTC 
+        /// </summary>
+        public DateTimeOffset? ExpireOn { get; set; }
+
+        public RefreshTokenModel()
         {
-            AccessTokenJwt = accessTokenJwt;
+        }
+
+        public RefreshTokenModel(string issuer, DateTimeOffset? expireOn)
+        {
+            Issuer = issuer;
+            ExpireOn = expireOn;
         }
     }
 }

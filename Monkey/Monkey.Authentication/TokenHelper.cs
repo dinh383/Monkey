@@ -153,28 +153,26 @@ namespace Monkey.Authentication
 
             accessToken.AccessToken = GenerateToken(tokenData);
 
-            accessToken.RefreshToken = GenerateRefreshAccessToken(accessToken.AccessToken, out var refreshTokenId, issuer);
+            accessToken.RefreshToken = GenerateRefreshAccessToken(out var refreshTokenData, issuer);
 
-            accessToken.RefreshTokenId = refreshTokenId;
+            accessToken.RefreshTokenData = refreshTokenData;
 
             return accessToken;
         }
 
-        private static string GenerateRefreshAccessToken(string accessTokenJwt, out string refreshTokenId, string issuer = null)
+        private static string GenerateRefreshAccessToken(out RefreshTokenModel refreshTokenData, string issuer = null)
         {
-            var refreshToken = new RefreshTokenModel(accessTokenJwt);
+            refreshTokenData = new RefreshTokenModel(issuer, null);
 
-            var tokenData = new TokenModel<RefreshTokenModel>(refreshToken)
+            var tokenData = new TokenModel<RefreshTokenModel>(refreshTokenData)
             {
-                IssuedAt = refreshToken.IssuedAt,
-                ExpireOn = null,
-                Issuer = issuer,
+                IssuedAt = refreshTokenData.IssuedAt,
+                ExpireOn = refreshTokenData.ExpireOn,
+                Issuer = refreshTokenData.Issuer,
                 TokenType = Constants.TokenType.Refresh
             };
 
             string refreshTokenJwt = GenerateToken(tokenData);
-
-            refreshTokenId = refreshToken.Id;
 
             return refreshTokenJwt;
         }
