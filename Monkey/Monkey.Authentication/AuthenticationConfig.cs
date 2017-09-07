@@ -42,21 +42,18 @@ namespace Monkey.Authentication
             }
         }
 
-        public static SymmetricSecurityKey SecurityKey { get; private set; }
+        internal static SymmetricSecurityKey SecurityKey { get; private set; }
 
-        public static SigningCredentials SigningCredentials { get; private set; }
+        internal static SigningCredentials SigningCredentials { get; private set; }
 
-        public static TimeSpan ExpiresSpan { get; } = TimeSpan.FromMinutes(30);
-
-        public static TokenValidationParameters TokenValidationParameters => new TokenValidationParameters
+        internal static TokenValidationParameters TokenValidationParameters => new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = SecurityKey,
-
+            ValidateLifetime = true,
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateActor = false,
-            ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
     }

@@ -120,9 +120,9 @@ namespace Monkey.Authentication
             }
         }
 
-        public static bool IsExpireToken(string token)
+        public static bool IsExpireOrInvalidToken(string token)
         {
-            if (!IsValidToken(token, out _)) return false;
+            if (!IsValidToken(token, out _)) return true;
 
             DateTimeOffset dateTimeNow = DateTimeOffset.UtcNow;
 
@@ -130,18 +130,18 @@ namespace Monkey.Authentication
 
             if (tokenData.ExpireOn == null || dateTimeNow > tokenData.ExpireOn)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
-        public static AccessTokenModel GenerateAccessToken<T>(T data, string issuer = null) where T : class
+        public static AccessTokenModel GenerateAccessToken<T>(T data, TimeSpan expiresSpan, string refreshToken, string issuer = null) where T : class
         {
             var dateTimeUtcNow = DateTime.UtcNow;
 
-            var accessToken = new AccessTokenModel { ExpireIn = AuthenticationConfig.ExpiresSpan.TotalSeconds };
+            var accessToken = new AccessTokenModel { ExpireIn = expiresSpan.TotalSeconds };
 
-            accessToken.ExpireOn = accessToken.ExpireIn != null ? dateTimeUtcNow.AddSeconds(accessToken.ExpireIn.Value) : (DateTime?)null;
+            accessToken.ExpireOn = dateTimeUtcNow.AddSeconds(accessToken.ExpireIn);
 
             var tokenData = new TokenModel<T>(data)
             {
@@ -152,17 +152,14 @@ namespace Monkey.Authentication
             };
 
             accessToken.AccessToken = GenerateToken(tokenData);
-
-            accessToken.RefreshToken = GenerateRefreshAccessToken(out var refreshTokenData, issuer);
-
-            accessToken.RefreshTokenData = refreshTokenData;
+            accessToken.RefreshToken = refreshToken;
 
             return accessToken;
         }
 
-        private static string GenerateRefreshAccessToken(out RefreshTokenModel refreshTokenData, string issuer = null)
+        public static string GenerateRefreshAccessToken(out RefreshTokenModel refreshTokenData, TimeSpan? expiresSpan = null, string issuer = null)
         {
-            refreshTokenData = new RefreshTokenModel(issuer, null);
+            refreshTokenData = new RefreshTokenModel(issuer, expiresSpan);
 
             var tokenData = new TokenModel<RefreshTokenModel>(refreshTokenData)
             {

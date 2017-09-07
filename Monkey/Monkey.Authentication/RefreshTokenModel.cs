@@ -41,6 +41,12 @@ namespace Monkey.Authentication
         {
         }
 
+        public RefreshTokenModel(string issuer, TimeSpan? expiresSpan)
+        {
+            Issuer = issuer;
+            ExpireOn = expiresSpan != null ? DateTime.UtcNow.AddSeconds(expiresSpan.Value.TotalSeconds) : (DateTime?)null;
+        }
+
         public RefreshTokenModel(string issuer, DateTimeOffset? expireOn)
         {
             Issuer = issuer;

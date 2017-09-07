@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Authentication;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Net;
 
 namespace Monkey.Controllers.Api
@@ -21,7 +22,7 @@ namespace Monkey.Controllers.Api
             {
                 userId = 123456,
                 userName = "tonguyen"
-            });
+            }, TimeSpan.FromMinutes(30), null);
 
             var a = TokenHelper.GetTokenData<object>(token.AccessToken);
 

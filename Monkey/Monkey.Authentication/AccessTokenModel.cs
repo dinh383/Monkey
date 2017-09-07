@@ -45,7 +45,7 @@ namespace Monkey.Authentication
         /// <summary>
         ///     Lifetime of token in seconds 
         /// </summary>
-        public double? ExpireIn { get; set; }
+        public double ExpireIn { get; set; }
 
         [JsonIgnore]
         public RefreshTokenModel RefreshTokenData { get; set; }
