@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Newtonsoft.Json;
 using System;
 
 namespace Monkey.Authentication
