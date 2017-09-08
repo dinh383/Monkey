@@ -139,9 +139,13 @@ namespace Monkey.Authentication
         {
             var dateTimeUtcNow = DateTime.UtcNow;
 
-            var accessToken = new AccessTokenModel { ExpireIn = expiresSpan.TotalSeconds };
-
-            accessToken.ExpireOn = dateTimeUtcNow.AddSeconds(accessToken.ExpireIn);
+            var accessToken = new AccessTokenModel
+            {
+                ExpireIn = expiresSpan.TotalSeconds,
+                ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
+                RefreshToken = refreshToken,
+                TokenType = Constants.TokenType.Bearer
+            };
 
             var tokenData = new TokenModel<T>(data)
             {
@@ -152,7 +156,6 @@ namespace Monkey.Authentication
             };
 
             accessToken.AccessToken = GenerateToken(tokenData);
-            accessToken.RefreshToken = refreshToken;
 
             return accessToken;
         }

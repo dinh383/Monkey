@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Puppy.Web;
 
 namespace Monkey.Controllers.Api
 {
@@ -13,7 +14,8 @@ namespace Monkey.Controllers.Api
         [Route("")]
         public IActionResult Test()
         {
-            return NoContent();
+            var deviceInfo = HttpContext.Request.GetDeviceInfo();
+            return Ok(deviceInfo);
         }
     }
 }

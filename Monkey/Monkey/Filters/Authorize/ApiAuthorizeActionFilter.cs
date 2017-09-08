@@ -53,7 +53,7 @@ namespace Monkey.Filters.Authorize
 
             if (listAllowPermission.Any(x => listUserPermission.Contains(x))) return;
 
-            context.Result = new UnauthorizedResult();
+            context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
