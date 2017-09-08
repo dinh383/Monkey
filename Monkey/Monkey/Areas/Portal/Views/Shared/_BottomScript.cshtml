@@ -1,0 +1,44 @@
+﻿<!-- Core and plugin dependencies -->
+<script src="@Url.AbsoluteContent("~/portal/vendor/babel-external-helpers/babel-external-helpers.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/jquery/jquery.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/tether/tether.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/bootstrap/bootstrap.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/animsition/animsition.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/mousewheel/jquery.mousewheel.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/asscrollbar/jquery-asScrollbar.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/asscrollable/jquery-asScrollable.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/ashoverscroll/jquery-asHoverScroll.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/screenfull/screenfull.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/slidepanel/jquery-slidePanel.js")"></script>
+
+<!-- Template relating scripts -->
+<script src="@Url.AbsoluteContent("~/portal/js/State.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Component.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Plugin.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Base.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Config.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/Menubar.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/GridMenu.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/Sidebar.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/PageAside.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Plugin/menu.min.js")"></script>
+
+<!-- Template config scripts -->
+<script src="@Url.AbsoluteContent("~/portal/js/config/colors.min.js")"></script>
+
+<!-- Template initialise script -->
+<script src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
+
+<script>
+    Config.set('assets', '@Url.AbsoluteContent("~/portal")');
+</script>
+
+<script>
+    (function(document, window, $) {
+        'use strict';
+        var Site = window.Site;
+        $(document).ready(function() {
+            Site.run();
+        });
+    })(document, window, jQuery);
+</script>
