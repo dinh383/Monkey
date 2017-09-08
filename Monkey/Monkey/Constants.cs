@@ -26,6 +26,12 @@ namespace Monkey
         /// </summary>
         public static class Endpoint
         {
+            public static class RootArea
+            {
+                public const string Root = "";
+                public const string Home = "";
+            }
+
             public static class DevelopersArea
             {
                 public const string Root = "developers";
