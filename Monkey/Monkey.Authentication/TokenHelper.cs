@@ -128,7 +128,7 @@ namespace Monkey.Authentication
 
             TokenModel<object> tokenData = GetTokenData<object>(token);
 
-            if (tokenData.ExpireOn == null || dateTimeNow > tokenData.ExpireOn)
+            if (tokenData.ExpireOn == null || dateTimeNow < tokenData.ExpireOn)
             {
                 return false;
             }
