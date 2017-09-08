@@ -6,7 +6,7 @@
     <members>
         <member name="M:Monkey.Areas.Developers.Controllers.DevelopersController.Logs(Monkey.Model.Models.PagedCollectionParametersModel)">
             <summary>
-                Logs 
+                Logs
             </summary>
             <param name="pagedCollectionParametersModel"></param>
             <returns></returns>
@@ -18,7 +18,7 @@
         </member>
         <member name="M:Monkey.Areas.Developers.Controllers.DevelopersController.SingleLog(System.String)">
             <summary>
-                Log 
+                Log
             </summary>
             <param name="id"> Id should be a `guid string` with format [**"N"**](https://goo.gl/pYVXKd) </param>
             <returns></returns>
@@ -30,64 +30,64 @@
         </member>
         <member name="T:Monkey.Constants.Endpoint">
             <summary>
-                Configuration Endpoint for Area and Controller 
+                Configuration Endpoint for Area and Controller
             </summary>
         </member>
         <member name="M:Monkey.Controllers.Api.TestApiController.Test">
             <summary>
-                Test 
+                Test
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Extensions.ApiExtensions.AddApiFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Api Filter] Model Validation, Global Exception Filer and Authorize Filter 
+                [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
             </summary>
             <param name="services"></param>
         </member>
         <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Database] Use Entity Framework 
+                [Database] Use Entity Framework
             </summary>
             <param name="services"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddMvcCustom(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Mvc] Json, Xml serialize, area and response caching 
+                [Mvc] Json, Xml serialize, area and response caching
             </summary>
             <param name="services"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.UseMvcCustom(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
+                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing
             </summary>
             <param name="app"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddAntiforgeryToken(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                Configures the anti-forgery tokens for better security. 
+                Configures the anti-forgery tokens for better security.
             </summary>
             <param name="services"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
         <member name="T:Monkey.Filters.Authorize.CombineAuthorizeAttribute">
             <summary>
-                Attribute to mark combine (OR conditional) with higher level AuthorizeAttribute 
+                Attribute to mark combine (OR conditional) with higher level AuthorizeAttribute
             </summary>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">
             <summary>
-                Unique Code for each Business 
+                Unique Code for each Business
             </summary>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Message">
             <summary>
-                Message description for Client App Developer 
+                Message description for Client App Developer
             </summary>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Module">
             <summary>
-                Module of business 
+                Module of business
             </summary>
         </member>
     </members>

@@ -26,7 +26,7 @@ namespace Monkey.Authentication
         public static class TokenType
         {
             public const string Bearer = "Bearer";
-            
+
             // Authorization Code
             public const string Code = "Code";
         }
