@@ -4,24 +4,25 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Business Interface </Project>
+//     <Project> Monkey → Interface </Project>
 //     <File>
-//         <Name> IUserRepository.cs </Name>
-//         <Created> 18/07/17 4:42:06 PM </Created>
-//         <Key> 2aefeeb7-9f78-4f05-ba98-7e7fa11157fe </Key>
+//         <Name> IEntityRepository.cs </Name>
+//         <Created> 09/09/17 6:20:42 PM </Created>
+//         <Key> 1887a50d-ef7b-46e8-8e67-f262458d2411 </Key>
 //     </File>
 //     <Summary>
-//         IUserRepository.cs
+//         IEntityRepository.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Data.Entities;
+using Puppy.EF.Interfaces.Repository;
+using Entity = Monkey.Data.Entities.Entity;
 
 namespace Monkey.Data.Interfaces
 {
-    public interface IUserRepository : IEntityRepository<UserEntity>
+    public interface IEntityRepository<TEntity> : IEntityRepository<TEntity, int> where TEntity : Entity, new()
     {
     }
 }

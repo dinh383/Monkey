@@ -20,6 +20,7 @@
 #endregion License
 
 using Puppy.EF;
+using Puppy.EF.Repository;
 
 namespace Monkey.Data.EF.Repositories
 {
