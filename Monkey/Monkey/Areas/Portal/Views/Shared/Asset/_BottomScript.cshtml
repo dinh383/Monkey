@@ -1,0 +1,51 @@
+﻿<!-- Core -->
+<script src="@Url.AbsoluteContent("~/portal/vendor/babel-external-helpers/babel-external-helpers.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/jquery/jquery.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/tether/tether.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/bootstrap/bootstrap.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/animsition/animsition.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/mousewheel/jquery.mousewheel.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/asscrollbar/jquery-asScrollbar.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/asscrollable/jquery-asScrollable.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/waves/waves.min.js")"></script>
+
+<!-- Plugins -->
+<script src="@Url.AbsoluteContent("~/portal/vendor/jquery-mmenu/jquery.mmenu.min.all.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/switchery/switchery.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/intro-js/intro.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/screenfull/screenfull.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/vendor/slidepanel/jquery-slidePanel.min.js")"></script>
+
+<!-- Template relating scripts -->
+<script src="@Url.AbsoluteContent("~/portal/js/State.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Component.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Plugin.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Base.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Config.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/Menubar.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/Sidebar.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/PageAside.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Section/GridMenu.min.js")"></script>
+
+<!-- Template config scripts -->
+<script src="@Url.AbsoluteContent("~/portal/js/config/colors.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/config/tour.min.js")"></script>
+
+<script>
+    Config.set('assets', '@Url.AbsoluteContent("~/portal")');
+</script>
+
+<!-- Template initialise script -->
+<script src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Plugin/asscrollable.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Plugin/slidepanel.min.js")"></script>
+<script src="@Url.AbsoluteContent("~/portal/js/Plugin/switchery.min.js")"></script>
+<script>
+    (function (document, window, $) {
+        'use strict';
+        var Site = window.Site;
+        $(document).ready(function () {
+            Site.run();
+        });
+    })(document, window, jQuery);
+</script>

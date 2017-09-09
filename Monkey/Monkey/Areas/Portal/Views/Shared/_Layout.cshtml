@@ -7,8 +7,8 @@
     <title>@ViewData[Monkey.Constants.ViewDataKey.Title]</title>
     @{
         await Html.RenderPartialAsync("_Favicon").ConfigureAwait(true);
-        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/_Style.cshtml").ConfigureAwait(true);
-        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/_HeaderScript.cshtml").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_Style.cshtml").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_HeaderScript.cshtml").ConfigureAwait(true);
     }
     @await RenderSectionAsync("Styles", required: false).ConfigureAwait(true)
 </head>
@@ -17,16 +17,18 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     @{
-        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/_Navbar.cshtml").ConfigureAwait(true);
-        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/_Menubar.cshtml").ConfigureAwait(true);
-        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/_GirdMenu.cshtml").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_Navbar.cshtml").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_Menubar.cshtml").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_GirdMenu.cshtml").ConfigureAwait(true);
     }
     <div class="page">
-        @RenderBody()
+        <div class="page-content">
+            @RenderBody()
+        </div>
     </div>
     @{
-        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/_Footer.cshtml").ConfigureAwait(true);
-        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/_BottomScript.cshtml").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_Footer.cshtml").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_BottomScript.cshtml").ConfigureAwait(true);
     }
     @await RenderSectionAsync("Scripts", required: false).ConfigureAwait(true)
 </body>
