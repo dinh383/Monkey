@@ -14,9 +14,7 @@ namespace Monkey.Filters.Authorize
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var controllerActionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-
-            if (controllerActionDescriptor == null) return;
+            if (!(context.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)) return;
 
             // If allow anonymous => the user/request is authorized
             if (IsAllowAnonymous(controllerActionDescriptor))
@@ -29,30 +27,42 @@ namespace Monkey.Filters.Authorize
                 return;
             }
 
+            List<AuthorizeAttribute> listAuthorizeAttribute = new List<AuthorizeAttribute>();
             var actionAttributes = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AuthorizeAttribute>(true).ToList();
-            var listAllowPermission = actionAttributes.SelectMany(x => x.Permissions).ToList();
-
-            var controllerAttributes = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes<AuthorizeAttribute>(true);
-            var listControllerPermission = controllerAttributes.SelectMany(x => x.Permissions).ToList();
+            if (actionAttributes.Any())
+            {
+                listAuthorizeAttribute.AddRange(actionAttributes);
+            }
 
             // If Action combine Controller authorize or Action not have any Authorize Attribute,
             // then add allow permission of controller to the list allow permission.
             bool isCombineAuthorize = controllerActionDescriptor.MethodInfo.GetCustomAttributes<CombineAuthorizeAttribute>(true).Any();
 
-            if (isCombineAuthorize || !actionAttributes.Any())
+            if (isCombineAuthorize || !listAuthorizeAttribute.Any())
             {
-                listAllowPermission.AddRange(listControllerPermission);
+                var controllerAttributes = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes<AuthorizeAttribute>(true);
+                listAuthorizeAttribute.AddRange(controllerAttributes);
             }
 
-            // If list allow permission don't have any thing => User is authorized
-            if (!listAllowPermission.Any()) return;
+            // If list attribute or list allow permission don't have any thing => User is authorized
+            if (!listAuthorizeAttribute.Any() || listAuthorizeAttribute.SelectMany(x => x.Permissions).Any() != true) return;
 
+            // Get current user logged in permission
             List<Enums.Permission> listUserPermission = GetUserListPermission(context.HttpContext);
 
-            // If user have any permission in list allow permission => the user/request is authorized
+            // Apply rule AND conditional for list attribute, OR conditional for permission into an attribute
 
-            if (listAllowPermission.Any(x => listUserPermission.Contains(x))) return;
+            // Only check attribute have permission
+            listAuthorizeAttribute = listAuthorizeAttribute.Where(x => x.Permissions?.Any() == true).ToList();
 
+            bool isUserAuthorized = listAuthorizeAttribute.All(x => x.Permissions.Any(y => listUserPermission.Contains(y)));
+
+            if (isUserAuthorized)
+            {
+                return;
+            }
+
+            // User not match conditional, so un-authorization
             context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
         }
 

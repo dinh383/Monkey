@@ -4,7 +4,8 @@
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
 - Support `[AllowAnonymous]` in `Action` and `Controller`.
 - Support multiple attributes and multiple permissions with Permission Enums `[Authorize(Enums.Permission)]`.
-- If multiple Authorize Attribute then conditional `OR` will be apply.
+- If multiple Authorize Attribute then conditional `AND` will be apply.
+- If multiple Permission into an Attribute then conditional `OR` will be apply.
 - Support `Action` combine authorization of `Controller` by `[CombineAuthorize]`.
 
 ### Hour to use
@@ -26,9 +27,9 @@ public class BaseController: Controller
 public class TestApiController : BaseController
 {
     ...
-    // This action allow user have Test or Check permission
+    // This action only allow user have (Test and Check) or (Test and AnotherCheck) permission
     [CombineAuthorize()]
-    [Authorize(Enums.Permission.Check)]
+    [Authorize(Enums.Permission.Check, Enums.Permission.AnotherCheck)]
     public IActionResult Test()
     {
         ...
