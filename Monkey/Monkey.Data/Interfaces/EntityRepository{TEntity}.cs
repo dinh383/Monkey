@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Puppy.EF.Interfaces.Repository;
+using Puppy.EF.Interfaces.Repositories;
 using Entity = Monkey.Data.Entities.Entity;
 
 namespace Monkey.Data.Interfaces
