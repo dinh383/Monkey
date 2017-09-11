@@ -47,7 +47,7 @@ namespace Monkey.Extensions
             services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
 
-            if (EnvironmentHelper.IsProduction())
+            if (!EnvironmentHelper.IsDevelopment())
             {
                 services.AddResponseCaching();
             }
@@ -93,7 +93,7 @@ namespace Monkey.Extensions
         /// <param name="app"></param>
         public static IApplicationBuilder UseMvcCustom(this IApplicationBuilder app)
         {
-            if (EnvironmentHelper.IsProduction())
+            if (!EnvironmentHelper.IsDevelopment())
             {
                 app.UseResponseCaching();
             }
