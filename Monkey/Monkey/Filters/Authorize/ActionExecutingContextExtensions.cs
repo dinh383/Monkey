@@ -11,17 +11,28 @@ namespace Monkey.Filters.Authorize
 {
     public static class ActionExecutingContextExtensions
     {
+        /// <summary>
+        ///     Check user is authentication, also check AllowAnonymous attribute. 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static bool IsAuthenticated(this ActionExecutingContext context)
         {
             if (!(context.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)) return true;
 
             // If allow anonymous => the user/request is authorized
-            if (IsAllowAnonymous(controllerActionDescriptor)) return false;
+            if (IsActionAllowAnonymous(controllerActionDescriptor)) return true;
 
             // Check is user pass authentication
-            return IsAuthenticated(context.HttpContext);
+            return IsUserAuthenticated(context.HttpContext);
         }
 
+        /// <summary>
+        ///     Check user is authorization. This method not check about AllowAnonymous attribute,
+        ///     please call <see cref="IsAuthenticated" /> before call this method.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static bool IsAuthorized(this ActionExecutingContext context)
         {
             if (!(context.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)) return true;
@@ -49,7 +60,7 @@ namespace Monkey.Filters.Authorize
             if (!listAuthorizeAttribute.Any() || listAuthorizeAttribute.SelectMany(x => x.Permissions).Any() != true) return true;
 
             // Get current user logged in permission
-            List<Enums.Permission> listUserPermission = GetUserListPermission(context.HttpContext);
+            List<Enums.Permission> listUserPermission = GetUserListPermission();
 
             // Apply rule AND conditional for list attribute, OR conditional for permission into an attribute
 
@@ -61,7 +72,7 @@ namespace Monkey.Filters.Authorize
             return isAuthorized;
         }
 
-        private static bool IsAllowAnonymous(ControllerActionDescriptor controllerActionDescriptor)
+        private static bool IsActionAllowAnonymous(ControllerActionDescriptor controllerActionDescriptor)
         {
             // If action have any AllowAnonymousAttribute => Allow Anonymous
             bool isActionAllowAnonymous = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AllowAnonymousAttribute>(true).Any();
@@ -85,12 +96,12 @@ namespace Monkey.Filters.Authorize
             return false;
         }
 
-        private static bool IsAuthenticated(HttpContext context)
+        private static bool IsUserAuthenticated(HttpContext context)
         {
             return context.User.Identity.IsAuthenticated;
         }
 
-        private static List<Enums.Permission> GetUserListPermission(HttpContext context)
+        private static List<Enums.Permission> GetUserListPermission()
         {
             // TODO get list permission from http context/request by JWT
             return new List<Enums.Permission>();
