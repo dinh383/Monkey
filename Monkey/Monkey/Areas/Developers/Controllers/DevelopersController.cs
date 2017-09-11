@@ -24,14 +24,14 @@ namespace Monkey.Areas.Developers.Controllers
         [ServiceFilter(typeof(ApiDocAccessFilter))]
         [Route("")]
         [HttpGet]
-        public IActionResult Index() => Helper.GetApiDocHtml(Url,
-            Url.AbsoluteAction(nameof(JsonViewer), Constants.Endpoint.DevelopersArea.Developers,
-                new { area = Constants.Endpoint.DevelopersArea.Root }));
+        [ResponseCache(Duration = int.MaxValue, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public IActionResult Index() => Helper.GetApiDocHtml(Url, Url.AbsoluteAction(nameof(JsonViewer), Constants.Endpoint.DevelopersArea.Developers, new { area = Constants.Endpoint.DevelopersArea.Root }));
 
         [HideInDocs]
         [ServiceFilter(typeof(ApiDocAccessFilter))]
-        [HttpGet]
         [Route("json-viewer")]
+        [HttpGet]
+        [ResponseCache(Duration = int.MaxValue, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public IActionResult JsonViewer() => Helper.GetApiJsonViewerHtml(Url);
 
         #endregion API DOC
