@@ -32,7 +32,7 @@
     </Content>
 
     <!-- Root -->
-    <Content Include="appsettings.json">
+    <Content Include="appsettings.json;web.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
