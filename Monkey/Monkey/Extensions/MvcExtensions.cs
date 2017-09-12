@@ -31,6 +31,7 @@ using Puppy.Core.EnvironmentUtils;
 using Puppy.Web.Constants;
 using Puppy.Web.Render;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Monkey.Extensions
@@ -115,47 +116,50 @@ namespace Monkey.Extensions
             string currentDirectory = Directory.GetCurrentDirectory();
             string executedAssemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-            foreach (var staticsContent in Core.SystemConfigs.MvcPath.StaticsContents)
+            if (Core.SystemConfigs.MvcPath.StaticsContents?.Any() == true)
             {
-                string fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
-                    ? Path.Combine(currentDirectory, staticsContent.FolderRelativePath)
-                    : Path.Combine(currentDirectory, Core.SystemConfigs.MvcPath.AreasRootFolderName,
-                        staticsContent.Area,
-                        staticsContent.FolderRelativePath);
-
-                if (!Directory.Exists(fileProviderPath))
+                foreach (var staticsContent in Core.SystemConfigs.MvcPath.StaticsContents)
                 {
-                    // Try to get folder in executed assembly
-                    fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
-                        ? Path.Combine(executedAssemblyDirectory, staticsContent.FolderRelativePath)
-                        : Path.Combine(executedAssemblyDirectory, Core.SystemConfigs.MvcPath.AreasRootFolderName,
+                    string fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
+                        ? Path.Combine(currentDirectory, staticsContent.FolderRelativePath)
+                        : Path.Combine(currentDirectory, Core.SystemConfigs.MvcPath.AreasRootFolderName,
                             staticsContent.Area,
                             staticsContent.FolderRelativePath);
 
-                    // Skip if Directory is not exists
                     if (!Directory.Exists(fileProviderPath))
                     {
-                        continue;
-                    }
-                }
+                        // Try to get folder in executed assembly
+                        fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
+                            ? Path.Combine(executedAssemblyDirectory, staticsContent.FolderRelativePath)
+                            : Path.Combine(executedAssemblyDirectory, Core.SystemConfigs.MvcPath.AreasRootFolderName,
+                                staticsContent.Area,
+                                staticsContent.FolderRelativePath);
 
-                PhysicalFileProvider fileProvider = new PhysicalFileProvider(fileProviderPath);
-
-                PathString requestPath = new PathString(staticsContent.HttpRequestPath);
-
-                app.UseStaticFiles(new StaticFileOptions
-                {
-                    FileProvider = fileProvider,
-                    RequestPath = requestPath,
-                    OnPrepareResponse = (context) =>
-                    {
-                        var headers = context.Context.Response.GetTypedHeaders();
-                        headers.CacheControl = new CacheControlHeaderValue
+                        // Skip if Directory is not exists
+                        if (!Directory.Exists(fileProviderPath))
                         {
-                            MaxAge = staticsContent.MaxAgeResponseHeader
-                        };
+                            continue;
+                        }
                     }
-                });
+
+                    PhysicalFileProvider fileProvider = new PhysicalFileProvider(fileProviderPath);
+
+                    PathString requestPath = new PathString(staticsContent.HttpRequestPath);
+
+                    app.UseStaticFiles(new StaticFileOptions
+                    {
+                        FileProvider = fileProvider,
+                        RequestPath = requestPath,
+                        OnPrepareResponse = (context) =>
+                        {
+                            var headers = context.Context.Response.GetTypedHeaders();
+                            headers.CacheControl = new CacheControlHeaderValue
+                            {
+                                MaxAge = staticsContent.MaxAgeResponseHeader
+                            };
+                        }
+                    });
+                }
             }
 
             // Config Global Route
