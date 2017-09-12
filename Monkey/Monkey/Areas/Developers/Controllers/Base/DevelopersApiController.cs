@@ -4,7 +4,7 @@ using Puppy.Web.Constants;
 
 namespace Monkey.Areas.Developers.Controllers.Base
 {
-    [Area(Constants.Endpoint.DevelopersArea.Root)]
+    [Area("developers")]
     [ServiceFilter(typeof(ApiExceptionFilter))]
     [ServiceFilter(typeof(ApiModelValidationActionFilter))]
     [Produces(ContentType.Json, ContentType.Xml)]

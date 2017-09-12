@@ -64,11 +64,11 @@ namespace Monkey.Extensions
                 .AddXmlDataContractSerializerFormatters()
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.ReferenceLoopHandling = Core.Constants.JsonSerializerSettings.ReferenceLoopHandling;
-                    options.SerializerSettings.NullValueHandling = Core.Constants.JsonSerializerSettings.NullValueHandling;
-                    options.SerializerSettings.DateTimeZoneHandling = Core.Constants.JsonSerializerSettings.DateTimeZoneHandling;
-                    options.SerializerSettings.Formatting = Core.Constants.JsonSerializerSettings.Formatting;
-                    options.SerializerSettings.ContractResolver = Core.Constants.JsonSerializerSettings.ContractResolver;
+                    options.SerializerSettings.ReferenceLoopHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ReferenceLoopHandling;
+                    options.SerializerSettings.NullValueHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.NullValueHandling;
+                    options.SerializerSettings.DateTimeZoneHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.DateTimeZoneHandling;
+                    options.SerializerSettings.Formatting = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.Formatting;
+                    options.SerializerSettings.ContractResolver = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ContractResolver;
                 })
                 .AddViewOptions(options =>
                 {

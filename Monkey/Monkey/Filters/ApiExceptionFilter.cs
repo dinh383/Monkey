@@ -81,7 +81,7 @@ namespace Monkey.Filters
             }
             else
             {
-                context.Result = new JsonResult(apiErrorViewModel, Core.Constants.JsonSerializerSettings);
+                context.Result = new JsonResult(apiErrorViewModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
             }
 
             // Keep base Exception

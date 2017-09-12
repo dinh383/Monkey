@@ -32,12 +32,6 @@ namespace Monkey
                 public const string Home = "";
             }
 
-            public static class DevelopersArea
-            {
-                public const string Root = "developers";
-                public const string Developers = "developers";
-            }
-
             public static class PortalArea
             {
                 public const string Root = "portal";

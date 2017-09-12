@@ -31,7 +31,7 @@ namespace Monkey.Filters
             var apiErrorViewModel = new ApiErrorViewModel(Core.Exceptions.ErrorCode.BadRequest, null, keyValueInValid);
 
             // Log Error
-            var logMessage = JsonConvert.SerializeObject(keyValueInValid, Core.Constants.JsonSerializerSettings);
+            var logMessage = JsonConvert.SerializeObject(keyValueInValid, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
             var logId = Log.Error(logMessage);
 
             // Update ID of error model as log id
@@ -55,7 +55,7 @@ namespace Monkey.Filters
                 {
                     ContentType = ContentType.Json,
                     StatusCode = context.HttpContext.Response.StatusCode,
-                    Content = JsonConvert.SerializeObject(apiErrorViewModel, Monkey.Core.Constants.JsonSerializerSettings)
+                    Content = JsonConvert.SerializeObject(apiErrorViewModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings)
                 };
             }
         }

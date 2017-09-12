@@ -5,9 +5,6 @@ using Monkey.Model.Models;
 using Puppy.Logger;
 using Puppy.Logger.Core.Models;
 using Puppy.Logger.Filters;
-using Puppy.Swagger;
-using Puppy.Swagger.Filters;
-using Puppy.Web;
 using Puppy.Web.Constants;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
@@ -15,27 +12,9 @@ using System.Net;
 
 namespace Monkey.Areas.Developers.Controllers
 {
-    [Route(Constants.Endpoint.DevelopersArea.Developers)]
+    [Route("developers")]
     public class DevelopersController : DevelopersMvcController
     {
-        #region API DOC
-
-        [HideInDocs]
-        [ServiceFilter(typeof(ApiDocAccessFilter))]
-        [Route("")]
-        [HttpGet]
-        [ResponseCache(Duration = int.MaxValue)]
-        public IActionResult Index() => Helper.GetApiDocHtml(Url, Url.AbsoluteAction(nameof(JsonViewer), Constants.Endpoint.DevelopersArea.Developers, new { area = Constants.Endpoint.DevelopersArea.Root }));
-
-        [HideInDocs]
-        [ServiceFilter(typeof(ApiDocAccessFilter))]
-        [Route("json-viewer")]
-        [HttpGet]
-        [ResponseCache(Duration = int.MaxValue)]
-        public IActionResult JsonViewer() => Helper.GetApiJsonViewerHtml(Url);
-
-        #endregion API DOC
-
         #region Log
 
         /// <summary>

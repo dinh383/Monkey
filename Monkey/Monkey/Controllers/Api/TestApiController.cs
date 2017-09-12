@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Core;
-using Monkey.Filters.Authorize;
 using Puppy.Web;
 
 namespace Monkey.Controllers.Api
@@ -14,8 +12,6 @@ namespace Monkey.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        [Authorize(Enums.Permission.Admin)]
-        [Authorize(Enums.Permission.Developer)]
         public IActionResult Test()
         {
             var deviceInfo = HttpContext.Request.GetDeviceInfo();

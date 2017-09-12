@@ -36,10 +36,6 @@ namespace Monkey.Core
         /// </summary>
         public static MvcPathConfigModel MvcPath { get; set; } = new MvcPathConfigModel();
 
-        /// <summary>
-        ///     Identity Server - SSO - Scalable System 
-        /// </summary>
-        public static IdentityServerConfigModel IdentityServer { get; set; } = new IdentityServerConfigModel();
 
         public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; } = new PagedCollectionParametersConfigModel();
     }
