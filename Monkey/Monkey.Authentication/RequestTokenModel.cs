@@ -19,7 +19,6 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
 
 namespace Monkey.Authentication
 {
@@ -27,14 +26,6 @@ namespace Monkey.Authentication
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public GrantType GrantType { get; set; }
-
-        public string ClientId { get; set; }
-
-        public string RedirectUri { get; set; }
-
-        public List<string> Scopes { get; set; }
-
-        public string Code { get; set; }
 
         public string Username { get; set; }
 
