@@ -21,24 +21,6 @@ namespace Monkey
 {
     public static class Constants
     {
-        /// <summary>
-        ///     Configuration Endpoint for Area and Controller 
-        /// </summary>
-        public static class Endpoint
-        {
-            public static class RootArea
-            {
-                public const string Root = "";
-                public const string Home = "";
-            }
-
-            public static class PortalArea
-            {
-                public const string Root = "portal";
-                public const string Home = "portal";
-            }
-        }
-
         public static class ViewDataKey
         {
             public const string Title = nameof(Title);

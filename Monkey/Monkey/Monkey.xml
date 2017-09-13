@@ -4,11 +4,6 @@
         <name>Monkey</name>
     </assembly>
     <members>
-        <member name="T:Monkey.Constants.Endpoint">
-            <summary>
-                Configuration Endpoint for Area and Controller 
-            </summary>
-        </member>
         <member name="M:Monkey.Controllers.Api.TestApiController.Test">
             <summary>
                 Test 

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Monkey.Areas.Portal.Controllers
 {
-    [Route("portal")]
-    public class HomeController : MvcController
+    [Route(AreaName + "/auth")]
+    public class AuthenticationController : MvcController
     {
         [Route("")]
         [HttpGet]

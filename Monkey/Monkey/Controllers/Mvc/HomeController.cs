@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Monkey.Controllers.Mvc
 {
-    [Route(Constants.Endpoint.RootArea.Home)]
+    [Route("")]
     public class HomeController : MvcController
     {
         [Route("")]
