@@ -43,5 +43,13 @@ namespace Monkey.Core.Exceptions
         [Display(Name = "Unknown", GroupName = "Global")]
         [Description("Awesome, You break the system :o. You know what they say, you get what you pay for... The features do not write themselves, you know. Now, just god and you know what happen.")]
         Unknown = 500,
+
+        [Display(Name = "Invalid refresh token", GroupName = "Global")]
+        [Description("Refresh token is invalid or expired")]
+        InvalidRefreshToken = 600,
+
+        [Display(Name = "User does not exist", GroupName = "User")]
+        [Description("")]
+        UserNotExist = 1000
     }
 }

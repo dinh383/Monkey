@@ -18,5 +18,6 @@
   <!-- Monkey -->
   <ItemGroup>
     <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
+    <ProjectReference Include="..\Monkey.Authentication\Monkey.Authentication.csproj" />
   </ItemGroup>
 </Project>

@@ -4,14 +4,14 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Entity Map </Project>
 //     <File>
-//         <Name> UserMap.cs </Name>
-//         <Created> 18/07/17 4:13:13 PM </Created>
-//         <Key> def0b09c-ceb1-4037-ac46-2b9bdaaddf98 </Key>
+//         <Name> RefreshTokenEntityMap.cs </Name>
+//         <Created> 13/09/17 11:36:29 PM </Created>
+//         <Key> a1a9f31d-f44f-4d42-9ffa-f181dd3287f4 </Key>
 //     </File>
 //     <Summary>
-//         UserMap.cs
+//         RefreshTokenEntityMap.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -19,20 +19,18 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Monkey.Data.Entities;
 using Monkey.Data.Entities.User;
 using Puppy.EF.Maps;
 
 namespace Monkey.Data.EF.Map
 {
-    public class UserMap : EntityTypeConfiguration<UserEntity>
+    public class RefreshTokenEntityMap : EntityTypeConfiguration<RefreshTokenEntity>
     {
-        public override void Map(EntityTypeBuilder<UserEntity> builder)
+        public override void Map(EntityTypeBuilder<RefreshTokenEntity> builder)
         {
             base.Map(builder);
-            builder.ToTable(nameof(UserEntity));
-            builder.HasIndex(x => x.UserNameNorm);
-            builder.HasIndex(x => x.PasswordHash);
+
+            builder.ToTable(nameof(RefreshTokenEntity));
         }
     }
 }

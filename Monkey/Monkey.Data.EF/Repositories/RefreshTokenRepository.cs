@@ -6,28 +6,27 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Repository </Project>
 //     <File>
-//         <Name> UserRepository.cs </Name>
-//         <Created> 18/07/17 4:43:29 PM </Created>
-//         <Key> a571a4e9-19ee-470e-94af-d392beddf95b </Key>
+//         <Name> RefreshTokenRepository.cs </Name>
+//         <Created> 13/09/17 11:25:19 PM </Created>
+//         <Key> b8e0132e-39d5-481b-a6c1-0a4534af34f4 </Key>
 //     </File>
 //     <Summary>
-//         UserRepository.cs
+//         RefreshTokenRepository.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Data.Entities;
 using Monkey.Data.Entities.User;
 using Monkey.Data.Interfaces;
 using Puppy.DependencyInjection.Attributes;
 
 namespace Monkey.Data.EF.Repositories
 {
-    [PerRequestDependency(ServiceType = typeof(IUserRepository))]
-    public class UserRepository : EntityRepository<UserEntity>, IUserRepository
+    [PerRequestDependency(ServiceType = typeof(IRefreshTokenRepository))]
+    public class RefreshTokenRepository : EntityRepository<RefreshTokenEntity>, IRefreshTokenRepository
     {
-        public UserRepository(IDbContext dbContext) : base(dbContext)
+        public RefreshTokenRepository(IDbContext dbContext) : base(dbContext)
         {
         }
     }

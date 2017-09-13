@@ -4,29 +4,24 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Repository Interface </Project>
 //     <File>
-//         <Name> UserEntity.cs </Name>
-//         <Created> 18/07/17 4:11:13 PM </Created>
-//         <Key> abe1ae76-0722-4dba-8ebf-51eb28f5796a </Key>
+//         <Name> IRoleRepository.cs </Name>
+//         <Created> 13/09/17 11:39:25 PM </Created>
+//         <Key> 7fdfe122-1f56-4fc2-a8d0-2458772b6bb7 </Key>
 //     </File>
 //     <Summary>
-//         UserEntity.cs
+//         IRoleRepository.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Data.Entities
+using Monkey.Data.Entities.User;
+
+namespace Monkey.Data.Interfaces
 {
-    public class UserEntity : Entity
+    public interface IRoleRepository : IEntityRepository<RoleEntity>
     {
-        public string UserName { get; set; }
-
-        public string UserNameNorm { get; set; }
-
-        public string PasswordHash { get; set; }
-
-        public string PasswordSalt { get; set; }
     }
 }

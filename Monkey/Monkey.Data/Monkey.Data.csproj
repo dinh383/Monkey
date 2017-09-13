@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.Elastic\Puppy.Elastic.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
   </ItemGroup>
 
   <!-- Monkey -->

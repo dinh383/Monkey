@@ -4,27 +4,24 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Business Interface </Project>
+//     <Project> Monkey → Repository Interface </Project>
 //     <File>
-//         <Name> IUserBusiness.cs </Name>
-//         <Created> 18/07/17 4:49:26 PM </Created>
-//         <Key> 1a8c0357-4f32-42de-ade4-851e33d3adc2 </Key>
+//         <Name> IRefreshTokenRepository.cs </Name>
+//         <Created> 13/09/17 11:24:49 PM </Created>
+//         <Key> 8fee94b9-a567-4aa7-8443-dfa90e71e0ed </Key>
 //     </File>
 //     <Summary>
-//         IUserBusiness.cs
+//         IRefreshTokenRepository.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Business
+using Monkey.Data.Entities.User;
+
+namespace Monkey.Data.Interfaces
 {
-    public interface IUserBusiness : IBaseBusiness
+    public interface IRefreshTokenRepository : IEntityRepository<RefreshTokenEntity>
     {
-        void CheckExists(params int[] ids);
-
-        void CheckExists(params string[] userNames);
-
-        void CheckExistsByGlobalId(params string[] globalIds);
     }
 }

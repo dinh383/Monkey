@@ -18,6 +18,7 @@
 #endregion License
 
 using Monkey.Data.Entities;
+using Monkey.Data.Entities.User;
 
 namespace Monkey.Data.Interfaces
 {

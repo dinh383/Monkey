@@ -17,8 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Exceptions;
 using Monkey.Data.Interfaces;
 using Puppy.DependencyInjection.Attributes;
+using System.Linq;
+using Puppy.Core.StringUtils;
 
 namespace Monkey.Business.Logic
 {
@@ -30,6 +33,42 @@ namespace Monkey.Business.Logic
         public UserBusiness(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public void CheckExists(params int[] ids)
+        {
+            ids = ids.Distinct().ToArray();
+
+            var totalInDb = _userRepository.Get(x => ids.Contains(x.Id)).Count();
+
+            if (totalInDb != ids.Length)
+            {
+                throw new MonkeyException(ErrorCode.UserNotExist);
+            }
+        }
+
+        public void CheckExists(params string[] userNames)
+        {
+            userNames = userNames.Distinct().Select(StringHelper.Normalize).ToArray();
+
+            var totalInDb = _userRepository.Get(x => userNames.Contains(x.UserNameNorm)).Count();
+
+            if (totalInDb != userNames.Length)
+            {
+                throw new MonkeyException(ErrorCode.UserNotExist);
+            }
+        }
+
+        public void CheckExistsByGlobalId(params string[] globalIds)
+        {
+            globalIds = globalIds.Distinct().ToArray();
+
+            var totalInDb = _userRepository.Get(x => globalIds.Contains(x.GlobalId)).Count();
+
+            if (totalInDb != globalIds.Length)
+            {
+                throw new MonkeyException(ErrorCode.UserNotExist);
+            }
         }
     }
 }

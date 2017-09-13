@@ -4,14 +4,14 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Entity Map </Project>
 //     <File>
-//         <Name> UserMap.cs </Name>
-//         <Created> 18/07/17 4:13:13 PM </Created>
-//         <Key> def0b09c-ceb1-4037-ac46-2b9bdaaddf98 </Key>
+//         <Name> RoleEntityMap.cs </Name>
+//         <Created> 13/09/17 11:36:49 PM </Created>
+//         <Key> c022b8f7-0c81-496d-8ca6-16e5655053ac </Key>
 //     </File>
 //     <Summary>
-//         UserMap.cs
+//         RoleEntityMap.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -19,20 +19,18 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Monkey.Data.Entities;
 using Monkey.Data.Entities.User;
 using Puppy.EF.Maps;
 
 namespace Monkey.Data.EF.Map
 {
-    public class UserMap : EntityTypeConfiguration<UserEntity>
+    public class RoleEntityMap : EntityTypeConfiguration<RoleEntity>
     {
-        public override void Map(EntityTypeBuilder<UserEntity> builder)
+        public override void Map(EntityTypeBuilder<RoleEntity> builder)
         {
             base.Map(builder);
-            builder.ToTable(nameof(UserEntity));
-            builder.HasIndex(x => x.UserNameNorm);
-            builder.HasIndex(x => x.PasswordHash);
+
+            builder.ToTable(nameof(RoleEntity));
         }
     }
 }

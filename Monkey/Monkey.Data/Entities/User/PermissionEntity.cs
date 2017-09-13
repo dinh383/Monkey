@@ -4,27 +4,29 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Business Interface </Project>
+//     <Project> Monkey → Entity Map </Project>
 //     <File>
-//         <Name> IUserBusiness.cs </Name>
-//         <Created> 18/07/17 4:49:26 PM </Created>
-//         <Key> 1a8c0357-4f32-42de-ade4-851e33d3adc2 </Key>
+//         <Name> PermissionEntity.cs </Name>
+//         <Created> 13/09/17 11:33:40 PM </Created>
+//         <Key> f95d9e8a-de79-46de-8adc-039ca639a420 </Key>
 //     </File>
 //     <Summary>
-//         IUserBusiness.cs
+//         PermissionEntity.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Business
+using Monkey.Core;
+
+namespace Monkey.Data.Entities.User
 {
-    public interface IUserBusiness : IBaseBusiness
+    public class PermissionEntity : Entity
     {
-        void CheckExists(params int[] ids);
+        public int RoleId { get; set; }
 
-        void CheckExists(params string[] userNames);
+        public virtual RoleEntity Role { get; set; }
 
-        void CheckExistsByGlobalId(params string[] globalIds);
+        public Enums.Permission Permission { get; set; }
     }
 }
