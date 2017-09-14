@@ -31,11 +31,11 @@ namespace Monkey.Business
 
         Task<LoggedUserModel> GetUserInfoAsync(string refreshToken);
 
-        Task SaveRefreshTokenAsync(int id, string refreshToken, DateTimeOffset? expireOn);
+        Task SaveRefreshTokenAsync(int id, int clientId, string refreshToken, DateTimeOffset? expireOn);
 
         Task ExpireAllRefreshTokenAsync(int id);
 
-        void CheckValidRefreshToken(string refreshToken);
+        void CheckValidRefreshToken(string refreshToken, int clientId);
 
         string HashPassword(string password, out string salt);
 

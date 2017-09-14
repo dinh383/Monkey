@@ -98,5 +98,10 @@ namespace Monkey.Data.Entities.User
         public string UserAgent { get; set; }
 
         public string DeviceHash { get; set; }
+
+
+        // Client
+
+        public int ClientId { get; set; }
     }
 }

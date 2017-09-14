@@ -60,7 +60,15 @@ namespace Monkey.Business.Logic
             var loggedUser = new LoggedUserModel
             {
                 Id = user.Id,
+                GlobalId = user.GlobalId,
                 Username = user.UserName,
+
+                Email = user.Email,
+                EmailConfirmedTime = user.EmailConfirmedTime,
+
+                Phone = user.Phone,
+                PhoneConfirmedTime = user.PhoneConfirmedTime,
+
                 ListPermission = listPermission
             };
 
@@ -77,7 +85,15 @@ namespace Monkey.Business.Logic
             var loggedUser = new LoggedUserModel
             {
                 Id = user.Id,
+                GlobalId = user.GlobalId,
                 Username = user.UserName,
+
+                Email = user.Email,
+                EmailConfirmedTime = user.EmailConfirmedTime,
+
+                Phone = user.Phone,
+                PhoneConfirmedTime = user.PhoneConfirmedTime,
+
                 ListPermission = listPermission
             };
             return loggedUser;
@@ -98,7 +114,14 @@ namespace Monkey.Business.Logic
             var loggedUser = new LoggedUserModel
             {
                 Id = refreshTokenEntity.User.Id,
+                GlobalId = refreshTokenEntity.User.GlobalId,
                 Username = refreshTokenEntity.User.UserName,
+
+                Email = refreshTokenEntity.User.Email,
+                EmailConfirmedTime = refreshTokenEntity.User.EmailConfirmedTime,
+
+                Phone = refreshTokenEntity.User.Phone,
+                PhoneConfirmedTime = refreshTokenEntity.User.PhoneConfirmedTime,
                 ListPermission = listPermission
             };
 
@@ -112,7 +135,7 @@ namespace Monkey.Business.Logic
             return loggedUser;
         }
 
-        public Task SaveRefreshTokenAsync(int userId, string refreshToken, DateTimeOffset? expireOn)
+        public Task SaveRefreshTokenAsync(int id, int clientId, string refreshToken, DateTimeOffset? expireOn)
         {
             var deviceInfo = HttpContext.Current?.Request.GetDeviceInfo();
 
@@ -120,7 +143,7 @@ namespace Monkey.Business.Logic
             {
                 RefreshToken = refreshToken,
                 ExpireOn = expireOn,
-                UserId = userId,
+                UserId = id,
                 TotalUsage = 1,
                 DeviceType = deviceInfo?.Type ?? DeviceType.Unknown,
                 MarkerName = deviceInfo?.MarkerName,
@@ -146,7 +169,8 @@ namespace Monkey.Business.Logic
                 AccuracyRadius = deviceInfo?.AccuracyRadius,
                 PostalCode = deviceInfo?.PostalCode,
                 UserAgent = deviceInfo?.UserAgent,
-                DeviceHash = deviceInfo?.DeviceHash
+                DeviceHash = deviceInfo?.DeviceHash,
+                ClientId = clientId
             };
 
             _refreshTokenRepository.Add(refreshTokenEntity);
@@ -171,12 +195,12 @@ namespace Monkey.Business.Logic
             _refreshTokenRepository.SaveChanges();
         }
 
-        public void CheckValidRefreshToken(string refreshToken)
+        public void CheckValidRefreshToken(string refreshToken, int clientId)
         {
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
 
-            var isValidRefreshToken = _refreshTokenRepository.Get().Any(x =>
-                x.RefreshToken == refreshToken && (x.ExpireOn == null || dateTimeUtcNow < x.ExpireOn));
+            var isValidRefreshToken = _refreshTokenRepository.Get().Any(x => x.RefreshToken == refreshToken && x.ClientId == clientId && (x.ExpireOn == null || dateTimeUtcNow < x.ExpireOn));
+
             if (!isValidRefreshToken)
                 throw new MonkeyException(ErrorCode.InvalidRefreshToken);
         }

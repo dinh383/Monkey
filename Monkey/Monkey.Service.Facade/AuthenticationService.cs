@@ -52,8 +52,9 @@ namespace Monkey.Service.Facade
                 loggedUser = await _authenticationBusiness.SignInAsync(model.Username, model.Password).ConfigureAwait(true);
 
                 var refreshToken = Guid.NewGuid().ToString("N");
-                await _authenticationBusiness.SaveRefreshTokenAsync(loggedUser.Id, refreshToken, null).ConfigureAwait(true);
-                accessToken = TokenHelper.GenerateAccessToken(loggedUser, accessTokenExpire, refreshToken);
+                // TODO verify
+                await _authenticationBusiness.SaveRefreshTokenAsync(loggedUser.Id, 1, refreshToken, null).ConfigureAwait(true);
+                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedUser.GlobalId, accessTokenExpire, refreshToken);
             }
             else if (model.GrantType == GrantType.RefreshToken)
             {
@@ -61,7 +62,7 @@ namespace Monkey.Service.Facade
 
                 loggedUser = await _authenticationBusiness.GetUserInfoAsync(model.RefreshToken).ConfigureAwait(true);
 
-                accessToken = TokenHelper.GenerateAccessToken(loggedUser, accessTokenExpire, model.RefreshToken);
+                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedUser.GlobalId, accessTokenExpire, model.RefreshToken);
             }
             return accessToken;
         }

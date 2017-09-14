@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core;
-using System.Collections.Generic;
 using Monkey.Core.Constants;
+using System;
+using System.Collections.Generic;
 
 namespace Monkey.Model.Models.User
 {
@@ -33,8 +33,16 @@ namespace Monkey.Model.Models.User
 
         public string Email { get; set; }
 
+        public DateTimeOffset? EmailConfirmedTime { get; set; }
+
         public string Phone { get; set; }
 
+        public DateTimeOffset? PhoneConfirmedTime { get; set; }
+
         public List<Enums.Permission> ListPermission { get; set; }
+
+        public int ClientId { get; set; }
+
+        public string ClientNo { get; set; }
     }
 }

@@ -18,6 +18,7 @@
   <!-- Puppy -->
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
   </ItemGroup>
 
   <!-- Monkey -->

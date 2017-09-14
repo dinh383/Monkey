@@ -19,11 +19,11 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Monkey.Model.Models;
 using Monkey.Model.Models.User;
-using Newtonsoft.Json;
+using Puppy.Web.Constants;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -32,20 +32,59 @@ namespace Monkey.Authentication
 {
     public static class TokenHelper
     {
-        public static string GenerateToken<T>(TokenModel<T> tokenData) where T : class
-        {
-            var identityClaims = GetClaimsIdentity(tokenData);
+        private const string ClientIdKey = "client_id";
+        private const string AuthenticationTokenType = "Bearer";
 
+        #region Generate
+
+        public static AccessTokenModel GenerateAccessToken(string clientId, string subject, TimeSpan expiresSpan, string refreshToken, string issuer = null)
+        {
+            var dateTimeUtcNow = DateTimeOffset.UtcNow;
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            double authTime = dateTimeUtcNow.Subtract(epoch).TotalSeconds;
+
+            var accessToken = new AccessTokenModel
+            {
+                ExpireIn = expiresSpan.TotalSeconds,
+                ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
+                RefreshToken = refreshToken,
+                TokenType = AuthenticationTokenType,
+                ClientId = clientId,
+                Subject = subject
+            };
+
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                {"client_id", accessToken.ClientId},
+                {JwtRegisteredClaimNames.Sub, accessToken.Subject},
+                {JwtRegisteredClaimNames.AuthTime, authTime.ToString(CultureInfo.InvariantCulture)}
+            };
+
+            accessToken.AccessToken = GenerateToken(accessToken.ExpireOn?.UtcDateTime, issuer, dictionary);
+
+            return accessToken;
+        }
+
+        public static string GenerateToken(DateTime? expireOn, string issuer, Dictionary<string, string> data)
+        {
             var handler = new JwtSecurityTokenHandler();
+
+            var utcTimeNow = DateTime.UtcNow;
+
+            ClaimsIdentity claims = new ClaimsIdentity();
+            foreach (var key in data.Keys)
+            {
+                claims.AddClaim(new Claim(key, data[key]));
+            }
 
             SecurityToken securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
-                Subject = identityClaims,
+                Subject = claims,
                 SigningCredentials = AuthenticationConfig.SigningCredentials,
-                Expires = tokenData.ExpireOn?.UtcDateTime,
-                IssuedAt = tokenData.IssuedAt.UtcDateTime,
-                NotBefore = tokenData.IssuedAt.UtcDateTime,
-                Issuer = tokenData.Issuer
+                Expires = expireOn,
+                IssuedAt = utcTimeNow,
+                NotBefore = utcTimeNow,
+                Issuer = issuer
             });
 
             var token = handler.WriteToken(securityToken);
@@ -53,59 +92,9 @@ namespace Monkey.Authentication
             return token;
         }
 
-        public static TokenModel<T> GetAccessTokenData<T>(HttpRequest request) where T : class
-        {
-            var authenticationHeader = request.Headers["Authorization"].ToString();
-            var token = authenticationHeader.Replace(TokenType.Bearer.ToString(), string.Empty)?.Trim();
-            var tokenData = GetAccessTokenData<T>(token);
-            return tokenData;
-        }
+        #endregion
 
-        public static TokenModel<T> GetAccessTokenData<T>(string token) where T : class
-        {
-            if (!TryReadTokenPayload(token, out var tokenPayload))
-            {
-                return null;
-            }
-
-            T data = null;
-
-            if (tokenPayload.TryGetValue(nameof(TokenModel<T>.Data), out var dataObj))
-            {
-                data = dataObj == null ? null : JsonConvert.DeserializeObject<T>(dataObj.ToString(), Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
-            }
-
-            TokenModel<string> tokenDataStr = JsonConvert.DeserializeObject<TokenModel<string>>(tokenPayload.SerializeToJson());
-
-            TokenModel<T> tokenData = new TokenModel<T>(data)
-            {
-                Issuer = tokenDataStr.Issuer,
-                IssuedAt = tokenDataStr.IssuedAt,
-                TokenType = tokenDataStr.TokenType,
-                ExpireOn = tokenDataStr.ExpireOn
-            };
-            return tokenData;
-        }
-
-        public static ClaimsPrincipal GetClaimsPrincipal(string token)
-        {
-            IsValidToken(token, out var claimsPrincipal);
-            return claimsPrincipal;
-        }
-
-        private static bool TryReadTokenPayload(string token, out JwtPayload tokenPayload)
-        {
-            if (!IsValidToken(token, out _))
-            {
-                tokenPayload = null;
-                return false;
-            }
-
-            var handler = new JwtSecurityTokenHandler();
-            var jwtToken = handler.ReadJwtToken(token);
-            tokenPayload = JwtPayload.Base64UrlDeserialize(jwtToken.EncodedPayload);
-            return tokenPayload?.Keys.Any() == true;
-        }
+        #region Validation
 
         public static bool IsValidToken(string token, out ClaimsPrincipal claimsPrincipal)
         {
@@ -126,66 +115,72 @@ namespace Monkey.Authentication
         {
             if (!IsValidToken(token, out _)) return true;
 
-            DateTimeOffset dateTimeNow = DateTimeOffset.UtcNow;
+            DateTime utcNow = DateTime.UtcNow;
 
-            TokenModel<object> tokenData = GetAccessTokenData<object>(token);
+            double? epochExpireOn = GetAccessTokenData<double?>(token, JwtRegisteredClaimNames.Exp);
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            DateTime? expireOn = epochExpireOn == null ? (DateTime?)null : epoch.AddSeconds(epochExpireOn.Value);
 
-            if (tokenData.ExpireOn == null || dateTimeNow < tokenData.ExpireOn)
+            if (expireOn == null || utcNow < expireOn)
             {
                 return false;
             }
             return true;
         }
 
-        public static AccessTokenModel GenerateAccessToken<T>(T data, TimeSpan expiresSpan, string refreshToken, string issuer = null) where T : class
+        #endregion
+
+        #region Get Data
+
+        public static ClaimsPrincipal GetClaimsPrincipal(string token)
         {
-            var dateTimeUtcNow = DateTime.UtcNow;
-
-            var accessToken = new AccessTokenModel
-            {
-                ExpireIn = expiresSpan.TotalSeconds,
-                ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
-                RefreshToken = refreshToken,
-                TokenType = TokenType.Bearer.ToString()
-            };
-
-            var tokenData = new TokenModel<T>(data)
-            {
-                IssuedAt = dateTimeUtcNow,
-                ExpireOn = accessToken.ExpireOn,
-                Issuer = issuer,
-                TokenType = TokenType.Bearer
-            };
-
-            accessToken.AccessToken = GenerateToken(tokenData);
-
-            return accessToken;
+            IsValidToken(token, out var claimsPrincipal);
+            return claimsPrincipal;
         }
 
-        private static ClaimsIdentity GetClaimsIdentity<T>(T data)
+        public static string GetAuthenticationToken(HttpRequest request)
         {
-            Dictionary<string, string> dictionary;
-
-            var dataStr = data as string;
-            if (!string.IsNullOrWhiteSpace(dataStr))
-            {
-                dictionary = new Dictionary<string, string>
-                {
-                    {nameof(data), dataStr}
-                };
-            }
-            else
-            {
-                dictionary = Puppy.Core.DictionaryUtils.DictionaryHelper.ToDictionary(data);
-            }
-
-            // Generate Identity
-            ClaimsIdentity identity = new ClaimsIdentity();
-            foreach (var key in dictionary.Keys)
-            {
-                identity.AddClaim(new Claim(key, dictionary[key]));
-            }
-            return identity;
+            var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
+            var token = authenticationHeader.Replace(AuthenticationTokenType, string.Empty)?.Trim();
+            return token;
         }
+
+        public static string GetAccessTokenSubject(string token)
+        {
+            return GetAccessTokenData<string>(token, JwtRegisteredClaimNames.Sub);
+        }
+
+        public static string GetAccessTokenClientId(string token)
+        {
+            return GetAccessTokenData<string>(token, ClientIdKey);
+        }
+
+        public static T GetAccessTokenData<T>(string token, string key)
+        {
+            if (!TryReadTokenPayload(token, out var tokenPayload))
+            {
+                return default(T);
+            }
+
+            tokenPayload.TryGetValue(key, out var data);
+
+            return (T)data;
+        }
+
+        private static bool TryReadTokenPayload(string token, out JwtPayload tokenPayload)
+        {
+            if (!IsValidToken(token, out _))
+            {
+                tokenPayload = null;
+                return false;
+            }
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            tokenPayload = JwtPayload.Base64UrlDeserialize(jwtToken.EncodedPayload);
+            return tokenPayload?.Keys.Any() == true;
+        }
+
+        #endregion
     }
 }

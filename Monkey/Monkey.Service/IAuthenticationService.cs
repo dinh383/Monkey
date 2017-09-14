@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Authentication;
 using Monkey.Model.Models.User;
 using System.Threading.Tasks;
 
