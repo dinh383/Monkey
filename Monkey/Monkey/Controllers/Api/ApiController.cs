@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Filters;
 using Monkey.Filters.Authorize;
@@ -10,8 +9,8 @@ namespace Monkey.Controllers.Api
     [ServiceFilter(typeof(ApiAuthorizeActionFilter))]
     [ServiceFilter(typeof(ApiModelValidationActionFilter))]
     [Produces(ContentType.Json, ContentType.Xml)]
-    [AllowAnonymous]
     public class ApiController : Controller
     {
+        public const string AreaName = "api";
     }
 }

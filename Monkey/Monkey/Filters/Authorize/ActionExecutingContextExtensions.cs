@@ -6,6 +6,7 @@ using Monkey.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Monkey.Core.Constants;
 
 namespace Monkey.Filters.Authorize
 {

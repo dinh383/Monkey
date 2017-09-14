@@ -36,5 +36,11 @@ namespace Monkey.Business
         Task ExpireAllRefreshTokenAsync(int id);
 
         void CheckValidRefreshToken(string refreshToken);
+
+        string HashPassword(string password, out string salt);
+
+        string HashPassword(string password, string salt);
+
+        void CheckPasswordHash(string password, string passwordSalt, string passwordHash);
     }
 }

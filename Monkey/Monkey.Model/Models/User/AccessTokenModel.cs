@@ -19,23 +19,17 @@
 
 using System;
 
-namespace Monkey.Authentication
+namespace Monkey.Model.Models.User
 {
-    /// <summary>
-    ///     Token model follow OAUTH 2.0 Standard 
-    /// </summary>
-    public class TokenBaseModel
+    public class AccessTokenModel
     {
-        public string TokenType { get; set; } = Constants.TokenType.Bearer;
+        public string TokenType { get; set; }
 
         /// <summary>
         ///     Expire on UTC 
         /// </summary>
         public DateTimeOffset? ExpireOn { get; set; }
-    }
 
-    public class AccessTokenModel : TokenBaseModel
-    {
         /// <summary>
         ///     JWT of <see cref="TokenModel{T}" /> 
         /// </summary>
@@ -47,26 +41,5 @@ namespace Monkey.Authentication
         public double ExpireIn { get; set; }
 
         public string RefreshToken { get; set; }
-    }
-
-    public class TokenModel<T> : TokenBaseModel
-    {
-        public T Data { get; set; }
-
-        /// <summary>
-        ///     Issue at UTC 
-        /// </summary>
-        public DateTimeOffset IssuedAt { get; set; } = DateTimeOffset.UtcNow;
-
-        public string Issuer { get; set; }
-
-        public TokenModel()
-        {
-        }
-
-        public TokenModel(T data)
-        {
-            Data = data;
-        }
     }
 }

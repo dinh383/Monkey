@@ -19,6 +19,8 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using Monkey.Model.Models;
+using Monkey.Model.Models.User;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -51,15 +53,15 @@ namespace Monkey.Authentication
             return token;
         }
 
-        public static TokenModel<T> GetTokenData<T>(HttpRequest request) where T : class
+        public static TokenModel<T> GetAccessTokenData<T>(HttpRequest request) where T : class
         {
             var authenticationHeader = request.Headers["Authorization"].ToString();
-            var token = authenticationHeader.Replace(Constants.TokenType.Bearer, string.Empty)?.Trim();
-            var tokenData = GetTokenData<T>(token);
+            var token = authenticationHeader.Replace(TokenType.Bearer.ToString(), string.Empty)?.Trim();
+            var tokenData = GetAccessTokenData<T>(token);
             return tokenData;
         }
 
-        public static TokenModel<T> GetTokenData<T>(string token) where T : class
+        public static TokenModel<T> GetAccessTokenData<T>(string token) where T : class
         {
             if (!TryReadTokenPayload(token, out var tokenPayload))
             {
@@ -126,7 +128,7 @@ namespace Monkey.Authentication
 
             DateTimeOffset dateTimeNow = DateTimeOffset.UtcNow;
 
-            TokenModel<object> tokenData = GetTokenData<object>(token);
+            TokenModel<object> tokenData = GetAccessTokenData<object>(token);
 
             if (tokenData.ExpireOn == null || dateTimeNow < tokenData.ExpireOn)
             {
@@ -144,7 +146,7 @@ namespace Monkey.Authentication
                 ExpireIn = expiresSpan.TotalSeconds,
                 ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
                 RefreshToken = refreshToken,
-                TokenType = Constants.TokenType.Bearer
+                TokenType = TokenType.Bearer.ToString()
             };
 
             var tokenData = new TokenModel<T>(data)
@@ -152,7 +154,7 @@ namespace Monkey.Authentication
                 IssuedAt = dateTimeUtcNow,
                 ExpireOn = accessToken.ExpireOn,
                 Issuer = issuer,
-                TokenType = accessToken.TokenType
+                TokenType = TokenType.Bearer
             };
 
             accessToken.AccessToken = GenerateToken(tokenData);

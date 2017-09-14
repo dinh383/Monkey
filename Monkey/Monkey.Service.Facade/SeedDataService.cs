@@ -4,29 +4,28 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Service Facade </Project>
 //     <File>
-//         <Name> GrantType.cs </Name>
-//         <Created> 04/09/17 10:36:45 PM </Created>
-//         <Key> 356817d4-f882-4f7e-af37-94c94bf1252d </Key>
+//         <Name> SeedDataService.cs </Name>
+//         <Created> 14/09/17 11:21:24 AM </Created>
+//         <Key> ffec5eb8-f942-4a6d-b157-55b7e11dec23 </Key>
 //     </File>
 //     <Summary>
-//         GrantType.cs
+//         SeedDataService.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.ComponentModel.DataAnnotations;
+using Puppy.DependencyInjection.Attributes;
 
-namespace Monkey.Authentication
+namespace Monkey.Service.Facade
 {
-    public enum GrantType
+    [PerRequestDependency(ServiceType = typeof(ISeedDataService))]
+    public class SeedDataService : ISeedDataService
     {
-        [Display(Name = "password")]
-        ResourceOwnerPassword,
-
-        [Display(Name = "refresh_token")]
-        RefreshToken
+        public SeedDataService()
+        {
+        }
     }
 }

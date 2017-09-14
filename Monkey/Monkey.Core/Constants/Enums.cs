@@ -21,7 +21,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Monkey.Core
+namespace Monkey.Core.Constants
 {
     public class Enums
     {

@@ -18,6 +18,7 @@
 #endregion License
 
 using Monkey.Core;
+using Monkey.Core.Constants;
 
 namespace Monkey.Data.Entities.User
 {

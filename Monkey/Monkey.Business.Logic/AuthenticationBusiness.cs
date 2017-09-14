@@ -181,18 +181,24 @@ namespace Monkey.Business.Logic
                 throw new MonkeyException(ErrorCode.InvalidRefreshToken);
         }
 
-        private static void CheckPasswordHash(string password, string passwordSalt, string passwordHash)
+        public string HashPassword(string password, out string salt)
         {
-            password = HashPassword(password, passwordSalt);
-            if (password == passwordHash) return;
-            throw new MonkeyException(ErrorCode.UserNotExist);
+            salt = StringHelper.GenerateSaltHmacSha512(AuthenticationConfig.SecretKey);
+            return HashPassword(password, salt);
         }
 
-        private static string HashPassword(string password, string salt)
+        public string HashPassword(string password, string salt)
         {
             var passwordSalt = password + salt;
             var passwordHash = passwordSalt.GetHmacSha512(AuthenticationConfig.SecretKey);
             return passwordHash;
+        }
+
+        public void CheckPasswordHash(string password, string passwordSalt, string passwordHash)
+        {
+            password = HashPassword(password, passwordSalt);
+            if (password == passwordHash) return;
+            throw new MonkeyException(ErrorCode.UserNotExist);
         }
     }
 }

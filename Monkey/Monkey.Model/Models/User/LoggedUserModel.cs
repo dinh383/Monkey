@@ -19,6 +19,7 @@
 
 using Monkey.Core;
 using System.Collections.Generic;
+using Monkey.Core.Constants;
 
 namespace Monkey.Model.Models.User
 {

@@ -3,11 +3,13 @@ using Puppy.Web;
 
 namespace Monkey.Controllers.Api
 {
-    [Route("api/test")]
+    [Route(Endpoint)]
     public class TestApiController : ApiController
     {
+        public const string Endpoint = AreaName + "/test";
+
         /// <summary>
-        ///     Test 
+        ///     Device Info 
         /// </summary>
         /// <returns></returns>
         [HttpGet]

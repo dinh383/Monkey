@@ -6,21 +6,26 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> Constants.cs </Name>
-//         <Created> 03/09/17 1:35:14 PM </Created>
-//         <Key> a74f3b14-277a-4029-84f6-c90e1733cdba </Key>
+//         <Name> RequestTokenModelValidator.cs </Name>
+//         <Created> 27/08/17 12:58:58 AM </Created>
+//         <Key> eae63f22-40f6-4b07-ae16-4cf33de1b54b </Key>
 //     </File>
 //     <Summary>
-//         Constants.cs
+//         RequestTokenModelValidator.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Authentication
+using FluentValidation;
+using Monkey.Model.Models.User;
+
+namespace Monkey.Model.Validators
 {
-    public static class Constants
+    public class RequestTokenModelValidator : AbstractValidator<RequestTokenModel>
     {
-        public const string DefaultConfigSection = "Authentication";
+        public RequestTokenModelValidator()
+        {
+        }
     }
 }

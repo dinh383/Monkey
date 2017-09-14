@@ -10,6 +10,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Monkey.Controllers.Api.TokenApiController.Token(Monkey.Model.Models.User.RequestTokenModel)">
+            <summary>
+                Token 
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Monkey.Extensions.ApiExtensions.AddApiFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Api Filter] Model Validation, Global Exception Filer and Authorize Filter 
