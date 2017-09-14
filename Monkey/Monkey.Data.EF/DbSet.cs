@@ -20,6 +20,7 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
+using Monkey.Data.Entities.Client;
 using Monkey.Data.Entities.User;
 
 namespace Monkey.Data.EF
@@ -27,9 +28,12 @@ namespace Monkey.Data.EF
     public sealed partial class DbContext
     {
         public DbSet<UserEntity> Users { get; set; }
+
         public DbSet<ProfileEntity> Profiles { get; set; }
 
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
+
+        public DbSet<ClientEntity> Clients { get; set; }
 
         public DbSet<RoleEntity> Roles { get; set; }
 

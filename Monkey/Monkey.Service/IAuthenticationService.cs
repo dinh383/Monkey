@@ -24,7 +24,7 @@ namespace Monkey.Service
 {
     public interface IAuthenticationService : IBaseService
     {
-        Task<AccessTokenModel> SignInAsync(RequestTokenModel model);
+        Task<AccessTokenModel> GetTokenAsync(RequestTokenModel model);
 
         Task<LoggedUserModel> GetUserInfoAsync(string globalId);
 

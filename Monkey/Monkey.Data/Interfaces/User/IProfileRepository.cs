@@ -19,7 +19,7 @@
 
 using Monkey.Data.Entities.User;
 
-namespace Monkey.Data.Interfaces
+namespace Monkey.Data.Interfaces.User
 {
     public interface IProfileRepository : IEntityRepository<ProfileEntity>
     {

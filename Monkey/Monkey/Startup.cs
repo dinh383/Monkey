@@ -7,6 +7,7 @@ using Monkey.Authentication;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;
+using Monkey.Service;
 using Puppy.Core.TypeUtils;
 using Puppy.DependencyInjection;
 using Puppy.Hangfire;
@@ -149,6 +150,10 @@ namespace Monkey
 
             // Migrate Database
             app.MigrateDatabase();
+
+            ISeedDataService seedDataService = app.Resolve<ISeedDataService>();
+            seedDataService.SeedData();
+
         }
     }
 }

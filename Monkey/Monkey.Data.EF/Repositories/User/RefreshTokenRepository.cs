@@ -18,10 +18,10 @@
 #endregion License
 
 using Monkey.Data.Entities.User;
-using Monkey.Data.Interfaces;
+using Monkey.Data.Interfaces.User;
 using Puppy.DependencyInjection.Attributes;
 
-namespace Monkey.Data.EF.Repositories
+namespace Monkey.Data.EF.Repositories.User
 {
     [PerRequestDependency(ServiceType = typeof(IRefreshTokenRepository))]
     public class RefreshTokenRepository : EntityRepository<RefreshTokenEntity>, IRefreshTokenRepository

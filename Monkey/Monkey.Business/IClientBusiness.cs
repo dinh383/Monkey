@@ -6,12 +6,12 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Business Interface </Project>
 //     <File>
-//         <Name> IUserBusiness.cs </Name>
-//         <Created> 18/07/17 4:49:26 PM </Created>
-//         <Key> 1a8c0357-4f32-42de-ade4-851e33d3adc2 </Key>
+//         <Name> IClientBusiness.cs </Name>
+//         <Created> 14/09/17 8:18:33 PM </Created>
+//         <Key> cb340be9-ae66-469b-a702-bf2c7c754c8d </Key>
 //     </File>
 //     <Summary>
-//         IUserBusiness.cs
+//         IClientBusiness.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -21,16 +21,18 @@ using System.Threading.Tasks;
 
 namespace Monkey.Business
 {
-    public interface IUserBusiness : IBaseBusiness
+    public interface IClientBusiness : IBaseBusiness
     {
-        void CheckExists(params int[] ids);
+        Task<int> GetIdAsync(string globalId, string secret);
 
-        void CheckExists(params string[] userNames);
+        void CheckExist(string globalId, string secret);
 
-        void CheckExistsByGlobalId(params string[] globalIds);
+        void CheckExists(params string[] globalIds);
 
-        Task<int> CreateAsync(string userName, string passwordHash, string passwordSalt);
+        void CheckExist(params string[] names);
 
         Task<int> GetTotalAsync();
+
+        Task CreateAsync(string name);
     }
 }

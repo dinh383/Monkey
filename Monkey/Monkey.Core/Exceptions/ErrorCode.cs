@@ -44,12 +44,22 @@ namespace Monkey.Core.Exceptions
         [Description("Awesome, You break the system :o. You know what they say, you get what you pay for... The features do not write themselves, you know. Now, just god and you know what happen.")]
         Unknown = 500,
 
-        [Display(Name = "Invalid refresh token", GroupName = "Global")]
-        [Description("Refresh token is invalid or expired")]
+        [Display(Name = "Invalid refresh token", GroupName = "Token")]
         InvalidRefreshToken = 600,
 
+        [Display(Name = "Refresh token is expired", GroupName = "Token")]
+        RefreshTokenExpired = 601,
+
+        [Display(Name = "Invalid access token", GroupName = "Token")]
+        InvalidAccessToken = 603,
+
+        [Display(Name = "Access token is expired", GroupName = "Token")]
+        AccessTokenExpired = 604,
+
+        [Display(Name = "Client does not exist", GroupName = "Client")]
+        ClientNotExist = 700,
+
         [Display(Name = "User does not exist", GroupName = "User")]
-        [Description("")]
-        UserNotExist = 1000
+        UserNotExist = 1000,
     }
 }

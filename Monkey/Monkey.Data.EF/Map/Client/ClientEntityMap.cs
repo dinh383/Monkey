@@ -4,14 +4,14 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Entity Map </Project>
 //     <File>
-//         <Name> UserMap.cs </Name>
-//         <Created> 18/07/17 4:13:13 PM </Created>
-//         <Key> def0b09c-ceb1-4037-ac46-2b9bdaaddf98 </Key>
+//         <Name> ClientEntityMap.cs </Name>
+//         <Created> 14/09/17 7:57:54 PM </Created>
+//         <Key> ff6bfa4e-fb9f-4c7b-a4ac-3141680f5438 </Key>
 //     </File>
 //     <Summary>
-//         UserMap.cs
+//         ClientEntityMap.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -19,20 +19,22 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Monkey.Data.Entities;
-using Monkey.Data.Entities.User;
+using Monkey.Data.Entities.Client;
 using Puppy.EF.Maps;
 
-namespace Monkey.Data.EF.Map
+namespace Monkey.Data.EF.Map.Client
 {
-    public class UserMap : EntityTypeConfiguration<UserEntity>
+    public class ClientEntityMap : EntityTypeConfiguration<ClientEntity>
     {
-        public override void Map(EntityTypeBuilder<UserEntity> builder)
+        public override void Map(EntityTypeBuilder<ClientEntity> builder)
         {
             base.Map(builder);
-            builder.ToTable(nameof(UserEntity));
-            builder.HasIndex(x => x.UserNameNorm);
-            builder.HasIndex(x => x.PasswordHash);
+
+            builder.ToTable(nameof(ClientEntity));
+
+            builder.HasIndex(x => x.GlobalId);
+            builder.HasIndex(x => x.Secret);
+            builder.HasIndex(x => x.NameNorm);
         }
     }
 }

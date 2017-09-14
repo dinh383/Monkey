@@ -36,5 +36,13 @@ namespace Monkey.Core.Constants
             [Display(Name = "Manager")]
             Manager = 3000
         }
+
+        public enum ClientType
+        {
+            Ios = 1,
+            Android = 2,
+            Website = 3,
+            Spa = 4 
+        }
     }
 }

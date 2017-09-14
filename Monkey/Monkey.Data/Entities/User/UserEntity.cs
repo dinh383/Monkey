@@ -18,6 +18,7 @@
 #endregion License
 
 using System;
+using System.Collections.Generic;
 
 namespace Monkey.Data.Entities.User
 {
@@ -47,6 +48,8 @@ namespace Monkey.Data.Entities.User
 
         public DateTimeOffset? PhoneConfirmedTime { get; set; }
 
+        public virtual ProfileEntity Profile { get; set; }
+
         // Ban
 
         public DateTimeOffset? BannedTime { get; set; }
@@ -56,5 +59,7 @@ namespace Monkey.Data.Entities.User
         public int? RoleId { get; set; }
 
         public virtual RoleEntity Role { get; set; }
+
+        public virtual ICollection<RefreshTokenEntity> RefreshTokens { get; set; }
     }
 }

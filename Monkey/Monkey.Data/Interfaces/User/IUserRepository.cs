@@ -4,14 +4,14 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Repository Interface </Project>
+//     <Project> Monkey → Business Interface </Project>
 //     <File>
-//         <Name> IPermissionRepository.cs </Name>
-//         <Created> 13/09/17 11:40:12 PM </Created>
-//         <Key> 24e24875-10a5-4dc4-be79-cdbd93e293c2 </Key>
+//         <Name> IUserRepository.cs </Name>
+//         <Created> 18/07/17 4:42:06 PM </Created>
+//         <Key> 2aefeeb7-9f78-4f05-ba98-7e7fa11157fe </Key>
 //     </File>
 //     <Summary>
-//         IPermissionRepository.cs
+//         IUserRepository.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -19,9 +19,9 @@
 
 using Monkey.Data.Entities.User;
 
-namespace Monkey.Data.Interfaces
+namespace Monkey.Data.Interfaces.User
 {
-    public interface IPermissionRepository : IEntityRepository<PermissionEntity>
+    public interface IUserRepository : IEntityRepository<UserEntity>
     {
     }
 }

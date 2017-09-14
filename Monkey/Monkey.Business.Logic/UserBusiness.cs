@@ -17,11 +17,14 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.EntityFrameworkCore;
 using Monkey.Core.Exceptions;
-using Monkey.Data.Interfaces;
+using Monkey.Data.Entities.User;
+using Monkey.Data.Interfaces.User;
+using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using System.Linq;
-using Puppy.Core.StringUtils;
+using System.Threading.Tasks;
 
 namespace Monkey.Business.Logic
 {
@@ -69,6 +72,27 @@ namespace Monkey.Business.Logic
             {
                 throw new MonkeyException(ErrorCode.UserNotExist);
             }
+        }
+
+        public Task<int> CreateAsync(string userName, string passwordHash, string passwordSalt)
+        {
+            var userEntity = new UserEntity
+            {
+                UserName = userName,
+                UserNameNorm = StringHelper.Normalize(userName),
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
+            };
+
+            _userRepository.Add(userEntity);
+            _userRepository.SaveChanges();
+
+            return Task.FromResult(userEntity.Id);
+        }
+
+        public Task<int> GetTotalAsync()
+        {
+            return _userRepository.Get().CountAsync();
         }
     }
 }

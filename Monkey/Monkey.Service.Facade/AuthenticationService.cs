@@ -31,37 +31,51 @@ namespace Monkey.Service.Facade
     {
         private readonly IAuthenticationBusiness _authenticationBusiness;
         private readonly IUserBusiness _userBusiness;
+        private readonly IClientBusiness _clientBusiness;
 
-        public AuthenticationService(IAuthenticationBusiness authenticationBusiness, IUserBusiness userBusiness)
+        public AuthenticationService(IAuthenticationBusiness authenticationBusiness, IUserBusiness userBusiness, IClientBusiness clientBusiness)
         {
             _authenticationBusiness = authenticationBusiness;
             _userBusiness = userBusiness;
+            _clientBusiness = clientBusiness;
         }
 
-        public async Task<AccessTokenModel> SignInAsync(RequestTokenModel model)
+        public async Task<AccessTokenModel> GetTokenAsync(RequestTokenModel model)
         {
-            var accessTokenExpire = TimeSpan.FromMinutes(30);
+            _clientBusiness.CheckExist(model.ClientId, model.ClientSecret);
+            int clientId = await _clientBusiness.GetIdAsync(model.ClientId, model.ClientSecret).ConfigureAwait(true);
 
+            var accessTokenExpire = TimeSpan.FromMinutes(30);
             AccessTokenModel accessToken = null;
             LoggedUserModel loggedUser;
 
-            if (model.GrantType == GrantType.ResourceOwnerPassword)
+            if (model.GrantType == GrantType.Password)
             {
                 _userBusiness.CheckExists(model.Username);
 
+                // Get user info
                 loggedUser = await _authenticationBusiness.SignInAsync(model.Username, model.Password).ConfigureAwait(true);
+                loggedUser.ClientId = clientId;
+                loggedUser.ClientNo = model.ClientId;
 
+                // Save refresh token after sign in success
                 var refreshToken = Guid.NewGuid().ToString("N");
-                // TODO verify
-                await _authenticationBusiness.SaveRefreshTokenAsync(loggedUser.Id, 1, refreshToken, null).ConfigureAwait(true);
+                await _authenticationBusiness.SaveRefreshTokenAsync(loggedUser.Id, clientId, refreshToken, null).ConfigureAwait(true);
+
+                // Generate access token
                 accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedUser.GlobalId, accessTokenExpire, refreshToken);
             }
             else if (model.GrantType == GrantType.RefreshToken)
             {
-                _authenticationBusiness.CheckValidRefreshToken(model.RefreshToken);
+                // Verify
+                _authenticationBusiness.CheckValidRefreshToken(model.RefreshToken, clientId);
 
+                // Get info
                 loggedUser = await _authenticationBusiness.GetUserInfoAsync(model.RefreshToken).ConfigureAwait(true);
+                loggedUser.ClientId = clientId;
+                loggedUser.ClientNo = model.ClientId;
 
+                // Generate access token
                 accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedUser.GlobalId, accessTokenExpire, model.RefreshToken);
             }
             return accessToken;

@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monkey.Data.Entities.User;
 using Puppy.EF.Maps;
 
-namespace Monkey.Data.EF.Map
+namespace Monkey.Data.EF.Map.User
 {
     public class PermissionEntityMap : EntityTypeConfiguration<PermissionEntity>
     {

@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Data.Entities.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Puppy.Web.HttpRequestDetection.Device;
@@ -35,6 +36,10 @@ namespace Monkey.Data.Entities.User
         public int UserId { get; set; }
 
         public virtual UserEntity User { get; set; }
+
+        public int ClientId { get; set; }
+
+        public virtual ClientEntity Client { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public DeviceType DeviceType { get; set; }
@@ -98,10 +103,5 @@ namespace Monkey.Data.Entities.User
         public string UserAgent { get; set; }
 
         public string DeviceHash { get; set; }
-
-
-        // Client
-
-        public int ClientId { get; set; }
     }
 }

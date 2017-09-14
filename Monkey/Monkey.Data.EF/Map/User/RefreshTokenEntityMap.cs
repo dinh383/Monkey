@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monkey.Data.Entities.User;
 using Puppy.EF.Maps;
 
-namespace Monkey.Data.EF.Map
+namespace Monkey.Data.EF.Map.User
 {
     public class RefreshTokenEntityMap : EntityTypeConfiguration<RefreshTokenEntity>
     {
@@ -31,6 +31,14 @@ namespace Monkey.Data.EF.Map
             base.Map(builder);
 
             builder.ToTable(nameof(RefreshTokenEntity));
+
+            builder.HasOne(x => x.User).WithMany(x => x.RefreshTokens).HasForeignKey(x => x.UserId);
+
+            builder.HasOne(x => x.Client).WithMany(x => x.RefreshTokens).HasForeignKey(x => x.ClientId);
+
+            builder.HasIndex(x => x.RefreshToken);
+            builder.HasIndex(x => x.ClientId);
+            builder.HasIndex(x => x.UserId);
         }
     }
 }

@@ -32,5 +32,7 @@ namespace Monkey.Data.Entities.User
         public string FullName { get; set; }
 
         public string FullNameNorm { get; set; }
+
+        public virtual UserEntity User { get; set; }
     }
 }

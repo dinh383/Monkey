@@ -21,5 +21,6 @@ namespace Monkey.Service
 {
     public interface ISeedDataService : IBaseService
     {
+        void SeedData();
     }
 }

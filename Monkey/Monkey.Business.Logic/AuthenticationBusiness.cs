@@ -21,8 +21,9 @@ using Microsoft.EntityFrameworkCore;
 using Monkey.Authentication;
 using Monkey.Core.Exceptions;
 using Monkey.Data.Entities.User;
-using Monkey.Data.Interfaces;
+using Monkey.Data.Interfaces.User;
 using Monkey.Model.Models.User;
+using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web;
@@ -53,24 +54,12 @@ namespace Monkey.Business.Logic
             var user = await _userRepository.Get(x => x.UserNameNorm == username).Include(x => x.Role)
                 .ThenInclude(x => x.Permissions).SingleAsync().ConfigureAwait(true);
 
-            var listPermission = user.Role.Permissions.Select(c => c.Permission).ToList();
+            var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
 
             CheckPasswordHash(password, user.PasswordSalt, user.PasswordHash);
 
-            var loggedUser = new LoggedUserModel
-            {
-                Id = user.Id,
-                GlobalId = user.GlobalId,
-                Username = user.UserName,
-
-                Email = user.Email,
-                EmailConfirmedTime = user.EmailConfirmedTime,
-
-                Phone = user.Phone,
-                PhoneConfirmedTime = user.PhoneConfirmedTime,
-
-                ListPermission = listPermission
-            };
+            var loggedUser = user.MapTo<LoggedUserModel>();
+            loggedUser.ListPermission = listPermission;
 
             return loggedUser;
         }
@@ -80,7 +69,7 @@ namespace Monkey.Business.Logic
             var user = await _userRepository.Get(x => x.GlobalId == globalId).Include(x => x.Role)
                 .ThenInclude(x => x.Permissions).SingleAsync().ConfigureAwait(true);
 
-            var listPermission = user.Role.Permissions.Select(c => c.Permission).ToList();
+            var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
 
             var loggedUser = new LoggedUserModel
             {
@@ -111,19 +100,8 @@ namespace Monkey.Business.Logic
             var listPermission = await _userRepository.Get(x => x.Id == refreshTokenEntity.UserId)
                 .SelectMany(x => x.Role.Permissions.Select(y => y.Permission)).ToListAsync().ConfigureAwait(true);
 
-            var loggedUser = new LoggedUserModel
-            {
-                Id = refreshTokenEntity.User.Id,
-                GlobalId = refreshTokenEntity.User.GlobalId,
-                Username = refreshTokenEntity.User.UserName,
-
-                Email = refreshTokenEntity.User.Email,
-                EmailConfirmedTime = refreshTokenEntity.User.EmailConfirmedTime,
-
-                Phone = refreshTokenEntity.User.Phone,
-                PhoneConfirmedTime = refreshTokenEntity.User.PhoneConfirmedTime,
-                ListPermission = listPermission
-            };
+            var loggedUser = refreshTokenEntity.User.MapTo<LoggedUserModel>();
+            loggedUser.ListPermission = listPermission;
 
             // Increase total usage
             refreshTokenEntity.TotalUsage++;
@@ -142,6 +120,7 @@ namespace Monkey.Business.Logic
             var refreshTokenEntity = new RefreshTokenEntity
             {
                 RefreshToken = refreshToken,
+                ClientId = clientId,
                 ExpireOn = expireOn,
                 UserId = id,
                 TotalUsage = 1,
@@ -169,8 +148,7 @@ namespace Monkey.Business.Logic
                 AccuracyRadius = deviceInfo?.AccuracyRadius,
                 PostalCode = deviceInfo?.PostalCode,
                 UserAgent = deviceInfo?.UserAgent,
-                DeviceHash = deviceInfo?.DeviceHash,
-                ClientId = clientId
+                DeviceHash = deviceInfo?.DeviceHash
             };
 
             _refreshTokenRepository.Add(refreshTokenEntity);
@@ -207,14 +185,14 @@ namespace Monkey.Business.Logic
 
         public string HashPassword(string password, out string salt)
         {
-            salt = StringHelper.GenerateSaltHmacSha512(AuthenticationConfig.SecretKey);
+            salt = StringHelper.GenerateSaltSha512();
             return HashPassword(password, salt);
         }
 
         public string HashPassword(string password, string salt)
         {
-            var passwordSalt = password + salt;
-            var passwordHash = passwordSalt.GetHmacSha512(AuthenticationConfig.SecretKey);
+            var passwordSalt = password + salt + AuthenticationConfig.SecretKey;
+            var passwordHash = passwordSalt.GetSha512();
             return passwordHash;
         }
 

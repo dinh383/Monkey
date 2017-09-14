@@ -6,12 +6,12 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Entity Map </Project>
 //     <File>
-//         <Name> RoleEntityMap.cs </Name>
-//         <Created> 13/09/17 11:36:49 PM </Created>
-//         <Key> c022b8f7-0c81-496d-8ca6-16e5655053ac </Key>
+//         <Name> ProfileEntityMap.cs </Name>
+//         <Created> 13/09/17 11:39:05 PM </Created>
+//         <Key> 0ae63de3-6af7-47b1-8385-a22402116328 </Key>
 //     </File>
 //     <Summary>
-//         RoleEntityMap.cs
+//         ProfileEntityMap.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -22,15 +22,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monkey.Data.Entities.User;
 using Puppy.EF.Maps;
 
-namespace Monkey.Data.EF.Map
+namespace Monkey.Data.EF.Map.User
 {
-    public class RoleEntityMap : EntityTypeConfiguration<RoleEntity>
+    public class ProfileEntityMap : EntityTypeConfiguration<ProfileEntity>
     {
-        public override void Map(EntityTypeBuilder<RoleEntity> builder)
+        public override void Map(EntityTypeBuilder<ProfileEntity> builder)
         {
             base.Map(builder);
 
-            builder.ToTable(nameof(RoleEntity));
+            builder.ToTable(nameof(ProfileEntity));
+
+            builder.HasOne(x => x.User).WithOne(x => x.Profile).HasForeignKey<ProfileEntity>(x => x.Id);
         }
     }
 }

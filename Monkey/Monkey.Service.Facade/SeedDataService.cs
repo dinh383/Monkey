@@ -17,15 +17,47 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Business;
 using Puppy.DependencyInjection.Attributes;
+using System.Threading.Tasks;
 
 namespace Monkey.Service.Facade
 {
     [PerRequestDependency(ServiceType = typeof(ISeedDataService))]
     public class SeedDataService : ISeedDataService
     {
-        public SeedDataService()
+        private readonly IUserBusiness _userBusiness;
+        private readonly IAuthenticationBusiness _authenticationBusiness;
+        private readonly IClientBusiness _clientBusiness;
+
+        public SeedDataService(IUserBusiness userBusiness, IAuthenticationBusiness authenticationBusiness, IClientBusiness clientBusiness)
         {
+            _userBusiness = userBusiness;
+            _authenticationBusiness = authenticationBusiness;
+            _clientBusiness = clientBusiness;
+        }
+
+        public void SeedData()
+        {
+            InitialUserAsync().Wait();
+            InitialClientAsync().Wait();
+        }
+
+        public async Task InitialUserAsync()
+        {
+            if (await _userBusiness.GetTotalAsync().ConfigureAwait(true) <= 0)
+            {
+                string passwordHash = _authenticationBusiness.HashPassword("123456", out string salt);
+                await _userBusiness.CreateAsync("topnguyen", passwordHash, salt).ConfigureAwait(true);
+            }
+        }
+
+        public async Task InitialClientAsync()
+        {
+            if (await _clientBusiness.GetTotalAsync().ConfigureAwait(true) <= 0)
+            {
+                await _clientBusiness.CreateAsync("Monkey").ConfigureAwait(true);
+            }
         }
     }
 }
