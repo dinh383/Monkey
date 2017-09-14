@@ -122,7 +122,7 @@ namespace Monkey.Business.Logic
                 ExpireOn = expireOn,
                 UserId = userId,
                 TotalUsage = 1,
-                Type = deviceInfo?.Type ?? DeviceType.Unknown,
+                DeviceType = deviceInfo?.Type ?? DeviceType.Unknown,
                 MarkerName = deviceInfo?.MarkerName,
                 MarkerVersion = deviceInfo?.MarkerVersion,
                 OsName = deviceInfo?.OsName,

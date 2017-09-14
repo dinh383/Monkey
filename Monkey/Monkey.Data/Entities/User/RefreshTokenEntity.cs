@@ -37,31 +37,27 @@ namespace Monkey.Data.Entities.User
         public virtual UserEntity User { get; set; }
 
         [JsonConverter(typeof(StringEnumConverter))]
-        public DeviceType Type { get; set; }
+        public DeviceType DeviceType { get; set; }
 
         // Marker
-        public string MarkerFullInfo { get; set; }
 
         public string MarkerName { get; set; }
 
         public string MarkerVersion { get; set; }
 
         // OS
-        public string OsFullInfo { get; set; }
 
         public string OsName { get; set; }
 
         public string OsVersion { get; set; }
 
         // Engine
-        public string EngineFullInfo { get; set; }
 
         public string EngineName { get; set; }
 
         public string EngineVersion { get; set; }
 
         // Browser
-        public string BrowserFullInfo { get; set; }
 
         public string BrowserName { get; set; }
 
