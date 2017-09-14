@@ -61,5 +61,8 @@ namespace Monkey.Core.Exceptions
 
         [Display(Name = "User does not exist", GroupName = "User")]
         UserNotExist = 1000,
+
+        [Display(Name = "User is in-active, please active your account via email", GroupName = "User")]
+        UserInActive = 1001,
     }
 }

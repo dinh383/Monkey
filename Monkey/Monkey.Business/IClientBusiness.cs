@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Model.Models.Client;
 using System.Threading.Tasks;
 
 namespace Monkey.Business
@@ -33,6 +34,6 @@ namespace Monkey.Business
 
         Task<int> GetTotalAsync();
 
-        Task CreateAsync(string name);
+        Task<ClientModel> CreateAsync(ClientCreateModel model);
     }
 }

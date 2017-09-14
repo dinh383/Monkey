@@ -22,11 +22,11 @@ using Monkey.Data.Entities.User;
 using Monkey.Model.Models.User;
 using Puppy.AutoMapper;
 
-namespace Monkey.Mapper.Profiles
+namespace Monkey.Mapper.Profiles.User
 {
-    public class LoggedUserModelProfile : Profile
+    public class UserProfile : Profile
     {
-        public LoggedUserModelProfile()
+        public UserProfile()
         {
             CreateMap<UserEntity, LoggedUserModel>()
                 .IgnoreAllNonExisting();

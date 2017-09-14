@@ -23,6 +23,7 @@ using Monkey.Data.Entities.User;
 using Monkey.Data.Interfaces.User;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,6 +63,18 @@ namespace Monkey.Business.Logic
             }
         }
 
+        public void CheckActives(params string[] userNames)
+        {
+            userNames = userNames.Distinct().Select(StringHelper.Normalize).ToArray();
+
+            var totalInDb = _userRepository.Get(x => userNames.Contains(x.UserNameNorm) && x.ActiveTime != null).Count();
+
+            if (totalInDb != userNames.Length)
+            {
+                throw new MonkeyException(ErrorCode.UserInActive);
+            }
+        }
+
         public void CheckExistsByGlobalId(params string[] globalIds)
         {
             globalIds = globalIds.Distinct().ToArray();
@@ -74,20 +87,51 @@ namespace Monkey.Business.Logic
             }
         }
 
-        public Task<int> CreateAsync(string userName, string passwordHash, string passwordSalt)
+        public Task<string> CreateAsync(string email)
         {
             var userEntity = new UserEntity
             {
-                UserName = userName,
-                UserNameNorm = StringHelper.Normalize(userName),
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt
+                Email = email,
+                EmailNorm = StringHelper.Normalize(email)
             };
 
             _userRepository.Add(userEntity);
             _userRepository.SaveChanges();
+            return Task.FromResult(userEntity.GlobalId);
+        }
 
-            return Task.FromResult(userEntity.Id);
+        public async Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, string passwordSalt)
+        {
+            var userEntity = await _userRepository.Get(x => x.GlobalId == globalId).SingleAsync().ConfigureAwait(true);
+            userEntity.ActiveTime = userEntity.EmailConfirmedTime = DateTimeOffset.UtcNow;
+
+            userEntity.UserName = userName;
+            userEntity.UserNameNorm = StringHelper.Normalize(userName);
+            userEntity.PasswordSalt = passwordSalt;
+            userEntity.PasswordHash = passwordHash;
+
+            _userRepository.Update(userEntity, x => x.UserName, x => x.UserNameNorm, x => x.ActiveTime,
+                x => x.PhoneConfirmedTime, x => x.PasswordSalt,
+                x => x.PasswordHash);
+
+            _userRepository.SaveChanges();
+        }
+
+        public async Task ActiveByPhoneAsync(string globalId, string userName, string passwordHash, string passwordSalt)
+        {
+            var userEntity = await _userRepository.Get(x => x.GlobalId == globalId).SingleAsync().ConfigureAwait(true);
+            userEntity.ActiveTime = userEntity.PhoneConfirmedTime = DateTimeOffset.UtcNow;
+
+            userEntity.UserName = userName;
+            userEntity.UserNameNorm = StringHelper.Normalize(userName);
+            userEntity.PasswordSalt = passwordSalt;
+            userEntity.PasswordHash = passwordHash;
+
+            _userRepository.Update(userEntity, x => x.UserName, x => x.UserNameNorm, x => x.ActiveTime,
+                x => x.PhoneConfirmedTime, x => x.PasswordSalt,
+                x => x.PasswordHash);
+
+            _userRepository.SaveChanges();
         }
 
         public Task<int> GetTotalAsync()

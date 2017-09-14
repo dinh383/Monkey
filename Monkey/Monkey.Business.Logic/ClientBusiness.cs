@@ -21,6 +21,8 @@ using Microsoft.EntityFrameworkCore;
 using Monkey.Core.Exceptions;
 using Monkey.Data.Entities.Client;
 using Monkey.Data.Interfaces.Client;
+using Monkey.Model.Models.Client;
+using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using System.Linq;
@@ -78,19 +80,17 @@ namespace Monkey.Business.Logic
             return _clientRepository.Get().CountAsync();
         }
 
-        public Task CreateAsync(string name)
+        public Task<ClientModel> CreateAsync(ClientCreateModel model)
         {
-            var clientEntity = new ClientEntity
-            {
-                Name = name,
-                NameNorm = StringHelper.Normalize(name)
-            };
+            var clientEntity = model.MapTo<ClientEntity>();
 
             _clientRepository.Add(clientEntity);
 
             _clientRepository.SaveChanges();
 
-            return Task.CompletedTask;
+            var clientModel = clientEntity.MapTo<ClientModel>();
+
+            return Task.FromResult(clientModel);
         }
     }
 }

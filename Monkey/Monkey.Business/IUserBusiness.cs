@@ -27,9 +27,15 @@ namespace Monkey.Business
 
         void CheckExists(params string[] userNames);
 
+        void CheckActives(params string[] userNames);
+
         void CheckExistsByGlobalId(params string[] globalIds);
 
-        Task<int> CreateAsync(string userName, string passwordHash, string passwordSalt);
+        Task<string> CreateAsync(string email);
+
+        Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, string passwordSalt);
+
+        Task ActiveByPhoneAsync(string globalId, string userName, string passwordHash, string passwordSalt);
 
         Task<int> GetTotalAsync();
     }

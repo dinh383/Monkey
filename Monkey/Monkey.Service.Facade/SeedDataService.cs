@@ -18,6 +18,8 @@
 #endregion License
 
 using Monkey.Business;
+using Monkey.Core.Constants;
+using Monkey.Model.Models.Client;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading.Tasks;
 
@@ -47,8 +49,9 @@ namespace Monkey.Service.Facade
         {
             if (await _userBusiness.GetTotalAsync().ConfigureAwait(true) <= 0)
             {
+                var globalId = await _userBusiness.CreateAsync("topnguyen92@gmail.com").ConfigureAwait(true);
                 string passwordHash = _authenticationBusiness.HashPassword("123456", out string salt);
-                await _userBusiness.CreateAsync("topnguyen", passwordHash, salt).ConfigureAwait(true);
+                await _userBusiness.ActiveByEmailAsync(globalId, "topnguyen", passwordHash, salt).ConfigureAwait(true);
             }
         }
 
@@ -56,7 +59,11 @@ namespace Monkey.Service.Facade
         {
             if (await _clientBusiness.GetTotalAsync().ConfigureAwait(true) <= 0)
             {
-                await _clientBusiness.CreateAsync("Monkey").ConfigureAwait(true);
+                await _clientBusiness.CreateAsync(new ClientCreateModel
+                {
+                    Name = "Monkey",
+                    Type = Enums.ClientType.Website
+                }).ConfigureAwait(true);
             }
         }
     }

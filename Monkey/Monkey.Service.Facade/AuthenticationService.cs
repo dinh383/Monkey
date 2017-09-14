@@ -51,10 +51,11 @@ namespace Monkey.Service.Facade
 
             if (model.GrantType == GrantType.Password)
             {
-                _userBusiness.CheckExists(model.Username);
+                _userBusiness.CheckExists(model.UserName);
+                _userBusiness.CheckActives(model.UserName);
 
-                // Get user info
-                loggedUser = await _authenticationBusiness.SignInAsync(model.Username, model.Password).ConfigureAwait(true);
+                // Sing in and get user info
+                loggedUser = await _authenticationBusiness.SignInAsync(model.UserName, model.Password).ConfigureAwait(true);
                 loggedUser.ClientId = clientId;
                 loggedUser.ClientNo = model.ClientId;
 

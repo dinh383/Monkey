@@ -50,6 +50,8 @@ namespace Monkey.Data.Entities.User
 
         public virtual ProfileEntity Profile { get; set; }
 
+        public DateTimeOffset? ActiveTime { get; set; }
+
         // Ban
 
         public DateTimeOffset? BannedTime { get; set; }

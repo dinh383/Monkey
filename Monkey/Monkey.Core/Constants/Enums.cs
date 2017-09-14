@@ -42,7 +42,7 @@ namespace Monkey.Core.Constants
             Ios = 1,
             Android = 2,
             Website = 3,
-            Spa = 4 
+            Spa = 4
         }
     }
 }

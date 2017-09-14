@@ -20,6 +20,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Monkey.Model.Models.User;
+using Puppy.Core.DateTimeUtils;
 using Puppy.Web.Constants;
 using System;
 using System.Collections.Generic;
@@ -40,8 +41,7 @@ namespace Monkey.Authentication
         public static AccessTokenModel GenerateAccessToken(string clientId, string subject, TimeSpan expiresSpan, string refreshToken, string issuer = null)
         {
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            double authTime = dateTimeUtcNow.Subtract(epoch).TotalSeconds;
+            double authTime = DateTimeHelper.GetEpochTime(dateTimeUtcNow);
 
             var accessToken = new AccessTokenModel
             {
