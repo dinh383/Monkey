@@ -23,7 +23,7 @@
 
   <!-- Monkey -->
   <ItemGroup>
-    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
   </ItemGroup>
 
   <!-- External Libraries -->

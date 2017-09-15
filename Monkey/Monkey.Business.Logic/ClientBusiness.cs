@@ -18,10 +18,10 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
+using Monkey.Core.Entities.Client;
 using Monkey.Core.Exceptions;
-using Monkey.Data.Entities.Client;
-using Monkey.Data.Interfaces.Client;
-using Monkey.Model.Models.Client;
+using Monkey.Core.Models.Client;
+using Monkey.Data.Client;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;

@@ -19,7 +19,6 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Monkey.Model.Models.User;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Web.Constants;
 using System;
@@ -28,6 +27,7 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using Monkey.Core.Models.User;
 
 namespace Monkey.Authentication
 {

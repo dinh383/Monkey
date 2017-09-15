@@ -19,7 +19,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Monkey.Data.Entities.User;
+using Monkey.Core.Entities.User;
 using Puppy.EF.Maps;
 
 namespace Monkey.Data.EF.Map.User

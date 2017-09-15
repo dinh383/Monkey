@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Data.Entities.User;
-using Monkey.Data.Interfaces.User;
+using Monkey.Core.Entities.User;
+using Monkey.Data.User;
 using Puppy.DependencyInjection.Attributes;
 
 namespace Monkey.Data.EF.Repositories.User

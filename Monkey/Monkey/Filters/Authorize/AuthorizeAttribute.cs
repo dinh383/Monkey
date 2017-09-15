@@ -1,6 +1,5 @@
-﻿using Monkey.Core;
+﻿using Monkey.Core.Constants;
 using System;
-using Monkey.Core.Constants;
 
 namespace Monkey.Filters.Authorize
 {

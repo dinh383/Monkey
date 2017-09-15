@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Model.Models.User;
+using Monkey.Core.Models.User;
 using Monkey.Service;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Threading.Tasks;

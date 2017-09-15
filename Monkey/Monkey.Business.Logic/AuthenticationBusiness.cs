@@ -19,10 +19,10 @@
 
 using Microsoft.EntityFrameworkCore;
 using Monkey.Authentication;
+using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
-using Monkey.Data.Entities.User;
-using Monkey.Data.Interfaces.User;
-using Monkey.Model.Models.User;
+using Monkey.Core.Models.User;
+using Monkey.Data.User;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;

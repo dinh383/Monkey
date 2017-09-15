@@ -22,7 +22,6 @@
 
   <!-- Monkey -->
   <ItemGroup>
-    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
     <ProjectReference Include="..\Monkey.Data\Monkey.Data.csproj" />
   </ItemGroup>
 

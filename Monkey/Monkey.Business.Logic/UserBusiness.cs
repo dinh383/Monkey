@@ -18,9 +18,9 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
+using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
-using Monkey.Data.Entities.User;
-using Monkey.Data.Interfaces.User;
+using Monkey.Data.User;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using System;

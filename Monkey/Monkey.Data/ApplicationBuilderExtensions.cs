@@ -19,7 +19,6 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Monkey.Data.Interfaces;
 
 namespace Monkey.Data
 {

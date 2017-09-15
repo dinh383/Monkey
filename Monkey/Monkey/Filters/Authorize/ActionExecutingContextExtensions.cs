@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Monkey.Core;
+using Monkey.Core.Constants;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Monkey.Core.Constants;
 
 namespace Monkey.Filters.Authorize
 {

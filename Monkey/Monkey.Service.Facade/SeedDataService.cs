@@ -19,7 +19,7 @@
 
 using Monkey.Business;
 using Monkey.Core.Constants;
-using Monkey.Model.Models.Client;
+using Monkey.Core.Models.Client;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading.Tasks;
 

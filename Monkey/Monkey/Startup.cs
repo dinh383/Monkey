@@ -153,7 +153,6 @@ namespace Monkey
 
             ISeedDataService seedDataService = app.Resolve<ISeedDataService>();
             seedDataService.SeedData();
-
         }
     }
 }

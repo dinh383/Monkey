@@ -10,7 +10,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Controllers.Api.TokenApiController.Token(Monkey.Model.Models.User.RequestTokenModel)">
+        <member name="M:Monkey.Controllers.Api.TokenApiController.Token(Monkey.Core.Models.User.RequestTokenModel)">
             <summary>
                 Token 
             </summary>

@@ -19,7 +19,8 @@
 
 using Monkey.Authentication;
 using Monkey.Business;
-using Monkey.Model.Models.User;
+using Monkey.Core.Constants;
+using Monkey.Core.Models.User;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Threading.Tasks;

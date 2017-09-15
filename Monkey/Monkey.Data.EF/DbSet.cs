@@ -20,8 +20,8 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
-using Monkey.Data.Entities.Client;
-using Monkey.Data.Entities.User;
+using Monkey.Core.Entities.Client;
+using Monkey.Core.Entities.User;
 
 namespace Monkey.Data.EF
 {

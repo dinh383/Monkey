@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.ConfigModels;
+using Monkey.Core.Models.Config;
 
 namespace Monkey.Core
 {

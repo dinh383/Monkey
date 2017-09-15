@@ -23,7 +23,6 @@
   <!-- Monkey -->
   <ItemGroup>
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-    <ProjectReference Include="..\Monkey.Model\Monkey.Model.csproj" />
     <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
     <ProjectReference Include="..\Monkey.Business\Monkey.Business.csproj" />
   </ItemGroup>

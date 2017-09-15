@@ -23,7 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using Monkey.Core.ConfigModels;
+using Monkey.Core.Models.Config;
 using Puppy.Core.ConfigUtils;
 using Puppy.DependencyInjection;
 

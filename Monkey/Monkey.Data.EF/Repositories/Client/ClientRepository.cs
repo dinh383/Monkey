@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Data.Entities.Client;
-using Monkey.Data.Interfaces.Client;
+using Monkey.Core.Entities.Client;
+using Monkey.Data.Client;
 using Puppy.DependencyInjection.Attributes;
 
 namespace Monkey.Data.EF.Repositories.Client

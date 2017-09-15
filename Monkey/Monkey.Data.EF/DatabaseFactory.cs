@@ -18,7 +18,6 @@
 #endregion License
 
 using Microsoft.AspNetCore.Builder;
-using Monkey.Data.Interfaces;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
 

@@ -26,7 +26,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
-using Monkey.Model.Validators;
+using Monkey.Core.Validators;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Web.Constants;
 using Puppy.Web.Render;

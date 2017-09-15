@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Model.Models.User;
+using Monkey.Core.Models.User;
 using System.Threading.Tasks;
 
 namespace Monkey.Service
