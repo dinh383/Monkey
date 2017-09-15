@@ -10,5 +10,11 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/css/pages/login-v2.css"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/css/monkey.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/css/monkey.css"
+    ]
   }
 ]

@@ -199,7 +199,7 @@ namespace Monkey.Extensions
 
                     // If you have enabled SSL/TLS. Uncomment this line to ensure that the
                     // Anti-Forgery cookie requires SSL /TLS to be sent across the wire.
-                    options.RequireSsl = true;
+                    options.RequireSsl = false;
                 });
 
             return services;

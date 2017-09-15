@@ -85,8 +85,8 @@ namespace Monkey
                 // [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
                 .AddApiFilter()
 
-                // [Authentication] Json Web Token
-                .AddJwtBearerAuthen(ConfigurationRoot)
+                // [Authentication] Json Web Toke
+                .AddJwtAuth(ConfigurationRoot)
 
                 // [HttpContext]
                 .AddHttpContextAccessor()
@@ -132,7 +132,7 @@ namespace Monkey
                 .UseMinResponse()
 
                 // [Authentication] Json Web Token
-                .UseJwtBearerAuthen()
+                .UseJwtAuth()
 
                 // [Authentication] Get Logged In User Info
                 .UseLoggedInUser()

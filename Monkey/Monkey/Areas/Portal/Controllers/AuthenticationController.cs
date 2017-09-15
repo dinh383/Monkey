@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Core.Models.User;
 
 namespace Monkey.Areas.Portal.Controllers
 {
@@ -9,7 +10,15 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(new LoginModel());
+        }
+
+        [Route("")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Auth(LoginModel model)
+        {
+            return View("Index", model);
         }
     }
 }

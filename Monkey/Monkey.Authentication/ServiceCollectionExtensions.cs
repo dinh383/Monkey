@@ -27,24 +27,24 @@ namespace Monkey.Authentication
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        ///     [Authentication] Json Web Token 
+        ///     [Authentication] Json Web Token
         /// </summary>
         /// <param name="services">     </param>
         /// <param name="configuration"></param>
         /// <param name="configSection"></param>
         /// <returns></returns>
-        public static IServiceCollection AddJwtBearerAuthen(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.DefaultConfigSection)
+        public static IServiceCollection AddJwtAuth(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.DefaultConfigSection)
         {
             configuration.BuildConfig(configSection);
             return services;
         }
 
         /// <summary>
-        ///     [Authentication] Json Web Token 
+        ///     [Authentication] Json Web Token
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseJwtBearerAuthen(this IApplicationBuilder app)
+        public static IApplicationBuilder UseJwtAuth(this IApplicationBuilder app)
         {
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {

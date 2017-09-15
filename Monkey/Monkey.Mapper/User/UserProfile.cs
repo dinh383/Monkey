@@ -31,6 +31,8 @@ namespace Monkey.Mapper.User
             CreateMap<UserEntity, LoggedUserModel>().IgnoreAllNonExisting();
 
             CreateMap<ProfileEntity, LoggedUserModel>().IgnoreAllNonExisting();
+
+            CreateMap<LoginModel, RequestTokenModel>().IgnoreAllNonExisting();
         }
     }
 }

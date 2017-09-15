@@ -6,39 +6,31 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> RequestTokenModel.cs </Name>
-//         <Created> 04/09/17 10:34:44 PM </Created>
-//         <Key> 1754adc4-14bb-4d8f-8b79-5fa70f617f07 </Key>
+//         <Name> LoginModel.cs </Name>
+//         <Created> 15/09/17 7:45:53 PM </Created>
+//         <Key> 9a1479a7-e755-49be-95c3-8f6c64575e4a </Key>
 //     </File>
 //     <Summary>
-//         RequestTokenModel.cs
+//         LoginModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
 using FluentValidation.Attributes;
-using Monkey.Core.Constants;
 using Monkey.Core.Validators.User;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.User
 {
-    [Validator(typeof(RequestTokenModelValidator))]
-    public class RequestTokenModel
+    [Validator(typeof(LoginModelValidator))]
+    public class LoginModel
     {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public GrantType GrantType { get; set; }
-
-        public string ClientId { get; set; }
-
-        public string ClientSecret { get; set; }
-
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
+        [Display(Name = "Password")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        public string RefreshToken { get; set; }
     }
 }
