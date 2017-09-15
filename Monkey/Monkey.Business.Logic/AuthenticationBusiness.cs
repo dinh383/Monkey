@@ -60,9 +60,11 @@ namespace Monkey.Business.Logic
             var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
 
             CheckPasswordHash(password, user.PasswordSalt, user.PasswordHash);
+            CheckBanned(user.BannedTime, user.BannedRemark);
 
             var loggedUser = user.MapTo<LoggedUserModel>();
             loggedUser.ListPermission = listPermission;
+            user.Profile.MapTo(loggedUser);
 
             return loggedUser;
         }
@@ -79,6 +81,7 @@ namespace Monkey.Business.Logic
 
             var loggedUser = user.MapTo<LoggedUserModel>();
             loggedUser.ListPermission = listPermission;
+            user.Profile.MapTo(loggedUser);
 
             return loggedUser;
         }
@@ -95,6 +98,7 @@ namespace Monkey.Business.Logic
 
             var loggedUser = refreshTokenEntity.User.MapTo<LoggedUserModel>();
             loggedUser.ListPermission = listPermission;
+            refreshTokenEntity.User.Profile.MapTo(loggedUser);
 
             // Increase total usage
             refreshTokenEntity.TotalUsage++;
@@ -193,7 +197,15 @@ namespace Monkey.Business.Logic
         {
             password = HashPassword(password, passwordSalt);
             if (password == passwordHash) return;
-            throw new MonkeyException(ErrorCode.UserNotExist);
+            throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
+        }
+
+        private static void CheckBanned(DateTimeOffset? userBannedTime, string userBannedRemark)
+        {
+            if (userBannedTime != null)
+            {
+                throw new MonkeyException(ErrorCode.UserIsBanned, userBannedRemark);
+            }
         }
     }
 }

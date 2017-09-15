@@ -33,7 +33,7 @@ namespace Monkey.ViewModels.Api
         public ApiErrorViewModel(ErrorCode code, string message)
         {
             Code = code;
-            Message = string.IsNullOrWhiteSpace(message) ? code.AsString(EnumFormat.Description) : message;
+            Message = string.IsNullOrWhiteSpace(message) ? ($"{code.AsString(EnumFormat.DisplayName)}, {code.AsString(EnumFormat.Description)}") : message;
             Module = code.AsString(EnumFormat.DisplayName);
         }
 

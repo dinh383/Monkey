@@ -56,13 +56,25 @@ namespace Monkey.Core.Exceptions
         [Display(Name = "Access token is expired", GroupName = "Token")]
         AccessTokenExpired = 604,
 
-        [Display(Name = "Client does not exist", GroupName = "Client")]
-        ClientNotExist = 700,
+        [Display(Name = "Invalid client, wrong client id or client secret", GroupName = "Client")]
+        InvalidClient = 700,
+
+        [Display(Name = "Client is banned", GroupName = "Client")]
+        ClientIsBanned = 7001,
 
         [Display(Name = "User does not exist", GroupName = "User")]
         UserNotExist = 1000,
 
-        [Display(Name = "User is in-active, please active your account via email", GroupName = "User")]
+        [Display(Name = "User is in-active", GroupName = "User")]
         UserInActive = 1001,
+
+        [Display(Name = "User Name does not exist", GroupName = "User")]
+        UserNameNotExist = 1002,
+
+        [Display(Name = "User password is wrong", GroupName = "User")]
+        UserPasswordIsWrong = 1003,
+
+        [Display(Name = "User is banned", GroupName = "User")]
+        UserIsBanned = 1004,
     }
 }

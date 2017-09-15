@@ -51,7 +51,22 @@ namespace Monkey.Business.Logic
             bool isExist = _clientRepository.Get(x => x.GlobalId == globalId && x.Secret == secret).Any();
             if (!isExist)
             {
-                throw new MonkeyException(ErrorCode.ClientNotExist);
+                throw new MonkeyException(ErrorCode.InvalidClient);
+            }
+        }
+
+        public void CheckBanned(string globalId, string secret)
+        {
+            var clientShortInfo = _clientRepository.Get(x => x.GlobalId == globalId && x.Secret == secret).Select(x => new
+            {
+                x.Id,
+                x.BannedTime,
+                x.BannedRemark
+            }).Single();
+
+            if (clientShortInfo.BannedTime != null)
+            {
+                throw new MonkeyException(ErrorCode.ClientIsBanned, clientShortInfo.BannedRemark);
             }
         }
 
@@ -61,7 +76,7 @@ namespace Monkey.Business.Logic
             int totalInDb = _clientRepository.Get(x => globalIds.Contains(x.GlobalId)).Count();
             if (totalInDb != globalIds.Length)
             {
-                throw new MonkeyException(ErrorCode.ClientNotExist);
+                throw new MonkeyException(ErrorCode.InvalidClient);
             }
         }
 
@@ -71,7 +86,7 @@ namespace Monkey.Business.Logic
             int totalInDb = _clientRepository.Get(x => names.Contains(x.NameNorm)).Count();
             if (totalInDb != names.Length)
             {
-                throw new MonkeyException(ErrorCode.ClientNotExist);
+                throw new MonkeyException(ErrorCode.InvalidClient);
             }
         }
 

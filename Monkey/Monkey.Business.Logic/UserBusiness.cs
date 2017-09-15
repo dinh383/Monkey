@@ -59,7 +59,7 @@ namespace Monkey.Business.Logic
 
             if (totalInDb != userNames.Length)
             {
-                throw new MonkeyException(ErrorCode.UserNotExist);
+                throw new MonkeyException(ErrorCode.UserNameNotExist);
             }
         }
 
