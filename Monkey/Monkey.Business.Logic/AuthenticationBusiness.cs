@@ -51,8 +51,11 @@ namespace Monkey.Business.Logic
         {
             username = StringHelper.Normalize(username);
 
-            var user = await _userRepository.Get(x => x.UserNameNorm == username).Include(x => x.Role)
-                .ThenInclude(x => x.Permissions).SingleAsync().ConfigureAwait(true);
+            var user = await _userRepository.Get(x => x.UserNameNorm == username)
+                .Include(x => x.Profile)
+                .Include(x => x.Role).ThenInclude(x => x.Permissions)
+                .SingleAsync()
+                .ConfigureAwait(true);
 
             var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
 
@@ -66,36 +69,26 @@ namespace Monkey.Business.Logic
 
         public async Task<LoggedUserModel> GetUserInfoByGlobalIdAsync(string globalId)
         {
-            var user = await _userRepository.Get(x => x.GlobalId == globalId).Include(x => x.Role)
-                .ThenInclude(x => x.Permissions).SingleAsync().ConfigureAwait(true);
+            var user = await _userRepository.Get(x => x.GlobalId == globalId)
+                .Include(x => x.Profile)
+                .Include(x => x.Role).ThenInclude(x => x.Permissions)
+                .SingleAsync()
+                .ConfigureAwait(true);
 
             var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
 
-            var loggedUser = new LoggedUserModel
-            {
-                Id = user.Id,
-                GlobalId = user.GlobalId,
-                Username = user.UserName,
+            var loggedUser = user.MapTo<LoggedUserModel>();
+            loggedUser.ListPermission = listPermission;
 
-                Email = user.Email,
-                EmailConfirmedTime = user.EmailConfirmedTime,
-
-                Phone = user.Phone,
-                PhoneConfirmedTime = user.PhoneConfirmedTime,
-
-                ListPermission = listPermission
-            };
             return loggedUser;
         }
 
         public async Task<LoggedUserModel> GetUserInfoAsync(string refreshToken)
         {
-            var refreshTokenEntity = _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken).Select(x => new RefreshTokenEntity
-            {
-                Id = x.Id,
-                TotalUsage = x.TotalUsage,
-                User = x.User
-            }).Single();
+            var refreshTokenEntity = await _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken)
+                .Include(x => x.User)
+                .ThenInclude(x => x.Profile)
+                .SingleAsync().ConfigureAwait(true);
 
             var listPermission = await _userRepository.Get(x => x.Id == refreshTokenEntity.UserId)
                 .SelectMany(x => x.Role.Permissions.Select(y => y.Permission)).ToListAsync().ConfigureAwait(true);

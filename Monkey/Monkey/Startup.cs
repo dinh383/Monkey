@@ -101,6 +101,9 @@ namespace Monkey
             // Don't mad it !!!
 
             app
+                // [HttpContext]
+                .UseHttpContextAccessor()
+
                 // [API Cros]
                 .UseCors()
 
@@ -131,8 +134,8 @@ namespace Monkey
                 // [Authentication] Json Web Token
                 .UseJwtBearerAuthen()
 
-                // [HttpContext]
-                .UseHttpContextAccessor()
+                // [Authentication] Get Logged In User Info
+                .UseLoggedInUser()
 
                 // [MVC] Keep In Last
                 .UseMvcCustom();

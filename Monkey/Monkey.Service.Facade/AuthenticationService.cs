@@ -57,8 +57,7 @@ namespace Monkey.Service.Facade
 
                 // Sing in and get user info
                 loggedUser = await _authenticationBusiness.SignInAsync(model.UserName, model.Password).ConfigureAwait(true);
-                loggedUser.ClientId = clientId;
-                loggedUser.ClientNo = model.ClientId;
+                loggedUser.ClientId = model.ClientId;
 
                 // Save refresh token after sign in success
                 var refreshToken = Guid.NewGuid().ToString("N");
@@ -74,8 +73,7 @@ namespace Monkey.Service.Facade
 
                 // Get info
                 loggedUser = await _authenticationBusiness.GetUserInfoAsync(model.RefreshToken).ConfigureAwait(true);
-                loggedUser.ClientId = clientId;
-                loggedUser.ClientNo = model.ClientId;
+                loggedUser.ClientId = model.ClientId;
 
                 // Generate access token
                 accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedUser.GlobalId, accessTokenExpire, model.RefreshToken);
@@ -85,7 +83,7 @@ namespace Monkey.Service.Facade
 
         public Task<LoggedUserModel> GetUserInfoAsync(string globalId)
         {
-            _userBusiness.CheckExists(globalId);
+            _userBusiness.CheckExistsByGlobalId(globalId);
             return _authenticationBusiness.GetUserInfoByGlobalIdAsync(globalId);
         }
 

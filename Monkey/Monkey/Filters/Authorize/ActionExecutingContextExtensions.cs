@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Monkey.Core;
 using Monkey.Core.Constants;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,13 +99,12 @@ namespace Monkey.Filters.Authorize
 
         private static bool IsUserAuthenticated(HttpContext context)
         {
-            return context.User.Identity.IsAuthenticated;
+            return context.User.Identity.IsAuthenticated || LoggedInUser.Current != null;
         }
 
         private static List<Enums.Permission> GetUserListPermission()
         {
-            // TODO get list permission from http context/request by JWT
-            return new List<Enums.Permission>();
+            return LoggedInUser.Current?.ListPermission;
         }
     }
 }

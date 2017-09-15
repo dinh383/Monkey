@@ -28,8 +28,8 @@ namespace Monkey.Mapper.User
     {
         public UserProfile()
         {
-            CreateMap<UserEntity, LoggedUserModel>()
-                .IgnoreAllNonExisting();
+            CreateMap<UserEntity, LoggedUserModel>().IgnoreAllNonExisting()
+                .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile != null ? s.Profile.FullName : null));
         }
     }
 }

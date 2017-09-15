@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Constants;
 using System;
 using System.Collections.Generic;
-using Monkey.Core.Constants;
 
 namespace Monkey.Core.Models.User
 {
@@ -29,7 +29,7 @@ namespace Monkey.Core.Models.User
 
         public string GlobalId { get; set; }
 
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         public string Email { get; set; }
 
@@ -39,10 +39,13 @@ namespace Monkey.Core.Models.User
 
         public DateTimeOffset? PhoneConfirmedTime { get; set; }
 
+        public string FullName { get; set; }
+
         public List<Enums.Permission> ListPermission { get; set; }
 
-        public int ClientId { get; set; }
-
-        public string ClientNo { get; set; }
+        /// <summary>
+        ///     Client Id in Access Token (Client Global Id), this info show user logged in via what client
+        /// </summary>
+        public string ClientId { get; set; }
     }
 }

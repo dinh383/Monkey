@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Filters.Authorize;
 using Puppy.Web;
 
 namespace Monkey.Controllers.Api
@@ -13,11 +14,23 @@ namespace Monkey.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("")]
-        public IActionResult Test()
+        [Route("/deviceinfo")]
+        public IActionResult DeviceInfo()
         {
             var deviceInfo = HttpContext.Request.GetDeviceInfo();
             return Ok(deviceInfo);
+        }
+
+        /// <summary>
+        ///     Logged In User 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/userinfo")]
+        [Authorize]
+        public IActionResult LoggedInUser()
+        {
+            return Ok(Core.LoggedInUser.Current);
         }
     }
 }

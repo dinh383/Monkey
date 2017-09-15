@@ -4,9 +4,15 @@
         <name>Monkey</name>
     </assembly>
     <members>
-        <member name="M:Monkey.Controllers.Api.TestApiController.Test">
+        <member name="M:Monkey.Controllers.Api.TestApiController.DeviceInfo">
             <summary>
                 Device Info 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Monkey.Controllers.Api.TestApiController.LoggedInUser">
+            <summary>
+                Logged In User 
             </summary>
             <returns></returns>
         </member>
@@ -27,6 +33,13 @@
                 [Database] Use Entity Framework 
             </summary>
             <param name="services"></param>
+        </member>
+        <member name="M:Monkey.Extensions.LoggedInUserExtensions.UseLoggedInUser(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+                [Authentication] Get Logged In User Info 
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddMvcCustom(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
