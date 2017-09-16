@@ -30,7 +30,7 @@ namespace Monkey.Controllers.Api
         [Authorize]
         public IActionResult LoggedInUser()
         {
-            return Ok(Core.LoggedInUser.Current);
+            return Ok(HttpContext.User.Identity.IsAuthenticated);
         }
     }
 }

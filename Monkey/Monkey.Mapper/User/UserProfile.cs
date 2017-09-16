@@ -18,6 +18,7 @@
 #endregion License
 
 using AutoMapper;
+using Monkey.Core.Constants;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Models.User;
 using Puppy.AutoMapper;
@@ -32,7 +33,8 @@ namespace Monkey.Mapper.User
 
             CreateMap<ProfileEntity, LoggedUserModel>().IgnoreAllNonExisting();
 
-            CreateMap<LoginModel, RequestTokenModel>().IgnoreAllNonExisting();
+            CreateMap<LoginModel, RequestTokenModel>().IgnoreAllNonExisting()
+                .ForMember(d => d.GrantType, o => o.UseValue(GrantType.Password));
         }
     }
 }

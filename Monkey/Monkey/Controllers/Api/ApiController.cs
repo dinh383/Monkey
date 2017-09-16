@@ -8,7 +8,7 @@ namespace Monkey.Controllers.Api
 {
     [ServiceFilter(typeof(ApiExceptionFilter))]
     [ServiceFilter(typeof(ApiAuthorizeActionFilter))]
-    [ServiceFilter(typeof(ApiModelValidationActionFilter))] 
+    [ServiceFilter(typeof(ApiModelValidationActionFilter))]
     [Produces(ContentType.Json, ContentType.Xml)]
     public class ApiController : Controller
     {

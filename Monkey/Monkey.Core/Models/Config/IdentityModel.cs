@@ -6,27 +6,23 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> Constants.cs </Name>
-//         <Created> 03/09/17 1:35:14 PM </Created>
-//         <Key> a74f3b14-277a-4029-84f6-c90e1733cdba </Key>
+//         <Name> IdentityModel.cs </Name>
+//         <Created> 16/09/17 2:14:41 PM </Created>
+//         <Key> c7f89c43-8d35-4244-b0c8-10257a91ce2b </Key>
 //     </File>
 //     <Summary>
-//         Constants.cs
+//         IdentityModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Authentication
+namespace Monkey.Core.Models.Config
 {
-    public static class Constants
+    public class IdentityModel
     {
-        public const string DefaultConfigSection = "Authentication";
+        public string ClientId { get; set; }
 
-        public const string AccessTokenCookieName = "AccessToken";
-
-        public const string ClientIdKey = "client_id";
-
-        public const string AuthenticationTokenType = "Bearer";
+        public string ClientSecret { get; set; }
     }
 }

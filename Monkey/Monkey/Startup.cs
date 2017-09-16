@@ -134,6 +134,9 @@ namespace Monkey
                 // [Authentication] Json Web Token
                 .UseJwtAuth()
 
+                // [Authentication] Cookie
+                .UseCookieAuth()
+
                 // [Authentication] Get Logged In User Info
                 .UseLoggedInUser()
 

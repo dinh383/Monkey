@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
 using Monkey.Core.Constants;
+using System;
 
 namespace Monkey.Core.Models.Client
 {

@@ -17,11 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
 using Monkey.Core.Entities.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Puppy.Web.HttpRequestDetection.Device;
+using System;
 
 namespace Monkey.Core.Entities.User
 {

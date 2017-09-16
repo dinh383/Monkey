@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Models.Config.MvcPath;
 using System;
 using System.Collections.Generic;
-using Monkey.Core.Models.Config.MvcPath;
 
 namespace Monkey.Core.Models.Config
 {

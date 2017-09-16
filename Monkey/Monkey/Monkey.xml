@@ -6,37 +6,44 @@
     <members>
         <member name="M:Monkey.Controllers.Api.TestApiController.DeviceInfo">
             <summary>
-                Device Info 
+                Device Info
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Controllers.Api.TestApiController.LoggedInUser">
             <summary>
-                Logged In User 
+                Logged In User
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Controllers.Api.TokenApiController.Token(Monkey.Core.Models.User.RequestTokenModel)">
             <summary>
-                Token 
+                Token
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Extensions.ApiExtensions.AddApiFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Api Filter] Model Validation, Global Exception Filer and Authorize Filter 
+                [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
             </summary>
             <param name="services"></param>
         </member>
+        <member name="M:Monkey.Extensions.CookieAuthExtensions.UseCookieAuth(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+                [Authentication] Get Logged In User Info
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
         <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Database] Use Entity Framework 
+                [Database] Use Entity Framework
             </summary>
             <param name="services"></param>
         </member>
         <member name="M:Monkey.Extensions.LoggedInUserExtensions.UseLoggedInUser(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Authentication] Get Logged In User Info 
+                [Authentication] Get Logged In User Info
             </summary>
             <param name="app"></param>
             <returns></returns>
@@ -49,20 +56,20 @@
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.UseMvcCustom(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
+                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing
             </summary>
             <param name="app"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddAntiforgeryToken(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                Configures the anti-forgery tokens for better security. 
+                Configures the anti-forgery tokens for better security.
             </summary>
             <param name="services"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
         <member name="M:Monkey.Filters.Authorize.ActionExecutingContextExtensions.IsAuthenticated(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
             <summary>
-                Check user is authentication, also check AllowAnonymous attribute. 
+                Check user is authentication, also check AllowAnonymous attribute.
             </summary>
             <param name="context"></param>
             <returns></returns>
@@ -77,22 +84,22 @@
         </member>
         <member name="T:Monkey.Filters.Authorize.CombineAuthorizeAttribute">
             <summary>
-                Attribute to mark combine (OR conditional) with higher level AuthorizeAttribute 
+                Attribute to mark combine (OR conditional) with higher level AuthorizeAttribute
             </summary>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">
             <summary>
-                Unique Code for each Business 
+                Unique Code for each Business
             </summary>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Message">
             <summary>
-                Message description for Client App Developer 
+                Message description for Client App Developer
             </summary>
         </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Module">
             <summary>
-                Module of business 
+                Module of business
             </summary>
         </member>
     </members>

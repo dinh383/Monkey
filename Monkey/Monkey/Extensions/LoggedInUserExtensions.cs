@@ -46,6 +46,12 @@ namespace Monkey.Extensions
                     return;
                 }
 
+                if (TokenHelper.IsExpireOrInvalidToken(token))
+                {
+                    await _next.Invoke(context).ConfigureAwait(true);
+                    return;
+                }
+
                 string userGlobalId = TokenHelper.GetAccessTokenSubject(token);
 
                 if (string.IsNullOrWhiteSpace(userGlobalId))

@@ -26,8 +26,10 @@ namespace Monkey.Authentication
 {
     public static class ServiceCollectionExtensions
     {
+        private static IApplicationBuilder appBuilder;
+
         /// <summary>
-        ///     [Authentication] Json Web Token
+        ///     [Authentication] Json Web Token 
         /// </summary>
         /// <param name="services">     </param>
         /// <param name="configuration"></param>
@@ -40,7 +42,7 @@ namespace Monkey.Authentication
         }
 
         /// <summary>
-        ///     [Authentication] Json Web Token
+        ///     [Authentication] Json Web Token 
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
@@ -52,6 +54,8 @@ namespace Monkey.Authentication
                 AutomaticChallenge = true,
                 TokenValidationParameters = AuthenticationConfig.TokenValidationParameters
             });
+
+            appBuilder = app;
 
             return app;
         }

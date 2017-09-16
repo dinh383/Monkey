@@ -19,7 +19,10 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using Monkey.Core.Models.User;
+using Newtonsoft.Json;
 using Puppy.Core.DateTimeUtils;
+using Puppy.Core.ObjectUtils;
 using Puppy.Web.Constants;
 using System;
 using System.Collections.Generic;
@@ -27,15 +30,11 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using Monkey.Core.Models.User;
 
 namespace Monkey.Authentication
 {
     public static class TokenHelper
     {
-        private const string ClientIdKey = "client_id";
-        private const string AuthenticationTokenType = "Bearer";
-
         #region Generate
 
         public static AccessTokenModel GenerateAccessToken(string clientId, string subject, TimeSpan expiresSpan, string refreshToken, string issuer = null)
@@ -48,7 +47,7 @@ namespace Monkey.Authentication
                 ExpireIn = expiresSpan.TotalSeconds,
                 ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
                 RefreshToken = refreshToken,
-                TokenType = AuthenticationTokenType,
+                TokenType = Constants.AuthenticationTokenType,
                 ClientId = clientId,
                 Subject = subject
             };
@@ -118,6 +117,7 @@ namespace Monkey.Authentication
             DateTime utcNow = DateTime.UtcNow;
 
             double? epochExpireOn = GetAccessTokenData<double?>(token, JwtRegisteredClaimNames.Exp);
+
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             DateTime? expireOn = epochExpireOn == null ? (DateTime?)null : epoch.AddSeconds(epochExpireOn.Value);
 
@@ -141,7 +141,17 @@ namespace Monkey.Authentication
         public static string GetAuthenticationToken(HttpRequest request)
         {
             var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
-            var token = authenticationHeader.Replace(AuthenticationTokenType, string.Empty)?.Trim();
+            var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                if (request.Cookies.TryGetValue(Constants.AccessTokenCookieName, out string cookieValue))
+                {
+                    AccessTokenModel accessToken = JsonConvert.DeserializeObject<AccessTokenModel>(cookieValue);
+                    return accessToken?.AccessToken;
+                }
+            }
+
             return token;
         }
 
@@ -152,7 +162,7 @@ namespace Monkey.Authentication
 
         public static string GetAccessTokenClientId(string token)
         {
-            return GetAccessTokenData<string>(token, ClientIdKey);
+            return GetAccessTokenData<string>(token, Constants.ClientIdKey);
         }
 
         public static T GetAccessTokenData<T>(string token, string key)
@@ -164,7 +174,7 @@ namespace Monkey.Authentication
 
             tokenPayload.TryGetValue(key, out var data);
 
-            return (T)data;
+            return data.ConvertTo<T>();
         }
 
         private static bool TryReadTokenPayload(string token, out JwtPayload tokenPayload)

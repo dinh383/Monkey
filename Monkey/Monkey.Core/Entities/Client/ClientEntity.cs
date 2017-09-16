@@ -17,10 +17,10 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
-using System.Collections.Generic;
 using Monkey.Core.Constants;
 using Monkey.Core.Entities.User;
+using System;
+using System.Collections.Generic;
 
 namespace Monkey.Core.Entities.Client
 {

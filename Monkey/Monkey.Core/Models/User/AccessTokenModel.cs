@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace Monkey.Core.Models.User
 {
