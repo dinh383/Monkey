@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Linq;
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.ViewModels.Api;
@@ -6,13 +9,10 @@ using Puppy.Core.EnvironmentUtils;
 using Puppy.Core.XmlUtils;
 using Puppy.Logger;
 using Puppy.Web.Constants;
-using System;
-using System.Linq;
-using System.Net;
 
-namespace Monkey.Filters
+namespace Monkey.Filters.Exception
 {
-    public class ApiExceptionFilter : ExceptionFilterAttribute
+    public class MvcExceptionFilter : ExceptionFilterAttribute
     {
         public override void OnException(ExceptionContext context)
         {

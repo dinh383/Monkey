@@ -22,5 +22,7 @@ namespace Monkey.Authentication
     public static class Constants
     {
         public const string DefaultConfigSection = "Authentication";
+
+        public const string AccessTokenCookieName = "AccessToken";
     }
 }

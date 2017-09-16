@@ -18,6 +18,7 @@
 #endregion License
 
 using FluentValidation;
+using Monkey.Core.Constants;
 using Monkey.Core.Models.User;
 
 namespace Monkey.Core.Validators.User
@@ -26,6 +27,24 @@ namespace Monkey.Core.Validators.User
     {
         public RequestTokenModelValidator()
         {
+            RuleFor(x => x.ClientId).NotEmpty();
+
+            RuleFor(x => x.ClientSecret).NotEmpty();
+
+            RuleFor(x => x.GrantType).IsInEnum();
+
+            RuleFor(x => x.RefreshToken).NotEmpty()
+                .When(x => x.GrantType == GrantType.RefreshToken);
+
+            RuleFor(x => x.UserName)
+                .NotEmpty().WithMessage("User Name can't be empty")
+                .MinimumLength(6).WithMessage("User Name must have at least 6 character")
+                .When(x => x.GrantType == GrantType.Password);
+
+            RuleFor(x => x.Password)
+                .NotEmpty().WithMessage("Password can't be empty")
+                .MinimumLength(6).WithMessage("Password must have at least 6 characters")
+                .When(x => x.GrantType == GrantType.Password);
         }
     }
 }

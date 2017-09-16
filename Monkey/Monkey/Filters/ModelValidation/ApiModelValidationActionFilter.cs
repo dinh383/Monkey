@@ -5,39 +5,25 @@ using Newtonsoft.Json;
 using Puppy.Core.XmlUtils;
 using Puppy.Logger;
 using Puppy.Web.Constants;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
-namespace Monkey.Filters
+namespace Monkey.Filters.ModelValidation
 {
-    public class ApiModelValidationActionFilter : IActionFilter
+    public class ApiModelValidationActionFilter : ActionFilterAttribute
     {
-        public void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ModelState.IsValid)
                 return;
 
-            // Log with Logger
-            var keyValueInValid = new Dictionary<string, object>();
-
-            // Build Additional Data
-            foreach (var keyValueState in context.ModelState)
-            {
-                var error = string.Join(", ", keyValueState.Value.Errors.Select(x => x.ErrorMessage));
-                keyValueInValid.Add(keyValueState.Key, error);
-            }
-
-            var apiErrorViewModel = new ApiErrorViewModel(Core.Exceptions.ErrorCode.BadRequest, null, keyValueInValid);
-
             // Log Error
+            var keyValueInValid = ModelValidationHelper.GetModelStateInvalidInfo(context);
             var logMessage = JsonConvert.SerializeObject(keyValueInValid, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
             var logId = Log.Error(logMessage);
 
-            // Update ID of error model as log id
-            apiErrorViewModel.Id = logId;
-
             // Response Result
+            var apiErrorViewModel = new ApiErrorViewModel(Core.Exceptions.ErrorCode.BadRequest, null, keyValueInValid) { Id = logId };
+
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             if (context.HttpContext.Request.Headers[HttpRequestHeader.Accept.ToString()] == ContentType.Xml)
@@ -58,11 +44,6 @@ namespace Monkey.Filters
                     Content = JsonConvert.SerializeObject(apiErrorViewModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings)
                 };
             }
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            // Nothing to filter in Action Executed
         }
     }
 }

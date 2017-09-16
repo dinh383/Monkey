@@ -91,7 +91,7 @@ namespace Monkey
                 // [HttpContext]
                 .AddHttpContextAccessor()
 
-                // [MVC]
+                // [Mvc] Json, Xml serialize, area, response caching and filters
                 .AddMvcCustom();
         }
 
@@ -137,7 +137,8 @@ namespace Monkey
                 // [Authentication] Get Logged In User Info
                 .UseLoggedInUser()
 
-                // [MVC] Keep In Last
+                // [MVC] Keep In Last. Static files configuration, routing [Mvc] Static files
+                // configuration, routing
                 .UseMvcCustom();
 
             // [Application Start] Initial functions

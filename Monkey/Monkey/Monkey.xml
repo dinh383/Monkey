@@ -43,7 +43,7 @@
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddMvcCustom(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Mvc] Json, Xml serialize, area and response caching 
+                [Mvc] Json, Xml serialize, area, response caching and filters
             </summary>
             <param name="services"></param>
         </member>

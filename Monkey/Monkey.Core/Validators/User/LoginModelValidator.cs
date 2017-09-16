@@ -27,11 +27,12 @@ namespace Monkey.Core.Validators.User
         public LoginModelValidator()
         {
             RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage("User Name can't be empty");
+                .NotEmpty().WithMessage("User Name can't be empty")
+                .MinimumLength(6).WithMessage("User Name must have at least 6 character");
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Password can't be empty");
-            //.Matches(Regex.PasswordFormat).WithMessage("Password must have at least 8 characters include uppercase and numeric");
+                .NotEmpty().WithMessage("Password can't be empty")
+                .MinimumLength(6).WithMessage("Password must have at least 6 characters");
         }
     }
 }

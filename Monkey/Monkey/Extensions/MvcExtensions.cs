@@ -27,6 +27,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 using Monkey.Core.Validators;
+using Monkey.Filters.Exception;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Web.Constants;
 using Puppy.Web.Render;
@@ -39,7 +40,7 @@ namespace Monkey.Extensions
     public static class MvcExtensions
     {
         /// <summary>
-        ///     [Mvc] Json, Xml serialize, area and response caching 
+        ///     [Mvc] Json, Xml serialize, area, response caching and filters 
         /// </summary>
         /// <param name="services"></param>
         public static IServiceCollection AddMvcCustom(this IServiceCollection services)
@@ -47,6 +48,9 @@ namespace Monkey.Extensions
             // Mvc Services
             services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
+
+            // Filter
+            services.AddScoped<MvcExceptionFilter>();
 
             if (!EnvironmentHelper.IsDevelopment())
             {
