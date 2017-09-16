@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Authentication;
+using Monkey.Core;
 using Monkey.Core.Models.User;
 using Monkey.Service;
-using Newtonsoft.Json;
 using Puppy.AutoMapper;
 using System.Threading.Tasks;
-using Monkey.Core;
 
 namespace Monkey.Areas.Portal.Controllers
 {
@@ -43,7 +43,8 @@ namespace Monkey.Areas.Portal.Controllers
             requestToken.ClientSecret = SystemConfigs.Identity.ClientSecret;
 
             AccessTokenModel accessToken = await _authenticationService.GetTokenAsync(requestToken).ConfigureAwait(true);
-            Response.Cookies.Append(Authentication.Constants.AccessTokenCookieName, JsonConvert.SerializeObject(accessToken));
+
+            TokenHelper.SetAccessTokenToCookie(Response.Cookies, accessToken);
 
             return View("Index", model);
         }

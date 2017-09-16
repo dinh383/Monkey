@@ -21,6 +21,7 @@ using Monkey.Business;
 using Monkey.Core.Constants;
 using Monkey.Core.Models.Client;
 using Puppy.DependencyInjection.Attributes;
+using System;
 using System.Threading.Tasks;
 
 namespace Monkey.Service.Facade
@@ -50,8 +51,12 @@ namespace Monkey.Service.Facade
             if (await _userBusiness.GetTotalAsync().ConfigureAwait(true) <= 0)
             {
                 var globalId = await _userBusiness.CreateAsync("topnguyen92@gmail.com").ConfigureAwait(true);
-                string passwordHash = _authenticationBusiness.HashPassword("123456", out string salt);
-                await _userBusiness.ActiveByEmailAsync(globalId, "topnguyen", passwordHash, salt).ConfigureAwait(true);
+
+                DateTimeOffset utcNow = DateTimeOffset.UtcNow;
+
+                string passwordHash = _authenticationBusiness.HashPassword("123456", utcNow);
+
+                await _userBusiness.ActiveByEmailAsync(globalId, "topnguyen", passwordHash, utcNow).ConfigureAwait(true);
             }
         }
 

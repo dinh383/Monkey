@@ -23,6 +23,7 @@ using Monkey.Core.Models.User;
 using Newtonsoft.Json;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
+using Puppy.Core.StringUtils;
 using Puppy.Web.Constants;
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,39 @@ namespace Monkey.Authentication
 
         #endregion
 
+        #region Cookie
+
+        public static void SetAccessTokenToCookie(IResponseCookies cookies, AccessTokenModel accessToken)
+        {
+            string accessTokenJson = JsonConvert.SerializeObject(accessToken, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
+            accessTokenJson = accessTokenJson.Encrypt(AuthenticationConfig.SecretKey);
+            cookies.Append(Constants.AccessTokenCookieName, accessTokenJson);
+        }
+
+        public static AccessTokenModel GetAccessTokenFromCookie(IRequestCookieCollection cookies)
+        {
+            if (!cookies.TryGetValue(Constants.AccessTokenCookieName, out var cookieValue))
+            {
+                return null;
+            }
+
+            if (!cookieValue.TryDecrypt(AuthenticationConfig.SecretKey, out var accessTokenJson))
+            {
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(accessTokenJson))
+            {
+                return null;
+            }
+
+            var accessToken = JsonConvert.DeserializeObject<AccessTokenModel>(accessTokenJson, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
+
+            return accessToken;
+        }
+
+        #endregion
+
         #region Validation
 
         public static bool IsValidToken(string token, out ClaimsPrincipal claimsPrincipal)
@@ -110,10 +144,8 @@ namespace Monkey.Authentication
             }
         }
 
-        public static bool IsExpireOrInvalidToken(string token)
+        public static bool IsExpire(string token)
         {
-            if (!IsValidToken(token, out _)) return true;
-
             DateTime utcNow = DateTime.UtcNow;
 
             double? epochExpireOn = GetAccessTokenData<double?>(token, JwtRegisteredClaimNames.Exp);
@@ -126,6 +158,11 @@ namespace Monkey.Authentication
                 return false;
             }
             return true;
+        }
+
+        public static bool IsExpireOrInvalidToken(string token)
+        {
+            return !IsValidToken(token, out _) || IsExpire(token);
         }
 
         #endregion

@@ -100,35 +100,35 @@ namespace Monkey.Business.Logic
             return Task.FromResult(userEntity.GlobalId);
         }
 
-        public async Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, string passwordSalt)
+        public async Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, DateTimeOffset updatedTime)
         {
             var userEntity = await _userRepository.Get(x => x.GlobalId == globalId).SingleAsync().ConfigureAwait(true);
             userEntity.ActiveTime = userEntity.EmailConfirmedTime = DateTimeOffset.UtcNow;
 
             userEntity.UserName = userName;
             userEntity.UserNameNorm = StringHelper.Normalize(userName);
-            userEntity.PasswordSalt = passwordSalt;
             userEntity.PasswordHash = passwordHash;
+            userEntity.PasswordLastUpdatedTime = updatedTime;
 
             _userRepository.Update(userEntity, x => x.UserName, x => x.UserNameNorm, x => x.ActiveTime,
-                x => x.PhoneConfirmedTime, x => x.PasswordSalt,
+                x => x.PhoneConfirmedTime, x => x.PasswordLastUpdatedTime,
                 x => x.PasswordHash);
 
             _userRepository.SaveChanges();
         }
 
-        public async Task ActiveByPhoneAsync(string globalId, string userName, string passwordHash, string passwordSalt)
+        public async Task ActiveByPhoneAsync(string globalId, string userName, string passwordHash, DateTimeOffset updatedTime)
         {
             var userEntity = await _userRepository.Get(x => x.GlobalId == globalId).SingleAsync().ConfigureAwait(true);
             userEntity.ActiveTime = userEntity.PhoneConfirmedTime = DateTimeOffset.UtcNow;
 
             userEntity.UserName = userName;
             userEntity.UserNameNorm = StringHelper.Normalize(userName);
-            userEntity.PasswordSalt = passwordSalt;
             userEntity.PasswordHash = passwordHash;
+            userEntity.PasswordLastUpdatedTime = updatedTime;
 
             _userRepository.Update(userEntity, x => x.UserName, x => x.UserNameNorm, x => x.ActiveTime,
-                x => x.PhoneConfirmedTime, x => x.PasswordSalt,
+                x => x.PhoneConfirmedTime, x => x.PasswordLastUpdatedTime,
                 x => x.PasswordHash);
 
             _userRepository.SaveChanges();

@@ -23,7 +23,7 @@ namespace Monkey.Authentication
     {
         public const string DefaultConfigSection = "Authentication";
 
-        public const string AccessTokenCookieName = "AccessToken";
+        public const string AccessTokenCookieName = "ba2d42ae1bac42cfd4410a9f969b2e0d"; // for security purpose
 
         public const string ClientIdKey = "client_id";
 

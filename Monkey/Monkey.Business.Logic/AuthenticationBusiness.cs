@@ -59,8 +59,14 @@ namespace Monkey.Business.Logic
 
             var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
 
-            CheckPasswordHash(password, user.PasswordSalt, user.PasswordHash);
-            CheckBanned(user.BannedTime, user.BannedRemark);
+            // Check Password
+            CheckPasswordHash(password, user.PasswordLastUpdatedTime, user.PasswordHash);
+
+            // Check Banned
+            if (user.BannedTime != null)
+            {
+                throw new MonkeyException(ErrorCode.UserIsBanned, user.BannedRemark);
+            }
 
             var loggedUser = user.MapTo<LoggedUserModel>();
             loggedUser.ListPermission = listPermission;
@@ -170,6 +176,13 @@ namespace Monkey.Business.Logic
             _refreshTokenRepository.SaveChanges();
         }
 
+        public string HashPassword(string password, DateTimeOffset hashTime)
+        {
+            var passwordSalt = hashTime.ToString("O") + AuthenticationConfig.SecretKey;
+            var passwordHash = password.HashPassword(passwordSalt);
+            return passwordHash;
+        }
+
         public void CheckValidRefreshToken(string refreshToken, int clientId)
         {
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
@@ -180,32 +193,18 @@ namespace Monkey.Business.Logic
                 throw new MonkeyException(ErrorCode.InvalidRefreshToken);
         }
 
-        public string HashPassword(string password, out string salt)
+        private void CheckPasswordHash(string password, DateTimeOffset? hashTime, string passwordHash)
         {
-            salt = StringHelper.GenerateSaltSha512();
-            return HashPassword(password, salt);
-        }
-
-        public string HashPassword(string password, string salt)
-        {
-            var passwordSalt = password + salt + AuthenticationConfig.SecretKey;
-            var passwordHash = passwordSalt.GetSha512();
-            return passwordHash;
-        }
-
-        public void CheckPasswordHash(string password, string passwordSalt, string passwordHash)
-        {
-            password = HashPassword(password, passwordSalt);
-            if (password == passwordHash) return;
-            throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
-        }
-
-        private static void CheckBanned(DateTimeOffset? userBannedTime, string userBannedRemark)
-        {
-            if (userBannedTime != null)
+            if (hashTime == null)
             {
-                throw new MonkeyException(ErrorCode.UserIsBanned, userBannedRemark);
+                throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
             }
+
+            password = HashPassword(password, hashTime.Value);
+
+            if (password == passwordHash) return;
+
+            throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
         }
     }
 }

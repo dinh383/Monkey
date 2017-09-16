@@ -7,7 +7,6 @@ using Monkey.Core.Models.User;
 using Monkey.Service;
 using Newtonsoft.Json;
 using Puppy.DependencyInjection;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Monkey.Extensions
@@ -41,46 +40,51 @@ namespace Monkey.Extensions
 
             public async Task Invoke(HttpContext context)
             {
-                if (context.Request.Cookies.TryGetValue(Authentication.Constants.AccessTokenCookieName, out string cookieValue))
+                AccessTokenModel accessToken = TokenHelper.GetAccessTokenFromCookie(context.Request.Cookies);
+
+                if (accessToken == null)
                 {
-                    try
-                    {
-                        AccessTokenModel accessToken = JsonConvert.DeserializeObject<AccessTokenModel>(cookieValue);
-                        string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessToken.AccessToken);
-
-                        if (TokenHelper.IsValidToken(accessToken.AccessToken, out ClaimsPrincipal claimsPrincipal) && accessTokenClientId == SystemConfigs.Identity.ClientId)
-                        {
-                            context.User = claimsPrincipal;
-
-                            // If current cookie access token is expire but valid, then auto refresh.
-                            // This logic just for WEB Cookie
-                            if (TokenHelper.IsExpireOrInvalidToken(accessToken.AccessToken))
-                            {
-                                var authenticationService = _appBuilder.Resolve<IAuthenticationService>();
-                                RequestTokenModel requestTokenModel = new RequestTokenModel
-                                {
-                                    ClientId = SystemConfigs.Identity.ClientId,
-                                    ClientSecret = SystemConfigs.Identity.ClientSecret,
-                                    GrantType = GrantType.RefreshToken,
-                                    RefreshToken = accessToken.RefreshToken
-                                };
-
-                                var newAccessToken = await authenticationService.GetTokenAsync(requestTokenModel).ConfigureAwait(true);
-
-                                context.Response.OnStarting(state =>
-                                {
-                                    var httpContext = (HttpContext)state;
-                                    httpContext.Response.Cookies.Append(Authentication.Constants.AccessTokenCookieName, JsonConvert.SerializeObject(newAccessToken));
-                                    return Task.CompletedTask;
-                                }, context);
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        // nothing
-                    }
+                    await _next.Invoke(context).ConfigureAwait(true);
+                    return;
                 }
+
+                string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessToken.AccessToken);
+
+                if (!TokenHelper.IsValidToken(accessToken.AccessToken, out var claimsPrincipal) || accessTokenClientId != SystemConfigs.Identity.ClientId)
+                {
+                    await _next.Invoke(context).ConfigureAwait(true);
+                    return;
+                }
+
+                // Sign In to the context
+                context.User = claimsPrincipal;
+
+                // If current cookie access token is valid but expire, then auto refresh. This logic
+                // just for WEB Cookie
+                if (TokenHelper.IsExpire(accessToken.AccessToken))
+                {
+                    var authenticationService = _appBuilder.Resolve<IAuthenticationService>();
+
+                    RequestTokenModel requestTokenModel = new RequestTokenModel
+                    {
+                        ClientId = SystemConfigs.Identity.ClientId,
+                        ClientSecret = SystemConfigs.Identity.ClientSecret,
+                        GrantType = GrantType.RefreshToken,
+                        RefreshToken = accessToken.RefreshToken
+                    };
+
+                    var newAccessToken = await authenticationService.GetTokenAsync(requestTokenModel).ConfigureAwait(true);
+
+                    context.Response.OnStarting(state =>
+                    {
+                        var httpContext = (HttpContext)state;
+
+                        httpContext.Response.Cookies.Append(Authentication.Constants.AccessTokenCookieName, JsonConvert.SerializeObject(newAccessToken));
+
+                        return Task.CompletedTask;
+                    }, context);
+                }
+
                 await _next.Invoke(context).ConfigureAwait(true);
             }
         }

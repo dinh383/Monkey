@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System;
 using System.Threading.Tasks;
 
 namespace Monkey.Business
@@ -33,9 +34,9 @@ namespace Monkey.Business
 
         Task<string> CreateAsync(string email);
 
-        Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, string passwordSalt);
+        Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, DateTimeOffset updatedTime);
 
-        Task ActiveByPhoneAsync(string globalId, string userName, string passwordHash, string passwordSalt);
+        Task ActiveByPhoneAsync(string globalId, string userName, string passwordHash, DateTimeOffset updatedTime);
 
         Task<int> GetTotalAsync();
     }
