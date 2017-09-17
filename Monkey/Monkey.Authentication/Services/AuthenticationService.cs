@@ -17,15 +17,14 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Authentication;
+using Monkey.Authentication.Config;
+using Monkey.Authentication.Interfaces;
 using Monkey.Business;
-using Monkey.Core.Constants;
-using Monkey.Core.Models.User;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Threading.Tasks;
 
-namespace Monkey.Service.Facade
+namespace Monkey.Authentication.Services
 {
     [PerRequestDependency(ServiceType = typeof(IAuthenticationService))]
     public class AuthenticationService : IAuthenticationService
@@ -33,6 +32,7 @@ namespace Monkey.Service.Facade
         private readonly IAuthenticationBusiness _authenticationBusiness;
         private readonly IUserBusiness _userBusiness;
         private readonly IClientBusiness _clientBusiness;
+        private readonly TimeSpan _accessTokenExpire = TimeSpan.FromMinutes(30);
 
         public AuthenticationService(IAuthenticationBusiness authenticationBusiness, IUserBusiness userBusiness, IClientBusiness clientBusiness)
         {
@@ -41,56 +41,44 @@ namespace Monkey.Service.Facade
             _clientBusiness = clientBusiness;
         }
 
-        public async Task<AccessTokenModel> GetTokenAsync(RequestTokenModel model)
+        public async Task<IAccessTokenModel> GetTokenAsync(IRequestTokenModel model)
         {
             _clientBusiness.CheckExist(model.ClientId, model.ClientSecret);
-            int clientId = await _clientBusiness.GetIdAsync(model.ClientId, model.ClientSecret).ConfigureAwait(true);
+            var clientId = await _clientBusiness.GetIdAsync(model.ClientId, model.ClientSecret).ConfigureAwait(true);
 
-            var accessTokenExpire = TimeSpan.FromMinutes(30);
-            AccessTokenModel accessToken = null;
-            LoggedUserModel loggedUser;
+            IAccessTokenModel accessToken = null;
 
             if (model.GrantType == GrantType.Password)
             {
                 _userBusiness.CheckExists(model.UserName);
                 _userBusiness.CheckActives(model.UserName);
+                _authenticationBusiness.CheckValidSignInAsync(model.UserName, model.Password, AuthenticationConfig.SecretKey);
 
-                // Sing in and get user info
-                loggedUser = await _authenticationBusiness.SignInAsync(model.UserName, model.Password).ConfigureAwait(true);
-                loggedUser.ClientId = model.ClientId;
-
-                // Save refresh token after sign in success
-                var refreshToken = Guid.NewGuid().ToString("N");
-                await _authenticationBusiness.SaveRefreshTokenAsync(loggedUser.Id, clientId, refreshToken, null).ConfigureAwait(true);
+                // Sign In
+                string subject = _authenticationBusiness.SignIn(model.UserName, clientId, out string refreshToken);
 
                 // Generate access token
-                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedUser.GlobalId, accessTokenExpire, refreshToken);
+                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, subject, _accessTokenExpire, refreshToken);
             }
             else if (model.GrantType == GrantType.RefreshToken)
             {
                 // Verify
-                _authenticationBusiness.CheckValidRefreshToken(model.RefreshToken, clientId);
+                _authenticationBusiness.CheckValidRefreshToken(clientId, model.RefreshToken);
 
-                // Get info
-                loggedUser = await _authenticationBusiness.GetUserInfoAsync(model.RefreshToken).ConfigureAwait(true);
-                loggedUser.ClientId = model.ClientId;
+                var subject = await _userBusiness.GetUserSubjectByRefreshTokenAsync(model.RefreshToken).ConfigureAwait(true);
 
                 // Generate access token
-                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedUser.GlobalId, accessTokenExpire, model.RefreshToken);
+                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, subject, _accessTokenExpire, model.RefreshToken);
             }
             return accessToken;
         }
 
-        public Task<LoggedUserModel> GetUserInfoAsync(string globalId)
+        public Task ExpireAllRefreshTokenAsync(string subject)
         {
-            _userBusiness.CheckExistsByGlobalId(globalId);
-            return _authenticationBusiness.GetUserInfoByGlobalIdAsync(globalId);
-        }
+            _userBusiness.CheckExists(subject);
+            _authenticationBusiness.ExpireAllRefreshToken(subject);
 
-        public Task ExpireAllRefreshTokenAsync(int id)
-        {
-            _userBusiness.CheckExists(id);
-            return _authenticationBusiness.ExpireAllRefreshTokenAsync(id);
+            return Task.CompletedTask;
         }
     }
 }

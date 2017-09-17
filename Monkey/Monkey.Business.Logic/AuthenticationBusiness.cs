@@ -18,12 +18,9 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
-using Monkey.Authentication;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
-using Monkey.Core.Models.User;
 using Monkey.Data.User;
-using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web;
@@ -36,6 +33,7 @@ using System.Web;
 namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IAuthenticationBusiness))]
+    [PerRequestDependency(ServiceType = typeof(Authentication.Interfaces.IAuthenticationBusiness))]
     public class AuthenticationBusiness : IAuthenticationBusiness
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
@@ -47,76 +45,25 @@ namespace Monkey.Business.Logic
             _refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<LoggedUserModel> SignInAsync(string username, string password)
+        public async Task ExpireAllRefreshTokenAsync(int userId)
         {
-            username = StringHelper.Normalize(username);
+            var listRefreshToken = await _refreshTokenRepository.Get(x => x.UserId == userId).Select(x =>
+                new RefreshTokenEntity
+                {
+                    Id = x.Id
+                }).ToListAsync().ConfigureAwait(true);
 
-            var user = await _userRepository.Get(x => x.UserNameNorm == username)
-                .Include(x => x.Profile)
-                .Include(x => x.Role).ThenInclude(x => x.Permissions)
-                .SingleAsync()
-                .ConfigureAwait(true);
-
-            var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
-
-            // Check Password
-            CheckPasswordHash(password, user.PasswordLastUpdatedTime, user.PasswordHash);
-
-            // Check Banned
-            if (user.BannedTime != null)
+            var dateTimeUtcNow = DateTimeOffset.UtcNow.AddSeconds(-1);
+            foreach (var refreshTokenEntity in listRefreshToken)
             {
-                throw new MonkeyException(ErrorCode.UserIsBanned, user.BannedRemark);
+                refreshTokenEntity.ExpireOn = dateTimeUtcNow;
+                _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
             }
 
-            var loggedUser = user.MapTo<LoggedUserModel>();
-            loggedUser.ListPermission = listPermission;
-            user.Profile.MapTo(loggedUser);
-
-            return loggedUser;
-        }
-
-        public async Task<LoggedUserModel> GetUserInfoByGlobalIdAsync(string globalId)
-        {
-            var user = await _userRepository.Get(x => x.GlobalId == globalId)
-                .Include(x => x.Profile)
-                .Include(x => x.Role).ThenInclude(x => x.Permissions)
-                .SingleAsync()
-                .ConfigureAwait(true);
-
-            var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
-
-            var loggedUser = user.MapTo<LoggedUserModel>();
-            loggedUser.ListPermission = listPermission;
-            user.Profile.MapTo(loggedUser);
-
-            return loggedUser;
-        }
-
-        public async Task<LoggedUserModel> GetUserInfoAsync(string refreshToken)
-        {
-            var refreshTokenEntity = await _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken)
-                .Include(x => x.User)
-                .ThenInclude(x => x.Profile)
-                .SingleAsync().ConfigureAwait(true);
-
-            var listPermission = await _userRepository.Get(x => x.Id == refreshTokenEntity.UserId)
-                .SelectMany(x => x.Role.Permissions.Select(y => y.Permission)).ToListAsync().ConfigureAwait(true);
-
-            var loggedUser = refreshTokenEntity.User.MapTo<LoggedUserModel>();
-            loggedUser.ListPermission = listPermission;
-            refreshTokenEntity.User.Profile.MapTo(loggedUser);
-
-            // Increase total usage
-            refreshTokenEntity.TotalUsage++;
-
-            _refreshTokenRepository.Update(refreshTokenEntity, x => x.TotalUsage);
-
             _refreshTokenRepository.SaveChanges();
-
-            return loggedUser;
         }
 
-        public Task SaveRefreshTokenAsync(int id, int clientId, string refreshToken, DateTimeOffset? expireOn)
+        public Task SignInAsync(int id, int clientId, string refreshToken, DateTimeOffset? expireOn)
         {
             var deviceInfo = HttpContext.Current?.Request.GetDeviceInfo();
 
@@ -158,53 +105,55 @@ namespace Monkey.Business.Logic
             return _refreshTokenRepository.SaveChangesAsync();
         }
 
-        public async Task ExpireAllRefreshTokenAsync(int userId)
+        public void CheckValidSignInAsync(string userName, string password, string secretKey)
         {
-            var listRefreshToken = await _refreshTokenRepository.Get(x => x.UserId == userId).Select(x =>
-                new RefreshTokenEntity
-                {
-                    Id = x.Id
-                }).ToListAsync().ConfigureAwait(true);
+            userName = StringHelper.Normalize(userName);
 
-            var dateTimeUtcNow = DateTimeOffset.UtcNow.AddSeconds(-1);
-            foreach (var refreshTokenEntity in listRefreshToken)
+            var userInfo = _userRepository.Get(x => x.UserNameNorm == userName)
+                .Select(x => new
+                {
+                    x.PasswordHash,
+                    x.PasswordLastUpdatedTime,
+                    x.BannedTime,
+                    x.BannedRemark
+                })
+                .Single();
+
+            // Check Password
+            if (userInfo.PasswordLastUpdatedTime == null)
             {
-                refreshTokenEntity.ExpireOn = dateTimeUtcNow;
-                _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
+                throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
             }
 
-            _refreshTokenRepository.SaveChanges();
+            password = HashPassword(password, userInfo.PasswordLastUpdatedTime.Value, secretKey);
+
+            if (password != userInfo.PasswordHash)
+            {
+                throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
+            }
+
+            // Check Banned
+            if (userInfo.BannedTime != null)
+            {
+                throw new MonkeyException(ErrorCode.UserIsBanned, userInfo.BannedRemark);
+            }
         }
 
-        public string HashPassword(string password, DateTimeOffset hashTime)
-        {
-            var passwordSalt = hashTime.ToString("O") + AuthenticationConfig.SecretKey;
-            var passwordHash = password.HashPassword(passwordSalt);
-            return passwordHash;
-        }
-
-        public void CheckValidRefreshToken(string refreshToken, int clientId)
+        public void CheckValidRefreshToken(string refreshToken, int clientSubject)
         {
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
 
-            var isValidRefreshToken = _refreshTokenRepository.Get().Any(x => x.RefreshToken == refreshToken && x.ClientId == clientId && (x.ExpireOn == null || dateTimeUtcNow < x.ExpireOn));
+            var isValidRefreshToken = _refreshTokenRepository.Get().Any(x => x.RefreshToken == refreshToken && x.ClientId == clientSubject && (x.ExpireOn == null || dateTimeUtcNow < x.ExpireOn));
 
             if (!isValidRefreshToken)
                 throw new MonkeyException(ErrorCode.InvalidRefreshToken);
         }
 
-        private void CheckPasswordHash(string password, DateTimeOffset? hashTime, string passwordHash)
+        public string HashPassword(string password, DateTimeOffset hashTime, string secretKey)
         {
-            if (hashTime == null)
-            {
-                throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
-            }
-
-            password = HashPassword(password, hashTime.Value);
-
-            if (password == passwordHash) return;
-
-            throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
+            var passwordSalt = hashTime.ToString("O") + secretKey;
+            var passwordHash = password.HashPassword(passwordSalt);
+            return passwordHash;
         }
     }
 }

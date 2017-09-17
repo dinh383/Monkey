@@ -23,6 +23,6 @@ namespace Monkey.Core
 {
     public static class LoggedInUser
     {
-        public static LoggedUserModel Current { get; set; }
+        public static LoggedInUserModel Current { get; set; }
     }
 }

@@ -20,7 +20,9 @@
 using Microsoft.EntityFrameworkCore;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
+using Monkey.Core.Models.User;
 using Monkey.Data.User;
+using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using System;
@@ -33,11 +35,20 @@ namespace Monkey.Business.Logic
     public class UserBusiness : IUserBusiness
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public UserBusiness(IUserRepository userRepository)
+        public UserBusiness(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository)
         {
             _userRepository = userRepository;
+            _refreshTokenRepository = refreshTokenRepository;
         }
+
+        public Task<int> GetTotalAsync()
+        {
+            return _userRepository.Get().CountAsync();
+        }
+
+        // CHECK
 
         public void CheckExists(params int[] ids)
         {
@@ -75,7 +86,7 @@ namespace Monkey.Business.Logic
             }
         }
 
-        public void CheckExistsByGlobalId(params string[] globalIds)
+        public void CheckExistsBySubject(params string[] globalIds)
         {
             globalIds = globalIds.Distinct().ToArray();
 
@@ -86,6 +97,8 @@ namespace Monkey.Business.Logic
                 throw new MonkeyException(ErrorCode.UserNotExist);
             }
         }
+
+        // CREATE
 
         public Task<string> CreateAsync(string email)
         {
@@ -99,6 +112,8 @@ namespace Monkey.Business.Logic
             _userRepository.SaveChanges();
             return Task.FromResult(userEntity.GlobalId);
         }
+
+        // ACTIVE
 
         public async Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, DateTimeOffset updatedTime)
         {
@@ -134,9 +149,47 @@ namespace Monkey.Business.Logic
             _userRepository.SaveChanges();
         }
 
-        public Task<int> GetTotalAsync()
+        // GET
+
+        public async Task<LoggedInUserModel> GetUserInfoBySubjectAsync(string globalId)
         {
-            return _userRepository.Get().CountAsync();
+            var user = await _userRepository.Get(x => x.GlobalId == globalId)
+                .Include(x => x.Profile)
+                .Include(x => x.Role).ThenInclude(x => x.Permissions)
+                .SingleAsync()
+                .ConfigureAwait(true);
+
+            var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
+
+            var loggedUser = user.MapTo<LoggedInUserModel>();
+            loggedUser.ListPermission = listPermission;
+            user.Profile.MapTo(loggedUser);
+
+            return loggedUser;
+        }
+
+        public async Task<LoggedInUserModel> GetUserSubjectByRefreshTokenAsync(string refreshToken)
+        {
+            var refreshTokenEntity = await _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken)
+                .Include(x => x.User)
+                .ThenInclude(x => x.Profile)
+                .SingleAsync().ConfigureAwait(true);
+
+            var listPermission = await _userRepository.Get(x => x.Id == refreshTokenEntity.UserId)
+                .SelectMany(x => x.Role.Permissions.Select(y => y.Permission)).ToListAsync().ConfigureAwait(true);
+
+            var loggedUser = refreshTokenEntity.User.MapTo<LoggedInUserModel>();
+            loggedUser.ListPermission = listPermission;
+            refreshTokenEntity.User.Profile.MapTo(loggedUser);
+
+            // Increase total usage
+            refreshTokenEntity.TotalUsage++;
+
+            _refreshTokenRepository.Update(refreshTokenEntity, x => x.TotalUsage);
+
+            _refreshTokenRepository.SaveChanges();
+
+            return loggedUser;
         }
     }
 }

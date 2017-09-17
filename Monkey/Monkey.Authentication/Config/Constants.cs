@@ -6,23 +6,25 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> TokenType.cs </Name>
-//         <Created> 14/09/17 11:02:39 PM </Created>
-//         <Key> 5406ce6d-55c2-416a-800a-57df5443a8ed </Key>
+//         <Name> Constants.cs </Name>
+//         <Created> 03/09/17 1:35:14 PM </Created>
+//         <Key> a74f3b14-277a-4029-84f6-c90e1733cdba </Key>
 //     </File>
 //     <Summary>
-//         TokenType.cs
+//         Constants.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Core.Constants
+namespace Monkey.Authentication.Config
 {
-    public enum TokenType
+    public static class Constants
     {
-        Bearer,
-        ResetPassword,
-        ActiveAccount
+        public const string DefaultConfigSection = "Authentication";
+
+        public const string ClientIdKey = "client_id";
+
+        public const string AuthenticationTokenType = "Bearer";
     }
 }

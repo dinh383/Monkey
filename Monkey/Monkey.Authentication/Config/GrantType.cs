@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Core.Constants
+namespace Monkey.Authentication.Config
 {
     public enum GrantType
     {

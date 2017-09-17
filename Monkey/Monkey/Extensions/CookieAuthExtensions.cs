@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Monkey.Authentication;
+using Monkey.Authentication.Interfaces;
+using Monkey.Authentication.Services;
 using Monkey.Core;
 using Monkey.Core.Constants;
 using Monkey.Core.Models.User;
-using Monkey.Service;
 using Puppy.DependencyInjection;
 using System.Threading.Tasks;
+using Monkey.Authentication.Config;
+using Monkey.Authentication.Models;
 
 namespace Monkey.Extensions
 {

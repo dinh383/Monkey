@@ -4,14 +4,14 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey </Project>
+//     <Project> Monkey → Interface </Project>
 //     <File>
-//         <Name> AccessTokenModel.cs </Name>
-//         <Created> 03/09/17 2:44:22 PM </Created>
-//         <Key> be00166a-7aff-4e8a-abae-dc5b0625ee4a </Key>
+//         <Name> IAccessTokenModel.cs </Name>
+//         <Created> 17/09/17 1:43:30 PM </Created>
+//         <Key> 33be012b-35bf-49e8-a18f-9dacab977437 </Key>
 //     </File>
 //     <Summary>
-//         AccessTokenModel.cs
+//         IAccessTokenModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -19,24 +19,24 @@
 
 using System;
 
-namespace Monkey.Core.Models.User
+namespace Monkey.Authentication.Interfaces
 {
-    public class AccessTokenModel
+    public interface IAccessTokenModel
     {
-        public string TokenType { get; set; }
+        string TokenType { get; set; }
 
         /// <summary>
         ///     Expire on UTC 
         /// </summary>
-        public DateTimeOffset? ExpireOn { get; set; }
+        DateTimeOffset? ExpireOn { get; set; }
 
-        public string AccessToken { get; set; }
+        string AccessToken { get; set; }
 
         /// <summary>
         ///     Lifetime of token in seconds 
         /// </summary>
-        public double ExpireIn { get; set; }
+        double ExpireIn { get; set; }
 
-        public string RefreshToken { get; set; }
+        string RefreshToken { get; set; }
     }
 }

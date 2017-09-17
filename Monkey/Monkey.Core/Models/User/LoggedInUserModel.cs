@@ -23,11 +23,16 @@ using System.Collections.Generic;
 
 namespace Monkey.Core.Models.User
 {
-    public class LoggedUserModel
+    public class LoggedInUserModel
     {
-        public int Id { get; set; }
+        public string Subject { get; set; }
 
-        public string GlobalId { get; set; }
+        /// <summary>
+        ///     Client Id in Access Token, this info show user logged in via what client 
+        /// </summary>
+        public string ClientSubject { get; set; }
+
+        public int Id { get; set; }
 
         public string UserName { get; set; }
 
@@ -42,10 +47,5 @@ namespace Monkey.Core.Models.User
         public string FullName { get; set; }
 
         public List<Enums.Permission> ListPermission { get; set; }
-
-        /// <summary>
-        ///     Client Id in Access Token (Client Global Id), this info show user logged in via what client
-        /// </summary>
-        public string ClientId { get; set; }
     }
 }

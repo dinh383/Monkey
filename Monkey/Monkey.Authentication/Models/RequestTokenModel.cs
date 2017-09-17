@@ -17,15 +17,13 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using FluentValidation.Attributes;
-using Monkey.Core.Constants;
-using Monkey.Core.Validators.User;
+using Monkey.Authentication.Config;
+using Monkey.Authentication.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Monkey.Core.Models.User
+namespace Monkey.Authentication.Models
 {
-    [Validator(typeof(RequestTokenModelValidator))]
     public class RequestTokenModel : IRequestTokenModel
     {
         [JsonConverter(typeof(StringEnumConverter))]

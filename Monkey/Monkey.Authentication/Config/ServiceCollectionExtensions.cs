@@ -22,11 +22,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
-namespace Monkey.Authentication
+namespace Monkey.Authentication.Config
 {
     public static class ServiceCollectionExtensions
     {
-        private static IApplicationBuilder appBuilder;
+        private static IApplicationBuilder _appBuilder;
 
         /// <summary>
         ///     [Authentication] Json Web Token 
@@ -55,7 +55,7 @@ namespace Monkey.Authentication
                 TokenValidationParameters = AuthenticationConfig.TokenValidationParameters
             });
 
-            appBuilder = app;
+            _appBuilder = app;
 
             return app;
         }

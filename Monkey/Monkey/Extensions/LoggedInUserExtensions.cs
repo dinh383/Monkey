@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Monkey.Authentication;
+using Monkey.Authentication.Interfaces;
+using Monkey.Authentication.Services;
 using Monkey.Core;
-using Monkey.Service;
 using Puppy.DependencyInjection;
 using System.Threading.Tasks;
 
@@ -62,7 +62,7 @@ namespace Monkey.Extensions
                 }
 
                 LoggedInUser.Current = await authenticationService.GetUserInfoAsync(userGlobalId).ConfigureAwait(true);
-                LoggedInUser.Current.ClientId = TokenHelper.GetAccessTokenClientId(token);
+                LoggedInUser.Current.ClientSubject = TokenHelper.GetAccessTokenClientId(token);
 
                 await _next.Invoke(context).ConfigureAwait(true);
             }

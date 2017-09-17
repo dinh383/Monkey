@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Authentication.Interfaces;
+using Monkey.Authentication.Models;
 using Monkey.Core.Models.User;
-using Monkey.Service;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Threading.Tasks;
 
