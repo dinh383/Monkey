@@ -21,14 +21,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Monkey.Authentication.Constants;
+using Monkey.Authentication.Helpers;
+using Monkey.Authentication.Interfaces;
 using Monkey.Core;
-using Monkey.Core.Constants;
 using Monkey.Core.Models.User;
 using Puppy.DependencyInjection;
 using System.Linq;
 using System.Threading.Tasks;
-using Monkey.Authentication.Helpers;
-using Monkey.Authentication.Interfaces;
 
 namespace Monkey.Authentication
 {
@@ -43,13 +43,13 @@ namespace Monkey.Authentication
         /// <param name="configuration"></param>
         /// <param name="configSection"></param>
         /// <returns></returns>
-        public static IServiceCollection AddHybridAuth(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.DefaultConfigSection)
+        public static IServiceCollection AddHybridAuth(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
         {
             configuration.BuildConfig(configSection);
             return services;
         }
 
-        public static void BuildConfig(this IConfiguration configuration, string configSection = Constants.DefaultConfigSection)
+        public static void BuildConfig(this IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
         {
             var isHaveConfig = configuration.GetChildren().Any(x => x.Key == configSection);
 
@@ -180,17 +180,7 @@ namespace Monkey.Authentication
                     return;
                 }
 
-                string userGlobalId = TokenHelper.GetAccessTokenSubject(token);
-
-                if (string.IsNullOrWhiteSpace(userGlobalId))
-                {
-                    await _next.Invoke(context).ConfigureAwait(true);
-                    return;
-                }
-
-                LoggedInUser.Current = await authenticationService.GetUserInfoAsync(userGlobalId).ConfigureAwait(true);
-
-                LoggedInUser.Current.ClientSubject = TokenHelper.GetAccessTokenClientId(token);
+                LoggedInUser.Current = await authenticationService.GetLoggedInUserAsync<LoggedInUserModel>(token).ConfigureAwait(true);
 
                 await _next.Invoke(context).ConfigureAwait(true);
             }

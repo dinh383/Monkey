@@ -7,6 +7,7 @@ using Puppy.AutoMapper;
 using System.Threading.Tasks;
 using Monkey.Authentication.Helpers;
 using Monkey.Authentication.Interfaces;
+using Monkey.Authentication.Models;
 
 namespace Monkey.Areas.Portal.Controllers
 {

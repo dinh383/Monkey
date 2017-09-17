@@ -25,6 +25,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using Monkey.Authentication.Models;
 using Monkey.Core.Models.User;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
@@ -59,7 +60,7 @@ namespace Monkey.Authentication.Helpers
                 ExpireIn = expiresSpan.TotalSeconds,
                 ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
                 RefreshToken = refreshToken,
-                TokenType = Constants.AuthenticationTokenType
+                TokenType = Constants.Constant.AuthenticationTokenType
             };
 
             Dictionary<string, string> dictionary = new Dictionary<string, string>
@@ -131,7 +132,7 @@ namespace Monkey.Authentication.Helpers
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                TokenType = Constants.AuthenticationTokenType,
+                TokenType = Constants.Constant.AuthenticationTokenType,
                 ExpireOn = GetAccessTokenExpireOn(accessToken)
             };
 
@@ -208,7 +209,7 @@ namespace Monkey.Authentication.Helpers
         public static bool IsHaveAccessTokenInHeader(HttpRequest request)
         {
             var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
-            var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
+            var token = authenticationHeader.Replace(Constants.Constant.AuthenticationTokenType, string.Empty)?.Trim();
             return !string.IsNullOrWhiteSpace(token);
         }
 
@@ -224,7 +225,7 @@ namespace Monkey.Authentication.Helpers
         public static string GetAccessToken(HttpRequest request)
         {
             var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
-            var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
+            var token = authenticationHeader.Replace(Constants.Constant.AuthenticationTokenType, string.Empty)?.Trim();
 
             if (!string.IsNullOrWhiteSpace(token))
             {
@@ -262,7 +263,7 @@ namespace Monkey.Authentication.Helpers
 
         public static string GetAccessTokenClientId(string token)
         {
-            return GetAccessTokenData<string>(token, Constants.ClientIdKey);
+            return GetAccessTokenData<string>(token, Constants.Constant.ClientIdKey);
         }
 
         public static DateTimeOffset? GetAccessTokenExpireOn(string token)

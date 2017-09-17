@@ -6,22 +6,25 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> GrantType.cs </Name>
-//         <Created> 04/09/17 10:36:45 PM </Created>
-//         <Key> 356817d4-f882-4f7e-af37-94c94bf1252d </Key>
+//         <Name> Constants.cs </Name>
+//         <Created> 03/09/17 1:35:14 PM </Created>
+//         <Key> a74f3b14-277a-4029-84f6-c90e1733cdba </Key>
 //     </File>
 //     <Summary>
-//         GrantType.cs
+//         Constants.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Core.Constants
+namespace Monkey.Authentication.Constants
 {
-    public enum GrantType
+    public static class Constant
     {
-        Password = 1,
-        RefreshToken = 2
+        public const string DefaultConfigSection = "Authentication";
+
+        public const string AuthenticationTokenType = "Bearer";
+
+        public const string ClientIdKey = "client_id";
     }
 }

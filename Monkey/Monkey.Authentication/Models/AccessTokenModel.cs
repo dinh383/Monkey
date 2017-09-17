@@ -19,7 +19,7 @@
 
 using System;
 
-namespace Monkey.Core.Models.User
+namespace Monkey.Authentication.Models
 {
     public class AccessTokenModel
     {

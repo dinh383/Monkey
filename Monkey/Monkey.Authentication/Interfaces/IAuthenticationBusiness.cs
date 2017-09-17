@@ -37,7 +37,7 @@ namespace Monkey.Authentication.Interfaces
 
         LoggedInUserModel SignIn(int clientId, string username, string password, out string refreshToken);
 
-        Task<LoggedInUserModel> GetBySubjectAsync(string subject);
+        Task<T> GetLoggedInUserBySubjectAsync<T>(string subject) where T : class, ILoggedInUserModel, new();
 
         Task<LoggedInUserModel> GetByRefreshTokenAsync(string refreshToken);
 

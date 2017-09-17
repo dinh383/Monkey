@@ -17,13 +17,13 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
-using System.Threading.Tasks;
+using Monkey.Authentication.Constants;
 using Monkey.Authentication.Helpers;
 using Monkey.Authentication.Interfaces;
-using Monkey.Core.Constants;
-using Monkey.Core.Models.User;
+using Monkey.Authentication.Models;
 using Puppy.DependencyInjection.Attributes;
+using System;
+using System.Threading.Tasks;
 
 namespace Monkey.Authentication.Services
 {
@@ -39,7 +39,7 @@ namespace Monkey.Authentication.Services
             _clientBusiness = clientBusiness;
         }
 
-        public async Task<AccessTokenModel> GetTokenAsync(RequestTokenModel model)
+        public async Task<AccessTokenModel> GetTokenAsync(IRequestTokenModel model)
         {
             _clientBusiness.CheckExist(model.ClientId, model.ClientSecret);
 
@@ -73,14 +73,16 @@ namespace Monkey.Authentication.Services
             return accessToken;
         }
 
-        public Task<LoggedInUserModel> GetUserInfoAsync(string subject)
+        public Task<T> GetLoggedInUserAsync<T>(string accessToken) where T : class, ILoggedInUserModel, new()
         {
+            string subject = TokenHelper.GetAccessTokenSubject(accessToken);
             _authenticationBusiness.CheckExistsBySubject(subject);
-            return _authenticationBusiness.GetBySubjectAsync(subject);
+            return _authenticationBusiness.GetLoggedInUserBySubjectAsync<T>(subject);
         }
 
-        public Task ExpireAllRefreshTokenAsync(string subject)
+        public Task ExpireAllRefreshTokenAsync(string accessToken)
         {
+            string subject = TokenHelper.GetAccessTokenSubject(accessToken);
             _authenticationBusiness.CheckExistsBySubject(subject);
             return _authenticationBusiness.ExpireAllRefreshTokenAsync(subject);
         }
