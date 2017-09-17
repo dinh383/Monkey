@@ -21,6 +21,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Monkey.Authentication.Interfaces;
+using Monkey.Authentication.Models;
+using Monkey.Authentication.Services;
+using Puppy.DependencyInjection;
 
 namespace Monkey.Authentication.Config
 {
@@ -58,6 +64,73 @@ namespace Monkey.Authentication.Config
             _appBuilder = app;
 
             return app;
+        }
+
+        public class CookieAuthMiddleware
+        {
+            private readonly RequestDelegate _next;
+
+            public CookieAuthMiddleware(RequestDelegate next)
+            {
+                _next = next;
+            }
+
+            public async Task Invoke(HttpContext context)
+            {
+                // SKIP if Access Token found in Header - not check valid or not.
+                if (TokenHelper.IsHaveAccessTokenInHeader(context.Request))
+                {
+                    await _next.Invoke(context).ConfigureAwait(true);
+                    return;
+                }
+
+                var accessTokenModel = TokenHelper.GetAccessTokenFromCookie(context.Request.Cookies);
+
+                if (accessTokenModel == null)
+                {
+                    await _next.Invoke(context).ConfigureAwait(true);
+                    return;
+                }
+
+                string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessTokenModel.AccessToken);
+
+                if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != SystemConfigs.Identity.ClientId)
+                {
+                    await _next.Invoke(context).ConfigureAwait(true);
+                    return;
+                }
+
+                // Sign In to the context
+                context.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
+
+                // If current cookie access token is valid but expire, then auto refresh. This logic
+                // just for WEB Cookie
+                if (TokenHelper.IsExpire(accessTokenModel.AccessToken))
+                {
+                    var authenticationService = _appBuilder.Resolve<IAuthenticationService>();
+
+                    RequestTokenModel requestTokenModel = new RequestTokenModel
+                    {
+                        ClientId = SystemConfigs.Identity.ClientId,
+                        ClientSecret = SystemConfigs.Identity.ClientSecret,
+                        GrantType = GrantType.RefreshToken,
+                        RefreshToken = accessTokenModel.RefreshToken
+                    };
+
+                    var newAccessTokenModel = await authenticationService.GetTokenAsync(requestTokenModel).ConfigureAwait(true);
+
+                    context.Response.OnStarting(state =>
+                    {
+                        var httpContext = (HttpContext)state;
+
+                        TokenHelper.SetAccessTokenToCookie(httpContext.Response.Cookies, newAccessTokenModel);
+
+                        return Task.CompletedTask;
+                    }, context);
+                }
+
+                await _next.Invoke(context).ConfigureAwait(true);
+            }
         }
 
         public static void BuildConfig(this IConfiguration configuration, string configSection = Constants.DefaultConfigSection)

@@ -31,8 +31,6 @@ namespace Monkey.Business
 
         void CheckExists(params int[] ids);
 
-        void CheckExists(params string[] userNames);
-
         void CheckActives(params string[] userNames);
 
         void CheckExistsBySubject(params string[] globalIds);
@@ -50,7 +48,5 @@ namespace Monkey.Business
         // GET
 
         Task<LoggedInUserModel> GetUserInfoBySubjectAsync(string globalId);
-
-        Task<string> GetUserSubjectByRefreshTokenAsync(string refreshToken);
     }
 }

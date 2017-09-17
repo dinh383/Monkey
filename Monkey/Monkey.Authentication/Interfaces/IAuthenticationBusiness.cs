@@ -24,6 +24,15 @@ namespace Monkey.Authentication.Interfaces
     public interface IAuthenticationBusiness
     {
         /// <summary>
+        ///     Check userName and password is correct and user already active and not banned 
+        /// </summary>
+        /// <param name="userName"> </param>
+        /// <param name="password"> </param>
+        /// <param name="secretKey"></param>
+        /// <returns></returns>
+        void CheckValidSignInAsync(string userName, string password, string secretKey);
+
+        /// <summary>
         ///     Generate refresh token and sign in 
         /// </summary>
         /// <param name="userName">     </param>
@@ -35,15 +44,6 @@ namespace Monkey.Authentication.Interfaces
         void ExpireAllRefreshToken(string subject);
 
         void CheckValidRefreshToken(int clientSubject, string refreshToken);
-
-        /// <summary>
-        ///     Check userName and password is correct and user is not banned 
-        /// </summary>
-        /// <param name="userName"> </param>
-        /// <param name="password"> </param>
-        /// <param name="secretKey"></param>
-        /// <returns></returns>
-        void CheckValidSignInAsync(string userName, string password, string secretKey);
 
         string HashPassword(string password, DateTimeOffset hashTime, string secretKey);
     }

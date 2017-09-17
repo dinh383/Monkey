@@ -42,6 +42,10 @@ namespace Monkey.Authentication.Config
             }
         }
 
+        public static string SystemClientId { get; set; }
+
+        public static string SystemClientSecret { get; set; }
+
         internal static SymmetricSecurityKey SecurityKey { get; private set; }
 
         internal static SigningCredentials SigningCredentials { get; private set; }

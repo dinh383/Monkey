@@ -19,7 +19,6 @@
 
 using Monkey.Authentication.Config;
 using Monkey.Authentication.Interfaces;
-using Monkey.Business;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Threading.Tasks;
@@ -51,7 +50,7 @@ namespace Monkey.Authentication.Services
             if (model.GrantType == GrantType.Password)
             {
                 _userBusiness.CheckExists(model.UserName);
-                _userBusiness.CheckActives(model.UserName);
+
                 _authenticationBusiness.CheckValidSignInAsync(model.UserName, model.Password, AuthenticationConfig.SecretKey);
 
                 // Sign In
@@ -65,7 +64,7 @@ namespace Monkey.Authentication.Services
                 // Verify
                 _authenticationBusiness.CheckValidRefreshToken(clientId, model.RefreshToken);
 
-                var subject = await _userBusiness.GetUserSubjectByRefreshTokenAsync(model.RefreshToken).ConfigureAwait(true);
+                var subject = await _userBusiness.GetSubjectByRefreshTokenAsync(model.RefreshToken).ConfigureAwait(true);
 
                 // Generate access token
                 accessToken = TokenHelper.GenerateAccessToken(model.ClientId, subject, _accessTokenExpire, model.RefreshToken);
@@ -76,6 +75,7 @@ namespace Monkey.Authentication.Services
         public Task ExpireAllRefreshTokenAsync(string subject)
         {
             _userBusiness.CheckExists(subject);
+
             _authenticationBusiness.ExpireAllRefreshToken(subject);
 
             return Task.CompletedTask;
