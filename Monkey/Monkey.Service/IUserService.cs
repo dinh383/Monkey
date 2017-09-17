@@ -17,13 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.User;
-using System.Threading.Tasks;
-
 namespace Monkey.Service
 {
     public interface IUserService
     {
-        Task<LoggedInUserModel> GetLoggedInUserAsync(string subject);
     }
 }

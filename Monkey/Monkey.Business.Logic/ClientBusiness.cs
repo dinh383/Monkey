@@ -40,56 +40,6 @@ namespace Monkey.Business.Logic
             _clientRepository = clientRepository;
         }
 
-        public async Task<int> GetIdAsync(string globalId, string secret)
-        {
-            var clientId = await _clientRepository.Get(x => x.GlobalId == globalId && x.Secret == secret).Select(x => x.Id).SingleAsync().ConfigureAwait(true);
-            return clientId;
-        }
-
-        public void CheckExist(string globalId, string secret)
-        {
-            bool isExist = _clientRepository.Get(x => x.GlobalId == globalId && x.Secret == secret).Any();
-            if (!isExist)
-            {
-                throw new MonkeyException(ErrorCode.InvalidClient);
-            }
-        }
-
-        public void CheckBanned(string globalId, string secret)
-        {
-            var clientShortInfo = _clientRepository.Get(x => x.GlobalId == globalId && x.Secret == secret).Select(x => new
-            {
-                x.Id,
-                x.BannedTime,
-                x.BannedRemark
-            }).Single();
-
-            if (clientShortInfo.BannedTime != null)
-            {
-                throw new MonkeyException(ErrorCode.ClientIsBanned, clientShortInfo.BannedRemark);
-            }
-        }
-
-        public void CheckExists(params string[] globalIds)
-        {
-            globalIds = globalIds.Distinct().ToArray();
-            int totalInDb = _clientRepository.Get(x => globalIds.Contains(x.GlobalId)).Count();
-            if (totalInDb != globalIds.Length)
-            {
-                throw new MonkeyException(ErrorCode.InvalidClient);
-            }
-        }
-
-        public void CheckExist(params string[] names)
-        {
-            names = names.Distinct().Select(StringHelper.Normalize).ToArray();
-            int totalInDb = _clientRepository.Get(x => names.Contains(x.NameNorm)).Count();
-            if (totalInDb != names.Length)
-            {
-                throw new MonkeyException(ErrorCode.InvalidClient);
-            }
-        }
-
         public Task<int> GetTotalAsync()
         {
             return _clientRepository.Get().CountAsync();
@@ -106,6 +56,46 @@ namespace Monkey.Business.Logic
             var clientModel = clientEntity.MapTo<ClientModel>();
 
             return Task.FromResult(clientModel);
+        }
+
+        public async Task<int> GetIdAsync(string globalId, string secret)
+        {
+            var clientId = await _clientRepository.Get(x => x.GlobalId == globalId && x.Secret == secret).Select(x => x.Id).SingleAsync().ConfigureAwait(true);
+            return clientId;
+        }
+
+        public void CheckExist(string subject, string secret)
+        {
+            bool isExist = _clientRepository.Get(x => x.GlobalId == subject && x.Secret == secret).Any();
+            if (!isExist)
+            {
+                throw new MonkeyException(ErrorCode.InvalidClient);
+            }
+        }
+
+        public void CheckBanned(string subject, string secret)
+        {
+            var clientShortInfo = _clientRepository.Get(x => x.GlobalId == subject && x.Secret == secret).Select(x => new
+            {
+                x.Id,
+                x.BannedTime,
+                x.BannedRemark
+            }).Single();
+
+            if (clientShortInfo.BannedTime != null)
+            {
+                throw new MonkeyException(ErrorCode.ClientIsBanned, clientShortInfo.BannedRemark);
+            }
+        }
+
+        public void CheckExistByName(params string[] names)
+        {
+            names = names.Distinct().Select(StringHelper.Normalize).ToArray();
+            int totalInDb = _clientRepository.Get(x => names.Contains(x.NameNorm)).Count();
+            if (totalInDb != names.Length)
+            {
+                throw new MonkeyException(ErrorCode.InvalidClient);
+            }
         }
     }
 }

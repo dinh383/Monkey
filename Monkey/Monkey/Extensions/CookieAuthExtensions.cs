@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Monkey.Authentication.Interfaces;
-using Monkey.Authentication.Services;
-using Monkey.Core;
+using Monkey.Authentication;
 using Monkey.Core.Constants;
 using Monkey.Core.Models.User;
+using Monkey.Service;
 using Puppy.DependencyInjection;
 using System.Threading.Tasks;
-using Monkey.Authentication.Config;
-using Monkey.Authentication.Models;
 
 namespace Monkey.Extensions
 {
@@ -58,7 +55,7 @@ namespace Monkey.Extensions
 
                 string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessTokenModel.AccessToken);
 
-                if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != SystemConfigs.Identity.ClientId)
+                if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != AuthenticationConfig.SystemClientId)
                 {
                     await _next.Invoke(context).ConfigureAwait(true);
                     return;
@@ -75,8 +72,8 @@ namespace Monkey.Extensions
 
                     RequestTokenModel requestTokenModel = new RequestTokenModel
                     {
-                        ClientId = SystemConfigs.Identity.ClientId,
-                        ClientSecret = SystemConfigs.Identity.ClientSecret,
+                        ClientId = AuthenticationConfig.SystemClientId,
+                        ClientSecret = AuthenticationConfig.SystemClientSecret,
                         GrantType = GrantType.RefreshToken,
                         RefreshToken = accessTokenModel.RefreshToken
                     };

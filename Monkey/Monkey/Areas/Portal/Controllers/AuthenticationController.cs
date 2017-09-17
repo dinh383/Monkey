@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Authentication.Interfaces;
-using Monkey.Authentication.Services;
-using Monkey.Core;
+using Monkey.Authentication;
 using Monkey.Core.Models.User;
+using Monkey.Service;
 using Puppy.AutoMapper;
 using System.Threading.Tasks;
-using Monkey.Authentication.Models;
 
 namespace Monkey.Areas.Portal.Controllers
 {
@@ -40,10 +38,10 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             RequestTokenModel requestToken = model.MapTo<RequestTokenModel>();
-            requestToken.ClientId = SystemConfigs.Identity.ClientId;
-            requestToken.ClientSecret = SystemConfigs.Identity.ClientSecret;
+            requestToken.ClientId = AuthenticationConfig.SystemClientId;
+            requestToken.ClientSecret = AuthenticationConfig.SystemClientSecret;
 
-            IAccessTokenModel accessToken = await _authenticationService.GetTokenAsync(requestToken).ConfigureAwait(true);
+            AccessTokenModel accessToken = await _authenticationService.GetTokenAsync(requestToken).ConfigureAwait(true);
 
             TokenHelper.SetAccessTokenToCookie(Response.Cookies, accessToken);
 

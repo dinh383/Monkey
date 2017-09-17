@@ -22,7 +22,7 @@ using Puppy.Core.StringUtils;
 using System;
 using System.Text;
 
-namespace Monkey.Authentication.Config
+namespace Monkey.Authentication
 {
     public static class AuthenticationConfig
     {

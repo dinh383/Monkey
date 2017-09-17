@@ -17,8 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.User;
-using System;
 using System.Threading.Tasks;
 
 namespace Monkey.Business
@@ -27,26 +25,6 @@ namespace Monkey.Business
     {
         Task<int> GetTotalAsync();
 
-        // CHECK
-
-        void CheckExists(params int[] ids);
-
-        void CheckActives(params string[] userNames);
-
-        void CheckExistsBySubject(params string[] globalIds);
-
-        // CREATE
-
-        Task<string> CreateAsync(string email);
-
-        // ACTIVE
-
-        Task ActiveByEmailAsync(string globalId, string userName, string passwordHash, DateTimeOffset updatedTime);
-
-        Task ActiveByPhoneAsync(string globalId, string userName, string passwordHash, DateTimeOffset updatedTime);
-
-        // GET
-
-        Task<LoggedInUserModel> GetUserInfoBySubjectAsync(string globalId);
+        void CheckExistsById(params int[] ids);
     }
 }

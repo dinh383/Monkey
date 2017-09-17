@@ -37,10 +37,5 @@ namespace Monkey.Core
         public static MvcPathConfigModel MvcPath { get; set; } = new MvcPathConfigModel();
 
         public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; } = new PagedCollectionParametersConfigModel();
-
-        /// <summary>
-        ///     Current System Identity Information 
-        /// </summary>
-        public static IdentityModel Identity { get; set; } = new IdentityModel();
     }
 }

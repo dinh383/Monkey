@@ -26,7 +26,7 @@ using Newtonsoft.Json.Converters;
 namespace Monkey.Core.Models.User
 {
     [Validator(typeof(RequestTokenModelValidator))]
-    public class RequestTokenModel : IRequestTokenModel
+    public class RequestTokenModel
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public GrantType GrantType { get; set; }

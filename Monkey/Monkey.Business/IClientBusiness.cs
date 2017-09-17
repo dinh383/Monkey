@@ -24,16 +24,16 @@ namespace Monkey.Business
 {
     public interface IClientBusiness : IBaseBusiness
     {
-        Task<int> GetIdAsync(string globalId, string secret);
-
-        void CheckExist(string globalId, string secret);
-
-        void CheckExists(params string[] globalIds);
-
-        void CheckExist(params string[] names);
-
         Task<int> GetTotalAsync();
 
         Task<ClientModel> CreateAsync(ClientCreateModel model);
+
+        Task<int> GetIdAsync(string globalId, string secret);
+
+        void CheckExist(string subject, string secret);
+
+        void CheckBanned(string subject, string secret);
+
+        void CheckExistByName(params string[] names);
     }
 }

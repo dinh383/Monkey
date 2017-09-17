@@ -19,9 +19,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Monkey.Authentication.Config;
-using Monkey.Authentication.Interfaces;
-using Monkey.Authentication.Models;
+using Monkey.Core.Models.User;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
 using Puppy.Core.StringUtils;
@@ -34,7 +32,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 
-namespace Monkey.Authentication.Services
+namespace Monkey.Authentication
 {
     public static class TokenHelper
     {
@@ -51,7 +49,7 @@ namespace Monkey.Authentication.Services
 
         #region Generate
 
-        public static IAccessTokenModel GenerateAccessToken(string clientId, string subject, TimeSpan expiresSpan, string refreshToken, string issuer = null)
+        public static AccessTokenModel GenerateAccessToken(string clientId, string subject, TimeSpan expiresSpan, string refreshToken, string issuer = null)
         {
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
             double authTime = dateTimeUtcNow.GetEpochTime();
@@ -107,7 +105,7 @@ namespace Monkey.Authentication.Services
 
         #region Cookie
 
-        public static void SetAccessTokenToCookie(IResponseCookies cookies, IAccessTokenModel accessToken)
+        public static void SetAccessTokenToCookie(IResponseCookies cookies, AccessTokenModel accessToken)
         {
             // Access Token
             string accessTokenEncrypted = accessToken.AccessToken.Encrypt(AuthenticationConfig.SecretKey);
@@ -118,7 +116,7 @@ namespace Monkey.Authentication.Services
             cookies.Append(RefreshTokenCookieName, refreshTokenEncrypted);
         }
 
-        public static IAccessTokenModel GetAccessTokenFromCookie(IRequestCookieCollection cookies)
+        public static AccessTokenModel GetAccessTokenFromCookie(IRequestCookieCollection cookies)
         {
             var accessToken = GetCookieValue(cookies, AccessTokenCookieName);
 
@@ -129,7 +127,7 @@ namespace Monkey.Authentication.Services
 
             var refreshToken = GetCookieValue(cookies, RefreshTokenCookieName);
 
-            IAccessTokenModel accessTokenModel = new AccessTokenModel
+            AccessTokenModel accessTokenModel = new AccessTokenModel
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,

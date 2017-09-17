@@ -4,27 +4,25 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Interface </Project>
+//     <Project> Monkey </Project>
 //     <File>
-//         <Name> IClientBusiness.cs </Name>
-//         <Created> 17/09/17 3:04:27 PM </Created>
-//         <Key> dbd46799-68a5-47da-a770-5a31c4508da0 </Key>
+//         <Name> TokenType.cs </Name>
+//         <Created> 14/09/17 11:02:39 PM </Created>
+//         <Key> 5406ce6d-55c2-416a-800a-57df5443a8ed </Key>
 //     </File>
 //     <Summary>
-//         IClientBusiness.cs
+//         TokenType.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading.Tasks;
-
-namespace Monkey.Authentication.Interfaces
+namespace Monkey.Core.Constants
 {
-    public interface IClientBusiness
+    public enum TokenType
     {
-        Task<int> GetIdAsync(string subject, string secret);
-
-        void CheckExist(string subject, string secret);
+        Bearer,
+        ResetPassword,
+        ActiveAccount
     }
 }

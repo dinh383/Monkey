@@ -4,27 +4,27 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Interface </Project>
+//     <Project> Monkey </Project>
 //     <File>
-//         <Name> IUserBusiness.cs </Name>
-//         <Created> 17/09/17 3:05:28 PM </Created>
-//         <Key> 5d685857-d78f-4296-989e-66b41335c4b0 </Key>
+//         <Name> Constants.cs </Name>
+//         <Created> 03/09/17 1:35:14 PM </Created>
+//         <Key> a74f3b14-277a-4029-84f6-c90e1733cdba </Key>
 //     </File>
 //     <Summary>
-//         IUserBusiness.cs
+//         Constants.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading.Tasks;
-
-namespace Monkey.Authentication.Interfaces
+namespace Monkey.Authentication
 {
-    public interface IUserBusiness
+    public static class Constants
     {
-        void CheckExists(params string[] userNames);
+        public const string DefaultConfigSection = "Authentication";
 
-        Task<string> GetSubjectByRefreshTokenAsync(string refreshToken);
+        public const string AuthenticationTokenType = "Bearer";
+
+        public const string ClientIdKey = "client_id";
     }
 }

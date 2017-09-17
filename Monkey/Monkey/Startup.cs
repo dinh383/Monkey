@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Authentication;
-using Monkey.Authentication.Config;
 using Monkey.Data;
 using Monkey.Extensions;
 using Monkey.Mapper;

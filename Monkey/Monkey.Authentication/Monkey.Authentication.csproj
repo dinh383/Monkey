@@ -19,7 +19,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
+  </ItemGroup>
+
+  <!-- Monkey -->
+  <ItemGroup>
+    <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
   </ItemGroup>
 
   <!-- External Libraries -->
