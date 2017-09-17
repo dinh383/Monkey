@@ -24,7 +24,7 @@ using System.Text;
 
 namespace Monkey.Authentication
 {
-    public static class AuthenticationConfig
+    public static class AuthConfig
     {
         private static string _secretKey;
 

@@ -11,7 +11,6 @@
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
-    <UserSecretsId>aspnet-Monkey-77d3f367-0ce6-4f02-9c7a-bbf2c778b9f5</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -62,8 +61,8 @@
   <ItemGroup>
     <!-- Core - Cross-->
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-    <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
     <ProjectReference Include="..\Monkey.Authentication\Monkey.Authentication.csproj" />
+    <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
 
     <!-- Service -->
     <ProjectReference Include="..\Monkey.Service\Monkey.Service.csproj" />
@@ -94,13 +93,8 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Xml" Version="1.1.3" />
 
-    <!-- Secret -->
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
-
     <!-- C# Utitlity -->
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.1" />
   </ItemGroup>
 </Project>

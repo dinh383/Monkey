@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Authentication;
 using Monkey.Core.Models.User;
-using Monkey.Service;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Threading.Tasks;
+using Monkey.Authentication.Interfaces;
 
 namespace Monkey.Controllers.Api
 {

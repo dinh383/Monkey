@@ -23,13 +23,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
-using Monkey.Core.Models.Config;
+using Monkey.Core.Configs.Models;
 using Puppy.Core.ConfigUtils;
 using Puppy.DependencyInjection;
 
-namespace Monkey.Extensions
+namespace Monkey.Core.Configs
 {
-    public static class SystemConfigurationExtensions
+    public static class SystemConfigServiceExtensions
     {
         public static IServiceCollection AddSystemConfiguration(this IServiceCollection services, IHostingEnvironment hostingEnvironment, IConfigurationRoot configurationRoot)
         {
@@ -58,8 +58,6 @@ namespace Monkey.Extensions
             {
                 // Build System Config
                 SystemConfigurationHelper.BuildSystemConfig(configurationRoot);
-
-                loggerFactory.CreateLogger<Startup>().LogWarning("System Configuration Changed!");
             });
 
             return app;
@@ -70,9 +68,9 @@ namespace Monkey.Extensions
     {
         public static void BuildSystemConfig(IConfiguration configuration)
         {
-            Core.SystemConfigs.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
-            Core.SystemConfigs.MvcPath = configuration.GetSection<MvcPathConfigModel>(nameof(Core.SystemConfigs.MvcPath)) ?? new MvcPathConfigModel();
-            Core.SystemConfigs.PagedCollectionParameters = configuration.GetSection<PagedCollectionParametersConfigModel>(nameof(Core.SystemConfigs.PagedCollectionParameters)) ?? new PagedCollectionParametersConfigModel();
+            SystemConfig.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
+            SystemConfig.MvcPath = configuration.GetSection<MvcPathConfigModel>(nameof(SystemConfig.MvcPath)) ?? new MvcPathConfigModel();
+            SystemConfig.PagedCollectionParameters = configuration.GetSection<PagedCollectionParametersConfigModel>(nameof(SystemConfig.PagedCollectionParameters)) ?? new PagedCollectionParametersConfigModel();
         }
     }
 }

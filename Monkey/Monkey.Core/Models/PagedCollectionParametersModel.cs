@@ -18,6 +18,7 @@
 #endregion License
 
 using FluentValidation.Attributes;
+using Monkey.Core.Configs;
 using Monkey.Core.Validators;
 
 namespace Monkey.Core.Models
@@ -25,10 +26,10 @@ namespace Monkey.Core.Models
     [Validator(typeof(PagedCollectionParametersModelValidator))]
     public class PagedCollectionParametersModel
     {
-        public int Skip { get; set; } = SystemConfigs.PagedCollectionParameters.Skip;
+        public int Skip { get; set; } = SystemConfig.PagedCollectionParameters.Skip;
 
-        public int Take { get; set; } = SystemConfigs.PagedCollectionParameters.Take;
+        public int Take { get; set; } = SystemConfig.PagedCollectionParameters.Take;
 
-        public string Terms { get; set; } = SystemConfigs.PagedCollectionParameters.Terms;
+        public string Terms { get; set; } = SystemConfig.PagedCollectionParameters.Terms;
     }
 }

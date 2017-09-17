@@ -6,43 +6,35 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> StaticsContentConfigModel.cs </Name>
-//         <Created> 23/07/17 12:06:02 PM </Created>
-//         <Key> c1b5530b-fd14-4561-8236-7271179489ce </Key>
+//         <Name> MvcPathConfigModel.cs </Name>
+//         <Created> 23/07/17 11:21:00 AM </Created>
+//         <Key> c80bc062-f496-4fce-8c1d-cd3e6548201f </Key>
 //     </File>
 //     <Summary>
-//         StaticsContentConfigModel.cs
+//         MvcPathConfigModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Configs.Models.MvcPath;
 using System;
+using System.Collections.Generic;
 
-namespace Monkey.Core.Models.Config.MvcPath
+namespace Monkey.Core.Configs.Models
 {
-    public class StaticsContentConfigModel
+    public class MvcPathConfigModel
     {
-        /// <summary>
-        ///     Area 
-        /// </summary>
-        public string Area { get; set; }
+        public string WebRootFolderName { get; set; } = "wwwroot";
 
-        /// <summary>
-        ///     Use exactly folder name case in explorer 
-        /// </summary>
-        /// <remarks> Relative path from <see cref="Area" /> </remarks>
-        public string FolderRelativePath { get; set; }
-
-        /// <summary>
-        ///     Use lower case for http request 
-        /// </summary>
-        public string HttpRequestPath { get; set; }
+        public string AreasRootFolderName { get; set; } = "Areas";
 
         /// <summary>
         ///     Max Age in Cache Control Header 
         /// </summary>
         /// <remarks> Use the . separator between days and hours, see more: https://msdn.microsoft.com/en-us/library/system.timespan.aspx </remarks>
         public TimeSpan? MaxAgeResponseHeader { get; set; }
+
+        public List<StaticsContentConfigModel> StaticsContents { get; set; }
     }
 }

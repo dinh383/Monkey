@@ -17,16 +17,16 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Puppy.Core.StringUtils;
 using System;
+using Puppy.Core.StringUtils;
 
-namespace Monkey.Authentication
+namespace Monkey.Authentication.Helpers
 {
     public static class PasswordHelper
     {
         public static string HashPassword(string password, DateTimeOffset hashTime)
         {
-            var passwordSalt = hashTime.ToString("O") + AuthenticationConfig.SecretKey;
+            var passwordSalt = hashTime.ToString("O") + AuthConfig.SecretKey;
             var passwordHash = password.HashPassword(passwordSalt);
             return passwordHash;
         }

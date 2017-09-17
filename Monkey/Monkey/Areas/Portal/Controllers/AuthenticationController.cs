@@ -5,6 +5,8 @@ using Monkey.Core.Models.User;
 using Monkey.Service;
 using Puppy.AutoMapper;
 using System.Threading.Tasks;
+using Monkey.Authentication.Helpers;
+using Monkey.Authentication.Interfaces;
 
 namespace Monkey.Areas.Portal.Controllers
 {
@@ -38,8 +40,8 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             RequestTokenModel requestToken = model.MapTo<RequestTokenModel>();
-            requestToken.ClientId = AuthenticationConfig.SystemClientId;
-            requestToken.ClientSecret = AuthenticationConfig.SystemClientSecret;
+            requestToken.ClientId = AuthConfig.SystemClientId;
+            requestToken.ClientSecret = AuthConfig.SystemClientSecret;
 
             AccessTokenModel accessToken = await _authenticationService.GetTokenAsync(requestToken).ConfigureAwait(true);
 

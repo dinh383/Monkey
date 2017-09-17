@@ -4,11 +4,11 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Business Interface </Project>
+//     <Project> Monkey → Interface </Project>
 //     <File>
 //         <Name> IClientBusiness.cs </Name>
-//         <Created> 14/09/17 8:18:33 PM </Created>
-//         <Key> cb340be9-ae66-469b-a702-bf2c7c754c8d </Key>
+//         <Created> 17/09/17 11:56:27 PM </Created>
+//         <Key> 5b3a51e5-a4d2-41d3-a19d-019a86972c36 </Key>
 //     </File>
 //     <Summary>
 //         IClientBusiness.cs
@@ -17,17 +17,16 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.Client;
 using System.Threading.Tasks;
 
-namespace Monkey.Business
+namespace Monkey.Authentication.Interfaces
 {
-    public interface IClientBusiness : IBaseBusiness, Authentication.Interfaces.IClientBusiness
+    public interface IClientBusiness
     {
-        Task<int> GetTotalAsync();
+        Task<int> GetIdAsync(string globalId, string secret);
 
-        Task<ClientModel> CreateAsync(ClientCreateModel model);
+        void CheckExist(string subject, string secret);
 
-        void CheckExistByName(params string[] names);
+        void CheckBanned(string subject, string secret);
     }
 }

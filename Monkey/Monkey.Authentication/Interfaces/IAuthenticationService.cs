@@ -17,12 +17,12 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.User;
 using System.Threading.Tasks;
+using Monkey.Core.Models.User;
 
-namespace Monkey.Service
+namespace Monkey.Authentication.Interfaces
 {
-    public interface IAuthenticationService : IBaseService
+    public interface IAuthenticationService
     {
         Task<AccessTokenModel> GetTokenAsync(RequestTokenModel model);
 

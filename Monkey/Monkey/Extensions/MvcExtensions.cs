@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +25,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
+using Monkey.Core.Configs;
 using Monkey.Core.Validators;
 using Monkey.Filters.Exception;
 using Puppy.Core.EnvironmentUtils;
@@ -74,18 +74,13 @@ namespace Monkey.Extensions
                     options.SerializerSettings.Formatting = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.Formatting;
                     options.SerializerSettings.ContractResolver = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ContractResolver;
                 })
-                .AddViewOptions(options =>
-                {
-                    // Enable Microsoft.jQuery.Unobtrusive.Validation
-                    options.HtmlHelperOptions.ClientValidationEnabled = true;
-                })
-                .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<IModelValidator>());
+                .AddValidator();
 
             // Setup Areas
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.AreaViewLocationFormats.Clear();
-                options.AreaViewLocationFormats.Add("/" + Core.SystemConfigs.MvcPath.AreasRootFolderName + "/{2}/Views/{1}/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/" + SystemConfig.MvcPath.AreasRootFolderName + "/{2}/Views/{1}/{0}.cshtml");
                 options.AreaViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
             });
 
@@ -111,7 +106,7 @@ namespace Monkey.Extensions
                     var headers = context.Context.Response.GetTypedHeaders();
                     headers.CacheControl = new CacheControlHeaderValue
                     {
-                        MaxAge = Core.SystemConfigs.MvcPath.MaxAgeResponseHeader
+                        MaxAge = SystemConfig.MvcPath.MaxAgeResponseHeader
                     };
                 }
             });
@@ -120,13 +115,13 @@ namespace Monkey.Extensions
             string currentDirectory = Directory.GetCurrentDirectory();
             string executedAssemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-            if (Core.SystemConfigs.MvcPath.StaticsContents?.Any() == true)
+            if (SystemConfig.MvcPath.StaticsContents?.Any() == true)
             {
-                foreach (var staticsContent in Core.SystemConfigs.MvcPath.StaticsContents)
+                foreach (var staticsContent in SystemConfig.MvcPath.StaticsContents)
                 {
                     string fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
                         ? Path.Combine(currentDirectory, staticsContent.FolderRelativePath)
-                        : Path.Combine(currentDirectory, Core.SystemConfigs.MvcPath.AreasRootFolderName,
+                        : Path.Combine(currentDirectory, SystemConfig.MvcPath.AreasRootFolderName,
                             staticsContent.Area,
                             staticsContent.FolderRelativePath);
 
@@ -135,7 +130,7 @@ namespace Monkey.Extensions
                         // Try to get folder in executed assembly
                         fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
                             ? Path.Combine(executedAssemblyDirectory, staticsContent.FolderRelativePath)
-                            : Path.Combine(executedAssemblyDirectory, Core.SystemConfigs.MvcPath.AreasRootFolderName,
+                            : Path.Combine(executedAssemblyDirectory, SystemConfig.MvcPath.AreasRootFolderName,
                                 staticsContent.Area,
                                 staticsContent.FolderRelativePath);
 

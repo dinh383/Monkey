@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Authentication;
+using Monkey.Core.Configs;
 using Monkey.Data;
+using Monkey.Data.EF.Factory;
 using Monkey.Extensions;
 using Monkey.Mapper;
 using Monkey.Service;
@@ -33,11 +35,6 @@ namespace Monkey
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
-
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets<Startup>();
-            }
 
             ConfigurationRoot = builder.Build();
 
@@ -85,8 +82,8 @@ namespace Monkey
                 // [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
                 .AddApiFilter()
 
-                // [Authentication] Json Web Toke
-                .AddJwtAuth(ConfigurationRoot)
+                // [Authentication] Json Web Toke + Cookie
+                .AddHybridAuth(ConfigurationRoot)
 
                 // [HttpContext]
                 .AddHttpContextAccessor()
@@ -122,23 +119,14 @@ namespace Monkey
                 // [Server Info]
                 .UseServerInfo(ConfigurationRoot)
 
-                // [Exception]
-                .UseExceptionMonkey()
-
                 // [API Document] Swagger
                 .UseApiDocument()
 
                 // [Mini Response]
                 .UseMinResponse()
 
-                // [Authentication] Json Web Token
-                .UseJwtAuth()
-
-                // [Authentication] Cookie
-                .UseCookieAuth()
-
-                // [Authentication] Get Logged In User Info
-                .UseLoggedInUser()
+                // [Authentication] Json Web Token + Cookie
+                .UseHybridAuth()
 
                 // [MVC] Keep In Last. Static files configuration, routing [Mvc] Static files
                 // configuration, routing

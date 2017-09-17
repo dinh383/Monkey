@@ -19,12 +19,12 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Monkey.Data.EF.Factory;
+using Monkey.Core.Configs;
 using Puppy.Core.TypeUtils;
 
-namespace Monkey.Extensions
+namespace Monkey.Data.EF.Factory
 {
-    public static class DatabaseExtensions
+    public static class DatabaseServiceExtensions
     {
         /// <summary>
         ///     [Database] Use Entity Framework 
@@ -33,9 +33,9 @@ namespace Monkey.Extensions
         public static IServiceCollection AddDatabase(this IServiceCollection services)
         {
             services
-                .AddDbContext<DbContext>(builder =>
+                .AddDbContext<Microsoft.EntityFrameworkCore.DbContext>(builder =>
                     builder
-                        .UseSqlServer(Core.SystemConfigs.DatabaseConnectionString,
+                        .UseSqlServer(SystemConfig.DatabaseConnectionString,
                             options => options.MigrationsAssembly(typeof(IDatabase).GetAssemblySimpleName())));
             return services;
         }

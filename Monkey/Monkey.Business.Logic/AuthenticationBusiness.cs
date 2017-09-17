@@ -18,7 +18,7 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
-using Monkey.Authentication;
+using Monkey.Authentication.Helpers;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.User;
@@ -36,6 +36,7 @@ using System.Web;
 namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IAuthenticationBusiness))]
+    [PerRequestDependency(ServiceType = typeof(Authentication.Interfaces.IAuthenticationBusiness))]
     public class AuthenticationBusiness : IAuthenticationBusiness
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;

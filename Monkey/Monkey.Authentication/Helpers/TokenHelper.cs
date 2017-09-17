@@ -17,6 +17,12 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Monkey.Core.Models.User;
@@ -25,27 +31,21 @@ using Puppy.Core.ObjectUtils;
 using Puppy.Core.StringUtils;
 using Puppy.Core.TypeUtils;
 using Puppy.Web.Constants;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 
-namespace Monkey.Authentication
+namespace Monkey.Authentication.Helpers
 {
     public static class TokenHelper
     {
         /// <summary>
         ///     Access token cookie name depend on Assembly and Secret Key to make difference between systems.
         /// </summary>
-        private static readonly string AccessTokenCookieName = $"{nameof(AccessTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthenticationConfig.SecretKey);
+        private static readonly string AccessTokenCookieName = $"{nameof(AccessTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthConfig.SecretKey);
 
         /// <summary>
         ///     Refresh token cookie name depend on Assembly and Secret Key to make difference
         ///     between systems.
         /// </summary>
-        private static readonly string RefreshTokenCookieName = $"{nameof(RefreshTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthenticationConfig.SecretKey);
+        private static readonly string RefreshTokenCookieName = $"{nameof(RefreshTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthConfig.SecretKey);
 
         #region Generate
 
@@ -89,7 +89,7 @@ namespace Monkey.Authentication
             SecurityToken securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Subject = claims,
-                SigningCredentials = AuthenticationConfig.SigningCredentials,
+                SigningCredentials = AuthConfig.SigningCredentials,
                 Expires = expireOn,
                 IssuedAt = utcTimeNow,
                 NotBefore = utcTimeNow,
@@ -108,11 +108,11 @@ namespace Monkey.Authentication
         public static void SetAccessTokenToCookie(IResponseCookies cookies, AccessTokenModel accessToken)
         {
             // Access Token
-            string accessTokenEncrypted = accessToken.AccessToken.Encrypt(AuthenticationConfig.SecretKey);
+            string accessTokenEncrypted = accessToken.AccessToken.Encrypt(AuthConfig.SecretKey);
             cookies.Append(AccessTokenCookieName, accessTokenEncrypted);
 
             // Refresh Token
-            string refreshTokenEncrypted = accessToken.RefreshToken.Encrypt(AuthenticationConfig.SecretKey);
+            string refreshTokenEncrypted = accessToken.RefreshToken.Encrypt(AuthConfig.SecretKey);
             cookies.Append(RefreshTokenCookieName, refreshTokenEncrypted);
         }
 
@@ -147,7 +147,7 @@ namespace Monkey.Authentication
                 return null;
             }
 
-            if (!cookieValue.TryDecrypt(AuthenticationConfig.SecretKey, out var accessToken))
+            if (!cookieValue.TryDecrypt(AuthConfig.SecretKey, out var accessToken))
             {
                 return null;
             }
@@ -169,7 +169,7 @@ namespace Monkey.Authentication
             var handler = new JwtSecurityTokenHandler();
             try
             {
-                handler.ValidateToken(token, AuthenticationConfig.TokenValidationParameters, out _);
+                handler.ValidateToken(token, AuthConfig.TokenValidationParameters, out _);
                 return true;
             }
             catch
@@ -247,7 +247,7 @@ namespace Monkey.Authentication
             var handler = new JwtSecurityTokenHandler();
             try
             {
-                return handler.ValidateToken(token, AuthenticationConfig.TokenValidationParameters, out _);
+                return handler.ValidateToken(token, AuthConfig.TokenValidationParameters, out _);
             }
             catch
             {

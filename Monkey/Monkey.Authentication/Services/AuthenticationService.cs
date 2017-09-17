@@ -17,15 +17,15 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Authentication;
-using Monkey.Business;
+using System;
+using System.Threading.Tasks;
+using Monkey.Authentication.Helpers;
+using Monkey.Authentication.Interfaces;
 using Monkey.Core.Constants;
 using Monkey.Core.Models.User;
 using Puppy.DependencyInjection.Attributes;
-using System;
-using System.Threading.Tasks;
 
-namespace Monkey.Service.Facade
+namespace Monkey.Authentication.Services
 {
     [PerRequestDependency(ServiceType = typeof(IAuthenticationService))]
     public class AuthenticationService : IAuthenticationService

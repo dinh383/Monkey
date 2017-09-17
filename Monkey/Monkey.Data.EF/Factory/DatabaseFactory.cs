@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Builder;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
 
-namespace Monkey.Data.EF
+namespace Monkey.Data.EF.Factory
 {
     [PerResolveDependency(ServiceType = typeof(IDatabaseFactory))]
     public class DatabaseFactory : IDatabaseFactory

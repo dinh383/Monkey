@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IClientBusiness))]
+    [PerRequestDependency(ServiceType = typeof(Authentication.Interfaces.IClientBusiness))]
     public class ClientBusiness : IClientBusiness
     {
         private readonly IClientRepository _clientRepository;

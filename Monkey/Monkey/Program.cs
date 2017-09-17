@@ -24,6 +24,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.PlatformAbstractions;
+using Monkey.Core;
+using Monkey.Core.Configs;
 using Monkey.Extensions;
 using Puppy.Core.EnvironmentUtils;
 
@@ -49,7 +51,7 @@ namespace Monkey
                     {
                         options.AddServerHeader = false;
                     })
-                    .UseWebRoot(Core.SystemConfigs.MvcPath.WebRootFolderName)
+                    .UseWebRoot(SystemConfig.MvcPath.WebRootFolderName)
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
                     .UseStartup<Startup>();

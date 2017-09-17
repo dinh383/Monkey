@@ -28,26 +28,6 @@
             </summary>
             <param name="services"></param>
         </member>
-        <member name="M:Monkey.Extensions.CookieAuthExtensions.UseCookieAuth(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-                [Authentication] Get Logged In User Info 
-            </summary>
-            <param name="app"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Monkey.Extensions.DatabaseExtensions.AddDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-                [Database] Use Entity Framework 
-            </summary>
-            <param name="services"></param>
-        </member>
-        <member name="M:Monkey.Extensions.LoggedInUserExtensions.UseLoggedInUser(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
-            <summary>
-                [Authentication] Get Logged In User Info 
-            </summary>
-            <param name="app"></param>
-            <returns></returns>
-        </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddMvcCustom(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
                 [Mvc] Json, Xml serialize, area, response caching and filters 

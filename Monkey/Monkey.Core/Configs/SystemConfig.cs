@@ -17,14 +17,14 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.Config;
+using Monkey.Core.Configs.Models;
 
-namespace Monkey.Core
+namespace Monkey.Core.Configs
 {
     /// <summary>
     ///     Setting configuration sync from appsettings.json of Main project 
     /// </summary>
-    public static class SystemConfigs
+    public static class SystemConfig
     {
         /// <summary>
         ///     Production, Staging will read from key Environment Name, else by MachineName 

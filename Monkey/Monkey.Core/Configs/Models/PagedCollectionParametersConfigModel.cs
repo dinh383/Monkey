@@ -6,23 +6,27 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> TokenType.cs </Name>
-//         <Created> 14/09/17 11:02:39 PM </Created>
-//         <Key> 5406ce6d-55c2-416a-800a-57df5443a8ed </Key>
+//         <Name> PagedCollectionParametersConfigModel.cs </Name>
+//         <Created> 27/08/17 1:01:16 AM </Created>
+//         <Key> 0533c8dc-66ee-4045-bb10-bf19a72a4b1c </Key>
 //     </File>
 //     <Summary>
-//         TokenType.cs
+//         PagedCollectionParametersConfigModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-namespace Monkey.Core.Constants
+namespace Monkey.Core.Configs.Models
 {
-    public enum TokenType
+    public class PagedCollectionParametersConfigModel
     {
-        Bearer,
-        ResetPassword,
-        ActiveAccount
+        public int Skip { get; set; } = 0;
+
+        public int Take { get; set; } = 10;
+
+        public int MaxTake { get; set; } = 10000;
+
+        public string Terms { get; set; } = string.Empty;
     }
 }
