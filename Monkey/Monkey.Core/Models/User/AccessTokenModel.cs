@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Newtonsoft.Json;
 using System;
 
 namespace Monkey.Core.Models.User
@@ -32,12 +31,6 @@ namespace Monkey.Core.Models.User
         public DateTimeOffset? ExpireOn { get; set; }
 
         public string AccessToken { get; set; }
-
-        [JsonIgnore]
-        public string ClientId { get; set; }
-
-        [JsonIgnore]
-        public string Subject { get; set; }
 
         /// <summary>
         ///     Lifetime of token in seconds 

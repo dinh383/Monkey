@@ -5,7 +5,6 @@ using Monkey.Core;
 using Monkey.Core.Constants;
 using Monkey.Core.Models.User;
 using Monkey.Service;
-using Newtonsoft.Json;
 using Puppy.DependencyInjection;
 using System.Threading.Tasks;
 
@@ -40,28 +39,28 @@ namespace Monkey.Extensions
 
             public async Task Invoke(HttpContext context)
             {
-                AccessTokenModel accessToken = TokenHelper.GetAccessTokenFromCookie(context.Request.Cookies);
+                AccessTokenModel accessTokenModel = TokenHelper.GetAccessTokenFromCookie(context.Request.Cookies);
 
-                if (accessToken == null)
+                if (accessTokenModel == null)
                 {
                     await _next.Invoke(context).ConfigureAwait(true);
                     return;
                 }
 
-                string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessToken.AccessToken);
+                string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessTokenModel.AccessToken);
 
-                if (!TokenHelper.IsValidToken(accessToken.AccessToken, out var claimsPrincipal) || accessTokenClientId != SystemConfigs.Identity.ClientId)
+                if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != SystemConfigs.Identity.ClientId)
                 {
                     await _next.Invoke(context).ConfigureAwait(true);
                     return;
                 }
 
                 // Sign In to the context
-                context.User = claimsPrincipal;
+                context.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
 
                 // If current cookie access token is valid but expire, then auto refresh. This logic
                 // just for WEB Cookie
-                if (TokenHelper.IsExpire(accessToken.AccessToken))
+                if (TokenHelper.IsExpire(accessTokenModel.AccessToken))
                 {
                     var authenticationService = _appBuilder.Resolve<IAuthenticationService>();
 
@@ -70,16 +69,16 @@ namespace Monkey.Extensions
                         ClientId = SystemConfigs.Identity.ClientId,
                         ClientSecret = SystemConfigs.Identity.ClientSecret,
                         GrantType = GrantType.RefreshToken,
-                        RefreshToken = accessToken.RefreshToken
+                        RefreshToken = accessTokenModel.RefreshToken
                     };
 
-                    var newAccessToken = await authenticationService.GetTokenAsync(requestTokenModel).ConfigureAwait(true);
+                    var newAccessTokenModel = await authenticationService.GetTokenAsync(requestTokenModel).ConfigureAwait(true);
 
                     context.Response.OnStarting(state =>
                     {
                         var httpContext = (HttpContext)state;
 
-                        httpContext.Response.Cookies.Append(Authentication.Constants.AccessTokenCookieName, JsonConvert.SerializeObject(newAccessToken));
+                        TokenHelper.SetAccessTokenToCookie(httpContext.Response.Cookies, newAccessTokenModel);
 
                         return Task.CompletedTask;
                     }, context);

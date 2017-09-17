@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
 using Puppy.Core.StringUtils;
+using Puppy.Core.TypeUtils;
 using Puppy.Web.Constants;
 using System;
 using System.Collections.Generic;
@@ -36,27 +37,36 @@ namespace Monkey.Authentication
 {
     public static class TokenHelper
     {
+        /// <summary>
+        ///     Access token cookie name depend on Assembly and Secret Key to make difference between systems.
+        /// </summary>
+        private static readonly string AccessTokenCookieName = $"{typeof(TokenHelper).GetAssembly().FullName}|{nameof(AccessTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
+
+        /// <summary>
+        ///     Refresh token cookie name depend on Assembly and Secret Key to make difference
+        ///     between systems.
+        /// </summary>
+        private static readonly string RefreshTokenCookieName = $"{typeof(TokenHelper).GetAssembly().FullName}|{nameof(RefreshTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
+
         #region Generate
 
         public static AccessTokenModel GenerateAccessToken(string clientId, string subject, TimeSpan expiresSpan, string refreshToken, string issuer = null)
         {
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
-            double authTime = DateTimeHelper.GetEpochTime(dateTimeUtcNow);
+            double authTime = dateTimeUtcNow.GetEpochTime();
 
             var accessToken = new AccessTokenModel
             {
                 ExpireIn = expiresSpan.TotalSeconds,
                 ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
                 RefreshToken = refreshToken,
-                TokenType = Constants.AuthenticationTokenType,
-                ClientId = clientId,
-                Subject = subject
+                TokenType = Constants.AuthenticationTokenType
             };
 
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"client_id", accessToken.ClientId},
-                {JwtRegisteredClaimNames.Sub, accessToken.Subject},
+                {"client_id", clientId},
+                {JwtRegisteredClaimNames.Sub, subject},
                 {JwtRegisteredClaimNames.AuthTime, authTime.ToString(CultureInfo.InvariantCulture)}
             };
 
@@ -98,29 +108,50 @@ namespace Monkey.Authentication
 
         public static void SetAccessTokenToCookie(IResponseCookies cookies, AccessTokenModel accessToken)
         {
-            string accessTokenJson = JsonConvert.SerializeObject(accessToken, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
-            accessTokenJson = accessTokenJson.Encrypt(AuthenticationConfig.SecretKey);
-            cookies.Append(Constants.AccessTokenCookieName, accessTokenJson);
+            // Access Token
+            string accessTokenEncrypted = accessToken.AccessToken.Encrypt(AuthenticationConfig.SecretKey);
+            cookies.Append(AccessTokenCookieName, accessTokenEncrypted);
+
+            // Refresh Token
+            string refreshTokenEncrypted = accessToken.RefreshToken.Encrypt(AuthenticationConfig.SecretKey);
+            cookies.Append(RefreshTokenCookieName, refreshTokenEncrypted);
         }
 
         public static AccessTokenModel GetAccessTokenFromCookie(IRequestCookieCollection cookies)
         {
-            if (!cookies.TryGetValue(Constants.AccessTokenCookieName, out var cookieValue))
+            var accessToken = GetCookieValue(cookies, AccessTokenCookieName);
+
+            if (string.IsNullOrWhiteSpace(accessToken))
             {
                 return null;
             }
 
-            if (!cookieValue.TryDecrypt(AuthenticationConfig.SecretKey, out var accessTokenJson))
+            var refreshToken = GetCookieValue(cookies, RefreshTokenCookieName);
+
+            AccessTokenModel accessTokenModel = new AccessTokenModel
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+                TokenType = Constants.AuthenticationTokenType,
+                ExpireOn = GetAccessTokenExpireOn(accessToken)
+            };
+
+            accessTokenModel.ExpireIn = accessTokenModel.ExpireOn?.Subtract(DateTimeOffset.UtcNow).TotalSeconds ?? -1;
+
+            return accessTokenModel;
+        }
+
+        private static string GetCookieValue(IRequestCookieCollection cookies, string key)
+        {
+            if (!cookies.TryGetValue(key, out var cookieValue))
             {
                 return null;
             }
 
-            if (string.IsNullOrWhiteSpace(accessTokenJson))
+            if (!cookieValue.TryDecrypt(AuthenticationConfig.SecretKey, out var accessToken))
             {
                 return null;
             }
-
-            var accessToken = JsonConvert.DeserializeObject<AccessTokenModel>(accessTokenJson, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
 
             return accessToken;
         }
@@ -129,40 +160,29 @@ namespace Monkey.Authentication
 
         #region Validation
 
-        public static bool IsValidToken(string token, out ClaimsPrincipal claimsPrincipal)
+        public static bool IsValidToken(string token)
         {
             var handler = new JwtSecurityTokenHandler();
             try
             {
-                claimsPrincipal = handler.ValidateToken(token, AuthenticationConfig.TokenValidationParameters, out _);
+                handler.ValidateToken(token, AuthenticationConfig.TokenValidationParameters, out _);
                 return true;
             }
             catch
             {
-                claimsPrincipal = null;
                 return false;
             }
         }
 
         public static bool IsExpire(string token)
         {
-            DateTime utcNow = DateTime.UtcNow;
-
-            double? epochExpireOn = GetAccessTokenData<double?>(token, JwtRegisteredClaimNames.Exp);
-
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            DateTime? expireOn = epochExpireOn == null ? (DateTime?)null : epoch.AddSeconds(epochExpireOn.Value);
-
-            if (expireOn == null || utcNow < expireOn)
-            {
-                return false;
-            }
-            return true;
+            DateTimeOffset? expireOn = GetAccessTokenExpireOn(token);
+            return expireOn != null && expireOn <= DateTimeOffset.UtcNow;
         }
 
         public static bool IsExpireOrInvalidToken(string token)
         {
-            return !IsValidToken(token, out _) || IsExpire(token);
+            return !IsValidToken(token) || IsExpire(token);
         }
 
         #endregion
@@ -171,8 +191,15 @@ namespace Monkey.Authentication
 
         public static ClaimsPrincipal GetClaimsPrincipal(string token)
         {
-            IsValidToken(token, out var claimsPrincipal);
-            return claimsPrincipal;
+            var handler = new JwtSecurityTokenHandler();
+            try
+            {
+                return handler.ValidateToken(token, AuthenticationConfig.TokenValidationParameters, out _);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static string GetAuthenticationToken(HttpRequest request)
@@ -182,7 +209,7 @@ namespace Monkey.Authentication
 
             if (string.IsNullOrWhiteSpace(token))
             {
-                if (request.Cookies.TryGetValue(Constants.AccessTokenCookieName, out string cookieValue))
+                if (request.Cookies.TryGetValue(AccessTokenCookieName, out string cookieValue))
                 {
                     AccessTokenModel accessToken = JsonConvert.DeserializeObject<AccessTokenModel>(cookieValue);
                     return accessToken?.AccessToken;
@@ -202,6 +229,12 @@ namespace Monkey.Authentication
             return GetAccessTokenData<string>(token, Constants.ClientIdKey);
         }
 
+        public static DateTimeOffset? GetAccessTokenExpireOn(string token)
+        {
+            double? expireOn = GetAccessTokenData<double?>(token, JwtRegisteredClaimNames.Exp);
+            return expireOn == null ? (DateTimeOffset?)null : DateTimeHelper.GetDateTimeFromEpoch(expireOn.Value);
+        }
+
         public static T GetAccessTokenData<T>(string token, string key)
         {
             if (!TryReadTokenPayload(token, out var tokenPayload))
@@ -216,7 +249,7 @@ namespace Monkey.Authentication
 
         private static bool TryReadTokenPayload(string token, out JwtPayload tokenPayload)
         {
-            if (!IsValidToken(token, out _))
+            if (!IsValidToken(token))
             {
                 tokenPayload = null;
                 return false;
