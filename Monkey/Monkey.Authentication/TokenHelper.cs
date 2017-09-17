@@ -20,7 +20,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Monkey.Core.Models.User;
-using Newtonsoft.Json;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
 using Puppy.Core.StringUtils;
@@ -40,13 +39,13 @@ namespace Monkey.Authentication
         /// <summary>
         ///     Access token cookie name depend on Assembly and Secret Key to make difference between systems.
         /// </summary>
-        private static readonly string AccessTokenCookieName = $"{typeof(TokenHelper).GetAssembly().FullName}|{nameof(AccessTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
+        private static readonly string AccessTokenCookieName = $"{typeof(TokenHelper).GetAssemblySimpleName()}|{nameof(AccessTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
 
         /// <summary>
         ///     Refresh token cookie name depend on Assembly and Secret Key to make difference
         ///     between systems.
         /// </summary>
-        private static readonly string RefreshTokenCookieName = $"{typeof(TokenHelper).GetAssembly().FullName}|{nameof(RefreshTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
+        private static readonly string RefreshTokenCookieName = $"{typeof(TokenHelper).GetAssemblySimpleName()}|{nameof(RefreshTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
 
         #region Generate
 
@@ -162,6 +161,11 @@ namespace Monkey.Authentication
 
         public static bool IsValidToken(string token)
         {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
             var handler = new JwtSecurityTokenHandler();
             try
             {
@@ -176,12 +180,22 @@ namespace Monkey.Authentication
 
         public static bool IsExpire(string token)
         {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return true;
+            }
+
             DateTimeOffset? expireOn = GetAccessTokenExpireOn(token);
             return expireOn != null && expireOn <= DateTimeOffset.UtcNow;
         }
 
         public static bool IsExpireOrInvalidToken(string token)
         {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return true;
+            }
+
             return !IsValidToken(token) || IsExpire(token);
         }
 
@@ -191,6 +205,11 @@ namespace Monkey.Authentication
 
         public static ClaimsPrincipal GetClaimsPrincipal(string token)
         {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return null;
+            }
+
             var handler = new JwtSecurityTokenHandler();
             try
             {
@@ -207,16 +226,15 @@ namespace Monkey.Authentication
             var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
             var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
 
-            if (string.IsNullOrWhiteSpace(token))
+            if (!string.IsNullOrWhiteSpace(token))
             {
-                if (request.Cookies.TryGetValue(AccessTokenCookieName, out string cookieValue))
-                {
-                    AccessTokenModel accessToken = JsonConvert.DeserializeObject<AccessTokenModel>(cookieValue);
-                    return accessToken?.AccessToken;
-                }
+                return IsValidToken(token) ? token : null;
             }
 
-            return token;
+            var accessToken = GetAccessTokenFromCookie(request.Cookies);
+            token = accessToken?.AccessToken;
+
+            return IsValidToken(token) ? token : null;
         }
 
         public static string GetAccessTokenSubject(string token)
@@ -237,6 +255,11 @@ namespace Monkey.Authentication
 
         public static T GetAccessTokenData<T>(string token, string key)
         {
+            if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(key))
+            {
+                return default(T);
+            }
+
             if (!TryReadTokenPayload(token, out var tokenPayload))
             {
                 return default(T);
