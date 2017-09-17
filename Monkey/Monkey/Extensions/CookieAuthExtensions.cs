@@ -39,8 +39,8 @@ namespace Monkey.Extensions
 
             public async Task Invoke(HttpContext context)
             {
-                // SKIP if Header already have Authorization value
-                if (TokenHelper.IsHaveValidAccessTokenInHeader(context.Request))
+                // SKIP if Access Token found in Header - not check valid or not.
+                if (TokenHelper.IsHaveAccessTokenInHeader(context.Request))
                 {
                     await _next.Invoke(context).ConfigureAwait(true);
                     return;

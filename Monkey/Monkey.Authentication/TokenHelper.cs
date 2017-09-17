@@ -199,11 +199,17 @@ namespace Monkey.Authentication
             return !IsValidToken(token) || IsExpire(token);
         }
 
-        public static bool IsHaveValidAccessTokenInHeader(HttpRequest request)
+        /// <summary>
+        ///     Check Authorization in Header have value or not, this method not check Access Token
+        ///     is valid or not
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static bool IsHaveAccessTokenInHeader(HttpRequest request)
         {
             var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
             var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
-            return IsValidToken(token);
+            return !string.IsNullOrWhiteSpace(token);
         }
 
         #endregion
