@@ -39,7 +39,14 @@ namespace Monkey.Extensions
 
             public async Task Invoke(HttpContext context)
             {
-                AccessTokenModel accessTokenModel = TokenHelper.GetAccessTokenFromCookie(context.Request.Cookies);
+                // SKIP if Header already have Authorization value
+                if (TokenHelper.IsHaveValidAccessTokenInHeader(context.Request))
+                {
+                    await _next.Invoke(context).ConfigureAwait(true);
+                    return;
+                }
+
+                var accessTokenModel = TokenHelper.GetAccessTokenFromCookie(context.Request.Cookies);
 
                 if (accessTokenModel == null)
                 {

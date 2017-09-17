@@ -199,9 +199,37 @@ namespace Monkey.Authentication
             return !IsValidToken(token) || IsExpire(token);
         }
 
+        public static bool IsHaveValidAccessTokenInHeader(HttpRequest request)
+        {
+            var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
+            var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
+            return IsValidToken(token);
+        }
+
         #endregion
 
         #region Get Data
+
+        /// <summary>
+        ///     Get access token in Authorization Header in advance, if not valid then get from Cookie 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static string GetAccessToken(HttpRequest request)
+        {
+            var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
+            var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                return IsValidToken(token) ? token : null;
+            }
+
+            var accessToken = GetAccessTokenFromCookie(request.Cookies);
+            token = accessToken?.AccessToken;
+
+            return IsValidToken(token) ? token : null;
+        }
 
         public static ClaimsPrincipal GetClaimsPrincipal(string token)
         {
@@ -219,22 +247,6 @@ namespace Monkey.Authentication
             {
                 return null;
             }
-        }
-
-        public static string GetAuthenticationToken(HttpRequest request)
-        {
-            var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
-            var token = authenticationHeader.Replace(Constants.AuthenticationTokenType, string.Empty)?.Trim();
-
-            if (!string.IsNullOrWhiteSpace(token))
-            {
-                return IsValidToken(token) ? token : null;
-            }
-
-            var accessToken = GetAccessTokenFromCookie(request.Cookies);
-            token = accessToken?.AccessToken;
-
-            return IsValidToken(token) ? token : null;
         }
 
         public static string GetAccessTokenSubject(string token)

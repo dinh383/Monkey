@@ -38,7 +38,8 @@ namespace Monkey.Extensions
             public async Task Invoke(HttpContext context)
             {
                 IAuthenticationService authenticationService = _appBuilder.Resolve<IAuthenticationService>();
-                string token = TokenHelper.GetAuthenticationToken(context.Request);
+
+                string token = TokenHelper.GetAccessToken(context.Request);
 
                 if (string.IsNullOrWhiteSpace(token))
                 {
