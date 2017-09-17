@@ -39,13 +39,13 @@ namespace Monkey.Authentication
         /// <summary>
         ///     Access token cookie name depend on Assembly and Secret Key to make difference between systems.
         /// </summary>
-        private static readonly string AccessTokenCookieName = $"{typeof(TokenHelper).GetAssemblySimpleName()}|{nameof(AccessTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
+        private static readonly string AccessTokenCookieName = $"{nameof(AccessTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthenticationConfig.SecretKey);
 
         /// <summary>
         ///     Refresh token cookie name depend on Assembly and Secret Key to make difference
         ///     between systems.
         /// </summary>
-        private static readonly string RefreshTokenCookieName = $"{typeof(TokenHelper).GetAssemblySimpleName()}|{nameof(RefreshTokenCookieName)}".Encrypt(AuthenticationConfig.SecretKey);
+        private static readonly string RefreshTokenCookieName = $"{nameof(RefreshTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthenticationConfig.SecretKey);
 
         #region Generate
 
