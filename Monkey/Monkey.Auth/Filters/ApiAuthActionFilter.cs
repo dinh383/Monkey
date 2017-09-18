@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Monkey.Filters.Authorize
+namespace Monkey.Auth.Filters
 {
-    public class ApiAuthorizeActionFilter : IActionFilter
+    public class ApiAuthActionFilter : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {

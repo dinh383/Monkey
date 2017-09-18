@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Filters.Authorize;
+using Monkey.Auth.Filters;
 using Puppy.Web;
 
 namespace Monkey.Controllers.Api
@@ -27,7 +27,7 @@ namespace Monkey.Controllers.Api
         /// <returns></returns>
         [HttpGet]
         [Route("/test/userinfo")]
-        [Authorize]
+        [Auth]
         public IActionResult LoggedInUser()
         {
             return Ok(new

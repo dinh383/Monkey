@@ -1,14 +1,14 @@
 ﻿using Monkey.Core.Constants;
 using System;
 
-namespace Monkey.Filters.Authorize
+namespace Monkey.Auth.Filters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-    public class AuthorizeAttribute : Attribute
+    public class AuthAttribute : Attribute
     {
         public Enums.Permission[] Permissions { get; }
 
-        public AuthorizeAttribute(params Enums.Permission[] permissions)
+        public AuthAttribute(params Enums.Permission[] permissions)
         {
             Permissions = permissions;
         }

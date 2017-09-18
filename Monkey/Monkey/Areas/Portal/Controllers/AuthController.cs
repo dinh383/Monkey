@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth;
-using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core.Models.Auth;
 using Puppy.AutoMapper;
@@ -27,11 +26,11 @@ namespace Monkey.Areas.Portal.Controllers
             return View(new LoginModel());
         }
 
-        [Route("")]
+        [Route("sign-in")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> Auth(LoginModel model)
+        public async Task<IActionResult> SignIn(LoginModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -39,14 +38,28 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             RequestTokenModel requestToken = model.MapTo<RequestTokenModel>();
+
+            // Update system client id and client secret
             requestToken.ClientId = AuthConfig.SystemClientId;
             requestToken.ClientSecret = AuthConfig.SystemClientSecret;
 
-            AccessTokenModel accessToken = await _authenticationService.GetTokenAsync(requestToken).ConfigureAwait(true);
+            // Sign In and get access token
+            AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken).ConfigureAwait(true);
 
-            TokenHelper.SetAccessTokenToCookie(Response.Cookies, accessToken);
+            // Sign In to Cookie, for web only
+            await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel).ConfigureAwait(true);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [Route("sign-out")]
+        [HttpGet]
+        [Auth.Filters.Auth]
+        public async Task<IActionResult> SignOut()
+        {
+            await _authenticationService.SignOutCookieAsync(Response.Cookies).ConfigureAwait(true);
+
+            return RedirectToAction("Index", "Auth");
         }
     }
 }

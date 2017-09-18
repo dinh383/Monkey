@@ -27,6 +27,7 @@ using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection;
+using Puppy.Web.Middlewares;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,6 +47,12 @@ namespace Monkey.Auth
         public static IServiceCollection AddHybridAuth(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
         {
             configuration.BuildConfig(configSection);
+
+            if (!HttpContextAccessorExtensions.IsAlreadySetup)
+            {
+                services.AddHttpContextAccessor();
+            }
+
             return services;
         }
 
@@ -68,6 +75,11 @@ namespace Monkey.Auth
         /// <returns></returns>
         public static IApplicationBuilder UseHybridAuth(this IApplicationBuilder app)
         {
+            if (!HttpContextAccessorExtensions.IsAlreadySetup)
+            {
+                app.UseHttpContextAccessor();
+            }
+
             app.UseMiddleware<CookieAuthMiddleware>();
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
@@ -104,7 +116,10 @@ namespace Monkey.Auth
                     return;
                 }
 
-                var accessTokenModel = TokenHelper.GetAccessTokenFromCookie(context.Request.Cookies);
+                // Sign In to the context
+                IAuthenticationService authenticationService = _appBuilder.Resolve<IAuthenticationService>();
+
+                var accessTokenModel = await authenticationService.SignInCookieAsync(context.Request.Cookies).ConfigureAwait(true);
 
                 if (accessTokenModel == null)
                 {
@@ -112,23 +127,10 @@ namespace Monkey.Auth
                     return;
                 }
 
-                string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessTokenModel.AccessToken);
-
-                if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != AuthConfig.SystemClientId)
-                {
-                    await _next.Invoke(context).ConfigureAwait(true);
-                    return;
-                }
-
-                // Sign In to the context
-                context.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
-
                 // If current cookie access token is valid but expire, then auto refresh. This logic
                 // just for WEB Cookie
                 if (TokenHelper.IsExpire(accessTokenModel.AccessToken))
                 {
-                    var authenticationService = _appBuilder.Resolve<IAuthenticationService>();
-
                     RequestTokenModel requestTokenModel = new RequestTokenModel
                     {
                         ClientId = AuthConfig.SystemClientId,
@@ -137,13 +139,13 @@ namespace Monkey.Auth
                         RefreshToken = accessTokenModel.RefreshToken
                     };
 
-                    var newAccessTokenModel = await authenticationService.GetTokenAsync(requestTokenModel).ConfigureAwait(true);
+                    var newAccessTokenModel = await authenticationService.SignInAsync(requestTokenModel).ConfigureAwait(true);
 
                     context.Response.OnStarting(state =>
                     {
                         var httpContext = (HttpContext)state;
 
-                        TokenHelper.SetAccessTokenToCookie(httpContext.Response.Cookies, newAccessTokenModel);
+                        TokenHelper.SetAccessTokenInCookie(httpContext.Response.Cookies, newAccessTokenModel);
 
                         return Task.CompletedTask;
                     }, context);
@@ -153,6 +155,10 @@ namespace Monkey.Auth
             }
         }
 
+        /// <summary>
+        ///     Get Logged In User by HTTP Request Header, JWT Middleware already put value for
+        ///     HttpContext.User data.
+        /// </summary>
         public class LoggedInUserMiddleware
         {
             private readonly RequestDelegate _next;
@@ -166,7 +172,7 @@ namespace Monkey.Auth
             {
                 IAuthenticationService authenticationService = _appBuilder.Resolve<IAuthenticationService>();
 
-                string token = TokenHelper.GetAccessToken(context.Request);
+                string token = TokenHelper.GetValidAndNotExpireAccessToken(context.Request.Headers);
 
                 if (string.IsNullOrWhiteSpace(token))
                 {
@@ -174,11 +180,8 @@ namespace Monkey.Auth
                     return;
                 }
 
-                if (TokenHelper.IsExpireOrInvalidToken(token))
-                {
-                    await _next.Invoke(context).ConfigureAwait(true);
-                    return;
-                }
+                // Only set value for LoggedInUser.Current, JWT Middleware already put value for
+                // HttpContext.User data.
 
                 LoggedInUser.Current = await authenticationService.GetLoggedInUserAsync(token).ConfigureAwait(true);
 

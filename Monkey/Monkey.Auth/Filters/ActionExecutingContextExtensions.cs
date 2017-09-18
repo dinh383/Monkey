@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Monkey.Filters.Authorize
+namespace Monkey.Auth.Filters
 {
     public static class ActionExecutingContextExtensions
     {
@@ -38,9 +38,9 @@ namespace Monkey.Filters.Authorize
         {
             if (!(context.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)) return true;
 
-            List<AuthorizeAttribute> listAuthorizeAttribute = new List<AuthorizeAttribute>();
+            List<AuthAttribute> listAuthorizeAttribute = new List<AuthAttribute>();
 
-            var actionAttributes = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AuthorizeAttribute>(true).ToList();
+            var actionAttributes = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AuthAttribute>(true).ToList();
 
             if (actionAttributes.Any())
             {
@@ -49,11 +49,11 @@ namespace Monkey.Filters.Authorize
 
             // If Action combine Controller authorize or Action not have any Authorize Attribute,
             // then add allow permission of controller to the list allow permission.
-            bool isCombineAuthorize = controllerActionDescriptor.MethodInfo.GetCustomAttributes<CombineAuthorizeAttribute>(true).Any();
+            bool isCombineAuthorize = controllerActionDescriptor.MethodInfo.GetCustomAttributes<CombineAuthAttribute>(true).Any();
 
             if (isCombineAuthorize || !listAuthorizeAttribute.Any())
             {
-                var controllerAttributes = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes<AuthorizeAttribute>(true);
+                var controllerAttributes = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes<AuthAttribute>(true);
                 listAuthorizeAttribute.AddRange(controllerAttributes);
             }
 
@@ -79,9 +79,9 @@ namespace Monkey.Filters.Authorize
             bool isActionAllowAnonymous = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AllowAnonymousAttribute>(true).Any();
             if (isActionAllowAnonymous) return true;
 
-            var isActionHaveAnyPermission = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AuthorizeAttribute>(true).Any();
+            var isActionHaveAnyPermission = controllerActionDescriptor.MethodInfo.GetCustomAttributes<AuthAttribute>(true).Any();
 
-            bool isCombineAuthorize = controllerActionDescriptor.MethodInfo.GetCustomAttributes<CombineAuthorizeAttribute>(true).Any();
+            bool isCombineAuthorize = controllerActionDescriptor.MethodInfo.GetCustomAttributes<CombineAuthAttribute>(true).Any();
 
             if (!isCombineAuthorize && isActionHaveAnyPermission) return false;
 
@@ -90,7 +90,7 @@ namespace Monkey.Filters.Authorize
 
             if (!isActionHaveAnyPermission)
             {
-                var isControllerHaveAnyPermission = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes<AuthorizeAttribute>(true).Any();
+                var isControllerHaveAnyPermission = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes<AuthAttribute>(true).Any();
                 return !isControllerHaveAnyPermission;
             }
 

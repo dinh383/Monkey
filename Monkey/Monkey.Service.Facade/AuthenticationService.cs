@@ -17,14 +17,18 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
+using Monkey.Auth;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Business;
+using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Threading.Tasks;
+using HttpContext = System.Web.HttpContext;
 
 namespace Monkey.Service.Facade
 {
@@ -40,7 +44,8 @@ namespace Monkey.Service.Facade
             _clientBusiness = clientBusiness;
         }
 
-        public async Task<AccessTokenModel> GetTokenAsync(RequestTokenModel model)
+        /// <inheritdoc />
+        public async Task<AccessTokenModel> SignInAsync(RequestTokenModel model)
         {
             _clientBusiness.CheckExist(model.ClientId, model.ClientSecret);
 
@@ -50,31 +55,85 @@ namespace Monkey.Service.Facade
 
             var accessTokenExpire = TimeSpan.FromMinutes(30);
 
-            AccessTokenModel accessToken = null;
+            AccessTokenModel accessTokenModel = null;
 
             if (model.GrantType == GrantType.Password)
             {
                 _authenticationBusiness.CheckExistsByUserName(model.UserName);
                 _authenticationBusiness.CheckValidSignIn(model.UserName, model.Password);
 
-                var loggedInUser = _authenticationBusiness.SignIn(clientId, model.UserName, model.Password, out string refreshToken);
+                LoggedInUser.Current = _authenticationBusiness.SignIn(clientId, model.UserName, model.Password, out string refreshToken);
 
                 // Generate access token
-                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedInUser.Subject, accessTokenExpire, refreshToken);
+                accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, accessTokenExpire, refreshToken);
+
+                HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
             }
             else if (model.GrantType == GrantType.RefreshToken)
             {
-                // Verify
                 _authenticationBusiness.CheckValidRefreshToken(clientId, model.RefreshToken);
 
-                var loggedInUser = await _authenticationBusiness.GetLoggedInUserByRefreshTokenAsync(model.RefreshToken).ConfigureAwait(true);
+                LoggedInUser.Current = await _authenticationBusiness.GetLoggedInUserByRefreshTokenAsync(model.RefreshToken).ConfigureAwait(true);
 
                 // Generate access token
-                accessToken = TokenHelper.GenerateAccessToken(model.ClientId, loggedInUser.Subject, accessTokenExpire, model.RefreshToken);
+                accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, accessTokenExpire, model.RefreshToken);
+
+                HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
             }
-            return accessToken;
+
+            return accessTokenModel;
         }
 
+        /// <inheritdoc />
+        public async Task SignInCookieAsync(IResponseCookies cookies, AccessTokenModel accessTokenModel)
+        {
+            TokenHelper.SetAccessTokenInCookie(cookies, accessTokenModel);
+
+            LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken).ConfigureAwait(true);
+
+            HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
+        }
+
+        /// <inheritdoc />
+        public async Task<AccessTokenModel> SignInCookieAsync(IRequestCookieCollection cookies)
+        {
+            var accessTokenModel = TokenHelper.GetAccessTokenInCookie(cookies);
+
+            if (accessTokenModel == null)
+            {
+                return null;
+            }
+
+            string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessTokenModel.AccessToken);
+
+            if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != AuthConfig.SystemClientId)
+            {
+                return null;
+            }
+
+            LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken).ConfigureAwait(true);
+
+            HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
+
+            return accessTokenModel;
+        }
+
+        /// <inheritdoc />
+        public Task SignOutCookieAsync(IResponseCookies cookies)
+        {
+            TokenHelper.RemoveAccessTokenInCookie(cookies);
+
+            LoggedInUser.Current = null;
+
+            if (HttpContext.Current != null && HttpContext.Current.User != null)
+            {
+                HttpContext.Current.User = null;
+            }
+
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
         public Task<LoggedInUserModel> GetLoggedInUserAsync(string accessToken)
         {
             string subject = TokenHelper.GetAccessTokenSubject(accessToken);
@@ -82,6 +141,7 @@ namespace Monkey.Service.Facade
             return _authenticationBusiness.GetLoggedInUserBySubjectAsync(subject);
         }
 
+        /// <inheritdoc />
         public Task ExpireAllRefreshTokenAsync(string accessToken)
         {
             string subject = TokenHelper.GetAccessTokenSubject(accessToken);

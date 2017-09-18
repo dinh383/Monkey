@@ -47,26 +47,6 @@
             <param name="services"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>
         </member>
-        <member name="M:Monkey.Filters.Authorize.ActionExecutingContextExtensions.IsAuthenticated(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-                Check user is authentication, also check AllowAnonymous attribute. 
-            </summary>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Monkey.Filters.Authorize.ActionExecutingContextExtensions.IsAuthorized(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-                Check user is authorization. This method not check about AllowAnonymous attribute,
-                please call <see cref="M:Monkey.Filters.Authorize.ActionExecutingContextExtensions.IsAuthenticated(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)" /> before call this method.
-            </summary>
-            <param name="context"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Monkey.Filters.Authorize.CombineAuthorizeAttribute">
-            <summary>
-                Attribute to mark combine (OR conditional) with higher level AuthorizeAttribute 
-            </summary>
-        </member>
         <member name="P:Monkey.ViewModels.Api.ApiErrorViewModel.Code">
             <summary>
                 Unique Code for each Business 

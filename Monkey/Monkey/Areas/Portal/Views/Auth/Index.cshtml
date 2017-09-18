@@ -43,7 +43,7 @@
                 <h3 class="font-size-24">Sign In</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
 
-                @using (Html.BeginForm("Auth", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
+                @using (Html.BeginForm("SignIn", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-group form-material floating" data-plugin="formMaterial">

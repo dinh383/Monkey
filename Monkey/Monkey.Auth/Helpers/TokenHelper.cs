@@ -105,18 +105,25 @@ namespace Monkey.Auth.Helpers
 
         #region Cookie
 
-        public static void SetAccessTokenToCookie(IResponseCookies cookies, AccessTokenModel accessToken)
+        public static void SetAccessTokenInCookie(IResponseCookies cookies, AccessTokenModel accessToken)
         {
             // Access Token
-            string accessTokenEncrypted = accessToken.AccessToken.Encrypt(AuthConfig.SecretKey);
-            cookies.Append(AccessTokenCookieName, accessTokenEncrypted);
+            SetCookieValue(cookies, AccessTokenCookieName, accessToken.AccessToken);
 
             // Refresh Token
-            string refreshTokenEncrypted = accessToken.RefreshToken.Encrypt(AuthConfig.SecretKey);
-            cookies.Append(RefreshTokenCookieName, refreshTokenEncrypted);
+            SetCookieValue(cookies, RefreshTokenCookieName, accessToken.RefreshToken);
         }
 
-        public static AccessTokenModel GetAccessTokenFromCookie(IRequestCookieCollection cookies)
+        public static void RemoveAccessTokenInCookie(IResponseCookies cookies)
+        {
+            // Access Token
+            cookies.Delete(AccessTokenCookieName);
+
+            // Refresh Token
+            cookies.Delete(RefreshTokenCookieName);
+        }
+
+        public static AccessTokenModel GetAccessTokenInCookie(IRequestCookieCollection cookies)
         {
             var accessToken = GetCookieValue(cookies, AccessTokenCookieName);
 
@@ -140,7 +147,7 @@ namespace Monkey.Auth.Helpers
             return accessTokenModel;
         }
 
-        private static string GetCookieValue(IRequestCookieCollection cookies, string key)
+        public static string GetCookieValue(IRequestCookieCollection cookies, string key)
         {
             if (!cookies.TryGetValue(key, out var cookieValue))
             {
@@ -153,6 +160,11 @@ namespace Monkey.Auth.Helpers
             }
 
             return accessToken;
+        }
+
+        public static void SetCookieValue(IResponseCookies cookies, string key, string value)
+        {
+            cookies.Append(key, value.Encrypt(AuthConfig.SecretKey));
         }
 
         #endregion
@@ -217,24 +229,15 @@ namespace Monkey.Auth.Helpers
         #region Get Data
 
         /// <summary>
-        ///     Get access token in Authorization Header in advance, if not valid then get from Cookie 
+        ///     Get valid and not expire access token in Authorization Header 
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="header"></param>
         /// <returns></returns>
-        public static string GetAccessToken(HttpRequest request)
+        public static string GetValidAndNotExpireAccessToken(IHeaderDictionary header)
         {
-            var authenticationHeader = request.Headers[HeaderKey.Authorization].ToString();
+            var authenticationHeader = header[HeaderKey.Authorization].ToString();
             var token = authenticationHeader.Replace(Constants.Constant.AuthenticationTokenType, string.Empty)?.Trim();
-
-            if (!string.IsNullOrWhiteSpace(token))
-            {
-                return IsValidToken(token) ? token : null;
-            }
-
-            var accessToken = GetAccessTokenFromCookie(request.Cookies);
-            token = accessToken?.AccessToken;
-
-            return IsValidToken(token) ? token : null;
+            return IsExpireOrInvalidToken(token) ? null : token;
         }
 
         public static ClaimsPrincipal GetClaimsPrincipal(string token)
