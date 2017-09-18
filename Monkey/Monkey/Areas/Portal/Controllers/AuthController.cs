@@ -46,7 +46,7 @@ namespace Monkey.Areas.Portal.Controllers
 
             TokenHelper.SetAccessTokenToCookie(Response.Cookies, accessToken);
 
-            return View("Index", model);
+            return RedirectToAction("Index", "Home");
         }
     }
 }
