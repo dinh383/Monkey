@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+@using Monkey.Core.Models.Auth
+@model Monkey.Core.Models.Auth.LoginModel
+
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Monkey | Authentication</title>
+    @{
+        await Html.RenderPartialAsync("_Favicon").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_Style.cshtml").ConfigureAwait(true);
+        <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/pages/login-v2.min.css")">
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_HeaderScript.cshtml").ConfigureAwait(true);
+    }
+</head>
+<body class="animsition page-login-v2 layout-full page-dark">
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Page -->
+    <div class="page" data-animsition-in="fade-in" data-animsition-out="fade-out">
+        <div class="page-content">
+            <div class="page-brand-info">
+                <div class="brand">
+                    <img class="brand-img" src="../../assets/images/logo@2x.png" alt="Monkey">
+                    <h2 class="brand-text font-size-40">Monkey</h2>
+                </div>
+                <p class="font-size-20">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+            <div class="page-login-main">
+                <div class="brand hidden-md-up">
+                    <img class="brand-img" src="../../assets/images/logo-blue@2x.png" alt="...">
+                    <h3 class="brand-text font-size-40">Monkey</h3>
+                </div>
+                <h3 class="font-size-24">Sign In</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+
+                @using (Html.BeginForm("Auth", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group form-material floating" data-plugin="formMaterial">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control empty" })
+                        @Html.LabelFor(m => m.UserName, new { @class = "floating-label", @for = $"{nameof(Model.UserName)}" })
+                        @Html.ValidationMessageFor(model => model.UserName)
+                    </div>
+                    <div class="form-group form-material floating" data-plugin="formMaterial">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control empty" })
+                        @Html.LabelFor(m => m.Password, new { @class = "floating-label", @for = $"{nameof(Model.Password)}" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                    <div class="form-group clearfix">
+                        <a class="float-right" href="forgot-password.html">Forgot password?</a>
+                    </div>
+                    <button type="button" class="btn btn-primary ladda-button btn-block" data-style="slide-left" data-plugin="ladda" data-type="progress" id="sign-in">
+                        <span class="ladda-label">
+                            Sign in<i class="icon md-long-arrow-right mr-10" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                }
+                <p>
+                    No account? <a href="register-v2.html">Sign Up</a>
+                </p>
+                <footer class="page-copyright">
+                    <p>
+                        WEBSITE BY <a href="http://topnguyen.net">Top Nguyen</a>
+                    </p>
+                    <p>© 2017. All RIGHT RESERVED.</p>
+                    <div class="social">
+                        <a class="btn btn-icon btn-round social-twitter mx-5" href="javascript:void(0)">
+                            <i class="icon bd-twitter" aria-hidden="true"></i>
+                        </a>
+                        <a class="btn btn-icon btn-round social-facebook mx-5" href="javascript:void(0)">
+                            <i class="icon bd-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a class="btn btn-icon btn-round social-google-plus mx-5" href="javascript:void(0)">
+                            <i class="icon bd-google-plus" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_BottomScript.cshtml").ConfigureAwait(true);
+    }
+    <script type="text/javascript">
+        $(window).ready(function () {
+            $("#sign-in").on("click", function () {
+                //if ($("#sign-in-form").valid()) {
+                    $("#sign-in-form").submit();
+                //}
+            });
+        });
+    </script>
+</body>
+</html>

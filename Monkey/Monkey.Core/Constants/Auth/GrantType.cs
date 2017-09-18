@@ -4,24 +4,24 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Repository Interface </Project>
+//     <Project> Monkey </Project>
 //     <File>
-//         <Name> IRefreshTokenRepository.cs </Name>
-//         <Created> 13/09/17 11:24:49 PM </Created>
-//         <Key> 8fee94b9-a567-4aa7-8443-dfa90e71e0ed </Key>
+//         <Name> GrantType.cs </Name>
+//         <Created> 04/09/17 10:36:45 PM </Created>
+//         <Key> 356817d4-f882-4f7e-af37-94c94bf1252d </Key>
 //     </File>
 //     <Summary>
-//         IRefreshTokenRepository.cs
+//         GrantType.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Entities.Auth;
-
-namespace Monkey.Data.User
+namespace Monkey.Core.Constants.Auth
 {
-    public interface IRefreshTokenRepository : IEntityRepository<RefreshTokenEntity>
+    public enum GrantType
     {
+        Password = 1,
+        RefreshToken = 2
     }
 }

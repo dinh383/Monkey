@@ -1,11 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Monkey.Data.EF;
-using Monkey.Core.Constants;
-using Puppy.Web.HttpRequestDetection.Device;
+using System;
 
 namespace Monkey.Data.EF.Migrations
 {

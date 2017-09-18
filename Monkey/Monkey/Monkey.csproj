@@ -61,7 +61,6 @@
   <ItemGroup>
     <!-- Core - Cross-->
     <ProjectReference Include="..\Monkey.Core\Monkey.Core.csproj" />
-    <ProjectReference Include="..\Monkey.Authentication\Monkey.Authentication.csproj" />
     <ProjectReference Include="..\Monkey.Mapper\Monkey.Mapper.csproj" />
 
     <!-- Service -->

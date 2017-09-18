@@ -19,7 +19,7 @@
 
 using Monkey.Business;
 using Monkey.Core.Constants;
-using Monkey.Core.Models.Client;
+using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading.Tasks;
 
@@ -49,7 +49,7 @@ namespace Monkey.Service.Facade
         {
             if (await _userBusiness.GetTotalAsync().ConfigureAwait(true) <= 0)
             {
-                var subject = await _authenticationBusiness.CreateUserAsync("topnguyen92@gmail.com").ConfigureAwait(true);
+                var subject = await _authenticationBusiness.CreateUserByEmailAsync("topnguyen92@gmail.com").ConfigureAwait(true);
                 await _authenticationBusiness.ActiveByEmailAsync(subject, "topnguyen", "123456").ConfigureAwait(true);
             }
         }

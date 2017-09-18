@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Monkey.Authentication;
+using Monkey.Auth;
 using Monkey.Core.Configs;
 using Monkey.Data;
 using Monkey.Data.EF.Factory;

@@ -4,24 +4,27 @@
 //     <Copyright> 2017 © Top Nguyen → AspNetCore → Monkey </Copyright>
 //     <Url> http://topnguyen.net/ </Url>
 //     <Author> Top </Author>
-//     <Project> Monkey → Repository Interface </Project>
+//     <Project> Monkey </Project>
 //     <File>
-//         <Name> IRefreshTokenRepository.cs </Name>
-//         <Created> 13/09/17 11:24:49 PM </Created>
-//         <Key> 8fee94b9-a567-4aa7-8443-dfa90e71e0ed </Key>
+//         <Name> Constants.cs </Name>
+//         <Created> 03/09/17 1:35:14 PM </Created>
+//         <Key> a74f3b14-277a-4029-84f6-c90e1733cdba </Key>
 //     </File>
 //     <Summary>
-//         IRefreshTokenRepository.cs
+//         Constants.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Entities.Auth;
-
-namespace Monkey.Data.User
+namespace Monkey.Auth.Constants
 {
-    public interface IRefreshTokenRepository : IEntityRepository<RefreshTokenEntity>
+    public static class Constant
     {
+        public const string DefaultConfigSection = "Authentication";
+
+        public const string AuthenticationTokenType = "Bearer";
+
+        public const string ClientIdKey = "client_id";
     }
 }

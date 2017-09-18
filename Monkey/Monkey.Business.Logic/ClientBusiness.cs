@@ -18,9 +18,9 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
-using Monkey.Core.Entities.Client;
+using Monkey.Core.Entities.Auth;
 using Monkey.Core.Exceptions;
-using Monkey.Core.Models.Client;
+using Monkey.Core.Models.Auth;
 using Monkey.Data.Client;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
@@ -31,7 +31,6 @@ using System.Threading.Tasks;
 namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IClientBusiness))]
-    [PerRequestDependency(ServiceType = typeof(Authentication.Interfaces.IClientBusiness))]
     public class ClientBusiness : IClientBusiness
     {
         private readonly IClientRepository _clientRepository;

@@ -14,7 +14,7 @@ namespace Monkey.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("/deviceinfo")]
+        [Route("/test/deviceinfo")]
         public IActionResult DeviceInfo()
         {
             var deviceInfo = HttpContext.Request.GetDeviceInfo();
@@ -26,11 +26,15 @@ namespace Monkey.Controllers.Api
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("/userinfo")]
+        [Route("/test/userinfo")]
         [Authorize]
         public IActionResult LoggedInUser()
         {
-            return Ok(HttpContext.User.Identity.IsAuthenticated);
+            return Ok(new
+            {
+                IsAuthenticated = HttpContext.User.Identity.IsAuthenticated,
+                UserInfo = Core.LoggedInUser.Current
+            });
         }
     }
 }

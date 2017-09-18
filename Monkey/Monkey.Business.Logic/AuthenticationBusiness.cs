@@ -18,10 +18,11 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
-using Monkey.Authentication.Helpers;
+using Monkey.Auth.Helpers;
+using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
-using Monkey.Core.Models.User;
+using Monkey.Core.Models.Auth;
 using Monkey.Data.User;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
@@ -36,7 +37,6 @@ using System.Web;
 namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IAuthenticationBusiness))]
-    [PerRequestDependency(ServiceType = typeof(Authentication.Interfaces.IAuthenticationBusiness))]
     public class AuthenticationBusiness : IAuthenticationBusiness
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
@@ -182,7 +182,7 @@ namespace Monkey.Business.Logic
             }
         }
 
-        public async Task<LoggedInUserModel> GetBySubjectAsync(string subject)
+        public async Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject)
         {
             var user = await _userRepository.Get(x => x.GlobalId == subject)
                 .Include(x => x.Profile)
@@ -213,7 +213,7 @@ namespace Monkey.Business.Logic
                 throw new MonkeyException(ErrorCode.InvalidRefreshToken);
         }
 
-        public async Task<LoggedInUserModel> GetByRefreshTokenAsync(string refreshToken)
+        public async Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken)
         {
             var refreshTokenEntity = await _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken)
                 .Include(x => x.User)
@@ -260,7 +260,7 @@ namespace Monkey.Business.Logic
 
         #region Create and Active
 
-        public Task<string> CreateUserAsync(string email)
+        public Task<string> CreateUserByEmailAsync(string email)
         {
             var userEntity = new UserEntity
             {
@@ -270,6 +270,7 @@ namespace Monkey.Business.Logic
 
             _userRepository.Add(userEntity);
             _userRepository.SaveChanges();
+
             return Task.FromResult(userEntity.GlobalId);
         }
 

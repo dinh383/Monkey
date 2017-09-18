@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Entities.Auth;
 using System;
 using System.Collections.Generic;
 

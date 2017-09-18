@@ -17,17 +17,23 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.Client;
+using Monkey.Core.Models.Auth;
 using System.Threading.Tasks;
 
 namespace Monkey.Business
 {
-    public interface IClientBusiness : IBaseBusiness, Authentication.Interfaces.IClientBusiness
+    public interface IClientBusiness : IBaseBusiness
     {
         Task<int> GetTotalAsync();
 
         Task<ClientModel> CreateAsync(ClientCreateModel model);
 
         void CheckExistByName(params string[] names);
+
+        Task<int> GetIdAsync(string globalId, string secret);
+
+        void CheckExist(string subject, string secret);
+
+        void CheckBanned(string subject, string secret);
     }
 }

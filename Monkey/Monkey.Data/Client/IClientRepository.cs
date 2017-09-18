@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Entities.Client;
+using Monkey.Core.Entities.Auth;
 
 namespace Monkey.Data.Client
 {
