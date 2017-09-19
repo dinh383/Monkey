@@ -6,12 +6,12 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Repository Interface </Project>
 //     <File>
-//         <Name> IClientRepository.cs </Name>
-//         <Created> 14/09/17 7:53:14 PM </Created>
-//         <Key> 6b4c1443-c0fb-473f-80a9-e744a17a9efa </Key>
+//         <Name> IRefreshTokenRepository.cs </Name>
+//         <Created> 13/09/17 11:24:49 PM </Created>
+//         <Key> 8fee94b9-a567-4aa7-8443-dfa90e71e0ed </Key>
 //     </File>
 //     <Summary>
-//         IClientRepository.cs
+//         IRefreshTokenRepository.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -19,9 +19,9 @@
 
 using Monkey.Core.Entities.Auth;
 
-namespace Monkey.Data.Client
+namespace Monkey.Data.Auth
 {
-    public interface IClientRepository : IEntityRepository<ClientEntity>
+    public interface IRefreshTokenRepository : IEntityRepository<RefreshTokenEntity>
     {
     }
 }

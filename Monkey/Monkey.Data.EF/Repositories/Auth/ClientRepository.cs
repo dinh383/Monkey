@@ -18,7 +18,7 @@
 #endregion License
 
 using Monkey.Core.Entities.Auth;
-using Monkey.Data.Client;
+using Monkey.Data.Auth;
 using Puppy.DependencyInjection.Attributes;
 
 namespace Monkey.Data.EF.Repositories.Auth
