@@ -164,7 +164,11 @@ namespace Monkey.Auth.Helpers
 
         public static void SetCookieValue(IResponseCookies cookies, string key, string value)
         {
-            cookies.Append(key, value.Encrypt(AuthConfig.SecretKey));
+            cookies.Append(key, value.Encrypt(AuthConfig.SecretKey), new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false // allow transmit via http and https
+            });
         }
 
         #endregion
