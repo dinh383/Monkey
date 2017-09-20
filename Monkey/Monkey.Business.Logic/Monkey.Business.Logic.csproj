@@ -31,6 +31,6 @@
   <!-- External Libraries -->
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="HangFire" Version="1.6.16" />
+    <PackageReference Include="HangFire" Version="1.6.17" />
   </ItemGroup>
 </Project>
