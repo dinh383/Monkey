@@ -7,6 +7,8 @@
     Purple Darker: #261d35
     Purple Deep: #1d1629
     Pink #f46c93
+    Pink Dark: #f54879
+    Pink Darker: #e63b6c
     White #f7f7f7
     Blue: #75efec
 ```

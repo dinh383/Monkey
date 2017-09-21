@@ -16,5 +16,17 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/css/monkey.css"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/js/config/jquery-validation.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/js/config/jquery-validation.js"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/css/skins/monkey-skin.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/css/skins/monkey-skin.css"
+    ]
   }
 ]
