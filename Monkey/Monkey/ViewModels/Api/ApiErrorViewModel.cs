@@ -21,6 +21,7 @@ using EnumsNET;
 using Monkey.Core.Exceptions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.ViewModels.Api
 {
@@ -33,8 +34,8 @@ namespace Monkey.ViewModels.Api
         public ApiErrorViewModel(ErrorCode code, string message)
         {
             Code = code;
-            Message = string.IsNullOrWhiteSpace(message) ? ($"{code.AsString(EnumFormat.DisplayName)}, {code.AsString(EnumFormat.Description)}") : message;
-            Module = code.AsString(EnumFormat.DisplayName);
+            Message = string.IsNullOrWhiteSpace(message) ? code.AsString(EnumFormat.Description) : message;
+            Module = Enums.GetMember<ErrorCode>(code.ToString()).Value.GetAttributes().Get<DisplayAttribute>().GetGroupName();
         }
 
         public ApiErrorViewModel(ErrorCode code, string message, Dictionary<string, object> additionalData) : this(code, message)

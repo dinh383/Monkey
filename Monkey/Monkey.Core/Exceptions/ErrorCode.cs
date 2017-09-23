@@ -23,58 +23,69 @@ using System.ComponentModel.DataAnnotations;
 namespace Monkey.Core.Exceptions
 {
     /// <summary>
-    ///     Error code for whole system 
+    ///     Error code for whole system, [Display(Group Name)] for Module, [Description] for default message
     /// </summary>
     public enum ErrorCode
     {
         // Global
-        [Display(Name = "Bad Request", GroupName = "Global")]
         [Description("Bad Request")]
+        [Display(GroupName = "Global")]
         BadRequest = 400,
 
-        [Display(Name = "Un-Authenticate", GroupName = "Global")]
+        [Display(GroupName = "Global")]
         [Description("Un-Authenticate")]
         UnAuthenticated = 401,
 
-        [Display(Name = "Forbidden", GroupName = "Global")]
+        [Display(GroupName = "Global")]
         [Description("Forbidden, this feature for 18+ :))")]
         Unauthorized = 403,
 
-        [Display(Name = "Unknown", GroupName = "Global")]
         [Description("Awesome, You break the system :o. You know what they say, you get what you pay for... The features do not write themselves, you know. Now, just god and you know what happen.")]
+        [Display(GroupName = "Global")]
         Unknown = 500,
 
-        [Display(Name = "Invalid refresh token", GroupName = "Token")]
+        [Display(GroupName = "Token")]
+        [Description("Invalid refresh token")]
         InvalidRefreshToken = 600,
 
-        [Display(Name = "Refresh token is expired", GroupName = "Token")]
+        [Display(GroupName = "Token")]
+        [Description("Refresh token is expired")]
         RefreshTokenExpired = 601,
 
-        [Display(Name = "Invalid access token", GroupName = "Token")]
+        [Display(GroupName = "Token")]
+        [Description("Invalid access token")]
         InvalidAccessToken = 603,
 
-        [Display(Name = "Access token is expired", GroupName = "Token")]
+        [Display(GroupName = "Token")]
+        [Description("Access token is expired")]
         AccessTokenExpired = 604,
 
-        [Display(Name = "Invalid client, wrong client id or client secret", GroupName = "Client")]
+        [Display(GroupName = "Client")]
+        [Description("Invalid client, wrong client id or client secret")]
         InvalidClient = 700,
 
-        [Display(Name = "Client is banned", GroupName = "Client")]
+        [Display(GroupName = "Client")]
+        [Description("Client is banned")]
         ClientIsBanned = 7001,
 
-        [Display(Name = "User does not exist", GroupName = "User")]
+        [Display(GroupName = "User")]
+        [Description("User does not exist")]
         UserNotExist = 1000,
 
-        [Display(Name = "User is in-active", GroupName = "User")]
+        [Display(GroupName = "User")]
+        [Description("User is in-active")]
         UserInActive = 1001,
 
-        [Display(Name = "User Name does not exist", GroupName = "User")]
+        [Display(GroupName = "User")]
+        [Description("User Name does not exist")]
         UserNameNotExist = 1002,
 
-        [Display(Name = "User password is wrong", GroupName = "User")]
+        [Display(GroupName = "User")]
+        [Description("User password is wrong")]
         UserPasswordIsWrong = 1003,
 
-        [Display(Name = "User is banned", GroupName = "User")]
+        [Display(GroupName = "User")]
+        [Description("User is banned")]
         UserIsBanned = 1004,
     }
 }
