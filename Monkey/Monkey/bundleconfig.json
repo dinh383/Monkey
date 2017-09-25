@@ -64,5 +64,11 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.js"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/datatables-colvis/dataTables.colVis.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/datatables-colvis/dataTables.colVis.js"
+    ]
   }
 ]
