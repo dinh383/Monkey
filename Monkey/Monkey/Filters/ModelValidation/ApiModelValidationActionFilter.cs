@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Monkey.ViewModels.Api;
+using Monkey.Core.Exceptions;
 using Newtonsoft.Json;
 using Puppy.Core.XmlUtils;
 using Puppy.Logger;
@@ -22,7 +22,7 @@ namespace Monkey.Filters.ModelValidation
             var logId = Log.Error(logMessage);
 
             // Response Result
-            var apiErrorViewModel = new ApiErrorViewModel(Core.Exceptions.ErrorCode.BadRequest, null, keyValueInValid) { Id = logId };
+            var apiErrorViewModel = new ErrorModel(Core.Exceptions.ErrorCode.BadRequest, null, keyValueInValid) { Id = logId };
 
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 

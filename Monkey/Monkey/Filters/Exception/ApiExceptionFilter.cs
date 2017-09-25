@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
-using Monkey.ViewModels.Api;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Core.XmlUtils;
 using Puppy.Logger;
@@ -16,7 +15,7 @@ namespace Monkey.Filters.Exception
     {
         public override void OnException(ExceptionContext context)
         {
-            ApiErrorViewModel apiErrorViewModel;
+            ErrorModel errorModel;
             MonkeyException exception = context.Exception as MonkeyException;
             string logId;
 
@@ -27,11 +26,11 @@ namespace Monkey.Filters.Exception
 
                 var ex = exception;
                 context.Exception = null;
-                apiErrorViewModel = new ApiErrorViewModel(ex.Code, ex.Message, exception.AdditionalData);
+                errorModel = new ErrorModel(ex.Code, ex.Message, exception.AdditionalData);
 
                 if (exception.AdditionalData?.Any() == true)
                 {
-                    apiErrorViewModel.AdditionalData = exception.AdditionalData;
+                    errorModel.AdditionalData = exception.AdditionalData;
                 }
 
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -41,7 +40,7 @@ namespace Monkey.Filters.Exception
                 // Log with Logger
                 logId = Log.Error(context);
 
-                apiErrorViewModel = new ApiErrorViewModel(ErrorCode.Unauthorized, "Unauthorized Access");
+                errorModel = new ErrorModel(ErrorCode.Unauthorized, "Unauthorized Access");
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             }
             else
@@ -53,21 +52,21 @@ namespace Monkey.Filters.Exception
                     ? context.Exception.Message
                     : "Oh no! You broke the system. The features do not write themselves, you know what I say, you get what you pay for....";
 
-                apiErrorViewModel = new ApiErrorViewModel(ErrorCode.Unknown, message);
+                errorModel = new ErrorModel(ErrorCode.Unknown, message);
 
                 if (EnvironmentHelper.IsDevelopment())
                 {
                     // Add additional data
-                    apiErrorViewModel.AdditionalData.Add("stackTrace", context.Exception.StackTrace);
-                    apiErrorViewModel.AdditionalData.Add("innerException", context.Exception.InnerException?.Message);
-                    apiErrorViewModel.AdditionalData.Add("note", "The message is exception message and additional data such as 'stackTrace', 'internalException' and 'note' only have in [Development Environment].");
+                    errorModel.AdditionalData.Add("stackTrace", context.Exception.StackTrace);
+                    errorModel.AdditionalData.Add("innerException", context.Exception.InnerException?.Message);
+                    errorModel.AdditionalData.Add("note", "The message is exception message and additional data such as 'stackTrace', 'internalException' and 'note' only have in [Development Environment].");
                 }
 
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 
             // Update ID of error model as log id
-            apiErrorViewModel.Id = logId;
+            errorModel.Id = logId;
 
             // Response Result
             if (context.HttpContext.Request.Headers[HeaderKey.Accept] == ContentType.Xml || context.HttpContext.Request.Headers[HeaderKey.ContentType] == ContentType.Xml)
@@ -76,12 +75,12 @@ namespace Monkey.Filters.Exception
                 {
                     ContentType = ContentType.Xml,
                     StatusCode = context.HttpContext.Response.StatusCode,
-                    Content = XmlHelper.ToXmlStringViaJson(apiErrorViewModel, "Error")
+                    Content = XmlHelper.ToXmlStringViaJson(errorModel, "Error")
                 };
             }
             else
             {
-                context.Result = new JsonResult(apiErrorViewModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
+                context.Result = new JsonResult(errorModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
             }
 
             // Keep base Exception

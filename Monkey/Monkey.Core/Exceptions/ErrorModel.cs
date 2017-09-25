@@ -5,12 +5,12 @@
 //     <Author> Top </Author>
 //     <Project> Monkey.Auth.Domain.ViewModels </Project>
 //     <File>
-//         <Name> ApiErrorViewModel </Name>
+//         <Name> ErrorModel </Name>
 //         <Created> 12/04/2017 09:21:24 AM </Created>
 //         <Key> 9626e038-c848-4955-8ce2-4f20e371d277 </Key>
 //     </File>
 //     <Summary>
-//         ApiErrorViewModel
+//         ErrorModel
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
@@ -18,27 +18,26 @@
 #endregion License
 
 using EnumsNET;
-using Monkey.Core.Exceptions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Monkey.ViewModels.Api
+namespace Monkey.Core.Exceptions
 {
-    public class ApiErrorViewModel
+    public class ErrorModel
     {
-        public ApiErrorViewModel()
+        public ErrorModel()
         {
         }
 
-        public ApiErrorViewModel(ErrorCode code, string message)
+        public ErrorModel(ErrorCode code, string message)
         {
             Code = code;
             Message = string.IsNullOrWhiteSpace(message) ? code.AsString(EnumFormat.Description) : message;
             Module = Enums.GetMember<ErrorCode>(code.ToString()).Value.GetAttributes().Get<DisplayAttribute>().GetGroupName();
         }
 
-        public ApiErrorViewModel(ErrorCode code, string message, Dictionary<string, object> additionalData) : this(code, message)
+        public ErrorModel(ErrorCode code, string message, Dictionary<string, object> additionalData) : this(code, message)
         {
             AdditionalData = additionalData;
         }
