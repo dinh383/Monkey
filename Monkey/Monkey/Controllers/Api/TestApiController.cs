@@ -89,7 +89,7 @@ namespace Monkey.Controllers.Api
         public string Position { get; set; }
 
         [DataTables(DisplayName = "Hired Time")]
-        [DataTablesFilter(DataTablesFilterType.Text)]
+        [DataTablesFilter(DataTablesFilterType.DateRange)]
         public DateTime? Hired { get; set; }
 
         [DataTables(DisplayName = "Content")]

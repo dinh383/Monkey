@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------------------------
 // <License>
 //     <Author> Top </Author>
-//     <Project> Monkey.Auth.Domain.ViewModels </Project>
+//     <Project> Monkey.Core.Models </Project>
 //     <File>
 //         <Name> ErrorModel </Name>
 //         <Created> 12/04/2017 09:21:24 AM </Created>

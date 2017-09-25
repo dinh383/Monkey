@@ -44,7 +44,7 @@
 # API Note
 
 - For Paging: use search keyword by `terms`, page size and page number by `skip` and `take`
-- Api Response follow `ViewModels/Api`
+- Api Response follow `Puppy.Web/Models/Api`
 - 3 Types of Response
   + [Success] Response `Collection`
   
