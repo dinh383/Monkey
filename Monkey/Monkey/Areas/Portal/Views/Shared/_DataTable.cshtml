@@ -1,27 +1,16 @@
 ﻿@using Newtonsoft.Json.Linq
 @using Puppy.DataTable
-@model DataTableConfigModel
+@using Puppy.DataTable.Models
+@model Puppy.DataTable.Models.DataTableConfigModel
 
 <table id="@Model.Id" class="@(Model.TableClass ?? string.Empty)">
     <thead>
-        @if (Model.IsUseColumnFilterPlugin)
+        <tr>
+            @foreach (var column in Model.Columns)
             {
-            <tr>
-                @foreach (var column in Model.Columns)
-                {
-                    <th>@column.DisplayName</th>
-                }
-            </tr>
-        }
-        @if (!Model.IsHideHeader)
-            {
-            <tr>
-                @foreach (var column in Model.Columns)
-                {
-                    <th class="@column.CssClassHeader">@column.DisplayName</th>
-                }
-            </tr>
-        }
+                <th class="@column.CssClassHeader">@column.DisplayName</th>
+            }
+        </tr>
     </thead>
     <tbody>
         <tr>
@@ -44,7 +33,8 @@
             {
                 ["aaSorting"] = new JRaw(Model.ColumnSortingString),
                 ["bProcessing"] = true,
-                ["bStateSave"] = Model.IsStateSave,
+                ["stateSave"] = Model.IsStateSave,
+                ["stateDuration"] = -1,
                 ["bServerSide"] = true,
                 ["bFilter"] = Model.IsShowGlobalSearchInput,
                 ["sDom"] = Model.Dom,
@@ -116,7 +106,7 @@
         var dt = $table.DataTable(dtOptions);
 
         // Col filters
-        @if (Model.IsUseColumnFilterPlugin)
+        @if (Model.IsUseColumnFilter)
         {
             // TODO handle case dt.filterColumns
             // @Html.Raw("dt.columnFilter(" + Model.ColumnFilterVm + ");")

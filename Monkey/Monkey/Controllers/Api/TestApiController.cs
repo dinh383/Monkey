@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
 using Puppy.DataTable;
+using Puppy.DataTable.Attributes;
+using Puppy.DataTable.Constants;
 using Puppy.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Puppy.DataTable.Attributes;
 
 namespace Monkey.Controllers.Api
 {
@@ -37,7 +38,7 @@ namespace Monkey.Controllers.Api
         {
             return Ok(new
             {
-                IsAuthenticated = HttpContext.User.Identity.IsAuthenticated,
+                HttpContext.User.Identity.IsAuthenticated,
                 UserInfo = Core.LoggedInUser.Current
             });
         }
@@ -74,24 +75,17 @@ namespace Monkey.Controllers.Api
 
     public class UserFacetRowViewModel
     {
-        [DataTables(DisplayName = "E-Mail", IsSearchable = true, IsVisible = true)]
-        [DataTablesFilter(Selector = "#" + nameof(Email) + "Filter")]
+        [DataTables(DisplayName = "E-Mail")]
         public string Email { get; set; }
 
-        [DataTables(Width = "70px", IsVisible = true)]
-        [DataTablesFilter(Selector = "#" + nameof(IsAdmin) + "Filter")]
+        [DataTables(DisplayName = "Is Admin")]
         public bool IsAdmin { get; set; }
 
-        [DataTables(Width = "70px", IsVisible = true)]
-        [DataTablesFilter(Selector = "#" + nameof(Position) + "Filter")]
         public string Position { get; set; }
 
-        [DataTablesFilter(DataTablesFilterType.DateTimeRange, Selector = "#" + nameof(Hired) + "Filter")]
-        [DataTables(IsVisible = true)]
+        [DataTablesFilter(DataTablesFilterType.DateTimeRange)]
         public DateTime? Hired { get; set; }
 
-        [DataTables(IsSortable = true, IsSearchable = true)]
-        [DataTablesFilter(DataTablesFilterType.None)]
         public string Content { get; set; }
     }
 

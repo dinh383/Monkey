@@ -15,11 +15,11 @@
 
             @{
                 var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (TestApiController controller) => controller.GetFacetedUsers(null));
-                model.IsStateSave = false;
+                model.IsStateSave = true;
                 model.IsUseTableTools = true;
-                model.IsUseColumnFilterPlugin = true;
+                model.IsHideHeader = false;
+                model.IsUseColumnFilter = false;
                 model.IsDevelopMode = true;
-                model.TableClass = "table table-hover dataTable table-striped w-full";
             }
 
             @await Html.PartialAsync("/Areas/Portal/Views/Shared/_DataTable.cshtml", model).ConfigureAwait(true)
