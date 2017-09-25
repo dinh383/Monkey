@@ -1,7 +1,28 @@
-﻿@using Constants = Monkey.Constants
+﻿@using Monkey.Controllers.Api
+@using Puppy.DataTable
+@using Puppy.DataTable.Helpers
+@using Constants = Monkey.Constants
 @{
     ViewData[Constants.ViewDataKey.Title] = "Portal";
 }
 
-<h2>Blank</h2>
-<p>Page content goes here</p>
+<div class="page-header">
+    <h1 class="page-title">DataTables</h1>
+</div>
+<div class="page-content">
+    <div class="panel">
+        <div class="panel-body">
+
+            @{
+                var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (TestApiController controller) => controller.GetFacetedUsers(null));
+                model.IsStateSave = false;
+                model.IsUseTableTools = true;
+                model.IsUseColumnFilterPlugin = true;
+                model.IsDevelopMode = true;
+                model.TableClass = "table table-hover dataTable table-striped w-full";
+            }
+
+            @await Html.PartialAsync("/Areas/Portal/Views/Shared/_DataTable.cshtml", model).ConfigureAwait(true)
+        </div>
+    </div>
+</div>

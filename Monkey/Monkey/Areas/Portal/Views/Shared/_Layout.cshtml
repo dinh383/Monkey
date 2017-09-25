@@ -21,11 +21,9 @@
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_Menubar.cshtml").ConfigureAwait(true);
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_GirdMenu.cshtml").ConfigureAwait(true);
     }
-    <div class="page">
-        <div class="page-content">
-            @RenderBody()
-        </div>
-    </div>
+<div class="page">
+    @RenderBody()
+</div>
     @{
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_Footer.cshtml").ConfigureAwait(true);
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_BottomScript.cshtml").ConfigureAwait(true);

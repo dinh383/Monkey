@@ -11,6 +11,7 @@ using Monkey.Extensions;
 using Monkey.Mapper;
 using Monkey.Service;
 using Puppy.Core.TypeUtils;
+using Puppy.DataTable;
 using Puppy.DependencyInjection;
 using Puppy.Hangfire;
 using Puppy.Logger;

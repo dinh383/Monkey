@@ -29,6 +29,7 @@ using Monkey.Core.Configs;
 using Monkey.Core.Validators;
 using Monkey.Filters.Exception;
 using Puppy.Core.EnvironmentUtils;
+using Puppy.DataTable;
 using Puppy.Web.Constants;
 using Puppy.Web.Render;
 using System.IO;
@@ -64,6 +65,7 @@ namespace Monkey.Extensions
                     options.RespectBrowserAcceptHeader = true; // false by default
                     options.Filters.Add(new ProducesAttribute(ContentType.Xml));
                     options.Filters.Add(new ProducesAttribute(ContentType.Json));
+                    options.UseHtmlEncodeModelBinding();
                 })
                 .AddXmlDataContractSerializerFormatters()
                 .AddJsonOptions(options =>
@@ -96,6 +98,10 @@ namespace Monkey.Extensions
             if (!EnvironmentHelper.IsDevelopment())
             {
                 app.UseResponseCaching();
+            }
+            else
+            {
+                app.UseDeveloperExceptionPage();
             }
 
             // Root Path and GZip

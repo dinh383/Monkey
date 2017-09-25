@@ -98,6 +98,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.Logger.Core", "..\Pup
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monkey.Auth", "Monkey.Auth\Monkey.Auth.csproj", "{85329FAE-F06E-4B3E-9077-0197CAEB2342}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Puppy.DataTable", "..\Puppy\Puppy.DataTable\Puppy.DataTable.csproj", "{B02CA681-3940-488E-81B9-42A2F697066E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -212,6 +214,10 @@ Global
 		{85329FAE-F06E-4B3E-9077-0197CAEB2342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85329FAE-F06E-4B3E-9077-0197CAEB2342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85329FAE-F06E-4B3E-9077-0197CAEB2342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B02CA681-3940-488E-81B9-42A2F697066E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B02CA681-3940-488E-81B9-42A2F697066E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B02CA681-3940-488E-81B9-42A2F697066E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B02CA681-3940-488E-81B9-42A2F697066E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,6 +263,7 @@ Global
 		{6EAB5380-6752-4823-A219-979A7B141D9B} = {F1E65356-CCD1-4C2C-9FF4-85C64352F2F8}
 		{5EFF4EA2-3C57-4811-A304-17D044A4563F} = {F1E65356-CCD1-4C2C-9FF4-85C64352F2F8}
 		{85329FAE-F06E-4B3E-9077-0197CAEB2342} = {6126AA32-418B-454E-BB37-4478C308E5AD}
+		{B02CA681-3940-488E-81B9-42A2F697066E} = {8F3FB4A4-9288-4E11-B047-819F90D5D787}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF789A0A-4FC2-42BE-8093-0C3CF5410BE5}

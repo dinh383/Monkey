@@ -1,7 +1,7 @@
 body {
     color: #757575;
     background-color: #fff;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 ::-moz-selection {
@@ -9808,4 +9808,9 @@ fieldset[disabled] .form-material .form-control {
 .example-typography .heading-note,
 .example-typography .text-note {
     color: #aab2bd;
+}
+
+.field-validation-error {
+    font-size: small;
+    color: #f46c93
 }

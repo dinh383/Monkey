@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Auth.Filters;
 
 namespace Monkey.Areas.Portal.Controllers
 {
@@ -8,7 +7,6 @@ namespace Monkey.Areas.Portal.Controllers
     {
         [Route("")]
         [HttpGet]
-        [Auth]
         public IActionResult Index()
         {
             return View();
