@@ -47,12 +47,7 @@ namespace Monkey.Auth
         public static IServiceCollection AddHybridAuth(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
         {
             configuration.BuildConfig(configSection);
-
-            if (!HttpContextAccessorExtensions.IsAlreadySetup)
-            {
-                services.AddHttpContextAccessor();
-            }
-
+            services.AddHttpContextAccessor();
             return services;
         }
 
@@ -75,10 +70,7 @@ namespace Monkey.Auth
         /// <returns></returns>
         public static IApplicationBuilder UseHybridAuth(this IApplicationBuilder app)
         {
-            if (!HttpContextAccessorExtensions.IsAlreadySetup)
-            {
-                app.UseHttpContextAccessor();
-            }
+            app.UseHttpContextAccessor();
 
             app.UseMiddleware<CookieAuthMiddleware>();
 
@@ -156,8 +148,8 @@ namespace Monkey.Auth
         }
 
         /// <summary>
-        ///     Get Logged In User by HTTP Request Header, JWT Middleware already put value for
-        ///     HttpContext.User data.
+        ///     Get data for LoggedInUser.Current by HTTP Request Header, JWT Middleware already put
+        ///     value for HttpContext.User (Http Context Identity)
         /// </summary>
         public class LoggedInUserMiddleware
         {
