@@ -1,4 +1,6 @@
-﻿.page-content th > .form-control {
+﻿
+/* DataTable - Start */
+.page-content th > .form-control {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -12,6 +14,11 @@
     .dataTables_filter {
         text-align: right
     }
+
+    .dt-buttons {
+        justify-content: flex-end;
+        width: 100%;
+    }
 }
 
 @media (max-width: 320px) {
@@ -21,6 +28,11 @@
 
     .dataTables_filter {
         text-align: center!important
+    }
+
+    .dt-buttons {
+        justify-content: center;
+        width: 100%;
     }
 }
 
@@ -46,4 +58,4 @@
     }
 }
 
-
+/* DataTable - End */

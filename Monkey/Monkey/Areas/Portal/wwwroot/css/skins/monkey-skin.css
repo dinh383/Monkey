@@ -745,13 +745,13 @@ select.form-control:focus::-ms-value {
 }
 
     .dropdown-item:focus, .dropdown-item:hover {
-        color: #757575;
-        background-color: #eee;
+        color: #eee;
+        background-color: #312442;
     }
 
     .dropdown-item.active, .dropdown-item.active:focus, .dropdown-item.active:hover {
-        color: #757575;
-        background-color: #eee;
+        color: #eee;
+        background-color: #312442;
     }
 
     .dropdown-item.disabled, .dropdown-item.disabled:focus, .dropdown-item.disabled:hover {
@@ -9810,7 +9810,19 @@ fieldset[disabled] .form-material .form-control {
     color: #aab2bd;
 }
 
+/* Validation - Start */
+
 .field-validation-error {
     font-size: small;
     color: #f46c93
 }
+
+/* Validation - End */
+
+/* Button Group  - Start */
+
+.btn-group .btn ~ .dropdown-toggle:after {
+    margin-left: 5px;
+}
+
+/* Button Group  - End */

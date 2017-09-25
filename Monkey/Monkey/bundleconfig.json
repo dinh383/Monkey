@@ -28,5 +28,41 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/css/skins/monkey-skin.css"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/datatables-columnfilter/jquery.dataTables.columnFilter.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/datatables-columnfilter/jquery.dataTables.columnFilter.js"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/datatables-columnfilter/jquery.dataTables.columnFilter.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/datatables-columnfilter/jquery.dataTables.columnFilter.css"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/datatables-colvis/dataTables.colVis.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/datatables-colvis/dataTables.colVis.css"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/datatables-tabletools/dataTables.tableTools.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/datatables-tabletools/dataTables.tableTools.js"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.css"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.js"
+    ]
   }
 ]

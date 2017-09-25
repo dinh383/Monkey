@@ -15,10 +15,6 @@
 
             @{
                 var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (TestApiController controller) => controller.GetFacetedUsers(null));
-                model.IsStateSave = true;
-                model.IsUseTableTools = true;
-                model.IsHideHeader = false;
-                model.IsUseColumnFilter = false;
                 model.IsDevelopMode = true;
             }
 

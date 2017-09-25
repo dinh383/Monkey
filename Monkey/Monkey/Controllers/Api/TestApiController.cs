@@ -7,6 +7,7 @@ using Puppy.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Puppy.DataTable.Models;
 
 namespace Monkey.Controllers.Api
 {
@@ -76,16 +77,23 @@ namespace Monkey.Controllers.Api
     public class UserFacetRowViewModel
     {
         [DataTables(DisplayName = "E-Mail")]
+        [DataTablesFilter(DataTablesFilterType.Text)]
         public string Email { get; set; }
 
         [DataTables(DisplayName = "Is Admin")]
+        [DataTablesFilter(DataTablesFilterType.Select)]
         public bool IsAdmin { get; set; }
 
+        [DataTables(DisplayName = "Position")]
+        [DataTablesFilter(DataTablesFilterType.Text)]
         public string Position { get; set; }
 
-        [DataTablesFilter(DataTablesFilterType.DateTimeRange)]
+        [DataTables(DisplayName = "Hired Time")]
+        [DataTablesFilter(DataTablesFilterType.Text)]
         public DateTime? Hired { get; set; }
 
+        [DataTables(DisplayName = "Content")]
+        [DataTablesFilter(DataTablesFilterType.None)]
         public string Content { get; set; }
     }
 

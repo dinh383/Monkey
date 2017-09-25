@@ -2,5 +2,9 @@
   {
     "outputFile": "Areas/Portal/wwwroot/js/config/jquery-validation.es5.js",
     "inputFile": "Areas/Portal/wwwroot/js/config/jquery-validation.js"
+  },
+  {
+    "outputFile": "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.es5.js",
+    "inputFile": "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.js"
   }
 ]
