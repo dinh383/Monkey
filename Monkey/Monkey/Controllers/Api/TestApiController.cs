@@ -83,32 +83,32 @@ namespace Monkey.Controllers.Api
 
     public class UserFacetRowViewModel
     {
-        [DataTables(DisplayName = "Full Name")]
-        [DataTablesFilter(DataTablesFilterType.Text)]
+        [DataTable(DisplayName = "Full Name")]
+        [DataTableFilter(DataTablesFilterType.Text)]
         public string Name { get; set; }
 
-        [DataTables(DisplayName = "E-Mail")]
-        [DataTablesFilter(DataTablesFilterType.Text)]
+        [DataTable(DisplayName = "E-Mail")]
+        [DataTableFilter(DataTablesFilterType.Text)]
         public string Email { get; set; }
 
-        [DataTables(DisplayName = "Is Admin")]
-        [DataTablesFilter(DataTablesFilterType.Select)]
+        [DataTable(DisplayName = "Is Admin")]
+        [DataTableFilter(DataTablesFilterType.Select)]
         public bool IsAdmin { get; set; }
 
-        [DataTables(DisplayName = "Position")]
-        [DataTablesFilter(DataTablesFilterType.Select)]
-        public FakeDatabase.PositionTypes Position { get; set; }
+        [DataTable(DisplayName = "Position")]
+        [DataTableFilter(DataTablesFilterType.Select)]
+        public FakeDatabase.PositionTypes? Position { get; set; }
 
-        [DataTables(DisplayName = "Number")]
-        [DataTablesFilter(DataTablesFilterType.Select)]
+        [DataTable(DisplayName = "Number")]
+        [DataTableFilter(DataTablesFilterType.Select)]
         public FakeDatabase.Numbers Number { get; set; }
 
-        [DataTables(DisplayName = "Hired Time")]
-        [DataTablesFilter(DataTablesFilterType.Text)]
+        [DataTable(DisplayName = "Hired Time")]
+        [DataTableFilter(DataTablesFilterType.Text)]
         public DateTime? Hired { get; set; }
 
-        [DataTables(DisplayName = "Content")]
-        [DataTablesFilter(DataTablesFilterType.None)]
+        [DataTable(DisplayName = "Content")]
+        [DataTableFilter(DataTablesFilterType.None)]
         public string Content { get; set; }
     }
 
@@ -120,8 +120,9 @@ namespace Monkey.Controllers.Api
         {
             var r = new Random();
             var domains = "gmail.com,yahoo.com,hotmail.com".Split(',').ToArray();
-            var positions = new List<PositionTypes>
+            var positions = new List<PositionTypes?>
             {
+                null,
                 PositionTypes.Engineer,
                 PositionTypes.Tester,
                 PositionTypes.Manager
@@ -161,6 +162,7 @@ namespace Monkey.Controllers.Api
         {
             [Display(Name = "Software Engineer")]
             Engineer,
+
             Tester,
             Manager
         }
@@ -173,7 +175,7 @@ namespace Monkey.Controllers.Api
 
             public string Email { get; set; }
 
-            public PositionTypes Position { get; set; }
+            public PositionTypes? Position { get; set; }
 
             public DateTime? Hired { get; set; }
 
