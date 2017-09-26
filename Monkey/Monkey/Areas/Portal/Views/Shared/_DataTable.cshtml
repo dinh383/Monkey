@@ -1,6 +1,7 @@
 ﻿@using Newtonsoft.Json.Linq
-@using Puppy.DataTable.Models
-@model DataTableConfigModel
+@using Puppy.DataTable.Models.Config
+@using Puppy.DataTable.Utils.Extensions
+@model DataTableModel
 
 <table id="@Model.Id" class="@(Model.TableClass ?? string.Empty)">
     <thead>
@@ -25,7 +26,7 @@
     </thead>
     <tbody>
         <tr>
-            <td colspan="@Model.Columns.Count()" class="dataTables_empty">
+            <td colspan="@Model.Columns.Count" class="dataTables_empty">
                 Loading...
             </td>
         </tr>
@@ -42,7 +43,7 @@
         @{
             var options = new JObject
             {
-                ["aaSorting"] = new JRaw(Model.ColumnSortingString),
+                ["aaSorting"] = new JRaw(Model.GetColumnSortingString()),
                 ["bProcessing"] = true,
                 ["stateSave"] = Model.IsStateSave,
                 ["stateDuration"] = -1,
@@ -58,8 +59,8 @@
                 },
                 ["bAutoWidth"] = Model.IsAutoWidthColumn,
                 ["sAjaxSource"] = Model.AjaxUrl,
-                ["aoColumnDefs"] = new JRaw(Model.ColumnDefsString),
-                ["aoSearchCols"] = Model.SearchCols,
+                ["aoColumnDefs"] = new JRaw(Model.GetColumnsJsonString()),
+                ["aoSearchCols"] = Model.GetSearchColumns(),
                 // Size List
                 ["aLengthMenu"] = Model.LengthMenu != null ? new JRaw(Model.LengthMenu) : new JRaw(string.Empty)
             };
@@ -122,7 +123,7 @@
         // Col filters
         @if (Model.IsUseColumnFilter)
         {
-            @Html.Raw("$dataTable.columnFilter(" + Model.ColumnFilterVm + ");")
+            @Html.Raw("$dataTable.columnFilter(" + Model.ColumnFilter + ");")
         }
 
         // Global Variable

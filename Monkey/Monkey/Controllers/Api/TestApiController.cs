@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
 using Puppy.DataTable;
 using Puppy.DataTable.Attributes;
-using Puppy.DataTable.Models;
+using Puppy.DataTable.Constants;
+using Puppy.DataTable.Models.Request;
 using Puppy.Web;
 using System;
 using System.Collections.Generic;
@@ -96,7 +97,7 @@ namespace Monkey.Controllers.Api
         [DataTable(DisplayName = "Hired Time")]
         public DateTime? Hired { get; set; }
 
-        [DataTableFilter(DataTablesFilterType.None)]
+        [DataTableFilter(FilterType.None)]
         public string Content { get; set; }
     }
 
@@ -150,7 +151,6 @@ namespace Monkey.Controllers.Api
         {
             [Display(Name = "Software Engineer")]
             Engineer,
-
             Tester,
             Manager
         }

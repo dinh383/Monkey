@@ -1,6 +1,7 @@
 ﻿@using Monkey.Controllers.Api
 @using Puppy.DataTable
 @using Puppy.DataTable.Models
+@using Puppy.DataTable.Models.Config.Column
 @using Puppy.DataTable.Utils
 @using Constants = Monkey.Constants
 @{
@@ -19,7 +20,7 @@
                 model.IsDevelopMode = true;
                 model.IsUseColumnFilter = true;
 
-                model.Columns.Add(new ColDefModel("Action", typeof(string))
+                model.Columns.Add(new ColumnModel("Action", typeof(string))
                 {
                     DisplayName = "Action Col",
                     IsSearchable = false,
