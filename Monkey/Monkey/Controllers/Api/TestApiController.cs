@@ -3,7 +3,6 @@ using Monkey.Auth.Filters;
 using Puppy.DataTable;
 using Puppy.DataTable.Attributes;
 using Puppy.DataTable.Models;
-using Puppy.DataTable.Utils;
 using Puppy.Web;
 using System;
 using System.Collections.Generic;
@@ -83,31 +82,20 @@ namespace Monkey.Controllers.Api
 
     public class UserFacetRowViewModel
     {
-        [DataTable(DisplayName = "Full Name")]
-        [DataTableFilter(DataTablesFilterType.Text)]
         public string Name { get; set; }
 
-        [DataTable(DisplayName = "E-Mail")]
-        [DataTableFilter(DataTablesFilterType.Text)]
         public string Email { get; set; }
 
         [DataTable(DisplayName = "Is Admin")]
-        [DataTableFilter(DataTablesFilterType.Select)]
         public bool IsAdmin { get; set; }
 
-        [DataTable(DisplayName = "Position")]
-        [DataTableFilter(DataTablesFilterType.Select)]
         public FakeDatabase.PositionTypes? Position { get; set; }
 
-        [DataTable(DisplayName = "Number")]
-        [DataTableFilter(DataTablesFilterType.Select)]
         public FakeDatabase.Numbers Number { get; set; }
 
         [DataTable(DisplayName = "Hired Time")]
-        [DataTableFilter(DataTablesFilterType.Text)]
         public DateTime? Hired { get; set; }
 
-        [DataTable(DisplayName = "Content")]
         [DataTableFilter(DataTablesFilterType.None)]
         public string Content { get; set; }
     }
