@@ -95,7 +95,7 @@
             {
                 options["oTableTools"] = new JRaw("{ 'sSwfPath': '" + Url.AbsoluteContent("~/portal/vendor/datatables-tabletools/swf/copy_csv_xls_pdf.swf") + "' }");
 
-                string tools = Model.IsEnableColVis ? "{extend: 'colvis', text: 'Columns'}," : string.Empty;
+                var tools = Model.IsEnableColVis ? "{extend: 'colvis', text: 'Columns'}," : string.Empty;
                 tools += "'copy', 'excel', 'csv', 'pdf', 'print'";
                 options["buttons"] = new JRaw($"[{tools}]");
             }

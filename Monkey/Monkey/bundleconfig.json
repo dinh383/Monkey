@@ -70,5 +70,11 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/vendor/datatables-colvis/dataTables.colVis.js"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/datatables-columnfilter/jquery.dataTables.column.Filter.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/datatables-columnfilter/jquery.dataTables.column.Filter.css"
+    ]
   }
 ]

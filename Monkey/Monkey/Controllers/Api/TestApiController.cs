@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
 using Puppy.DataTable;
 using Puppy.DataTable.Attributes;
-using Puppy.DataTable.Constants;
+using Puppy.DataTable.Models;
+using Puppy.DataTable.Utils;
 using Puppy.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Puppy.DataTable.Models;
 
 namespace Monkey.Controllers.Api
 {
@@ -46,29 +46,32 @@ namespace Monkey.Controllers.Api
 
         [HttpPost]
         [Route("users")]
-        public DataTablesResult<UserFacetRowViewModel> GetFacetedUsers([FromBody]DataTableParamModel dataTableParamModel)
+        public DataTableActionResult<UserFacetRowViewModel> GetFacetedUsers([FromBody]DataTableParamModel dataTableParamModel)
         {
-            var result =
-                DataTablesResult.Create(
-                    FakeDatabase.Users.Select(user =>
-                        new UserFacetRowViewModel
-                        {
-                            Email = user.Email,
-                            Position = user.Position == null ? "" : user.Position.ToString(),
-                            Hired = user.Hired,
-                            IsAdmin = user.IsAdmin,
-                            Content = "https://randomuser.me/api/portraits/thumb/men/" + user.Id + ".jpg"
-                        }), dataTableParamModel,
-                    rowViewModel =>
-                        new
-                        {
-                            Content = "<div>" +
-                                      "  <div>Email: " + rowViewModel.Email + (rowViewModel.IsAdmin ? " (admin)" : "") +
-                                      "</div>" +
-                                      "  <div>Hired: " + rowViewModel.Hired + "</div>" +
-                                      "  <img src='" + rowViewModel.Content + "' />" +
-                                      "</div>"
-                        });
+            var query = FakeDatabase.Users.Select(
+                user =>
+                    new UserFacetRowViewModel
+                    {
+                        Email = user.Email,
+                        Position = user.Position == null ? "" : user.Position.ToString(),
+                        Hired = user.Hired,
+                        IsAdmin = user.IsAdmin,
+                        Content = "https://randomuser.me/api/portraits/thumb/men/" + user.Id + ".jpg"
+                    });
+
+            var response = query.GetDataTableResponse(dataTableParamModel);
+
+            var result = response.GetDataTableActionResult<UserFacetRowViewModel>(
+                row =>
+                    new
+                    {
+                        Content = "<div>" +
+                                  "  <div>Email: " + row.Email + (row.IsAdmin ? " (admin)" : "") +
+                                  "</div>" +
+                                  "  <div>Hired: " + row.Hired + "</div>" +
+                                  "  <img src='" + row.Content + "' />" +
+                                  "</div>"
+                    });
 
             return result;
         }

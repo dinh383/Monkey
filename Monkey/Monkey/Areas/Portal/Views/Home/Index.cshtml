@@ -1,6 +1,6 @@
 ﻿@using Monkey.Controllers.Api
-@using Puppy.DataTable
-@using Puppy.DataTable.Helpers
+@using Puppy.DataTable.Models
+@using Puppy.DataTable.Utils
 @using Constants = Monkey.Constants
 @{
     ViewData[Constants.ViewDataKey.Title] = "Portal";
@@ -16,9 +16,24 @@
             @{
                 var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (TestApiController controller) => controller.GetFacetedUsers(null));
                 model.IsDevelopMode = true;
+                model.IsUseColumnFilter = true;
+
+                model.Columns.Add(new ColDefModel("Action", typeof(string))
+                {
+                    DisplayName = "Action Col",
+                    IsSearchable = false,
+                    IsSortable = false,
+                    MRenderFunction = "actionColRender"
+                });
             }
 
             @await Html.PartialAsync("/Areas/Portal/Views/Shared/_DataTable.cshtml", model).ConfigureAwait(true)
+
+            <script>
+                function actionColRender(data, type, row) {
+                    return "<button class='btn btn-primary'>" + row[1] + "</button>";
+                }
+            </script>
         </div>
     </div>
 </div>
