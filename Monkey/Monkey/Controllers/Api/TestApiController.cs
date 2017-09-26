@@ -7,9 +7,8 @@ using Puppy.DataTable.Utils;
 using Puppy.Web;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Monkey.Controllers.Api
 {
@@ -54,6 +53,8 @@ namespace Monkey.Controllers.Api
                 user =>
                     new UserFacetRowViewModel
                     {
+                        Name = user.Name,
+                        Number = user.Number,
                         Email = user.Email,
                         Position = user.Position,
                         Hired = user.Hired,
@@ -72,7 +73,8 @@ namespace Monkey.Controllers.Api
                                   "</div>" +
                                   "  <div>Hired: " + row.Hired + "</div>" +
                                   "  <img src='" + row.Content + "' />" +
-                                  "</div>"
+                                  "</div>",
+                        Hired = row.Hired?.ToString("yyyy/MM/dd")
                     });
 
             return result;
@@ -81,6 +83,10 @@ namespace Monkey.Controllers.Api
 
     public class UserFacetRowViewModel
     {
+        [DataTables(DisplayName = "Full Name")]
+        [DataTablesFilter(DataTablesFilterType.Text)]
+        public string Name { get; set; }
+
         [DataTables(DisplayName = "E-Mail")]
         [DataTablesFilter(DataTablesFilterType.Text)]
         public string Email { get; set; }
@@ -91,8 +97,11 @@ namespace Monkey.Controllers.Api
 
         [DataTables(DisplayName = "Position")]
         [DataTablesFilter(DataTablesFilterType.Select)]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public FakeDatabase.PositionTypes? Position { get; set; }
+        public FakeDatabase.PositionTypes Position { get; set; }
+
+        [DataTables(DisplayName = "Number")]
+        [DataTablesFilter(DataTablesFilterType.Select)]
+        public FakeDatabase.Numbers Number { get; set; }
 
         [DataTables(DisplayName = "Hired Time")]
         [DataTablesFilter(DataTablesFilterType.Text)]
@@ -105,15 +114,14 @@ namespace Monkey.Controllers.Api
 
     public static class FakeDatabase
     {
-        private static List<User> _users;
+        private static readonly List<User> _users;
 
         static FakeDatabase()
         {
             var r = new Random();
             var domains = "gmail.com,yahoo.com,hotmail.com".Split(',').ToArray();
-            var positions = new List<PositionTypes?>
+            var positions = new List<PositionTypes>
             {
-                null,
                 PositionTypes.Engineer,
                 PositionTypes.Tester,
                 PositionTypes.Manager
@@ -138,10 +146,7 @@ namespace Monkey.Controllers.Api
             }));
         }
 
-        public static IQueryable<User> Users
-        {
-            get { return _users.AsQueryable(); }
-        }
+        public static IQueryable<User> Users => _users.AsQueryable();
 
         public enum Numbers
         {
@@ -154,6 +159,7 @@ namespace Monkey.Controllers.Api
 
         public enum PositionTypes
         {
+            [Display(Name = "Software Engineer")]
             Engineer,
             Tester,
             Manager
@@ -167,7 +173,7 @@ namespace Monkey.Controllers.Api
 
             public string Email { get; set; }
 
-            public PositionTypes? Position { get; set; }
+            public PositionTypes Position { get; set; }
 
             public DateTime? Hired { get; set; }
 
