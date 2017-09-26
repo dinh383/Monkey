@@ -8,6 +8,8 @@ using Puppy.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Monkey.Controllers.Api
 {
@@ -53,7 +55,7 @@ namespace Monkey.Controllers.Api
                     new UserFacetRowViewModel
                     {
                         Email = user.Email,
-                        Position = user.Position == null ? "" : user.Position.ToString(),
+                        Position = user.Position,
                         Hired = user.Hired,
                         IsAdmin = user.IsAdmin,
                         Content = "https://randomuser.me/api/portraits/thumb/men/" + user.Id + ".jpg"
@@ -88,8 +90,9 @@ namespace Monkey.Controllers.Api
         public bool IsAdmin { get; set; }
 
         [DataTables(DisplayName = "Position")]
-        [DataTablesFilter(DataTablesFilterType.Text)]
-        public string Position { get; set; }
+        [DataTablesFilter(DataTablesFilterType.Select)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public FakeDatabase.PositionTypes? Position { get; set; }
 
         [DataTables(DisplayName = "Hired Time")]
         [DataTablesFilter(DataTablesFilterType.Text)]
@@ -100,7 +103,7 @@ namespace Monkey.Controllers.Api
         public string Content { get; set; }
     }
 
-    internal static class FakeDatabase
+    public static class FakeDatabase
     {
         private static List<User> _users;
 
