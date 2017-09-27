@@ -1,4 +1,5 @@
 ﻿@using Newtonsoft.Json.Linq
+@using Puppy.DataTable.Constants
 @using Puppy.DataTable.Models.Config
 @using Puppy.DataTable.Utils.Extensions
 @model DataTableModel
@@ -43,62 +44,71 @@
         @{
             var options = new JObject
             {
-                ["aaSorting"] = new JRaw(Model.GetColumnSortingString()),
-                ["bProcessing"] = true,
-                ["stateSave"] = Model.IsStateSave,
-                ["stateDuration"] = -1,
-                ["bServerSide"] = true,
-                ["bFilter"] = Model.IsShowGlobalSearchInput,
-                ["sDom"] = Model.Dom,
-                ["responsive"] = Model.IsResponsive,
-                ["language"] = new JObject
+                [PropertyConst.Sorting] = new JRaw(Model.GetColumnSortingString()),
+                [PropertyConst.IsProcessing] = true,
+                [PropertyConst.IsStateSave] = Model.IsStateSave,
+                [PropertyConst.StateDuration] = -1,
+                [PropertyConst.IsServerSide] = true,
+                [PropertyConst.IsFilter] = Model.IsShowGlobalSearchInput,
+                [PropertyConst.Dom] = Model.Dom,
+                [PropertyConst.IsResponsive] = Model.IsResponsive,
+                [PropertyConst.IsAutoWidth] = Model.IsAutoWidthColumn,
+                [PropertyConst.AjaxSource] = Model.AjaxUrl,
+                [PropertyConst.ColumnDefine] = new JRaw(Model.GetColumnsJsonString()),
+                [PropertyConst.SearchCols] = Model.GetSearchColumns(),
+                [PropertyConst.LengthMenuDefine] = Model.LengthMenu != null ? new JRaw(Model.LengthMenu) : new JRaw(string.Empty),
+                [PropertyConst.Language] = new JObject
                 {
-                    ["search"] = "_INPUT_",
-                    ["lengthMenu"] = "_MENU_",
-                    ["sSearchPlaceholder"] = "Search...",
-                },
-                ["bAutoWidth"] = Model.IsAutoWidthColumn,
-                ["sAjaxSource"] = Model.AjaxUrl,
-                ["aoColumnDefs"] = new JRaw(Model.GetColumnsJsonString()),
-                ["aoSearchCols"] = Model.GetSearchColumns(),
-                // Size List
-                ["aLengthMenu"] = Model.LengthMenu != null ? new JRaw(Model.LengthMenu) : new JRaw(string.Empty)
+                    [PropertyConst.SearchSelector] = "_INPUT_",
+                    [PropertyConst.LengthMenuSelector] = "_MENU_",
+                    [PropertyConst.SearchPlaceholder] = "Search...",
+                }
             };
 
             // Default Size
             if (Model.PageSize.HasValue)
             {
-                options["iDisplayLength"] = Model.PageSize;
+                options[PropertyConst.DisplayLength] = Model.PageSize;
             }
 
             // Language Code
             if (!string.IsNullOrWhiteSpace(Model.LanguageCode))
             {
-                options["oLanguage"] = new JRaw(Model.LanguageCode);
+                options[PropertyConst.LanguageCode] = new JRaw(Model.LanguageCode);
             }
 
             // Draw Call back function
-            if (!string.IsNullOrWhiteSpace(Model.DrawCallback))
+            if (!string.IsNullOrWhiteSpace(Model.DrawCallbackFunctionName))
             {
-                options["fnDrawCallback"] = new JRaw(Model.DrawCallback);
+                options[PropertyConst.FnDrawCallback] = new JRaw(Model.DrawCallbackFunctionName);
             }
 
             // Server Request
-            options["fnServerData"] = new JRaw(
-                "function(sSource, aoData, fnCallback) { " +
-                "    var ajaxOptions = { 'dataType': 'json', 'type': 'POST', 'url': sSource, 'data': aoData, 'success': fnCallback }; " +
-                (Model.AjaxErrorHandler == null ? "" : ("ajaxOptions['error'] = " + Model.AjaxErrorHandler) + "; ") +
-                "    $.ajax(ajaxOptions);" +
+            options[PropertyConst.FnServerData] = new JRaw(
+                "function(sSource, aoData, fnCallback) { "
+                + (Model.IsDevelopMode ? "    console.log('[DataTable] URL: ', sSource);" : string.Empty)
+                + (Model.IsDevelopMode ? "    console.log('[DataTable] Request: ', aoData);" : string.Empty)
+                + "    var ajaxOptions = { 'dataType': 'json', 'type': 'POST', 'url': sSource, 'data': aoData, 'success': fnCallback};"
+                + (Model.IsDevelopMode ? "ajaxOptions['success'] = function(data){"
+                                              + "    console.log('[DataTable] Response', data);"
+                                              + "    if(fnCallback && typeof fnCallback === 'function'){"
+                                              + "        fnCallback(data)"
+                                              + "    }"
+                                              + "};"
+                                       : string.Empty)
+                + (string.IsNullOrWhiteSpace(Model.BeforeSendFunctionName) ? string.Empty : $"{Model.BeforeSendFunctionName}(aoData);")
+                + (string.IsNullOrWhiteSpace(Model.AjaxErrorHandler) ? string.Empty : "ajaxOptions['error'] = " + Model.AjaxErrorHandler + "; ")
+                + "    $.ajax(ajaxOptions);" +
                 "}");
 
             // Tools
             if (Model.IsUseTableTools)
             {
-                options["oTableTools"] = new JRaw("{ 'sSwfPath': '" + Url.AbsoluteContent("~/portal/vendor/datatables-tabletools/swf/copy_csv_xls_pdf.swf") + "' }");
+                options[PropertyConst.TableTools] = new JRaw("{ 'sSwfPath': '" + Url.AbsoluteContent("~/portal/vendor/datatables-tabletools/swf/copy_csv_xls_pdf.swf") + "' }");
 
                 var tools = Model.IsEnableColVis ? "{extend: 'colvis', text: 'Columns'}," : string.Empty;
                 tools += "'copy', 'excel', 'csv', 'pdf', 'print'";
-                options["buttons"] = new JRaw($"[{tools}]");
+                options[PropertyConst.Buttons] = new JRaw($"[{tools}]");
             }
 
             // Additional Option
@@ -115,7 +125,7 @@
 
         @if (Model.IsDevelopMode)
         {
-            @Html.Raw("console.log(dataTableOptions);")
+            @Html.Raw("console.log('[DataTable] Config', dataTableOptions);")
         }
 
         var $dataTable = $table.dataTable(dataTableOptions);
