@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Puppy.Core.DictionaryUtils;
 
 namespace Monkey.Controllers.Api
 {
@@ -49,6 +50,7 @@ namespace Monkey.Controllers.Api
         [Route("users")]
         public DataTableActionResult<UserFacetRowViewModel> GetFacetedUsers([FromBody]DataTableParamModel dataTableParamModel)
         {
+            var additionalData = dataTableParamModel.Data.GetValue<string>("newData");
             var query = FakeDatabase.Users.Select(
                 user =>
                     new UserFacetRowViewModel
