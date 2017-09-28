@@ -89,6 +89,9 @@ namespace Monkey
                 // [HttpContext]
                 .AddHttpContextAccessor()
 
+                // [DataTable]
+                .AddDataTable(ConfigurationRoot)
+
                 // [Mvc] Json, Xml serialize, area, response caching and filters
                 .AddMvcCustom();
         }
@@ -128,6 +131,9 @@ namespace Monkey
 
                 // [Authentication] Json Web Token + Cookie
                 .UseHybridAuth()
+
+                // [DataTable]
+                .UseDataTable()
 
                 // [MVC] Keep In Last. Static files configuration, routing [Mvc] Static files
                 // configuration, routing

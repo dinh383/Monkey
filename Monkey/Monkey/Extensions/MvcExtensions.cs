@@ -65,6 +65,8 @@ namespace Monkey.Extensions
                     options.RespectBrowserAcceptHeader = true; // false by default
                     options.Filters.Add(new ProducesAttribute(ContentType.Xml));
                     options.Filters.Add(new ProducesAttribute(ContentType.Json));
+
+                    // [DataTable]
                     options.AddDataTableModelBinderProvider();
                 })
                 .AddXmlDataContractSerializerFormatters()
