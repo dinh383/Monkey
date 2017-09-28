@@ -36,6 +36,9 @@ namespace Monkey.Core.Configs
         /// </summary>
         public static MvcPathConfigModel MvcPath { get; set; } = new MvcPathConfigModel();
 
+        /// <summary>
+        ///     [Auto Reload] 
+        /// </summary>
         public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; } = new PagedCollectionParametersConfigModel();
     }
 }

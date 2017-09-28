@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
+using Puppy.Core.DictionaryUtils;
 using Puppy.DataTable;
 using Puppy.DataTable.Attributes;
 using Puppy.DataTable.Constants;
@@ -9,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Puppy.Core.DictionaryUtils;
 
 namespace Monkey.Controllers.Api
 {
@@ -76,7 +76,7 @@ namespace Monkey.Controllers.Api
                                   "  <div>Hired: " + row.Hired + "</div>" +
                                   "  <img src='" + row.Content + "' />" +
                                   "</div>",
-                        Hired = row.Hired?.ToString("yyyy/MM/dd")
+                        Hired = row.Hired
                     });
 
             return result;
@@ -153,6 +153,7 @@ namespace Monkey.Controllers.Api
         {
             [Display(Name = "Software Engineer")]
             Engineer,
+
             Tester,
             Manager
         }

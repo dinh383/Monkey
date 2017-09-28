@@ -20,13 +20,6 @@
 "AreasRootFolderName": "Areas",
 "StaticsContents": [
         {
-            // Favicons
-            "Area": "",
-            "FolderRelativePath": "wwwroot/favicons", // relative path from area
-            "HttpRequestPath": "/favicons", // use lower case
-            "MaxAgeResponseHeader": "365.00:00:00"
-        },
-        {
             // Portal Assets
             "Area": "Portal",
             "FolderRelativePath": "wwwroot", // relative path from area
@@ -36,16 +29,11 @@
     ]
 },
 
+// [Auto Reload]
 "PagedCollectionParameters": {
     "Skip": 0,
     "Take": 10,
     "MaxTake": 10000,
     "Terms": ""
-},
-
-"IdentityServer": {
-    "ConnectionString": "http://localhost:9001",
-    "ApiName": "Monkey API",
-    "CacheDuration": "00:10:00"
 }
 ```
