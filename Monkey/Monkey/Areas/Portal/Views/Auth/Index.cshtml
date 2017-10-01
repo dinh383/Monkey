@@ -2,7 +2,7 @@
     Layout = null;
 }
 @using Monkey.Core.Models.Auth
-@model Monkey.Core.Models.Auth.LoginModel
+@model LoginModel
 
 <!DOCTYPE html>
 <html class="no-js css-menubar" lang="en">
@@ -27,8 +27,8 @@
         <div class="page-content">
             <div class="page-brand-info">
                 <div class="brand">
-                    <img class="brand-img" src="../../assets/images/logo@2x.png" alt="Monkey">
-                    <h2 class="brand-text font-size-40">Monkey</h2>
+                    <img class="brand-img" src="@Url.AbsoluteContent("~/favicons/favicon-72x72.png")" alt="Owl">
+                    <h2 class="brand-text font-size-40">Owl</h2>
                 </div>
                 <p class="font-size-20">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -37,8 +37,8 @@
             </div>
             <div class="page-login-main">
                 <div class="brand hidden-md-up">
-                    <img class="brand-img" src="../../assets/images/logo-blue@2x.png" alt="...">
-                    <h3 class="brand-text font-size-40">Monkey</h3>
+                    <img class="brand-img" src="@Url.AbsoluteContent("~/favicons/favicon-72x72.png")" alt="Owl">
+                    <h3 class="brand-text font-size-40">Owl</h3>
                 </div>
                 <h3 class="font-size-24">Sign In</h3>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
@@ -57,7 +57,7 @@
                         @Html.ValidationMessageFor(model => model.Password)
                     </div>
                     <div class="form-group clearfix">
-                        <a class="float-right" href="forgot-password.html">Forgot password?</a>
+                        <a class="float-right" href="#">Forgot password?</a>
                     </div>
                     <button type="button" class="btn btn-primary ladda-button btn-block" data-style="slide-left" data-plugin="ladda" data-type="progress" id="sign-in">
                         <span class="ladda-label">
@@ -66,7 +66,7 @@
                     </button>
                 }
                 <p>
-                    No account? <a href="register-v2.html">Sign Up</a>
+                    No account? <a href="#">Sign Up</a>
                 </p>
                 <footer class="page-copyright">
                     <p>
@@ -94,9 +94,9 @@
     <script type="text/javascript">
         $(window).ready(function () {
             $("#sign-in").on("click", function () {
-                //if ($("#sign-in-form").valid()) {
+                if ($("#sign-in-form").valid()) {
                     $("#sign-in-form").submit();
-                //}
+                }
             });
         });
     </script>
