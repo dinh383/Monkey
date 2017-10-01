@@ -4,6 +4,7 @@ using Monkey.Auth.Interfaces;
 using Monkey.Core.Models.Auth;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Examples;
 
 namespace Monkey.Controllers.Api
 {
@@ -25,7 +26,7 @@ namespace Monkey.Controllers.Api
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        [SwaggerResponse(StatusCodes.Status200OK, typeof(AccessTokenModel), "Response access token data")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AccessTokenModel))]
         public async Task<IActionResult> Token([FromBody]  RequestTokenModel model)
         {
             var accessToken = await _authenticationService.SignInAsync(model).ConfigureAwait(false);
