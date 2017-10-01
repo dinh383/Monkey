@@ -4,7 +4,6 @@ using Monkey.Auth.Interfaces;
 using Monkey.Core.Models.Auth;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.Examples;
 
 namespace Monkey.Controllers.Api
 {

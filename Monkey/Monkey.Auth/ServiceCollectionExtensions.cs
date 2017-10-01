@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core;
@@ -28,6 +29,7 @@ using Monkey.Core.Constants.Auth;
 using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection;
 using Puppy.Web.Middlewares;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,6 +38,8 @@ namespace Monkey.Auth
     public static class ServiceCollectionExtensions
     {
         private static IApplicationBuilder _appBuilder;
+        private static IConfiguration _configuration;
+        private static string _configSection;
 
         /// <summary>
         ///     [Authentication] Json Web Token + Cookie 
@@ -46,21 +50,11 @@ namespace Monkey.Auth
         /// <returns></returns>
         public static IServiceCollection AddHybridAuth(this IServiceCollection services, IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
         {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _configSection = configSection;
             configuration.BuildConfig(configSection);
             services.AddHttpContextAccessor();
             return services;
-        }
-
-        public static void BuildConfig(this IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
-        {
-            var isHaveConfig = configuration.GetChildren().Any(x => x.Key == configSection);
-
-            if (isHaveConfig)
-            {
-                AuthConfig.SecretKey = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SecretKey)}", AuthConfig.SecretKey);
-                AuthConfig.SystemClientId = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SystemClientId)}", AuthConfig.SystemClientId);
-                AuthConfig.SystemClientSecret = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SystemClientSecret)}", AuthConfig.SystemClientSecret);
-            }
         }
 
         /// <summary>
@@ -68,8 +62,20 @@ namespace Monkey.Auth
         /// </summary>
         /// <param name="app"></param>
         /// <returns></returns>
+        /// <remarks>
+        ///     The global config for HybridAuth from appsettings.json will auto reload when you
+        ///     change config. Be careful when you change the SecretKey, it affect to existing PasswordHash and Token
+        /// </remarks>
         public static IApplicationBuilder UseHybridAuth(this IApplicationBuilder app)
         {
+            _configuration.BuildConfig(_configSection);
+
+            ChangeToken.OnChange(_configuration.GetReloadToken, () =>
+            {
+                // Re-Build the config for DataTable
+                _configuration.BuildConfig(_configSection);
+            });
+
             app.UseHttpContextAccessor();
 
             app.UseMiddleware<CookieAuthMiddleware>();
@@ -182,5 +188,17 @@ namespace Monkey.Auth
         }
 
         #endregion
+
+        public static void BuildConfig(this IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
+        {
+            var isHaveConfig = configuration.GetChildren().Any(x => x.Key == configSection);
+
+            if (isHaveConfig)
+            {
+                AuthConfig.SecretKey = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SecretKey)}", AuthConfig.SecretKey);
+                AuthConfig.SystemClientId = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SystemClientId)}", AuthConfig.SystemClientId);
+                AuthConfig.SystemClientSecret = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SystemClientSecret)}", AuthConfig.SystemClientSecret);
+            }
+        }
     }
 }
