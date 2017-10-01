@@ -15,7 +15,7 @@
 
             @{
                 var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (TestApiController controller) => controller.GetFacetedUsers(null));
-                model.IsDevelopMode = false;
+                model.IsDevelopMode = true;
                 model.IsUseColumnFilter = true;
 
                 model.Columns.Add(new ColumnModel("Action", typeof(string))
