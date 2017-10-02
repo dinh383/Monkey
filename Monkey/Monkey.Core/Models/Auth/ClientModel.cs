@@ -26,17 +26,31 @@ namespace Monkey.Core.Models.Auth
     {
         public string Name { get; set; }
 
-        public string Domain { get; set; }
+        /// <summary>
+        ///     Use " " to split domains 
+        /// </summary>
+        public string Domains { get; set; }
 
         public Enums.ClientType Type { get; set; }
+    }
+
+    public class ClientCreatedModel : ClientCreateModel
+    {
+        public int Id { get; set; }
+
+        public string Subject { get; set; }
     }
 
     public class ClientUpdateModel
     {
         public int Id { get; set; }
+
         public string Name { get; set; }
+
         public Enums.ClientType Type { get; set; }
+
         public bool IsBanned { get; set; }
+
         public string BannedRemark { get; set; }
     }
 
@@ -45,8 +59,6 @@ namespace Monkey.Core.Models.Auth
         public int Id { get; set; }
 
         public string Subject { get; set; }
-
-        public string Secret { get; set; }
 
         public bool IsBanned { get; set; }
 

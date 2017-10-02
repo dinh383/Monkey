@@ -28,7 +28,11 @@ namespace Monkey.Business
 
         Task<ClientModel> CreateAsync(ClientCreateModel model);
 
+        Task<string> GenerateSecretAsync(int id);
+
         void CheckExistByName(params string[] names);
+
+        void CheckExist(params int[] ids);
 
         Task<int> GetIdAsync(string globalId, string secret);
 

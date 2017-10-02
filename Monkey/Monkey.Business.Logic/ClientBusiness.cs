@@ -25,6 +25,7 @@ using Monkey.Data.Auth;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,6 +57,31 @@ namespace Monkey.Business.Logic
             var clientModel = clientEntity.MapTo<ClientModel>();
 
             return Task.FromResult(clientModel);
+        }
+
+        public async Task<string> GenerateSecretAsync(int id)
+        {
+            ClientEntity client = new ClientEntity
+            {
+                Id = id,
+                GlobalId = Guid.NewGuid().ToString("N")
+            };
+
+            _clientRepository.Update(client, x => x.GlobalId);
+
+            await _clientRepository.SaveChangesAsync().ConfigureAwait(true);
+
+            return client.GlobalId;
+        }
+
+        public void CheckExist(params int[] ids)
+        {
+            ids = ids.Distinct().ToArray();
+            int totalInDb = _clientRepository.Get(x => ids.Contains(x.Id)).Count();
+            if (totalInDb != ids.Length)
+            {
+                throw new MonkeyException(ErrorCode.ClientNotFound);
+            }
         }
 
         public async Task<int> GetIdAsync(string globalId, string secret)
@@ -94,7 +120,7 @@ namespace Monkey.Business.Logic
             int totalInDb = _clientRepository.Get(x => names.Contains(x.NameNorm)).Count();
             if (totalInDb != names.Length)
             {
-                throw new MonkeyException(ErrorCode.InvalidClient);
+                throw new MonkeyException(ErrorCode.ClientNotFound);
             }
         }
     }

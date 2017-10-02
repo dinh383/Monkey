@@ -31,7 +31,10 @@ namespace Monkey.Core.Entities.Auth
 
         public string Secret { get; set; } = Guid.NewGuid().ToString("N");
 
-        public string Domain { get; set; }
+        /// <summary>
+        ///     Use " " to split domains 
+        /// </summary>
+        public string Domains { get; set; }
 
         public Enums.ClientType Type { get; set; } = Enums.ClientType.Website;
 

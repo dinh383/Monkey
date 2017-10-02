@@ -66,7 +66,11 @@ namespace Monkey.Core.Exceptions
 
         [Display(GroupName = "Client")]
         [Description("Client is banned")]
-        ClientIsBanned = 7001,
+        ClientIsBanned = 701,
+
+        [Display(GroupName = "Client")]
+        [Description("Client is not found")]
+        ClientNotFound = 702,
 
         [Display(GroupName = "User")]
         [Description("User does not exist")]
