@@ -10,9 +10,9 @@
 
 ```json
 "ConnectionStrings": {
-    "TOP": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=true",
-    "Staging": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=true",
-    "Production": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=true"
+    "TOP": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=True",
+    "Staging": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=True",
+    "Production": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=True"
 },
 
 "MvcPath": {
