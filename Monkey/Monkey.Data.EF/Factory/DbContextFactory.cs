@@ -21,6 +21,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Monkey.Core.Configs;
 using Puppy.Core;
 using Puppy.Core.ConfigUtils;
 using Puppy.Core.EnvironmentUtils;
@@ -29,17 +30,6 @@ namespace Monkey.Data.EF.Factory
 {
     public class DbContextFactory : IDbContextFactory<DbContext>
     {
-        /// <summary>
-        ///     Return 'Environment Name' connection string if Environment is "Production" or "Staging", else Machine Name
-        /// </summary>
-        /// <returns></returns>
-        public static string GetConnectionString()
-        {
-            IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, true).Build();
-            var connectionString = config.GetValueByMachineAndEnv<string>("ConnectionStrings");
-            return connectionString;
-        }
-
         public DbContext Create(DbContextFactoryOptions options)
         {
             return CreateCoreContext();
@@ -48,8 +38,26 @@ namespace Monkey.Data.EF.Factory
         public static DbContext CreateCoreContext()
         {
             var builder = new DbContextOptionsBuilder<DbContext>();
-            builder.UseSqlServer(GetConnectionString(), optionsBuilder => optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName()));
+
+            builder.UseSqlServer();
+
             return new DbContext(builder.Options);
+        }
+
+        /// <summary>
+        ///     Return connection string of current environment and machine
+        /// </summary>
+        /// <returns></returns>
+        public static string GetConnectionString()
+        {
+            if (!string.IsNullOrWhiteSpace(SystemConfig.DatabaseConnectionString))
+            {
+                return SystemConfig.DatabaseConnectionString;
+            }
+
+            IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile(Puppy.Core.Constants.Configuration.AppSettingsJsonFileName, false, true).Build();
+            var connectionString = config.GetValueByMachineAndEnv<string>(Puppy.Core.Constants.Configuration.ConnectionStringsConfigSection);
+            return connectionString;
         }
 
         public static Assembly GetMigrationAssembly()

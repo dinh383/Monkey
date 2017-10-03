@@ -28,7 +28,7 @@ namespace Monkey.Data.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(DbContextFactory.GetConnectionString(), o => o.MigrationsAssembly(DbContextFactory.GetMigrationAssemblyName()));
+                optionsBuilder.UseSqlServer();
             }
         }
 

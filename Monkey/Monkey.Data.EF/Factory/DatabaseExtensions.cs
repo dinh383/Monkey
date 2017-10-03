@@ -19,12 +19,10 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Monkey.Core.Configs;
-using Puppy.Core.TypeUtils;
 
 namespace Monkey.Data.EF.Factory
 {
-    public static class DatabaseServiceExtensions
+    public static class DatabaseExtensions
     {
         /// <summary>
         ///     [Database] Use Entity Framework 
@@ -32,12 +30,26 @@ namespace Monkey.Data.EF.Factory
         /// <param name="services"></param>
         public static IServiceCollection AddDatabase(this IServiceCollection services)
         {
-            services
-                .AddDbContext<Microsoft.EntityFrameworkCore.DbContext>(builder =>
-                    builder
-                        .UseSqlServer(SystemConfig.DatabaseConnectionString,
-                            options => options.MigrationsAssembly(typeof(IDatabase).GetAssemblySimpleName())));
+            services.AddDbContext<Microsoft.EntityFrameworkCore.DbContext>(builder => builder.UseSqlServer());
             return services;
+        }
+
+        /// <summary>
+        ///     [Database] Use SQL Server with Migration and Use row no for paging 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static DbContextOptionsBuilder UseSqlServer(this DbContextOptionsBuilder builder)
+        {
+            builder.UseSqlServer(DbContextFactory.GetConnectionString(), optionsBuilder =>
+            {
+                optionsBuilder.MigrationsAssembly(DbContextFactory.GetMigrationAssemblyName());
+
+                // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
+                optionsBuilder.UseRowNumberForPaging();
+            });
+
+            return builder;
         }
     }
 }
