@@ -4,7 +4,7 @@
 
 ## Install Auto Mapper
 
-```markup
+```xml
 - Install-Package AutoMapper
 - Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection
 ```

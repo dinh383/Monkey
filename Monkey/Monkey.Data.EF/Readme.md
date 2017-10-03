@@ -8,7 +8,7 @@
 ## Initial Database
 Setup by Command Windows of current project 
 
-```markup
+```xml
 <!-- Add migration via cmd (Initial is Name of the Migration) -->
 dotnet ef migrations add Initial -v
 
@@ -34,7 +34,7 @@ public class UserMap : EntityTypeConfiguration<UserEntity>
 
 # Special things in .csproj
 
-```markup
+```xml
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <ApplicationIcon>favicon.ico</ApplicationIcon>

@@ -29,21 +29,25 @@
                 model.BeforeSendFunctionName = "beforeSendHandle";
             }
 
-            @await Html.PartialAsync("/Areas/Portal/Views/Shared/_DataTable.cshtml", model).ConfigureAwait(true)
-
-            <script>
-                function beforeSendHandle(data) {
-                    data.push({
-                        name: "newData",
-                        value: "test modify data before send"
-                    });
-
-                    console.log("before send handle: ", data);
-                }
-                function actionColRender(data, type, row) {
-                    return "<button class='btn btn-primary'>" + row[2] + "</button>";
-                }
-            </script>
+            @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableHtml.cshtml", model).ConfigureAwait(true)
         </div>
     </div>
 </div>
+
+@section Scripts{
+    @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableScript.cshtml", model).ConfigureAwait(true)
+    
+    <script type="text/javascript">
+        function beforeSendHandle(data) {
+            data.push({
+                name: "newData",
+                value: "test modify data before send"
+            });
+
+            console.log("before send handle: ", data);
+        }
+        function actionColRender(data, type, row) {
+            return "<button class='btn btn-primary'>" + row[2] + "</button>";
+        }
+    </script>s
+}

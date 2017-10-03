@@ -8,7 +8,7 @@
 
 - SystemConfigs setup in appsettings.json, if not have specific setup, will use default setting.
 
-```json
+```javascript
 "ConnectionStrings": {
     "TOP": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=True",
     "Staging": "Data Source=.;Initial Catalog=Monkey;User ID=Monkey;Password=Monkey;Trusted_Connection=False;MultipleActiveResultSets=True",

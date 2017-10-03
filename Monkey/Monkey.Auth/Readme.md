@@ -11,7 +11,7 @@
 # How to use
 - Add Security options in appsettings.json
 
-```json
+```javascript
 "Authentication": {
     "SecretKey": "6c8992a0df9656e8cc4c1240a2545d3a", // Update for security purpose
     "SystemClientId": "7571ae4a8ac847bfae64911a1b6fa9dd", // Update follow databasse for your system client id
