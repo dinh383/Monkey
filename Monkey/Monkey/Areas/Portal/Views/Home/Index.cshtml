@@ -1,4 +1,4 @@
-﻿@using Monkey.Controllers.Api
+﻿@using Monkey.Areas.Portal.Controllers
 @using Puppy.DataTable
 @using Puppy.DataTable.Models.Config.Column
 @using Constants = Monkey.Constants
@@ -14,7 +14,7 @@
         <div class="panel-body">
 
             @{
-                var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (TestApiController controller) => controller.GetFacetedUsers(null));
+                var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (HomeController controller) => controller.GetFacetedUsers(null));
                 model.IsDevelopMode = true;
                 model.IsUseColumnFilter = true;
 
@@ -36,7 +36,7 @@
 
 @section Scripts{
     @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableScript.cshtml", model).ConfigureAwait(true)
-    
+
     <script type="text/javascript">
         function beforeSendHandle(data) {
             data.push({
