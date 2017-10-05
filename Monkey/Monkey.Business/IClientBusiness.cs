@@ -19,6 +19,8 @@
 
 using Monkey.Core.Models.Auth;
 using System.Threading.Tasks;
+using Puppy.DataTable.Models.Request;
+using Puppy.DataTable.Models.Response;
 
 namespace Monkey.Business
 {
@@ -26,15 +28,21 @@ namespace Monkey.Business
     {
         Task<int> GetTotalAsync();
 
-        Task<ClientModel> CreateAsync(ClientCreateModel model);
+        Task<int> CreateAsync(ClientCreateModel model);
+
+        Task UpdateAsync(ClientUpdateModel model);
+
+        Task<ClientModel> GetAsync(int id);
+
+        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
 
         Task<string> GenerateSecretAsync(int id);
 
-        void CheckExistByName(params string[] names);
+        void CheckUniqueName(string name, int? excludeId = null);
 
         void CheckExist(params int[] ids);
 
-        Task<int> GetIdAsync(string globalId, string secret);
+        Task<int> GetIdAsync(string subject, string secret);
 
         void CheckExist(string subject, string secret);
 

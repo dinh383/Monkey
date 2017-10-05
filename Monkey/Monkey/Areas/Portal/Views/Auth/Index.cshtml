@@ -59,7 +59,7 @@
                     <div class="form-group clearfix">
                         <a class="float-right" href="#">Forgot password?</a>
                     </div>
-                    <button type="button" class="btn btn-primary ladda-button btn-block" data-style="slide-left" data-plugin="ladda" data-type="progress" id="sign-in">
+                    <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
                         <span class="ladda-label">
                             Sign in<i class="icon md-long-arrow-right mr-10" aria-hidden="true"></i>
                         </span>
@@ -91,14 +91,5 @@
     @{
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_BottomScript.cshtml").ConfigureAwait(true);
     }
-    <script type="text/javascript">
-        $(window).ready(function () {
-            $("#sign-in").on("click", function () {
-                if ($("#sign-in-form").valid()) {
-                    $("#sign-in-form").submit();
-                }
-            });
-        });
-    </script>
 </body>
 </html>

@@ -72,6 +72,10 @@ namespace Monkey.Core.Exceptions
         [Description("Client is not found")]
         ClientNotFound = 702,
 
+        [Display(GroupName = "Client")]
+        [Description("Client name is already exist")]
+        ClientNameAlreadyExist = 703,
+
         [Display(GroupName = "User")]
         [Description("User does not exist")]
         UserNotExist = 1000,

@@ -39,9 +39,13 @@ namespace Monkey.Core.Constants
 
         public enum ClientType
         {
+            [Display(Name = "iOS")]
             Ios = 1,
+
             Android = 2,
             Website = 3,
+
+            [Display(Name = "Single Page App")]
             Spa = 4
         }
     }

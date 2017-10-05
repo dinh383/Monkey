@@ -17,14 +17,22 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading.Tasks;
 using Monkey.Core.Models.Auth;
+using System.Threading.Tasks;
+using Puppy.DataTable.Models.Request;
+using Puppy.DataTable.Models.Response;
 
 namespace Monkey.Service
 {
     public interface IClientService : IBaseService
     {
-        Task<ClientCreatedModel> CreateAsync(ClientCreateModel model);
+        Task<int> CreateAsync(ClientCreateModel model);
+
+        Task UpdateAsync(ClientUpdateModel model);
+
+        Task<ClientModel> GetAsync(int id);
+
+        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
 
         Task<string> GenerateSecretAsync(int id);
     }

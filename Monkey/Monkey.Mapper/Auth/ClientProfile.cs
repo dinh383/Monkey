@@ -32,11 +32,11 @@ namespace Monkey.Mapper.Auth
             CreateMap<ClientCreateModel, ClientEntity>().IgnoreAllNonExisting()
                 .ForMember(d => d.NameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Name)));
 
-            CreateMap<ClientEntity, ClientModel>().IgnoreAllNonExisting()
-                .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId));
-
             CreateMap<ClientUpdateModel, ClientEntity>().IgnoreAllNonExisting()
                 .ForMember(d => d.NameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Name)));
+
+            CreateMap<ClientEntity, ClientModel>().IgnoreAllNonExisting()
+                .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId));
         }
     }
 }

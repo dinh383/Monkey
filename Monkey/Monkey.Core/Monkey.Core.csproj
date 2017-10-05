@@ -20,12 +20,13 @@
     <ProjectReference Include="..\..\Puppy\Puppy.Core\Puppy.Core.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Web\Puppy.Web.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.DataTable\Puppy.DataTable.csproj" />
   </ItemGroup>
 
   <!-- External Libraries -->
   <ItemGroup>
     <PackageReference Include="Enums.NET" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="7.1.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,52 @@
+﻿@using Monkey.Areas.Portal.Controllers
+@using Puppy.DataTable
+@using Puppy.DataTable.Models.Config.Column
+@using Constants = Monkey.Constants
+@{
+    ViewData[Constants.ViewDataKey.Title] = "Portal | Client";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Clients</h1>
+    <div class="page-header-actions">
+        <a class="btn btn-sm btn-primary btn-round waves-effect waves-classic" href="@Url.AbsoluteAction("Add", "Client")">
+            <i class="icon md-plus" aria-hidden="true"></i>
+            <span class="hidden-sm-down">Add Client</span>
+        </a>
+    </div>
+</div>
+<div class="page-content">
+    <div class="panel">
+        <div class="panel-body">
+
+            @{
+                var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (ClientController controller) => controller.GetDataTable(null));
+                model.IsUseColumnFilter = true;
+
+                model.Columns.Add(new ColumnModel("Action", typeof(string))
+                {
+                    DisplayName = "Action",
+                    IsSearchable = false,
+                    IsSortable = false,
+                    MRenderFunction = "actionRender"
+                });
+            }
+
+            @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableHtml.cshtml", model).ConfigureAwait(true)
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableScript.cshtml", model).ConfigureAwait(true)
+
+    <script type="text/javascript">
+        function actionRender(data, type, row) {
+            var editUrl = '@Url.AbsoluteAction("Edit", "Client", new {id = "PARAMETER_ID"})';
+            console.log(row);
+            editUrl = editUrl.replace(/PARAMETER_ID/g, row[0]);
+            var editEle = '<a href="' + editUrl + '" class="btn btn-sm btn-icon btn-pure btn-default on-default edit-row waves-effect waves-classic" data-toggle="tooltip" data-original-title="Edit"><i class="icon md-edit" aria-hidden="true"></i></a>';
+            return editEle;
+        }
+    </script>
+}

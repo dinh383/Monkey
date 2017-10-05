@@ -24,6 +24,9 @@ using Monkey.Core.Models.Auth;
 using Monkey.Data.Auth;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
+using Puppy.DataTable;
+using Puppy.DataTable.Models.Request;
+using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Linq;
@@ -46,7 +49,7 @@ namespace Monkey.Business.Logic
             return _clientRepository.Get().CountAsync();
         }
 
-        public Task<ClientModel> CreateAsync(ClientCreateModel model)
+        public Task<int> CreateAsync(ClientCreateModel model)
         {
             var clientEntity = model.MapTo<ClientEntity>();
 
@@ -54,9 +57,38 @@ namespace Monkey.Business.Logic
 
             _clientRepository.SaveChanges();
 
-            var clientModel = clientEntity.MapTo<ClientModel>();
+            return Task.FromResult(clientEntity.Id);
+        }
 
-            return Task.FromResult(clientModel);
+        public Task UpdateAsync(ClientUpdateModel model)
+        {
+            var clientEntity = model.MapTo<ClientEntity>();
+
+            clientEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
+
+            _clientRepository.Update(clientEntity, x => x.Name, x => x.Domains, x => x.Type, x => x.BannedRemark);
+
+            _clientRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
+        public async Task<ClientModel> GetAsync(int id)
+        {
+            var clientEntity = await _clientRepository.Get(x => x.Id == id).SingleAsync().ConfigureAwait(true);
+
+            ClientModel model = clientEntity.MapTo<ClientModel>();
+
+            return model;
+        }
+
+        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
+        {
+            var listData = _clientRepository.Get().QueryTo<ClientModel>();
+
+            var result = listData.GetDataTableResponse(model);
+
+            return Task.FromResult(result);
         }
 
         public async Task<string> GenerateSecretAsync(int id)
@@ -84,9 +116,9 @@ namespace Monkey.Business.Logic
             }
         }
 
-        public async Task<int> GetIdAsync(string globalId, string secret)
+        public async Task<int> GetIdAsync(string subject, string secret)
         {
-            var clientId = await _clientRepository.Get(x => x.GlobalId == globalId && x.Secret == secret).Select(x => x.Id).SingleAsync().ConfigureAwait(true);
+            var clientId = await _clientRepository.Get(x => x.GlobalId == subject && x.Secret == secret).Select(x => x.Id).SingleAsync().ConfigureAwait(true);
             return clientId;
         }
 
@@ -114,13 +146,20 @@ namespace Monkey.Business.Logic
             }
         }
 
-        public void CheckExistByName(params string[] names)
+        public void CheckUniqueName(string name, int? excludeId = null)
         {
-            names = names.Distinct().Select(StringHelper.Normalize).ToArray();
-            int totalInDb = _clientRepository.Get(x => names.Contains(x.NameNorm)).Count();
-            if (totalInDb != names.Length)
+            string nameNorm = StringHelper.Normalize(name);
+
+            var query = _clientRepository.Get(x => x.NameNorm == nameNorm);
+
+            if (excludeId != null)
             {
-                throw new MonkeyException(ErrorCode.ClientNotFound);
+                query = query.Where(x => x.Id != excludeId);
+            }
+
+            if (query.Any())
+            {
+                throw new MonkeyException(ErrorCode.ClientNameAlreadyExist);
             }
         }
     }

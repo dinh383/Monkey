@@ -23,7 +23,7 @@ namespace Monkey.Areas.Portal.Controllers
 
         [HttpPost]
         [Route("users")]
-        public DataTableActionResult<UserFacetRowViewModel> GetFacetedUsers([FromBody]DataTableParamModel dataTableParamModel)
+        public DataTableActionResult<UserFacetRowViewModel> GetFacetedUsers([FromForm]DataTableParamModel dataTableParamModel)
         {
             var additionalData = dataTableParamModel.Data.GetValue<string>("newData");
             var query = FakeDatabase.Users.Select(

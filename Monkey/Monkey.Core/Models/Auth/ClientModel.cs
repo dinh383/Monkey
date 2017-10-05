@@ -17,53 +17,58 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using FluentValidation.Attributes;
 using Monkey.Core.Constants;
+using Monkey.Core.Validators.Auth;
+using Puppy.DataTable.Attributes;
+using Puppy.DataTable.Constants;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.Auth
 {
+    [Validator(typeof(ClientModelValidator.ClientCreateModelValidator))]
     public class ClientCreateModel
     {
+        [DataTable(Order = 2, SortDirection = SortDirection.Ascending)]
         public string Name { get; set; }
 
         /// <summary>
         ///     Use " " to split domains 
         /// </summary>
+        [DataTable(Order = 3)]
+        [Display(Name = "Domains (Split by ' ')")]
         public string Domains { get; set; }
 
+        [DataTable(Order = 4)]
         public Enums.ClientType Type { get; set; }
     }
 
-    public class ClientCreatedModel : ClientCreateModel
+    [Validator(typeof(ClientModelValidator.ClientUpdateModelValidator))]
+    public class ClientUpdateModel : ClientCreateModel
     {
+        [DataTable(IsVisible = false, Order = 1)]
         public int Id { get; set; }
 
-        public string Subject { get; set; }
-    }
-
-    public class ClientUpdateModel
-    {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public Enums.ClientType Type { get; set; }
-
+        [Display(Name = "Banned")]
+        [DataTableIgnore]
         public bool IsBanned { get; set; }
 
+        [Display(Name = "Banned Remark")]
+        [DataTableIgnore]
         public string BannedRemark { get; set; }
     }
 
-    public class ClientModel : ClientCreateModel
+    public class ClientModel : ClientUpdateModel
     {
-        public int Id { get; set; }
-
+        [DataTableIgnore]
         public string Subject { get; set; }
 
-        public bool IsBanned { get; set; }
+        [DataTableIgnore]
+        public string Secret { get; set; }
 
+        [Display(Name = "Banned Time")]
+        [DataTable(DisplayName = "Banned Time", Order = 5)]
         public DateTimeOffset? BannedTime { get; set; }
-
-        public string BannedRemark { get; set; }
     }
 }

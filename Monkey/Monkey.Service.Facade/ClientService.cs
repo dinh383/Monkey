@@ -19,6 +19,8 @@
 
 using Monkey.Business;
 using Monkey.Core.Models.Auth;
+using Puppy.DataTable.Models.Request;
+using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading.Tasks;
 
@@ -29,22 +31,39 @@ namespace Monkey.Service.Facade
     {
         private readonly IClientBusiness _clientBusiness;
 
-        public ClientService(IClientBusiness ClientBusiness)
+        public ClientService(IClientBusiness clientBusiness)
         {
-            _clientBusiness = ClientBusiness;
+            _clientBusiness = clientBusiness;
         }
 
-        public Task<ClientCreatedModel> CreateAsync(ClientCreateModel model)
+        public Task<int> CreateAsync(ClientCreateModel model)
         {
-            _clientBusiness.CheckExistByName(model.Name);
+            _clientBusiness.CheckUniqueName(model.Name);
+            return _clientBusiness.CreateAsync(model);
+        }
 
-            throw new System.NotImplementedException();
+        public Task UpdateAsync(ClientUpdateModel model)
+        {
+            _clientBusiness.CheckExist(model.Id);
+            _clientBusiness.CheckUniqueName(model.Name, model.Id);
+            return _clientBusiness.UpdateAsync(model);
+        }
+
+        public Task<ClientModel> GetAsync(int id)
+        {
+            _clientBusiness.CheckExist(id);
+            return _clientBusiness.GetAsync(id);
+        }
+
+        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
+        {
+            return _clientBusiness.GetDataTableAsync(model);
         }
 
         public Task<string> GenerateSecretAsync(int id)
         {
             _clientBusiness.CheckExist(id);
-            throw new System.NotImplementedException();
+            return _clientBusiness.GenerateSecretAsync(id);
         }
     }
 }
