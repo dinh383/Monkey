@@ -10,7 +10,7 @@ using Puppy.Web.HttpUtils.HttpDetection.Device;
 namespace Monkey.Data.EF.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20171006141622_ReInitial")]
+    [Migration("20171006161749_ReInitial")]
     partial class ReInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,7 +84,7 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<string>("CityName");
 
-                    b.Property<int>("ClientId");
+                    b.Property<int?>("ClientId");
 
                     b.Property<string>("ContinentCode");
 

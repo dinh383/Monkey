@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth;
+using Monkey.Auth.Filters;
 using Monkey.Auth.Interfaces;
 using Monkey.Core.Models.Auth;
 using Puppy.AutoMapper;
@@ -8,9 +9,14 @@ using System.Threading.Tasks;
 
 namespace Monkey.Areas.Portal.Controllers
 {
-    [Route(AreaName + "/auth")]
+    [Route(Endpoint)]
     public class AuthController : MvcController
     {
+        public const string Endpoint = "auth";
+        public const string SignInEndpoint = "";
+        public const string SignInSubmitEndpoint = "signin";
+        public const string SignOutEndpoint = "signout";
+
         private readonly IAuthenticationService _authenticationService;
 
         public AuthController(IAuthenticationService authenticationService)
@@ -18,7 +24,7 @@ namespace Monkey.Areas.Portal.Controllers
             _authenticationService = authenticationService;
         }
 
-        [Route("")]
+        [Route(SignInEndpoint)]
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Index()
@@ -26,7 +32,7 @@ namespace Monkey.Areas.Portal.Controllers
             return View(new LoginModel());
         }
 
-        [Route("sign-in")]
+        [Route(SignInSubmitEndpoint)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -39,10 +45,6 @@ namespace Monkey.Areas.Portal.Controllers
 
             RequestTokenModel requestToken = model.MapTo<RequestTokenModel>();
 
-            // Update system client id and client secret
-            requestToken.ClientId = AuthConfig.SystemClientId;
-            requestToken.ClientSecret = AuthConfig.SystemClientSecret;
-
             // Sign In and get access token
             AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken).ConfigureAwait(true);
 
@@ -52,9 +54,9 @@ namespace Monkey.Areas.Portal.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Route("sign-out")]
+        [Route(SignOutEndpoint)]
         [HttpGet]
-        [Auth.Filters.Auth]
+        [Auth]
         public async Task<IActionResult> SignOut()
         {
             await _authenticationService.SignOutCookieAsync(Response.Cookies).ConfigureAwait(true);

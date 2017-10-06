@@ -17,14 +17,13 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Microsoft.EntityFrameworkCore;
+using Monkey.Business.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Data.User;
 using Puppy.DependencyInjection.Attributes;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Monkey.Business.Logic
+namespace Monkey.Business.Logic.Auth
 {
     [PerRequestDependency(ServiceType = typeof(IUserBusiness))]
     public class UserBusiness : IUserBusiness
@@ -46,11 +45,6 @@ namespace Monkey.Business.Logic
             {
                 throw new MonkeyException(ErrorCode.UserNotExist);
             }
-        }
-
-        public Task<int> GetTotalAsync()
-        {
-            return _userRepository.Get().CountAsync();
         }
     }
 }

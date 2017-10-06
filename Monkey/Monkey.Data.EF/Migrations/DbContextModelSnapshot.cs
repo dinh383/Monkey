@@ -83,7 +83,7 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<string>("CityName");
 
-                    b.Property<int>("ClientId");
+                    b.Property<int?>("ClientId");
 
                     b.Property<string>("ContinentCode");
 

@@ -17,20 +17,19 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Monkey.Auth;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
-using Monkey.Business;
+using Monkey.Business.Auth;
 using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection.Attributes;
-using System;
-using System.Threading.Tasks;
 using HttpContext = System.Web.HttpContext;
 
-namespace Monkey.Service.Facade
+namespace Monkey.Service.Facade.Auth
 {
     [PerRequestDependency(ServiceType = typeof(IAuthenticationService))]
     public class AuthenticationService : IAuthenticationService
@@ -47,36 +46,41 @@ namespace Monkey.Service.Facade
         /// <inheritdoc />
         public async Task<AccessTokenModel> SignInAsync(RequestTokenModel model)
         {
-            _clientBusiness.CheckExist(model.ClientId, model.ClientSecret);
+            int? clientId = null;
 
-            _clientBusiness.CheckBanned(model.ClientId, model.ClientSecret);
+            // Case Client Id and Client Secret is null is system sign in => by pass validate
+            if (!string.IsNullOrWhiteSpace(model.ClientId) || !string.IsNullOrWhiteSpace(model.ClientSecret))
+            {
+                _clientBusiness.CheckExist(model.ClientId, model.ClientSecret);
 
-            int clientId = await _clientBusiness.GetIdAsync(model.ClientId, model.ClientSecret).ConfigureAwait(true);
+                _clientBusiness.CheckBanned(model.ClientId, model.ClientSecret);
 
-            var accessTokenExpire = TimeSpan.FromMinutes(30);
+                clientId = await _clientBusiness.GetIdAsync(model.ClientId, model.ClientSecret).ConfigureAwait(true);
+            }
 
             AccessTokenModel accessTokenModel = null;
 
             if (model.GrantType == GrantType.Password)
             {
-                _authenticationBusiness.CheckExistsByUserName(model.UserName);
+                _authenticationBusiness.CheckExistByUserName(model.UserName);
+
                 _authenticationBusiness.CheckValidSignIn(model.UserName, model.Password);
 
-                LoggedInUser.Current = _authenticationBusiness.SignIn(clientId, model.UserName, model.Password, out string refreshToken);
+                LoggedInUser.Current = _authenticationBusiness.SignIn(model.UserName, model.Password, out string refreshToken, clientId);
 
                 // Generate access token
-                accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, accessTokenExpire, refreshToken);
+                accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, AuthConfig.AccessTokenExpireIn, refreshToken);
 
                 HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
             }
             else if (model.GrantType == GrantType.RefreshToken)
             {
-                _authenticationBusiness.CheckValidRefreshToken(clientId, model.RefreshToken);
+                _authenticationBusiness.CheckValidRefreshToken(model.RefreshToken, clientId);
 
                 LoggedInUser.Current = await _authenticationBusiness.GetLoggedInUserByRefreshTokenAsync(model.RefreshToken).ConfigureAwait(true);
 
                 // Generate access token
-                accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, accessTokenExpire, model.RefreshToken);
+                accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, AuthConfig.AccessTokenExpireIn, model.RefreshToken);
 
                 HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
             }
@@ -106,7 +110,7 @@ namespace Monkey.Service.Facade
 
             string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessTokenModel.AccessToken);
 
-            if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != AuthConfig.SystemClientId)
+            if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != null)
             {
                 return null;
             }

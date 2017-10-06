@@ -19,6 +19,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Monkey.Auth.Helpers;
+using Monkey.Business.Auth;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
@@ -28,15 +29,14 @@ using Monkey.Data.User;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
-using Puppy.Web;
+using Puppy.Web.HttpUtils;
+using Puppy.Web.HttpUtils.HttpDetection.Device;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Puppy.Web.HttpUtils;
-using Puppy.Web.HttpUtils.HttpDetection.Device;
 
-namespace Monkey.Business.Logic
+namespace Monkey.Business.Logic.Auth
 {
     [PerRequestDependency(ServiceType = typeof(IAuthenticationBusiness))]
     public class AuthenticationBusiness : IAuthenticationBusiness
@@ -52,15 +52,39 @@ namespace Monkey.Business.Logic
 
         #region Sign In
 
-        public void CheckExistsByUserName(params string[] userNames)
+        public void CheckUniqueUserName(string userName, int? excludeId = null)
         {
-            userNames = userNames.Distinct().Select(StringHelper.Normalize).ToArray();
+            var userNameNorm = StringHelper.Normalize(userName);
 
-            var totalInDb = _userRepository.Get(x => userNames.Contains(x.UserNameNorm)).Count();
+            var isExist = _userRepository.Get(x => x.UserNameNorm == userNameNorm).Any();
 
-            if (totalInDb != userNames.Length)
+            if (isExist)
+            {
+                throw new MonkeyException(ErrorCode.UserNameNotUnique);
+            }
+        }
+
+        public void CheckExistByUserName(string userName)
+        {
+            var userNameNorm = StringHelper.Normalize(userName);
+
+            var isExist = _userRepository.Get(x => x.UserNameNorm == userNameNorm).Any();
+
+            if (!isExist)
             {
                 throw new MonkeyException(ErrorCode.UserNameNotExist);
+            }
+        }
+
+        public void CheckUniqueEmail(string email, int? excludeId = null)
+        {
+            var emailNorm = StringHelper.Normalize(email);
+
+            var isExist = _userRepository.Get(x => x.EmailNorm == emailNorm).Any();
+
+            if (isExist)
+            {
+                throw new MonkeyException(ErrorCode.UserEmailNotUnique);
             }
         }
 
@@ -79,22 +103,22 @@ namespace Monkey.Business.Logic
             // Check Password
             if (user.PasswordLastUpdatedTime == null)
             {
-                throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
+                throw new MonkeyException(ErrorCode.UserPasswordWrong);
             }
             password = PasswordHelper.HashPassword(password, user.PasswordLastUpdatedTime.Value);
             if (password != user.PasswordHash)
             {
-                throw new MonkeyException(ErrorCode.UserPasswordIsWrong);
+                throw new MonkeyException(ErrorCode.UserPasswordWrong);
             }
 
             // Check Banned
             if (user.BannedTime != null)
             {
-                throw new MonkeyException(ErrorCode.UserIsBanned, user.BannedRemark);
+                throw new MonkeyException(ErrorCode.UserBanned, user.BannedRemark);
             }
         }
 
-        public LoggedInUserModel SignIn(int clientId, string userName, string password, out string refreshToken)
+        public LoggedInUserModel SignIn(string userName, string password, out string refreshToken, int? clientId)
         {
             userName = StringHelper.Normalize(userName);
 
@@ -122,7 +146,7 @@ namespace Monkey.Business.Logic
         /// <param name="userId">  </param>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        private string GenerateRefreshToken(int userId, int clientId)
+        private string GenerateRefreshToken(int userId, int? clientId)
         {
             var refreshToken = Guid.NewGuid().ToString();
 
@@ -205,7 +229,7 @@ namespace Monkey.Business.Logic
 
         #region Get By Refresh Token and Expire All Refresh Token
 
-        public void CheckValidRefreshToken(int clientId, string refreshToken)
+        public void CheckValidRefreshToken(string refreshToken, int? clientId)
         {
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
 
@@ -262,12 +286,13 @@ namespace Monkey.Business.Logic
 
         #region Create and Active
 
-        public Task<string> CreateUserByEmailAsync(string email)
+        public Task<string> CreateUserByEmailAsync(string email, int? roleId)
         {
             var userEntity = new UserEntity
             {
                 Email = email,
-                EmailNorm = StringHelper.Normalize(email)
+                EmailNorm = StringHelper.Normalize(email),
+                RoleId = roleId
             };
 
             _userRepository.Add(userEntity);

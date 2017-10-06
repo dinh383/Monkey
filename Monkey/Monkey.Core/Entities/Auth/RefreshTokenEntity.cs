@@ -37,7 +37,7 @@ namespace Monkey.Core.Entities.Auth
 
         public virtual UserEntity User { get; set; }
 
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
 
         public virtual ClientEntity Client { get; set; }
 

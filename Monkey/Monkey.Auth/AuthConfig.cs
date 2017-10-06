@@ -42,9 +42,7 @@ namespace Monkey.Auth
             }
         }
 
-        public static string SystemClientId { get; set; }
-
-        public static string SystemClientSecret { get; set; }
+        public static TimeSpan AccessTokenExpireIn { get; set; }
 
         internal static SymmetricSecurityKey SecurityKey { get; private set; }
 

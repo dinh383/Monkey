@@ -27,14 +27,11 @@ namespace Monkey.Core.Constants
     {
         public enum Permission
         {
-            [Display(Name = "Developer")]
-            Developer = 1000,
-
             [Display(Name = "Admin")]
-            Admin = 2000,
+            Admin = 1000,
 
             [Display(Name = "Manager")]
-            Manager = 3000
+            Manager = 2000
         }
 
         public enum ClientType

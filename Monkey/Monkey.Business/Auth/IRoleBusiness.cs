@@ -6,25 +6,26 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Business Interface </Project>
 //     <File>
-//         <Name> IUserBusiness.cs </Name>
-//         <Created> 18/07/17 4:49:26 PM </Created>
-//         <Key> 1a8c0357-4f32-42de-ade4-851e33d3adc2 </Key>
+//         <Name> IRoleBusiness.cs </Name>
+//         <Created> 06/10/17 10:56:07 PM </Created>
+//         <Key> 4cb74977-03c8-400e-b357-6a3e9df12654 </Key>
 //     </File>
 //     <Summary>
-//         IUserBusiness.cs
+//         IRoleBusiness.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Constants;
 using System.Threading.Tasks;
 
-namespace Monkey.Business
+namespace Monkey.Business.Auth
 {
-    public interface IUserBusiness : IBaseBusiness
+    public interface IRoleBusiness : IBaseBusiness
     {
-        Task<int> GetTotalAsync();
+        void CheckUniqueName(string name, int? excludeId = null);
 
-        void CheckExistsById(params int[] ids);
+        Task<int> CreateAsync(string name, string description, params Enums.Permission[] permissions);
     }
 }

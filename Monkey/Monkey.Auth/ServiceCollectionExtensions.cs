@@ -64,7 +64,8 @@ namespace Monkey.Auth
         /// <returns></returns>
         /// <remarks>
         ///     The global config for HybridAuth from appsettings.json will auto reload when you
-        ///     change config. Be careful when you change the SecretKey, it affect to existing PasswordHash and Token
+        ///     change config. Be careful when you change the SecretKey, it affect to existing
+        ///     PasswordHash and Token
         /// </remarks>
         public static IApplicationBuilder UseHybridAuth(this IApplicationBuilder app)
         {
@@ -131,8 +132,6 @@ namespace Monkey.Auth
                 {
                     RequestTokenModel requestTokenModel = new RequestTokenModel
                     {
-                        ClientId = AuthConfig.SystemClientId,
-                        ClientSecret = AuthConfig.SystemClientSecret,
                         GrantType = GrantType.RefreshToken,
                         RefreshToken = accessTokenModel.RefreshToken
                     };
@@ -196,8 +195,7 @@ namespace Monkey.Auth
             if (isHaveConfig)
             {
                 AuthConfig.SecretKey = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SecretKey)}", AuthConfig.SecretKey);
-                AuthConfig.SystemClientId = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SystemClientId)}", AuthConfig.SystemClientId);
-                AuthConfig.SystemClientSecret = configuration.GetValue($"{configSection}:{nameof(AuthConfig.SystemClientSecret)}", AuthConfig.SystemClientSecret);
+                AuthConfig.AccessTokenExpireIn = configuration.GetValue($"{configSection}:{nameof(AuthConfig.AccessTokenExpireIn)}", AuthConfig.AccessTokenExpireIn);
             }
         }
     }

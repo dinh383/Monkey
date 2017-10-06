@@ -20,7 +20,7 @@
 using Monkey.Core.Models.Auth;
 using System.Threading.Tasks;
 
-namespace Monkey.Business
+namespace Monkey.Business.Auth
 {
     public interface IAuthenticationBusiness : IBaseBusiness
     {
@@ -33,9 +33,13 @@ namespace Monkey.Business
 
         void CheckExistsBySubject(params string[] subjects);
 
-        void CheckExistsByUserName(params string[] userNames);
+        void CheckUniqueUserName(string userName, int? excludeId = null);
 
-        LoggedInUserModel SignIn(int clientId, string username, string password, out string refreshToken);
+        void CheckExistByUserName(string userName);
+
+        void CheckUniqueEmail(string email, int? excludeId = null);
+
+        LoggedInUserModel SignIn(string username, string password, out string refreshToken, int? clientId);
 
         Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject);
 
@@ -54,7 +58,7 @@ namespace Monkey.Business
         /// </summary>
         /// <param name="clientId">    </param>
         /// <param name="refreshToken"></param>
-        void CheckValidRefreshToken(int clientId, string refreshToken);
+        void CheckValidRefreshToken(string refreshToken, int? clientId);
 
         /// <summary>
         ///     Active user via email, setup new username and password 
@@ -70,8 +74,9 @@ namespace Monkey.Business
         /// <summary>
         ///     Create User and Return Subject of new user 
         /// </summary>
-        /// <param name="email"></param>
+        /// <param name="email"> </param>
+        /// <param name="roleId"></param>
         /// <returns></returns>
-        Task<string> CreateUserByEmailAsync(string email);
+        Task<string> CreateUserByEmailAsync(string email, int? roleId);
     }
 }

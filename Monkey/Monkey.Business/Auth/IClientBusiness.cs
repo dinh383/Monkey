@@ -17,17 +17,15 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.Auth;
 using System.Threading.Tasks;
+using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 
-namespace Monkey.Business
+namespace Monkey.Business.Auth
 {
     public interface IClientBusiness : IBaseBusiness
     {
-        Task<int> GetTotalAsync();
-
         Task<int> CreateAsync(ClientCreateModel model);
 
         Task UpdateAsync(ClientUpdateModel model);

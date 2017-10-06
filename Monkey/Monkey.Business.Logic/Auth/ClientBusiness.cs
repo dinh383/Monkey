@@ -17,7 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Monkey.Business.Auth;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
@@ -28,11 +32,8 @@ using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Monkey.Business.Logic
+namespace Monkey.Business.Logic.Auth
 {
     [PerRequestDependency(ServiceType = typeof(IClientBusiness))]
     public class ClientBusiness : IClientBusiness
@@ -42,11 +43,6 @@ namespace Monkey.Business.Logic
         public ClientBusiness(IClientRepository clientRepository)
         {
             _clientRepository = clientRepository;
-        }
-
-        public Task<int> GetTotalAsync()
-        {
-            return _clientRepository.Get().CountAsync();
         }
 
         public Task<int> CreateAsync(ClientCreateModel model)

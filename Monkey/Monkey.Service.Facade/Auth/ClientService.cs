@@ -23,6 +23,7 @@ using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading.Tasks;
+using Monkey.Business.Auth;
 
 namespace Monkey.Service.Facade
 {

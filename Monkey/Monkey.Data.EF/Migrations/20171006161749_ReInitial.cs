@@ -134,7 +134,7 @@ namespace Monkey.Data.EF.Migrations
                     BrowserVersion = table.Column<string>(nullable: true),
                     CityGeoNameId = table.Column<int>(nullable: true),
                     CityName = table.Column<string>(nullable: true),
-                    ClientId = table.Column<int>(nullable: false),
+                    ClientId = table.Column<int>(nullable: true),
                     ContinentCode = table.Column<string>(nullable: true),
                     ContinentGeoNameId = table.Column<int>(nullable: true),
                     ContinentName = table.Column<string>(nullable: true),

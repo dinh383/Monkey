@@ -6,30 +6,30 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Service Facade </Project>
 //     <File>
-//         <Name> UserService.cs </Name>
-//         <Created> 18/07/17 4:54:23 PM </Created>
-//         <Key> 4e04746d-98a2-4f10-a6c6-b9a485ef0e44 </Key>
+//         <Name> RoleService.cs </Name>
+//         <Created> 06/10/17 10:55:41 PM </Created>
+//         <Key> d2444d72-83fc-4090-b922-45fad8a28ab3 </Key>
 //     </File>
 //     <Summary>
-//         UserService.cs
+//         RoleService.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Business;
+using Monkey.Business.Auth;
 using Puppy.DependencyInjection.Attributes;
 
-namespace Monkey.Service.Facade
+namespace Monkey.Service.Facade.Auth
 {
-    [PerRequestDependency(ServiceType = typeof(IUserService))]
-    public class UserService : IUserService
+    [PerRequestDependency(ServiceType = typeof(IRoleService))]
+    public class RoleService : IRoleService
     {
-        private readonly IUserBusiness _userBusiness;
+        private readonly IRoleBusiness _roleBusiness;
 
-        public UserService(IUserBusiness userBusiness)
+        public RoleService(IRoleBusiness roleBusiness)
         {
-            _userBusiness = userBusiness;
+            _roleBusiness = roleBusiness;
         }
     }
 }

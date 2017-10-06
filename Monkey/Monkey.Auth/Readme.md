@@ -12,10 +12,10 @@
 - Add Security options in appsettings.json
 
 ```javascript
+ // [Auto Reload]
 "Authentication": {
     "SecretKey": "6c8992a0df9656e8cc4c1240a2545d3a", // Update for security purpose
-    "SystemClientId": "7571ae4a8ac847bfae64911a1b6fa9dd", // Update follow databasse for your system client id
-    "SystemClientSecret": "38d94966247d499e959b86bf049e963b" // Update follow databasse for your system client secret
+    "AccessTokenExpireIn": "00:30:00"
 }
 ```
 

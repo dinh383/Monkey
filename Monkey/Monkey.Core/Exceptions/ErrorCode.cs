@@ -85,15 +85,23 @@ namespace Monkey.Core.Exceptions
         UserInActive = 1001,
 
         [Display(GroupName = "User")]
-        [Description("User Name does not exist")]
-        UserNameNotExist = 1002,
+        [Description("User Name is already exist")]
+        UserNameNotUnique = 1002,
 
         [Display(GroupName = "User")]
         [Description("User password is wrong")]
-        UserPasswordIsWrong = 1003,
+        UserPasswordWrong = 1003,
 
         [Display(GroupName = "User")]
         [Description("User is banned")]
-        UserIsBanned = 1004,
+        UserBanned = 1004,
+
+        [Display(GroupName = "User")]
+        [Description("Email is already exist")]
+        UserEmailNotUnique = 1005,
+
+        [Display(GroupName = "User")]
+        [Description("User name is not exist")]
+        UserNameNotExist = 1006,
     }
 }
