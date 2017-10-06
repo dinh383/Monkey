@@ -29,11 +29,12 @@ using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web;
-using Puppy.Web.HttpRequestDetection.Device;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Puppy.Web.HttpUtils;
+using Puppy.Web.HttpUtils.HttpDetection.Device;
 
 namespace Monkey.Business.Logic
 {

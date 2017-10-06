@@ -9,7 +9,7 @@
 </div>
 <div class="page-content">
     <div class="row">
-        <div class="col-md-6 center-col">
+        <div class="col-lg-6 center-col">
             <div class="panel">
                 <div class="panel-body">
                     @using (Html.BeginForm("SubmitAdd", "Client", FormMethod.Post))
@@ -34,11 +34,22 @@
                             @Html.ValidationMessageFor(model => model.Type)
                         </div>
 
-                        <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
-                            <span class="ladda-label">
-                                Add
-                            </span>
-                        </button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "Client")">
+                                    <span class="ladda-label">
+                                        Back
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
+                                    <span class="ladda-label">
+                                        Add
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
                     }
                 </div>
             </div>

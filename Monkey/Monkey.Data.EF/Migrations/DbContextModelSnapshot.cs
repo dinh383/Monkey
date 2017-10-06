@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Monkey.Data.EF;
 using Monkey.Core.Constants;
-using Puppy.Web.HttpRequestDetection.Device;
+using Puppy.Web.HttpUtils.HttpDetection.Device;
 
 namespace Monkey.Data.EF.Migrations
 {

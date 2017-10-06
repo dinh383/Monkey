@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Monkey.Service;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using System.Threading.Tasks;
+using Puppy.AutoMapper;
 
 namespace Monkey.Areas.Portal.Controllers
 {
@@ -15,6 +17,7 @@ namespace Monkey.Areas.Portal.Controllers
         public const string AddEndpoint = "add";
         public const string EditEndpoint = "edit/{id}";
         public const string SubmitEditEndpoint = "edit";
+        public const string CheckUniqueNameEndpoint = "check-unique-name";
 
         private readonly IClientService _clientService;
 
@@ -43,7 +46,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            return View(new ClientCreateModel());
         }
 
         [Route(AddEndpoint)]
@@ -65,9 +68,9 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var client = await _clientService.GetAsync(id).ConfigureAwait(true);
-
-            return View(client);
+            var clientModel = await _clientService.GetAsync(id).ConfigureAwait(true);
+            var clientUpdateModel = clientModel.MapTo<ClientUpdateModel>();
+            return View(clientUpdateModel);
         }
 
         [Route(SubmitEditEndpoint)]
@@ -83,6 +86,26 @@ namespace Monkey.Areas.Portal.Controllers
             await _clientService.UpdateAsync(model).ConfigureAwait(true);
 
             return View("Index");
+        }
+
+        [Route(CheckUniqueNameEndpoint)]
+        [HttpPost]
+        public JsonResult CheckUniqueName(string name, int? id = null)
+        {
+            try
+            {
+                _clientService.CheckUniqueName(name, id);
+                return Json(true);
+            }
+            catch (MonkeyException monkeyException)
+            {
+                if (monkeyException.Code == ErrorCode.ClientNameAlreadyExist)
+                {
+                    return Json(false);
+                }
+
+                throw;
+            }
         }
     }
 }

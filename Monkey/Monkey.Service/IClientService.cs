@@ -35,5 +35,7 @@ namespace Monkey.Service
         Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
 
         Task<string> GenerateSecretAsync(int id);
+
+        void CheckUniqueName(string name, int? excludeId);
     }
 }

@@ -18,6 +18,7 @@
 #endregion License
 
 using FluentValidation.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using Monkey.Core.Constants;
 using Monkey.Core.Validators.Auth;
 using Puppy.DataTable.Attributes;
@@ -31,13 +32,14 @@ namespace Monkey.Core.Models.Auth
     public class ClientCreateModel
     {
         [DataTable(Order = 2, SortDirection = SortDirection.Ascending)]
+        [Remote("CheckUniqueName", "Client", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The name of client already exist, please try another.")]
         public string Name { get; set; }
 
         /// <summary>
         ///     Use " " to split domains 
         /// </summary>
         [DataTable(Order = 3)]
-        [Display(Name = "Domains (Split by ' ')")]
+        [Display(Name = "Domains", Description = "Domains split by ' '")]
         public string Domains { get; set; }
 
         [DataTable(Order = 4)]
@@ -50,6 +52,12 @@ namespace Monkey.Core.Models.Auth
         [DataTable(IsVisible = false, Order = 1)]
         public int Id { get; set; }
 
+        [DataTableIgnore]
+        public string Subject { get; set; }
+
+        [DataTableIgnore]
+        public string Secret { get; set; }
+
         [Display(Name = "Banned")]
         [DataTableIgnore]
         public bool IsBanned { get; set; }
@@ -61,12 +69,6 @@ namespace Monkey.Core.Models.Auth
 
     public class ClientModel : ClientUpdateModel
     {
-        [DataTableIgnore]
-        public string Subject { get; set; }
-
-        [DataTableIgnore]
-        public string Secret { get; set; }
-
         [Display(Name = "Banned Time")]
         [DataTable(DisplayName = "Banned Time", Order = 5)]
         public DateTimeOffset? BannedTime { get; set; }

@@ -65,5 +65,10 @@ namespace Monkey.Service.Facade
             _clientBusiness.CheckExist(id);
             return _clientBusiness.GenerateSecretAsync(id);
         }
+
+        public void CheckUniqueName(string name, int? excludeId)
+        {
+            _clientBusiness.CheckUniqueName(name, excludeId);
+        }
     }
 }
