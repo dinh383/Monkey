@@ -51,7 +51,10 @@ namespace Monkey.Auth.Helpers
 
         public static AccessTokenModel GenerateAccessToken(string clientId, string subject, TimeSpan expiresSpan, string refreshToken, string issuer = null)
         {
+            clientId = clientId?.Trim() ?? string.Empty;
+
             var dateTimeUtcNow = DateTimeOffset.UtcNow;
+
             double authTime = dateTimeUtcNow.GetEpochTime();
 
             var accessToken = new AccessTokenModel
@@ -64,7 +67,7 @@ namespace Monkey.Auth.Helpers
 
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"client_id", clientId},
+                {Constants.Constant.ClientIdKey, clientId},
                 {JwtRegisteredClaimNames.Sub, subject},
                 {JwtRegisteredClaimNames.AuthTime, authTime.ToString(CultureInfo.InvariantCulture)}
             };
