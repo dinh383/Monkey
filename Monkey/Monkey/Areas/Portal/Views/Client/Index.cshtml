@@ -30,6 +30,7 @@
                     IsSortable = false,
                     MRenderFunction = "actionRender",
                 });
+                model.GlobalJsVariableName = "oTable";
             }
 
             @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableHtml.cshtml", model).ConfigureAwait(true)
@@ -72,8 +73,13 @@
         }
 
         function remove(url) {
-            console.log(url);
-
+            $.ajax({
+                url: url,
+                success: function(data) {
+                    owl.notify("Success", "Delete Client Successful", "success");
+                    oTable.api().ajax.reload();
+                }
+            });
         }
     </script>
 }
