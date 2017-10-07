@@ -8,16 +8,16 @@
             var $this = $(this);
 
             swal({
-                    title: $this.data("confirm-title"),
-                    text: $this.data("confirm-message"),
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-pink",
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
+                title: $this.data("confirm-title"),
+                text: $this.data("confirm-message"),
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-pink",
+                confirmButtonText: 'Yes',
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
                 function (isConfirm) {
                     if (isConfirm) {
                         var action = $this.data("confirm-yes-callback");

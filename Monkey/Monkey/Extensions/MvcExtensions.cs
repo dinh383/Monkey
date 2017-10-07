@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
@@ -54,6 +55,9 @@ namespace Monkey.Extensions
             // Filter
             services.AddScoped<MvcExceptionFilter>();
             services.AddScoped<MvcAuthActionFilter>();
+
+            // Enable Session to use TempData
+            services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
 
             if (!EnvironmentHelper.IsDevelopment())
             {

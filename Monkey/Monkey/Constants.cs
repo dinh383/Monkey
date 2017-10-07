@@ -21,6 +21,11 @@ namespace Monkey
 {
     public static class Constants
     {
+        public static class TempDataKey
+        {
+            public const string Notify = nameof(Notify);
+        }
+
         public static class ViewDataKey
         {
             public const string Title = nameof(Title);
