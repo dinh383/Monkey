@@ -10,6 +10,7 @@ namespace Monkey.Areas.Portal.Controllers
     [ServiceFilter(typeof(MvcAuthActionFilter))]
     [Area(AreaName)]
     [Auth]
+    [AutoValidateAntiforgeryToken]
     public class MvcController : Controller
     {
         public const string AreaName = "portal";

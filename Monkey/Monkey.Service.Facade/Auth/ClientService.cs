@@ -24,7 +24,7 @@ using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading.Tasks;
 
-namespace Monkey.Service.Facade
+namespace Monkey.Service.Facade.Auth
 {
     [PerRequestDependency(ServiceType = typeof(IClientService))]
     public class ClientService : IClientService
@@ -69,6 +69,12 @@ namespace Monkey.Service.Facade
         public void CheckUniqueName(string name, int? excludeId)
         {
             _clientBusiness.CheckUniqueName(name, excludeId);
+        }
+
+        public Task RemoveAsync(int id)
+        {
+            _clientBusiness.CheckExist(id);
+            return _clientBusiness.RemoveAsync(id);
         }
     }
 }

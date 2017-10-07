@@ -45,5 +45,6 @@ namespace Monkey.Business.Auth
         void CheckExist(string subject, string secret);
 
         void CheckBanned(string subject, string secret);
+        Task RemoveAsync(int id);
     }
 }

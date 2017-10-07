@@ -37,5 +37,7 @@ namespace Monkey.Service
         Task<string> GenerateSecretAsync(int id);
 
         void CheckUniqueName(string name, int? excludeId);
+
+        Task RemoveAsync(int id);
     }
 }

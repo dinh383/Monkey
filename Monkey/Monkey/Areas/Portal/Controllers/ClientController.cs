@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
 using Monkey.Core.Exceptions;
@@ -18,9 +19,11 @@ namespace Monkey.Areas.Portal.Controllers
         public const string Endpoint = AreaName + "/client";
         public const string ListingEndpoint = "";
         public const string AddEndpoint = "add";
-        public const string EditEndpoint = "edit/{id}";
+        public const string EditEndpoint = "{id}/edit";
         public const string SubmitEditEndpoint = "edit";
         public const string CheckUniqueNameEndpoint = "check-unique-name";
+        public const string RemoveEndpoint = "{id}/remove";
+        public const string GenerateSecretEndpoint = "{id}/generate-secret";
 
         private readonly IClientService _clientService;
 
@@ -28,6 +31,8 @@ namespace Monkey.Areas.Portal.Controllers
         {
             _clientService = clientService;
         }
+
+        #region Listing
 
         [Route(ListingEndpoint)]
         [HttpGet]
@@ -44,6 +49,10 @@ namespace Monkey.Areas.Portal.Controllers
             var response = result.Result.GetDataTableActionResult<ClientModel>();
             return response;
         }
+
+        #endregion Listing
+
+        #region Add
 
         [Route(AddEndpoint)]
         [HttpGet]
@@ -67,6 +76,10 @@ namespace Monkey.Areas.Portal.Controllers
             return View("Index");
         }
 
+        #endregion Add
+
+        #region Edit
+
         [Route(EditEndpoint)]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -77,8 +90,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(SubmitEditEndpoint)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPut]
         public async Task<IActionResult> SubmitEdit([FromForm]ClientUpdateModel model)
         {
             if (!ModelState.IsValid)
@@ -89,6 +101,45 @@ namespace Monkey.Areas.Portal.Controllers
             await _clientService.UpdateAsync(model).ConfigureAwait(true);
 
             return View("Index");
+        }
+
+        #endregion Edit
+
+        [Route(RemoveEndpoint)]
+        [HttpPut]
+        public async Task<JsonResult> Remove(int id)
+        {
+            try
+            {
+                await _clientService.RemoveAsync(id).ConfigureAwait(true);
+                return Json(new { });
+            }
+            catch (MonkeyException ex)
+            {
+                ErrorModel errorModel = new ErrorModel(ex.Code, ex.Message, ex.AdditionalData);
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return Json(errorModel);
+            }
+        }
+
+        [Route(GenerateSecretEndpoint)]
+        [HttpPut]
+        public async Task<JsonResult> GenerateSecret(int id)
+        {
+            try
+            {
+                string secret = await _clientService.GenerateSecretAsync(id).ConfigureAwait(true);
+                return Json(new
+                {
+                    secret
+                });
+            }
+            catch (MonkeyException ex)
+            {
+                ErrorModel errorModel = new ErrorModel(ex.Code, ex.Message, ex.AdditionalData);
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return Json(errorModel);
+            }
         }
 
         [Route(CheckUniqueNameEndpoint)]

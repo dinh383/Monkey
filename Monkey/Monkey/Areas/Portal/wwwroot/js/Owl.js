@@ -1,5 +1,4 @@
-﻿
-var owl = {
+﻿var owl = {
     initToolTip: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
@@ -46,7 +45,8 @@ var owl = {
 
     setupAjax: function () {
         $.ajaxSetup({
-            type: "POST",
+            headers: { 'X-XSRF-TOKEN': $('[name=ape]').val() },
+            type: "PUT",
             cache: false,
             error: function (xhr, textStatus, errorThrown) {
                 console.log("ajax error", data);
@@ -75,25 +75,23 @@ var owl = {
         options.timeOut = options.timeOut || 5000;
         options.preventDuplicates = options.preventDuplicates || false;
         switch (type) {
-        case 'success':
-            toastr.success(message, title, options);
-            break;
-        case 'warning':
-            toastr.warning(message, title, options);
-            break;
-        case 'error':
-            toastr.error(message, title, options);
-            break;
-        case 'info':
-            toastr.info(message, title, options);
-            break;
-        default:
-            toastr.info(message, title, options);
+            case 'success':
+                toastr.success(message, title, options);
+                break;
+            case 'warning':
+                toastr.warning(message, title, options);
+                break;
+            case 'error':
+                toastr.error(message, title, options);
+                break;
+            case 'info':
+                toastr.info(message, title, options);
+                break;
+            default:
+                toastr.info(message, title, options);
         }
     }
 };
-
-
 
 $(function () {
     owl.setupAjax();

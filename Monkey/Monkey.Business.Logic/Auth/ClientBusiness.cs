@@ -142,6 +142,18 @@ namespace Monkey.Business.Logic.Auth
             }
         }
 
+        public Task RemoveAsync(int id)
+        {
+            _clientRepository.Delete(new ClientEntity
+            {
+                Id = id
+            });
+
+            _clientRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
         public void CheckUniqueName(string name, int? excludeId = null)
         {
             string nameNorm = StringHelper.Normalize(name);

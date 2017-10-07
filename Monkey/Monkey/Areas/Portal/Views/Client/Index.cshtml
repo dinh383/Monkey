@@ -3,7 +3,7 @@
 @using Puppy.DataTable.Models.Config.Column
 @using Constants = Monkey.Constants
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Portal | Client";
+    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Client";
 }
 
 <div class="page-header">
@@ -18,7 +18,6 @@
 <div class="page-content">
     <div class="panel">
         <div class="panel-body">
-
             @{
                 var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (ClientController controller) => controller.GetDataTable(null));
                 model.IsUseColumnFilter = true;

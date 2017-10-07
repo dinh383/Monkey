@@ -204,7 +204,7 @@ namespace Monkey.Extensions
                     // Rename the Anti-Forgery HTTP header from RequestVerificationToken to
                     // X-XSRF-TOKEN. X-XSRF-TOKEN is not a standard but a common name given to this
                     // HTTP header popularized by Angular.
-                    options.HeaderName = "X-XSRF-TOKEN";
+                    options.HeaderName = HeaderKey.XAntiforgeryToken;
 
                     // If you have enabled SSL/TLS. Uncomment this line to ensure that the
                     // Anti-Forgery cookie requires SSL /TLS to be sent across the wire.

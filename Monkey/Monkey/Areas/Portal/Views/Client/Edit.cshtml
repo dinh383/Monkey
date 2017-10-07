@@ -2,7 +2,7 @@
 @using Puppy.Web.HtmlHelperUtils
 @model Monkey.Core.Models.Auth.ClientUpdateModel
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Client - Edit";
+    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Client - Edit";
 }
 
 <div class="page-header">
@@ -105,11 +105,13 @@
 @section scripts{
     <script>
         function generateSecret(id) {
-            var url = "";
+            var url = '@Url.AbsoluteAction("GenerateSecret", "Client", new {id = "PARAMETER_ID"})';
+            url = url.replace(/PARAMETER_ID/g, id);
             $.ajax({
                 url: url,
                 success: function(data) {
                     owl.notify("Success", "Generate new secret for the Client", "success");
+                    $("#Secret").val(data.secret);
                 }
             });
         }

@@ -24,9 +24,8 @@ namespace Monkey.Filters.Exception
                 // Log with Logger
                 logId = Log.Error(context);
 
-                var ex = exception;
                 context.Exception = null;
-                errorModel = new ErrorModel(ex.Code, ex.Message, exception.AdditionalData);
+                errorModel = new ErrorModel(exception.Code, exception.Message, exception.AdditionalData);
 
                 if (exception.AdditionalData?.Any() == true)
                 {
