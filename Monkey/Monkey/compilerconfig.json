@@ -6,5 +6,9 @@
   {
     "outputFile": "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.es5.js",
     "inputFile": "Areas/Portal/wwwroot/vendor/jquery-ui/timepicker-addon/jquery-ui-timepicker-addon.js"
+  },
+  {
+    "outputFile": "Areas/Portal/wwwroot/js/OwlUtils.es5.js",
+    "inputFile": "Areas/Portal/wwwroot/js/OwlUtils.js"
   }
 ]

@@ -76,5 +76,11 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/vendor/datatables-columnfilter/jquery.dataTables.column.Filter.css"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/js/OwlUtils.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/js/OwlUtils.js"
+    ]
   }
 ]
