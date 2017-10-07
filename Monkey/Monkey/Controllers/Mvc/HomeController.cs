@@ -2,14 +2,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Monkey.Controllers.Mvc
 {
-    [Route("")]
+    [Route(Endpoint)]
     public class HomeController : MvcController
     {
-        [Route("")]
+        public const string Endpoint = AreaName;
+
+        public const string HomeEndpoint = "";
+
+        [Route(HomeEndpoint)]
         [HttpGet]
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Home", new { area = "Portal" });
+            return RedirectToAction("Index", "Auth", new { area = "Portal" });
         }
     }
 }
