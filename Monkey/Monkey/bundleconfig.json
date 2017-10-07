@@ -82,5 +82,11 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/js/OwlUtils.js"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/js/Owl.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/js/Owl.js"
+    ]
   }
 ]
