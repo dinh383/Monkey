@@ -46,6 +46,8 @@
                 @using (Html.BeginForm("SignIn", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
                 {
                     @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.RedirectUrl)
+
                     <div class="form-group form-material" data-plugin="formMaterial">
                         @Html.LabelFor(m => m.UserName, new { @class = "form-control-label", @for = $"{nameof(Model.UserName)}" })
                         @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })

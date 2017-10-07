@@ -32,5 +32,16 @@ namespace Monkey.Core.Models.Auth
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public string RedirectUrl { get; set; }
+
+        public LoginModel()
+        {
+        }
+
+        public LoginModel(string redirectUrl) : this()
+        {
+            RedirectUrl = redirectUrl;
+        }
     }
 }

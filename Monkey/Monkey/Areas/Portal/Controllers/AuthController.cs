@@ -26,9 +26,14 @@ namespace Monkey.Areas.Portal.Controllers
         [Route(SignInEndpoint)]
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(string redirectUrl)
         {
-            return View(new LoginModel());
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(new LoginModel(redirectUrl));
         }
 
         [Route(SignInSubmitEndpoint)]
@@ -50,7 +55,12 @@ namespace Monkey.Areas.Portal.Controllers
             // Sign In to Cookie, for web only
             await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel).ConfigureAwait(true);
 
-            return RedirectToAction("Index", "Home");
+            if (string.IsNullOrWhiteSpace(model.RedirectUrl))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return Redirect(model.RedirectUrl);
         }
 
         [Route(SignOutEndpoint)]

@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -28,7 +29,8 @@ namespace Monkey.Auth.Filters
         {
             if (!context.IsAuthenticated())
             {
-                context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal" });
+                var redirectUrl = context.HttpContext.Request.GetDisplayUrl();
+                context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal", RedirectUrl = redirectUrl });
                 return;
             }
 
