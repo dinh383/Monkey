@@ -43,39 +43,40 @@
     <script type="text/javascript">
         function drawCallBack(oSettings) {
             owl.initToolTip();
-            owl.initBootBox();
+            owl.initConfirmDialog();
         }
 
         function actionRender(data, type, row) {
-            var rowId = row[0];
+            var id = row[0];
 
+            // Edit
             var editUrl = '@Url.AbsoluteAction("Edit", "Client", new {id = "PARAMETER_ID"})';
-            editUrl = editUrl.replace(/PARAMETER_ID/g, rowId);
-            var editEle = '<a href="' +
-                editUrl +
-                '" class="btn btn-sm btn-icon btn-pure btn-default on-default waves-effect waves-classic" data-toggle="tooltip" data-original-title="Edit"><i class="icon md-edit" aria-hidden="true"></i></a>';
+            editUrl = editUrl.replace(/PARAMETER_ID/g, id);
+            var editEle = '<a href="' + editUrl + '" class="btn btn-sm btn-icon btn-pure btn-default on-default waves-effect waves-classic" data-toggle="tooltip" data-original-title="Edit"><i class="icon md-edit" aria-hidden="true"></i></a>';
 
-            var removeUrl = '@Url.AbsoluteAction("Remove", "Client", new {id = "PARAMETER_ID"})';
-            removeUrl = removeUrl.replace(/PARAMETER_ID/g, rowId);
-
-            var removeTitle = "ARE YOU SURE?";
-            var removeMessage = "Are you sure that you want to delete this row?";
-
+            // Remove
             var removeEle =
-                '<a href="javascript:;" data-plugin="confirm" ' +
-                    'data-confirm-title="' + removeTitle + '" ' +
-                    'data-confirm-message="' + removeMessage + '" ' +
-                    'data-confirm-action="remove(\'' + removeUrl + '\')" ' +
+                '<a href="javascript:;" ' +
+                    'data-plugin="confirm" ' +
+                    'data-confirm-title="ARE YOU SURE?" ' +
+                    'data-confirm-message="Are you sure that you want to delete this row?" ' +
+                    'data-confirm-yes-title="Deleted!" ' +
+                    'data-confirm-yes-message="Delete the client successful" ' +
+                    'data-confirm-yes-callback="remove(\'' + id + '\')" ' +
+                    'data-confirm-no-title="Cancelled" ' +
+                    'data-confirm-no-message="The client is safe :)" ' +
                     'class="btn btn-sm btn-icon btn-pure btn-default on-default waves-effect waves-classic" data-toggle="tooltip" data-original-title="Remove"><i class="icon md-delete" aria-hidden="true"></i></a>';
 
             return editEle + removeEle;
         }
 
-        function remove(url) {
+        function remove(id) {
+            var url = '@Url.AbsoluteAction("Remove", "Client", new {id = "PARAMETER_ID"})';
+            url = url.replace(/PARAMETER_ID/g, id);
+
             $.ajax({
                 url: url,
                 success: function(data) {
-                    owl.notify("Success", "Delete Client Successful", "success");
                     oTable.api().ajax.reload();
                 }
             });

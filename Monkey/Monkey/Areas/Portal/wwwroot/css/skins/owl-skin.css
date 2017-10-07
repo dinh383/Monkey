@@ -385,6 +385,37 @@ select.form-control:focus::-ms-value {
         border-color: #1d1629;
     }
 
+.btn-pink {
+    color: #fff;
+    background-color: #f46c93;
+    border-color: #f46c93;
+}
+
+    .btn-pink:hover {
+        color: #fff;
+        background-color: #f46c93;
+        border-color: #e63b6c;
+    }
+
+    .btn-pink:focus, .btn-pink.focus {
+        -webkit-box-shadow: 0 0 0 2px rgba(244, 108, 147, 0.5);
+        box-shadow: 0 0 0 2px rgba(244, 108, 147, 0.5);
+    }
+
+.btn-pink.disabled, .btn-pink:disabled {
+    background-color: #f46c93;
+    border-color: #f46c93;
+}
+
+    .btn-pink:active, .btn-pink.active,
+    .show > .btn-pink.dropdown-toggle {
+        color: #fff;
+        background-color: #f46c93;
+        background-image: none;
+        border-color: #e63b6c;
+    }
+
+
 .btn-secondary {
     color: #373a3c;
     background-color: #fff;

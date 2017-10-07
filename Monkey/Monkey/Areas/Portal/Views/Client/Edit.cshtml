@@ -55,7 +55,7 @@
                                     <span class="ladda-label">
                                         <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
                                     </span>
-                                </a>
+                               </a>
                             </div>
                             <div class="col-md-6">
                                 <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
@@ -90,7 +90,11 @@
                                     data-plugin="confirm"
                                     data-confirm-title="ARE YOU SURE?"
                                     data-confirm-message="Are you sure that you want to generate new secret?"
-                                    data-confirm-action="generateSecret('@Model.Id')"
+                                    data-confirm-yes-title="Generated!"
+                                    data-confirm-yes-message="Generate new secret for the client successful"
+                                    data-confirm-yes-callback="generateSecret('@Model.Id')"
+                                    data-confirm-no-title="Cancelled"
+                                    data-confirm-no-message="The client is safe :)"
                                     class="btn btn-primary btn-block">
                                 <i class="icon md-refresh mr-10" aria-hidden="true"></i>Generate Secret
                             </button>

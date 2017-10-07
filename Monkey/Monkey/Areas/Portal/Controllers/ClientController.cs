@@ -90,7 +90,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(SubmitEditEndpoint)]
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> SubmitEdit([FromForm]ClientUpdateModel model)
         {
             if (!ModelState.IsValid)
@@ -106,7 +106,7 @@ namespace Monkey.Areas.Portal.Controllers
         #endregion Edit
 
         [Route(RemoveEndpoint)]
-        [HttpPut]
+        [HttpPost]
         public async Task<JsonResult> Remove(int id)
         {
             try
@@ -123,7 +123,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(GenerateSecretEndpoint)]
-        [HttpPut]
+        [HttpPost]
         public async Task<JsonResult> GenerateSecret(int id)
         {
             try

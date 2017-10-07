@@ -3,28 +3,30 @@
         $('[data-toggle="tooltip"]').tooltip();
     },
 
-    initBootBox: function () {
+    initConfirmDialog: function () {
         $('[data-plugin="confirm"]').click(function () {
             var $this = $(this);
-            bootbox.dialog({
-                title: $this.data("confirm-title"),
-                message: $this.data("confirm-message"),
-                buttons: {
-                    danger: {
-                        label: "Confirm",
-                        className: "btn-danger",
-                        callback: function () {
-                            var action = $this.data("confirm-action");
-                            eval(action);
-                        }
-                    },
-                    main: {
-                        label: "Cancel",
-                        className: "btn-primary",
-                        callback: function () { }
+
+            swal({
+                    title: $this.data("confirm-title"),
+                    text: $this.data("confirm-message"),
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-pink",
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        var action = $this.data("confirm-yes-callback");
+                        eval(action);
+                        swal($this.data("confirm-yes-title") || "Deleted!", $this.data("confirm-yes-message") || "Delete Successful", "success");
+                    } else {
+                        swal($this.data("confirm-no-title") || "Cancelled", $this.data("confirm-no-message"), "error");
                     }
-                }
-            });
+                });
         });
     },
 
@@ -46,7 +48,7 @@
     setupAjax: function () {
         $.ajaxSetup({
             headers: { 'X-XSRF-TOKEN': $('[name=ape]').val() },
-            type: "PUT",
+            type: "POST",
             cache: false,
             error: function (xhr, textStatus, errorThrown) {
                 console.log("ajax error", data);
@@ -97,5 +99,5 @@ $(function () {
     owl.setupAjax();
     owl.initRequiredField();
     owl.initToolTip();
-    owl.initBootBox();
+    owl.initConfirmDialog();
 });
