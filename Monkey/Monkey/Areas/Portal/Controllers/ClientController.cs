@@ -1,18 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Auth.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Monkey.Service;
+using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using System.Threading.Tasks;
-using Puppy.AutoMapper;
+using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers
 {
     [Route(Endpoint)]
+    [Auth(Enums.Permission.Admin)]
     public class ClientController : MvcController
     {
-        public const string Endpoint = "client";
+        public const string Endpoint = AreaName + "/client";
         public const string ListingEndpoint = "";
         public const string AddEndpoint = "add";
         public const string EditEndpoint = "edit/{id}";

@@ -11,9 +11,11 @@ using System.Linq;
 
 namespace Monkey.Areas.Portal.Controllers
 {
-    [Route("portal")]
+    [Route(Endpoint)]
     public class HomeController : MvcController
     {
+        public const string Endpoint = AreaName;
+
         [Route("")]
         [HttpGet]
         public IActionResult Index()

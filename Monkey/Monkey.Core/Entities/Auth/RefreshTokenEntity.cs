@@ -20,8 +20,8 @@
 using Monkey.Core.Entities.User;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 using Puppy.Web.HttpUtils.HttpDetection.Device;
+using System;
 
 namespace Monkey.Core.Entities.Auth
 {

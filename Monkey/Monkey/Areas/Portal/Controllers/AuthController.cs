@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Auth;
 using Monkey.Auth.Filters;
 using Monkey.Auth.Interfaces;
 using Monkey.Core.Models.Auth;
@@ -12,7 +11,7 @@ namespace Monkey.Areas.Portal.Controllers
     [Route(Endpoint)]
     public class AuthController : MvcController
     {
-        public const string Endpoint = "auth";
+        public const string Endpoint = AreaName + "/auth";
         public const string SignInEndpoint = "";
         public const string SignInSubmitEndpoint = "signin";
         public const string SignOutEndpoint = "signout";

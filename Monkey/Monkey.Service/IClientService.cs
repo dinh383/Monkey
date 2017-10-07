@@ -18,9 +18,9 @@
 #endregion License
 
 using Monkey.Core.Models.Auth;
-using System.Threading.Tasks;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
+using System.Threading.Tasks;
 
 namespace Monkey.Service
 {

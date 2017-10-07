@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Monkey.Auth;
 using Monkey.Auth.Helpers;
@@ -27,6 +26,7 @@ using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection.Attributes;
+using System.Threading.Tasks;
 using HttpContext = System.Web.HttpContext;
 
 namespace Monkey.Service.Facade.Auth

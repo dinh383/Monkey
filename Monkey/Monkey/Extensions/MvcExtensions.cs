@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
+using Monkey.Auth.Filters;
 using Monkey.Core.Configs;
 using Monkey.Core.Validators;
 using Monkey.Filters.Exception;
@@ -52,6 +53,7 @@ namespace Monkey.Extensions
 
             // Filter
             services.AddScoped<MvcExceptionFilter>();
+            services.AddScoped<MvcAuthActionFilter>();
 
             if (!EnvironmentHelper.IsDevelopment())
             {

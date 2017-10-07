@@ -17,9 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Monkey.Business.Auth;
 using Monkey.Core.Entities.Auth;
@@ -32,6 +29,9 @@ using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Monkey.Business.Logic.Auth
 {
