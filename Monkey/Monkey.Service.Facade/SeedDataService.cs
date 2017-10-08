@@ -54,16 +54,17 @@ namespace Monkey.Service.Facade
                 try
                 {
                     _roleBusiness.CheckUniqueName(roleName);
+
+                    var roleId = await _roleBusiness.CreateAsync(roleName, roleDescription, enumMember.Value).ConfigureAwait(true);
+
+                    if (enumMember.Value == Enums.Permission.Admin)
+                    {
+                        _roleAdminId = roleId;
+                    }
                 }
                 catch
                 {
                     // If already have user => Ignore
-                }
-                var roleId = await _roleBusiness.CreateAsync(roleName, roleDescription, enumMember.Value).ConfigureAwait(true);
-
-                if (enumMember.Value == Enums.Permission.Admin)
-                {
-                    _roleAdminId = roleId;
                 }
             }
         }
@@ -78,13 +79,14 @@ namespace Monkey.Service.Facade
             {
                 _userBusiness.CheckUniqueUserName(userName);
                 _userBusiness.CheckUniqueEmail(email);
+
+                var subject = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
+                await _userBusiness.ActiveByEmailAsync(subject, userName, password).ConfigureAwait(true);
             }
             catch
             {
                 // If already have user => Ignore
             }
-            var subject = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
-            await _userBusiness.ActiveByEmailAsync(subject, userName, password).ConfigureAwait(true);
         }
     }
 }
