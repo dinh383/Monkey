@@ -17,9 +17,25 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Models.Auth;
+using Puppy.DataTable.Models.Request;
+using Puppy.DataTable.Models.Response;
+using System.Threading.Tasks;
+
 namespace Monkey.Service
 {
     public interface IUserService
     {
+        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
+
+        Task CreateAsync(UserCreateModel model);
+
+        Task<UserModel> GetAsync(int id);
+
+        Task UpdateAsync(UserUpdateModel model);
+
+        Task RemoveAsync(int id);
+
+        void CheckUniqueUserName(string name, int? excludeId);
     }
 }

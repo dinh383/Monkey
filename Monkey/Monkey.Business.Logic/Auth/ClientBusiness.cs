@@ -167,7 +167,7 @@ namespace Monkey.Business.Logic.Auth
 
             if (query.Any())
             {
-                throw new MonkeyException(ErrorCode.ClientNameAlreadyExist);
+                throw new MonkeyException(ErrorCode.ClientNameNotUnique);
             }
         }
     }

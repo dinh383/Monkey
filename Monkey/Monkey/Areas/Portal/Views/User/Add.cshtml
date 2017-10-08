@@ -1,0 +1,52 @@
+﻿@using Monkey.Core.Constants
+@model Monkey.Core.Models.Auth.UserCreateModel
+@{
+    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User - Add";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Add User</h1>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-6 center-col">
+            <div class="panel">
+                <div class="panel-body">
+                    @using (Html.BeginForm("SubmitAdd", "User", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            @Html.LabelFor(m => m.Email, new { @class = "form-control-label", @for = $"{nameof(Model.Email)}" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+
+                        @*<div class="form-group form-material" data-plugin="formMaterial">
+                                @Html.LabelFor(m => m.Type, new { @class = "form-control-label", @for = $"{nameof(Model.Type)}" })
+                                @Html.DropDownListFor(model => model.Type, typeof(Enums.UserType).GetEnumSelectList(Model.Type.ToString()), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Type)
+                            </div>*@
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "User")">
+                                    <span class="ladda-label">
+                                        <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
+                                    <span class="ladda-label">
+                                        <i class="icon md-plus mr-10" aria-hidden="true"></i>Add
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

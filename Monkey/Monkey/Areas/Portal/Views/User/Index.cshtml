@@ -3,15 +3,15 @@
 @using Puppy.DataTable.Models.Config.Column
 @using Constants = Monkey.Constants
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Client";
+    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User";
 }
 
 <div class="page-header">
-    <h1 class="page-title">Clients</h1>
+    <h1 class="page-title">Users</h1>
     <div class="page-header-actions">
-        <a class="btn btn-sm btn-primary btn-round waves-effect waves-classic" href="@Url.AbsoluteAction("Add", "Client")">
+        <a class="btn btn-sm btn-primary btn-round waves-effect waves-classic" href="@Url.AbsoluteAction("Add", "User")">>
             <i class="icon md-plus" aria-hidden="true"></i>
-            <span class="hidden-sm-down">Add Client</span>
+            <span class="hidden-sm-down">Add User</span>
         </a>
     </div>
 </div>
@@ -19,7 +19,7 @@
     <div class="panel">
         <div class="panel-body">
             @{
-                var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (ClientController controller) => controller.GetDataTable(null));
+                var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (UserController controller) => controller.GetDataTable(null));
                 model.IsUseColumnFilter = true;
                 model.DrawCallbackFunctionName = "drawCallBack";
                 model.Columns.Add(new ColumnModel("Action", typeof(string))
@@ -50,7 +50,7 @@
             var id = row[0];
 
             // Edit
-            var editUrl = '@Url.AbsoluteAction("Edit", "Client", new {id = "PARAMETER_ID"})';
+            var editUrl = '@Url.AbsoluteAction("Edit", "User", new {id = "PARAMETER_ID"})';
             editUrl = editUrl.replace(/PARAMETER_ID/g, id);
             var editEle = '<a href="' + editUrl + '" class="btn btn-sm btn-icon btn-pure btn-default on-default waves-effect waves-classic" data-toggle="tooltip" data-original-title="Edit"><i class="icon md-edit" aria-hidden="true"></i></a>';
 
@@ -59,19 +59,19 @@
                 '<a href="javascript:;" ' +
                     'data-plugin="confirm" ' +
                     'data-confirm-title="ARE YOU SURE?" ' +
-                    'data-confirm-message="Are you sure that you want to delete this client?" ' +
+                    'data-confirm-message="Are you sure that you want to delete this user?" ' +
                     'data-confirm-yes-title="Deleted!" ' +
-                    'data-confirm-yes-message="Delete the client successful" ' +
+                    'data-confirm-yes-message="Delete the user successful" ' +
                     'data-confirm-yes-callback="remove(\'' + id + '\')" ' +
                     'data-confirm-no-title="Cancelled" ' +
-                    'data-confirm-no-message="The client is safe :)" ' +
+                    'data-confirm-no-message="The user is safe :)" ' +
                     'class="btn btn-sm btn-icon btn-pure btn-default on-default waves-effect waves-classic" data-toggle="tooltip" data-original-title="Remove"><i class="icon md-delete" aria-hidden="true"></i></a>';
 
             return editEle + removeEle;
         }
 
         function remove(id) {
-            var url = '@Url.AbsoluteAction("Remove", "Client", new {id = "PARAMETER_ID"})';
+            var url = '@Url.AbsoluteAction("Remove", "User", new {id = "PARAMETER_ID"})';
             url = url.replace(/PARAMETER_ID/g, id);
 
             $.ajax({

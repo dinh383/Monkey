@@ -48,7 +48,7 @@ namespace Monkey.Core.Validators.Auth
 
                 RuleFor(x => x.Type).IsInEnum();
 
-                RuleFor(x => x.BannedRemark).NotEmpty().When(x => x.IsBanned);
+                RuleFor(x => x.BannedRemark).NotEmpty().MaximumLength(250).When(x => x.IsBanned);
             }
         }
     }

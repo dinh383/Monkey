@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
 using Monkey.Auth.Interfaces;
+using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
+using Monkey.Extensions;
 using Puppy.AutoMapper;
 using System.Threading.Tasks;
 
@@ -49,18 +51,49 @@ namespace Monkey.Areas.Portal.Controllers
 
             RequestTokenModel requestToken = model.MapTo<RequestTokenModel>();
 
-            // Sign In and get access token
-            AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken).ConfigureAwait(true);
-
-            // Sign In to Cookie, for web only
-            await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel).ConfigureAwait(true);
-
-            if (string.IsNullOrWhiteSpace(model.RedirectUrl))
+            try
             {
-                return RedirectToAction("Index", "Home");
-            }
+                // Sign In and get access token
+                AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken).ConfigureAwait(true);
 
-            return Redirect(model.RedirectUrl);
+                // Sign In to Cookie, for web only
+                await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel).ConfigureAwait(true);
+
+                if (string.IsNullOrWhiteSpace(model.RedirectUrl))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                return Redirect(model.RedirectUrl);
+            }
+            catch (MonkeyException ex)
+            {
+                if (ex.Code == ErrorCode.UserInActive)
+                {
+                    this.SetNotify("SignIn Fail", "Your account is in-active, please active via your email and try sign-in again", ControllerExtensions.NotifyStatus.Error);
+                    return View("Index", model);
+                }
+
+                if (ex.Code == ErrorCode.UserBanned)
+                {
+                    this.SetNotify("SignIn Fail", $"Your account is banned! {ex.Message}", ControllerExtensions.NotifyStatus.Error);
+                    return View("Index", model);
+                }
+
+                if (ex.Code == ErrorCode.UserNameNotExist)
+                {
+                    this.SetNotify("SignIn Fail", "Your account is not exist", ControllerExtensions.NotifyStatus.Error);
+                    return View("Index", model);
+                }
+
+                if (ex.Code == ErrorCode.UserPasswordWrong)
+                {
+                    this.SetNotify("SignIn Fail", "Your password is wrong, please try again", ControllerExtensions.NotifyStatus.Error);
+                    return View("Index", model);
+                }
+
+                throw;
+            }
         }
 
         [Route(SignOutEndpoint)]

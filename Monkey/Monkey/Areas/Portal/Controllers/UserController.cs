@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
 using Monkey.Core.Exceptions;
@@ -14,22 +13,21 @@ namespace Monkey.Areas.Portal.Controllers
 {
     [Route(Endpoint)]
     [Auth(Enums.Permission.Admin)]
-    public class ClientController : MvcController
+    public class UserController : MvcController
     {
-        public const string Endpoint = AreaName + "/client";
+        public const string Endpoint = AreaName + "/user";
         public const string ListingEndpoint = "";
         public const string AddEndpoint = "add";
         public const string EditEndpoint = "{id}/edit";
         public const string SubmitEditEndpoint = "edit";
-        public const string CheckUniqueNameEndpoint = "check-unique-name";
+        public const string CheckUniqueUserNameEndpoint = "check-unique-username";
         public const string RemoveEndpoint = "{id}/remove";
-        public const string GenerateSecretEndpoint = "{id}/generate-secret";
 
-        private readonly IClientService _clientService;
+        private readonly IUserService _userService;
 
-        public ClientController(IClientService clientService)
+        public UserController(IUserService userService)
         {
-            _clientService = clientService;
+            _userService = userService;
         }
 
         #region Listing
@@ -43,10 +41,10 @@ namespace Monkey.Areas.Portal.Controllers
 
         [Route(ListingEndpoint)]
         [HttpPost]
-        public DataTableActionResult<ClientModel> GetDataTable([FromForm] DataTableParamModel model)
+        public DataTableActionResult<UserModel> GetDataTable([FromForm] DataTableParamModel model)
         {
-            var result = _clientService.GetDataTableAsync(model);
-            var response = result.Result.GetDataTableActionResult<ClientModel>();
+            var result = _userService.GetDataTableAsync(model);
+            var response = result.Result.GetDataTableActionResult<UserModel>();
             return response;
         }
 
@@ -58,20 +56,20 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new ClientCreateModel());
+            return View(new UserCreateModel());
         }
 
         [Route(AddEndpoint)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitAdd([FromForm]ClientCreateModel model)
+        public async Task<IActionResult> SubmitAdd([FromForm]UserCreateModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View("Add", model);
             }
 
-            await _clientService.CreateAsync(model).ConfigureAwait(true);
+            await _userService.CreateAsync(model).ConfigureAwait(true);
 
             return View("Index");
         }
@@ -84,21 +82,21 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var clientModel = await _clientService.GetAsync(id).ConfigureAwait(true);
-            var clientUpdateModel = clientModel.MapTo<ClientUpdateModel>();
-            return View(clientUpdateModel);
+            var userModel = await _userService.GetAsync(id).ConfigureAwait(true);
+            var userUpdateModel = userModel.MapTo<UserUpdateModel>();
+            return View(userUpdateModel);
         }
 
         [Route(SubmitEditEndpoint)]
         [HttpPost]
-        public async Task<IActionResult> SubmitEdit([FromForm]ClientUpdateModel model)
+        public async Task<IActionResult> SubmitEdit([FromForm]UserUpdateModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View("Edit", model);
             }
 
-            await _clientService.UpdateAsync(model).ConfigureAwait(true);
+            await _userService.UpdateAsync(model).ConfigureAwait(true);
 
             return View("Index");
         }
@@ -109,42 +107,22 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpPost]
         public async Task<JsonResult> Remove(int id)
         {
-            await _clientService.RemoveAsync(id).ConfigureAwait(true);
+            await _userService.RemoveAsync(id).ConfigureAwait(true);
             return Json(new { });
         }
 
-        [Route(GenerateSecretEndpoint)]
-        [HttpPost]
-        public async Task<JsonResult> GenerateSecret(int id)
-        {
-            try
-            {
-                string secret = await _clientService.GenerateSecretAsync(id).ConfigureAwait(true);
-                return Json(new
-                {
-                    secret
-                });
-            }
-            catch (MonkeyException ex)
-            {
-                ErrorModel errorModel = new ErrorModel(ex.Code, ex.Message, ex.AdditionalData);
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return Json(errorModel);
-            }
-        }
-
-        [Route(CheckUniqueNameEndpoint)]
+        [Route(CheckUniqueUserNameEndpoint)]
         [HttpPost]
         public JsonResult CheckUniqueName(string name, int? id = null)
         {
             try
             {
-                _clientService.CheckUniqueName(name, id);
+                _userService.CheckUniqueUserName(name, id);
                 return Json(true);
             }
             catch (MonkeyException monkeyException)
             {
-                if (monkeyException.Code == ErrorCode.ClientNameNotUnique)
+                if (monkeyException.Code == ErrorCode.UserNameNotUnique)
                 {
                     return Json(false);
                 }

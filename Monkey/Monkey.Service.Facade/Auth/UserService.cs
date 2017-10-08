@@ -17,7 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System.Threading.Tasks;
 using Monkey.Business.Auth;
+using Monkey.Core.Models.Auth;
+using Puppy.DataTable.Models.Request;
+using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
 
 namespace Monkey.Service.Facade.Auth
@@ -30,6 +34,36 @@ namespace Monkey.Service.Facade.Auth
         public UserService(IUserBusiness userBusiness)
         {
             _userBusiness = userBusiness;
+        }
+
+        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task CreateAsync(UserCreateModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<UserModel> GetAsync(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task UpdateAsync(UserUpdateModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task RemoveAsync(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CheckUniqueUserName(string name, int? excludeId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
