@@ -88,5 +88,23 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/js/Owl.js"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/js/Section/Sidebar.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/js/Section/Sidebar.js"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/js/Section/Menubar.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/js/Section/Menubar.js"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/js/Site.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/js/Site.js"
+    ]
   }
 ]

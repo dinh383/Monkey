@@ -6,7 +6,7 @@ using System;
 
 namespace Monkey.Filters.Exception
 {
-    public class MvcExceptionFilter : ExceptionFilterAttribute
+    public class PortalMvcExceptionFilter : ExceptionFilterAttribute
     {
         public override void OnException(ExceptionContext context)
         {

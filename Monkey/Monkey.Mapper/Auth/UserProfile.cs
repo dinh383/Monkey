@@ -45,7 +45,9 @@ namespace Monkey.Mapper.Auth
 
             CreateMap<UserEntity, UserModel>().IgnoreAllNonExisting()
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
-                .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null));
+                .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
+                .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
+                .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty));
 
             CreateMap<UserModel, UserUpdateModel>().IgnoreAllNonExisting();
         }

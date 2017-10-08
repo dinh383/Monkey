@@ -37,7 +37,7 @@ namespace Monkey.Core.Models.Auth
         [DataTable(Order = 4)]
         public string Phone { get; set; }
 
-        [DataTable(IsVisible = false, DisplayName = "Role Id")]
+        [DataTable(IsVisible = false, DisplayName = "Role")]
         public int? RoleId { get; set; }
     }
 

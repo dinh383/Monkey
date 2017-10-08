@@ -9857,3 +9857,11 @@ fieldset[disabled] .form-material .form-control {
 }
 
 /* Button Group  - End */
+
+
+.form-material .form-control:disabled, .form-material .form-control[readonly] {
+    background: 0 0;
+    background: 0 0;
+    border-bottom: 1px dashed #bdbdbd;
+    background-color: #eee;
+}

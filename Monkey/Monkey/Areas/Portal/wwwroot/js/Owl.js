@@ -31,7 +31,7 @@
     },
 
     initRequiredField: function () {
-        $('[data-val-required:not("")]').each(function (i, e) {
+        $('[data-val-required!=""]').each(function (i, e) {
             var label = $("label[for='" + $(this).attr("id") + "']");
             if (label.length === 0) {
                 $(e).closest(".row").find("label").each(function (idx, el) {

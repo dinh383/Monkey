@@ -54,7 +54,7 @@ namespace Monkey.Extensions
             services.AddScoped<IViewRenderService, ViewRenderService>();
 
             // Filter
-            services.AddScoped<MvcExceptionFilter>();
+            services.AddScoped<PortalMvcExceptionFilter>();
             services.AddScoped<MvcAuthActionFilter>();
             services.AddScoped<AjaxModelValidationActionFilter>();
 

@@ -11,6 +11,7 @@ using Puppy.DataTable.Models.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Monkey.Extensions;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers
@@ -78,6 +79,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _userService.CreateAsync(model).ConfigureAwait(true);
+            this.SetNotify("Add Success", "Add user successful", ControllerExtensions.NotifyStatus.Success);
 
             return View("Index");
         }
@@ -107,7 +109,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _userService.UpdateAsync(model).ConfigureAwait(true);
-
+            this.SetNotify("Edit Success", "Edit user successful", ControllerExtensions.NotifyStatus.Success);
             return View("Index");
         }
 
@@ -123,11 +125,11 @@ namespace Monkey.Areas.Portal.Controllers
 
         [Route(CheckUniqueUserNameEndpoint)]
         [HttpPost]
-        public JsonResult CheckUniqueName(string name, int? id = null)
+        public JsonResult CheckUniqueUserName(string userName, int? id = null)
         {
             try
             {
-                _userService.CheckUniqueUserName(name, id);
+                _userService.CheckUniqueUserName(userName, id);
                 return Json(true);
             }
             catch (MonkeyException monkeyException)

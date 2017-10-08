@@ -8,6 +8,7 @@ using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using System.Threading.Tasks;
+using Monkey.Extensions;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers
@@ -72,6 +73,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _clientService.CreateAsync(model).ConfigureAwait(true);
+            this.SetNotify("Add Success", "Add client successful", ControllerExtensions.NotifyStatus.Success);
 
             return View("Index");
         }
@@ -99,6 +101,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _clientService.UpdateAsync(model).ConfigureAwait(true);
+            this.SetNotify("Edit Success", "Edit client successful", ControllerExtensions.NotifyStatus.Success);
 
             return View("Index");
         }

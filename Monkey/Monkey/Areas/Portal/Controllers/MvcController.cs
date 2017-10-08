@@ -6,7 +6,7 @@ using Puppy.Swagger.Filters;
 namespace Monkey.Areas.Portal.Controllers
 {
     [HideInDocs]
-    [ServiceFilter(typeof(MvcExceptionFilter))]
+    [ServiceFilter(typeof(PortalMvcExceptionFilter))]
     [ServiceFilter(typeof(MvcAuthActionFilter))]
     [Area(AreaName)]
     [Auth]

@@ -5,7 +5,7 @@ using Puppy.Swagger.Filters;
 namespace Monkey.Controllers.Mvc
 {
     [HideInDocs]
-    [ServiceFilter(typeof(MvcExceptionFilter))]
+    [ServiceFilter(typeof(PortalMvcExceptionFilter))]
     public class MvcController : Controller
     {
         public const string AreaName = "";
