@@ -31,7 +31,7 @@
     },
 
     initRequiredField: function () {
-        $('[data-val-required!=""]').each(function (i, e) {
+        $('[data-val-required:not("")]').each(function (i, e) {
             var label = $("label[for='" + $(this).attr("id") + "']");
             if (label.length === 0) {
                 $(e).closest(".row").find("label").each(function (idx, el) {
@@ -92,6 +92,23 @@
             default:
                 toastr.info(message, title, options);
         }
+    },
+
+    initSlidePanel: function () {
+        $('[data-toggle="slidePanel"]').click(function() {
+            var $this = $(this);
+            $.slidePanel.show({
+                    url: $this.data("url"),
+                    settings: {
+                        method: 'GET',
+                        cache: false
+                    }
+                },
+                // Option
+                {
+                    direction: 'right',
+                });
+        });
     }
 };
 
@@ -100,4 +117,5 @@ $(function () {
     owl.initRequiredField();
     owl.initToolTip();
     owl.initConfirmDialog();
+    owl.initSlidePanel();
 });

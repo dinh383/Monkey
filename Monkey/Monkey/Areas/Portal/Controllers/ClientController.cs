@@ -61,6 +61,13 @@ namespace Monkey.Areas.Portal.Controllers
             return View(new ClientCreateModel());
         }
 
+        [Route("add-partial")]
+        [HttpGet]
+        public IActionResult AddPartial()
+        {
+            return PartialView("_Add", new ClientCreateModel());
+        }
+
         [Route(AddEndpoint)]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -109,17 +116,8 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpPost]
         public async Task<JsonResult> Remove(int id)
         {
-            try
-            {
-                await _clientService.RemoveAsync(id).ConfigureAwait(true);
-                return Json(new { });
-            }
-            catch (MonkeyException ex)
-            {
-                ErrorModel errorModel = new ErrorModel(ex.Code, ex.Message, ex.AdditionalData);
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return Json(errorModel);
-            }
+            await _clientService.RemoveAsync(id).ConfigureAwait(true);
+            return Json(new { });
         }
 
         [Route(GenerateSecretEndpoint)]

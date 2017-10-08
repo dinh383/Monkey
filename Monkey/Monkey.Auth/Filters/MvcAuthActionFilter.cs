@@ -30,13 +30,13 @@ namespace Monkey.Auth.Filters
             if (!context.IsAuthenticated())
             {
                 var redirectUrl = context.HttpContext.Request.GetDisplayUrl();
-                context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal", RedirectUrl = redirectUrl });
+                context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal", RedirectUrl = redirectUrl }, false);
                 return;
             }
 
             if (!context.IsAuthorized())
             {
-                context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal" });
+                context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal" }, false);
             }
         }
 

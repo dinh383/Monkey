@@ -2,18 +2,24 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Core.Exceptions;
 using Newtonsoft.Json;
-using Puppy.Core.XmlUtils;
 using Puppy.Logger;
 using Puppy.Web.Constants;
+using Puppy.Web.HttpUtils;
 using System.Net;
 
 namespace Monkey.Filters.ModelValidation
 {
-    public class ApiModelValidationActionFilter : ActionFilterAttribute
+    public class AjaxModelValidationActionFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ModelState.IsValid)
+            {
+                return;
+            }
+
+            // This action filter only work for Ajax request
+            if (!context.HttpContext.Request.IsAjaxRequest())
             {
                 return;
             }
@@ -28,24 +34,12 @@ namespace Monkey.Filters.ModelValidation
 
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-            if (context.HttpContext.Request.Headers[HttpRequestHeader.Accept.ToString()] == ContentType.Xml)
+            context.Result = new ContentResult
             {
-                context.Result = new ContentResult
-                {
-                    ContentType = ContentType.Xml,
-                    StatusCode = context.HttpContext.Response.StatusCode,
-                    Content = XmlHelper.ToXmlString(apiErrorViewModel)
-                };
-            }
-            else
-            {
-                context.Result = new ContentResult
-                {
-                    ContentType = ContentType.Json,
-                    StatusCode = context.HttpContext.Response.StatusCode,
-                    Content = JsonConvert.SerializeObject(apiErrorViewModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings)
-                };
-            }
+                ContentType = ContentType.Json,
+                StatusCode = context.HttpContext.Response.StatusCode,
+                Content = JsonConvert.SerializeObject(apiErrorViewModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings)
+            };
         }
     }
 }

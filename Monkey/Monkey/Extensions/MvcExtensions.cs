@@ -37,6 +37,7 @@ using Puppy.Web.Render;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Monkey.Filters.ModelValidation;
 
 namespace Monkey.Extensions
 {
@@ -55,6 +56,7 @@ namespace Monkey.Extensions
             // Filter
             services.AddScoped<MvcExceptionFilter>();
             services.AddScoped<MvcAuthActionFilter>();
+            services.AddScoped<AjaxModelValidationActionFilter>();
 
             // Enable Session to use TempData
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
