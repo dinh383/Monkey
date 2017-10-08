@@ -36,6 +36,6 @@ namespace Monkey.Service
 
         Task RemoveAsync(int id);
 
-        void CheckUniqueUserName(string name, int? excludeId);
+        void CheckUniqueUserName(string userName, int? excludeId);
     }
 }

@@ -1,8 +1,8 @@
-﻿@using Monkey.Core.Constants
-@using Puppy.Web.HtmlHelperUtils
+﻿@using Puppy.Web.HtmlHelperUtils
 @model Monkey.Core.Models.Auth.UserUpdateModel
 @{
     ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User - Edit";
+    var listRole = ViewBag.RoleSelectList as List<SelectListItem>;
 }
 
 <div class="page-header">
@@ -19,27 +19,48 @@
                         @Html.HiddenFor(x => x.Id)
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.UserName, new { @class = "form-control-label", @for = $"{nameof(Model.UserName)}" })
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                            @Html.LabelFor(m => m.UserName, new {@class = "form-control-label", @for = $"{nameof(Model.UserName)}"})
+                            @Html.TextBoxFor(m => m.UserName, new {@class = "form-control", disabled = "disabled"})
                             @Html.ValidationMessageFor(model => model.UserName)
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.FullName, new { @class = "form-control-label", @for = $"{nameof(Model.FullName)}" })
-                            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                            @Html.LabelFor(m => m.Email, new {@class = "form-control-label", @for = $"{nameof(Model.Email)}"})
+                            @Html.TextBoxFor(m => m.Email, new {@class = "form-control", disabled = "disabled"})
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            @Html.LabelFor(m => m.Phone, new {@class = "form-control-label", @for = $"{nameof(Model.Phone)}"})
+                            @Html.TextBoxFor(m => m.Phone, new {@class = "form-control", disabled = "disabled"})
+                            @Html.ValidationMessageFor(model => model.Phone)
+                        </div>
+
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            @Html.LabelFor(m => m.FullName, new {@class = "form-control-label", @for = $"{nameof(Model.FullName)}"})
+                            @Html.TextBoxFor(m => m.FullName, new {@class = "form-control", disabled = "disabled"})
                             <small class="text-help">@Html.DescriptionFor(model => model.FullName)</small>
                             @Html.ValidationMessageFor(model => model.FullName)
                         </div>
 
+                        if (listRole?.Any() == true)
+                        {
+                            <div class="form-group form-material" data-plugin="formMaterial">
+                                @Html.LabelFor(m => m.RoleId, new {@class = "form-control-label", @for = $"{nameof(Model.RoleId)}"})
+                                @Html.DropDownListFor(model => model.RoleId, listRole, new {@class = "form-control"})
+                                @Html.ValidationMessageFor(model => model.RoleId)
+                            </div>
+                        }
+
                         <div class="checkbox-custom checkbox-primary">
-                            @Html.CheckBoxFor(m => m.IsBanned, new { @class = "form-control", @checked = Model.IsBanned ? "checked" : string.Empty })
-                            @Html.LabelFor(m => m.IsBanned, new { @for = $"{nameof(Model.IsBanned)}" })
+                            @Html.CheckBoxFor(m => m.IsBanned, new {@class = "form-control", @checked = Model.IsBanned ? "checked" : string.Empty})
+                            @Html.LabelFor(m => m.IsBanned, new {@for = $"{nameof(Model.IsBanned)}"})
                             @Html.ValidationMessageFor(model => model.IsBanned)
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.BannedRemark, new { @class = "form-control-label", @for = $"{nameof(Model.BannedRemark)}" })
-                            @Html.TextAreaFor(m => m.BannedRemark, new { @class = "form-control" })
+                            @Html.LabelFor(m => m.BannedRemark, new {@class = "form-control-label", @for = $"{nameof(Model.BannedRemark)}"})
+                            @Html.TextAreaFor(m => m.BannedRemark, new {@class = "form-control"})
                             @Html.ValidationMessageFor(model => model.BannedRemark)
                         </div>
 
@@ -49,7 +70,7 @@
                                     <span class="ladda-label">
                                         <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
                                     </span>
-                               </a>
+                                </a>
                             </div>
                             <div class="col-md-6">
                                 <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">

@@ -28,14 +28,14 @@ namespace Monkey.Service.Facade
     [PerRequestDependency(ServiceType = typeof(ISeedDataService))]
     public class SeedDataService : ISeedDataService
     {
-        private readonly IAuthenticationBusiness _authenticationBusiness;
         private readonly IRoleBusiness _roleBusiness;
+        private readonly IUserBusiness _userBusiness;
         private int _roleAdminId = 1;
 
-        public SeedDataService(IAuthenticationBusiness authenticationBusiness, IRoleBusiness roleBusiness)
+        public SeedDataService(IRoleBusiness roleBusiness, IUserBusiness userBusiness)
         {
-            _authenticationBusiness = authenticationBusiness;
             _roleBusiness = roleBusiness;
+            _userBusiness = userBusiness;
         }
 
         public void SeedData()
@@ -46,41 +46,45 @@ namespace Monkey.Service.Facade
 
         public async Task InitialRoleAsync()
         {
-            try
-            {
-                string roleName = Enums.Permission.Admin.ToString();
-                string roleDescription = Enums.Permission.Admin.AsString(EnumFormat.Description);
 
-                _roleBusiness.CheckUniqueName(roleName);
-
-                _roleAdminId = await _roleBusiness.CreateAsync(roleName, roleDescription, Enums.Permission.Admin).ConfigureAwait(true);
-            }
-            catch
+            foreach (var enumMember in EnumsNET.Enums.GetMembers<Enums.Permission>())
             {
-                // If already have user => Ignore
+                string roleName = enumMember.Value.AsString(EnumFormat.Name);
+                string roleDescription = enumMember.Value.AsString(EnumFormat.Description);
+                try
+                {
+                    _roleBusiness.CheckUniqueName(roleName);
+                }
+                catch
+                {
+                    // If already have user => Ignore
+                }
+                var roleId = await _roleBusiness.CreateAsync(roleName, roleDescription, enumMember.Value).ConfigureAwait(true);
+
+                if (enumMember.Value == Enums.Permission.Admin)
+                {
+                    _roleAdminId = roleId;
+                }
             }
         }
 
         public async Task InitialUserAsync()
         {
+
+            string userName = "topnguyen";
+            string email = "topnguyen92@gmail.com";
+            string password = "Password123@@";
             try
             {
-                string userName = "topnguyen";
-                string email = "topnguyen92@gmail.com";
-                string password = "Password123@@";
-
-                _authenticationBusiness.CheckUniqueUserName(userName);
-
-                _authenticationBusiness.CheckUniqueEmail(email);
-
-                var subject = await _authenticationBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
-
-                await _authenticationBusiness.ActiveByEmailAsync(subject, userName, password).ConfigureAwait(true);
+                _userBusiness.CheckUniqueUserName(userName);
+                _userBusiness.CheckUniqueEmail(email);
             }
             catch
             {
                 // If already have user => Ignore
             }
+            var subject = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
+            await _userBusiness.ActiveByEmailAsync(subject, userName, password).ConfigureAwait(true);
         }
     }
 }

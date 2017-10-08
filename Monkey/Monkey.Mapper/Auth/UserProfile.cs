@@ -22,6 +22,7 @@ using Monkey.Core.Constants.Auth;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Models.Auth;
 using Puppy.AutoMapper;
+using Puppy.Core.StringUtils;
 
 namespace Monkey.Mapper.Auth
 {
@@ -36,6 +37,17 @@ namespace Monkey.Mapper.Auth
 
             CreateMap<LoginModel, RequestTokenModel>().IgnoreAllNonExisting()
                 .ForMember(d => d.GrantType, o => o.UseValue(GrantType.Password));
+
+            CreateMap<UserCreateModel, UserEntity>().IgnoreAllNonExisting();
+
+            CreateMap<UserUpdateModel, UserEntity>().IgnoreAllNonExisting()
+                .ForMember(d => d.UserNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.UserName)));
+
+            CreateMap<UserEntity, UserModel>().IgnoreAllNonExisting()
+                .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
+                .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null));
+
+            CreateMap<UserModel, UserUpdateModel>().IgnoreAllNonExisting();
         }
     }
 }

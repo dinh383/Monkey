@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Monkey.Auth.Filters;
 using Monkey.Core.Exceptions;
+using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
 using Monkey.Service;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Enums = Monkey.Core.Constants.Enums;
 
@@ -24,10 +28,12 @@ namespace Monkey.Areas.Portal.Controllers
         public const string RemoveEndpoint = "{id}/remove";
 
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IRoleService roleService)
         {
             _userService = userService;
+            _roleService = roleService;
         }
 
         #region Listing
@@ -56,6 +62,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            ViewBag.RoleSelectList = GetRoleSelectList();
             return View(new UserCreateModel());
         }
 
@@ -66,6 +73,7 @@ namespace Monkey.Areas.Portal.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.RoleSelectList = GetRoleSelectList();
                 return View("Add", model);
             }
 
@@ -84,6 +92,7 @@ namespace Monkey.Areas.Portal.Controllers
         {
             var userModel = await _userService.GetAsync(id).ConfigureAwait(true);
             var userUpdateModel = userModel.MapTo<UserUpdateModel>();
+            ViewBag.RoleSelectList = GetRoleSelectList();
             return View(userUpdateModel);
         }
 
@@ -93,6 +102,7 @@ namespace Monkey.Areas.Portal.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.RoleSelectList = GetRoleSelectList();
                 return View("Edit", model);
             }
 
@@ -129,6 +139,16 @@ namespace Monkey.Areas.Portal.Controllers
 
                 throw;
             }
+        }
+
+        private List<SelectListItem> GetRoleSelectList()
+        {
+            return _roleService.GetListRoleAsync(new PagedCollectionParametersModel()).Result.Items.Select(x =>
+                new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name
+                }).ToList();
         }
     }
 }

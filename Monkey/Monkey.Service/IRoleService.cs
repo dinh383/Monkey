@@ -17,9 +17,15 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Models;
+using Monkey.Core.Models.Auth;
+using Puppy.Web.Models.Api;
+using System.Threading.Tasks;
+
 namespace Monkey.Service
 {
     public interface IRoleService : IBaseService
     {
+        Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model);
     }
 }

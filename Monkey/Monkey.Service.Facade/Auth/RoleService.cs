@@ -18,7 +18,11 @@
 #endregion License
 
 using Monkey.Business.Auth;
+using Monkey.Core.Models;
+using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection.Attributes;
+using Puppy.Web.Models.Api;
+using System.Threading.Tasks;
 
 namespace Monkey.Service.Facade.Auth
 {
@@ -30,6 +34,11 @@ namespace Monkey.Service.Facade.Auth
         public RoleService(IRoleBusiness roleBusiness)
         {
             _roleBusiness = roleBusiness;
+        }
+
+        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model)
+        {
+            return _roleBusiness.GetListRoleAsync(model);
         }
     }
 }

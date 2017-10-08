@@ -31,7 +31,13 @@ namespace Monkey.Core.Constants
             Admin = 1000,
 
             [Display(Name = "Manager")]
-            Manager = 2000
+            Manager = 2000,
+
+            [Display(Name = "Staff")]
+            Staff = 3000,
+
+            [Display(Name = "Member")]
+            Member = 10000
         }
 
         public enum ClientType

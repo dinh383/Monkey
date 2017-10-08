@@ -1,7 +1,7 @@
-﻿@using Monkey.Core.Constants
-@model Monkey.Core.Models.Auth.UserCreateModel
+﻿@model Monkey.Core.Models.Auth.UserCreateModel
 @{
     ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User - Add";
+    var listRole = ViewBag.RoleSelectList as List<SelectListItem>;
 }
 
 <div class="page-header">
@@ -22,12 +22,20 @@
                             @Html.ValidationMessageFor(model => model.Email)
                         </div>
 
-                        @*<div class="form-group form-material" data-plugin="formMaterial">
-                                @Html.LabelFor(m => m.Type, new { @class = "form-control-label", @for = $"{nameof(Model.Type)}" })
-                                @Html.DropDownListFor(model => model.Type, typeof(Enums.UserType).GetEnumSelectList(Model.Type.ToString()), new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Type)
-                            </div>*@
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            @Html.LabelFor(m => m.Phone, new { @class = "form-control-label", @for = $"{nameof(Model.Phone)}" })
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Phone)
+                        </div>
 
+                        if (listRole?.Any() == true)
+                        {
+                            <div class="form-group form-material" data-plugin="formMaterial">
+                                @Html.LabelFor(m => m.RoleId, new { @class = "form-control-label", @for = $"{nameof(Model.RoleId)}" })
+                                @Html.DropDownListFor(model => model.RoleId, listRole, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.RoleId)
+                            </div>
+                        }
                         <div class="row">
                             <div class="col-md-6">
                                 <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "User")">

@@ -61,6 +61,7 @@ namespace Monkey.Business.Logic.Auth
             var clientEntity = model.MapTo<ClientEntity>();
 
             clientEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
+            clientEntity.BannedRemark = model.IsBanned ? null : clientEntity.BannedRemark;
 
             _clientRepository.Update(clientEntity, x => x.Name, x => x.Domains, x => x.Type, x => x.BannedTime, x => x.BannedRemark);
 

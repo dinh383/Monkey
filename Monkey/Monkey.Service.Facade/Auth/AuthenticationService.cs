@@ -36,11 +36,13 @@ namespace Monkey.Service.Facade.Auth
     {
         private readonly IAuthenticationBusiness _authenticationBusiness;
         private readonly IClientBusiness _clientBusiness;
+        private readonly IUserBusiness _userBusiness;
 
-        public AuthenticationService(IAuthenticationBusiness authenticationBusiness, IClientBusiness clientBusiness)
+        public AuthenticationService(IAuthenticationBusiness authenticationBusiness, IClientBusiness clientBusiness, IUserBusiness userBusiness)
         {
             _authenticationBusiness = authenticationBusiness;
             _clientBusiness = clientBusiness;
+            _userBusiness = userBusiness;
         }
 
         /// <inheritdoc />
@@ -62,7 +64,7 @@ namespace Monkey.Service.Facade.Auth
 
             if (model.GrantType == GrantType.Password)
             {
-                _authenticationBusiness.CheckExistByUserName(model.UserName);
+                _userBusiness.CheckExistByUserName(model.UserName);
 
                 _authenticationBusiness.CheckValidSignIn(model.UserName, model.Password);
 
@@ -141,7 +143,7 @@ namespace Monkey.Service.Facade.Auth
         public Task<LoggedInUserModel> GetLoggedInUserAsync(string accessToken)
         {
             string subject = TokenHelper.GetAccessTokenSubject(accessToken);
-            _authenticationBusiness.CheckExistsBySubject(subject);
+            _userBusiness.CheckExistsBySubject(subject);
             return _authenticationBusiness.GetLoggedInUserBySubjectAsync(subject);
         }
 
@@ -149,7 +151,7 @@ namespace Monkey.Service.Facade.Auth
         public Task ExpireAllRefreshTokenAsync(string accessToken)
         {
             string subject = TokenHelper.GetAccessTokenSubject(accessToken);
-            _authenticationBusiness.CheckExistsBySubject(subject);
+            _userBusiness.CheckExistsBySubject(subject);
             return _authenticationBusiness.ExpireAllRefreshTokenAsync(subject);
         }
     }

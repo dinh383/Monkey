@@ -18,14 +18,18 @@
 #endregion License
 
 using Monkey.Business.Auth;
-using Monkey.Core.Constants;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
+using Monkey.Core.Models;
+using Monkey.Core.Models.Auth;
 using Monkey.Data.User;
+using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
+using Puppy.Web.Models.Api;
 using System.Linq;
 using System.Threading.Tasks;
+using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Business.Logic.Auth
 {
@@ -69,6 +73,33 @@ namespace Monkey.Business.Logic.Auth
             await _roleRepository.SaveChangesAsync().ConfigureAwait(true);
 
             return roleEntity.Id;
+        }
+
+        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model)
+        {
+            var query = _roleRepository.Get();
+
+            if (!string.IsNullOrWhiteSpace(model.Terms))
+            {
+                var termsNorm = StringHelper.Normalize(model.Terms);
+
+                query = query.Where(x => x.NameNorm.Contains(termsNorm));
+            }
+
+            var total = query.LongCount();
+
+            var listRoleModel = query.OrderByDescending(x => x.NameNorm).Skip(model.Skip).Take(model.Take).QueryTo<RoleModel>();
+
+            var result = new PagedCollectionResultModel<RoleModel>
+            {
+                Terms = model.Terms,
+                Take = model.Take,
+                Skip = model.Skip,
+                Items = listRoleModel,
+                Total = total
+            };
+
+            return Task.FromResult(result);
         }
     }
 }

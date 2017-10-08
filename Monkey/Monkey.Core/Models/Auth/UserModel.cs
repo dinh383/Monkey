@@ -17,13 +17,13 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
 using FluentValidation.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using Monkey.Core.Validators.Auth;
 using Puppy.DataTable.Attributes;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
 using Puppy.DataTable.Constants;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.Auth
 {
@@ -34,8 +34,11 @@ namespace Monkey.Core.Models.Auth
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [DataTable(IsVisible = false)]
-        public int RoleId { get; set; }
+        [DataTable(Order = 4)]
+        public string Phone { get; set; }
+
+        [DataTable(IsVisible = false, DisplayName = "Role Id")]
+        public int? RoleId { get; set; }
     }
 
     [Validator(typeof(UserModelValidator.UserUpdateModelValidator))]
@@ -44,11 +47,14 @@ namespace Monkey.Core.Models.Auth
         [DataTable(IsVisible = false, Order = 1)]
         public int Id { get; set; }
 
-        [DataTable(Order = 4, SortDirection = SortDirection.Ascending)]
+        [DataTable(IsVisible = false, Order = 1)]
+        public string Subject { get; set; }
+
+        [DataTable(IsVisible = false, Order = 5, DisplayName = "User Name")]
         [Remote("CheckUniqueUserName", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The user name of User already exist, please try another.")]
         public string UserName { get; set; }
 
-        [DataTable(Order = 2, SortDirection = SortDirection.Ascending)]
+        [DataTable(Order = 2, SortDirection = SortDirection.Ascending, DisplayName = "Full Name")]
         public string FullName { get; set; }
 
         [Display(Name = "Banned")]
@@ -63,9 +69,19 @@ namespace Monkey.Core.Models.Auth
     public class UserModel : UserUpdateModel
     {
         [Display(Name = "Banned Time")]
-        [DataTable(DisplayName = "Banned Time", Order = 5)]
+        [DataTable(DisplayName = "Banned Time")]
         public DateTimeOffset? BannedTime { get; set; }
 
+        [DataTable(Order = 6, DisplayName = "Role")]
         public string RoleName { get; set; }
+
+        [DataTable(IsVisible = false, DisplayName = "Phone Confirmed Time")]
+        public DateTimeOffset? PhoneConfirmedTime { get; set; }
+
+        [DataTable(IsVisible = false, DisplayName = "Email Confirmed Time")]
+        public DateTimeOffset? EmailConfirmedTime { get; set; }
+
+        [DataTable(DisplayName = "Active Time")]
+        public DateTimeOffset? ActiveTime { get; set; }
     }
 }

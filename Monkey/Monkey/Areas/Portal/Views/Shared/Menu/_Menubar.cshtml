@@ -8,14 +8,19 @@
         </li>
         <li class="site-menu-item has-sub">
             <a href="javascript:void(0)">
-                <i class="site-menu-icon md-view-compact" aria-hidden="true"></i>
+                <i class="site-menu-icon md-apps" aria-hidden="true"></i>
                 <span class="site-menu-title">Authentication</span>
                 <span class="site-menu-arrow"></span>
             </a>
             <ul class="site-menu-sub">
                 <li class="site-menu-item">
+                    <a class="animsition-link" href="@Url.AbsoluteAction("Index", "User")">
+                        <span class="site-menu-title">User</span>
+                    </a>
+                </li>
+                <li class="site-menu-item">
                     <a class="animsition-link" href="@Url.AbsoluteAction("Index", "Client")">
-                    <span class="site-menu-title">Client</span>
+                        <span class="site-menu-title">Client</span>
                     </a>
                 </li>
             </ul>

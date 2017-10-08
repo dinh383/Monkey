@@ -31,14 +31,6 @@ namespace Monkey.Business.Auth
         /// <param name="password"></param>
         void CheckValidSignIn(string userName, string password);
 
-        void CheckExistsBySubject(params string[] subjects);
-
-        void CheckUniqueUserName(string userName, int? excludeId = null);
-
-        void CheckExistByUserName(string userName);
-
-        void CheckUniqueEmail(string email, int? excludeId = null);
-
         LoggedInUserModel SignIn(string username, string password, out string refreshToken, int? clientId);
 
         Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject);
@@ -59,24 +51,5 @@ namespace Monkey.Business.Auth
         /// <param name="clientId">    </param>
         /// <param name="refreshToken"></param>
         void CheckValidRefreshToken(string refreshToken, int? clientId);
-
-        /// <summary>
-        ///     Active user via email, setup new username and password 
-        /// </summary>
-        /// <param name="subject">    </param>
-        /// <param name="newUserName"></param>
-        /// <param name="newPassword"></param>
-        /// <returns></returns>
-        Task ActiveByEmailAsync(string subject, string newUserName, string newPassword);
-
-        Task ActiveByPhoneAsync(string subject, string newUserName, string newPassword);
-
-        /// <summary>
-        ///     Create User and Return Subject of new user 
-        /// </summary>
-        /// <param name="email"> </param>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        Task<string> CreateUserByEmailAsync(string email, int? roleId);
     }
 }
