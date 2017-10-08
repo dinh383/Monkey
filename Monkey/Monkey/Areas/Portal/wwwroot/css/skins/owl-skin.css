@@ -27,9 +27,10 @@ a {
         color: #2f2442;
     }
 
-.mm-navbar>a {
+.mm-navbar > a {
     color: #2f2442;
 }
+
 table {
     background-color: transparent;
 }
@@ -402,10 +403,10 @@ select.form-control:focus::-ms-value {
         box-shadow: 0 0 0 2px rgba(244, 108, 147, 0.5);
     }
 
-.btn-pink.disabled, .btn-pink:disabled {
-    background-color: #f46c93;
-    border-color: #f46c93;
-}
+    .btn-pink.disabled, .btn-pink:disabled {
+        background-color: #f46c93;
+        border-color: #f46c93;
+    }
 
     .btn-pink:active, .btn-pink.active,
     .show > .btn-pink.dropdown-toggle {
@@ -9864,4 +9865,8 @@ fieldset[disabled] .form-material .form-control {
     background: 0 0;
     border-bottom: 1px dashed #bdbdbd;
     background-color: #eee;
+}
+
+.site-menubar {
+    z-index: 2000
 }
