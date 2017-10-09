@@ -53,7 +53,7 @@
         var loggedInUserId = parseInt('@LoggedInUser.Current?.Id');
 
         function actionRender(data, type, row) {
-            var id = row[0];
+            var id = parseInt(row[0]);
 
             if (id === loggedInUserId) {
                 return '';

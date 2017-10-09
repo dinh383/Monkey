@@ -81,7 +81,7 @@ namespace Monkey.Areas.Portal.Controllers
             await _userService.CreateAsync(model).ConfigureAwait(true);
             this.SetNotify("Add Success", "Add user successful", ControllerExtensions.NotifyStatus.Success);
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         #endregion Add
@@ -110,7 +110,7 @@ namespace Monkey.Areas.Portal.Controllers
 
             await _userService.UpdateAsync(model).ConfigureAwait(true);
             this.SetNotify("Edit Success", "Edit user successful", ControllerExtensions.NotifyStatus.Success);
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         #endregion Edit

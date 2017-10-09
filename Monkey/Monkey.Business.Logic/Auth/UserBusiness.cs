@@ -131,7 +131,8 @@ namespace Monkey.Business.Logic.Auth
         public List<int> ListUserIdByPermissions(params Enums.Permission[] permissions)
         {
             List<int> listAdminUserId = _userRepository
-                .Get(x => x.Role.Permissions != null && x.Role.Permissions.All(y => permissions.Contains(y.Permission))).Select(x => x.Id)
+                .Get(x => x.Role.Permissions.All(y => permissions.Contains(y.Permission)))
+                .Select(x => x.Id)
                 .ToList();
 
             return listAdminUserId;

@@ -106,5 +106,11 @@
     "inputFiles": [
       "Areas/Portal/wwwroot/js/Site.js"
     ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/vendor/bootstrap-sweetalert/sweetalert.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/vendor/bootstrap-sweetalert/sweetalert.css"
+    ]
   }
 ]

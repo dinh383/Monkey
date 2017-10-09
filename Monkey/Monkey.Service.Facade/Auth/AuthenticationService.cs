@@ -112,7 +112,7 @@ namespace Monkey.Service.Facade.Auth
 
             string accessTokenClientId = TokenHelper.GetAccessTokenClientId(accessTokenModel.AccessToken);
 
-            if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || accessTokenClientId != null)
+            if (!TokenHelper.IsValidToken(accessTokenModel.AccessToken) || !string.IsNullOrWhiteSpace(accessTokenClientId))
             {
                 return null;
             }
