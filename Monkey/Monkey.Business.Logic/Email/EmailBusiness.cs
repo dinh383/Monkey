@@ -17,6 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Hangfire;
+using Monkey.Core.Configs;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web.HttpUtils;
 using SendGrid;
@@ -31,15 +33,29 @@ namespace Monkey.Business.Logic.Email
     {
         public void SendActiveAccountByEmail(string activeToken, string email, string roleName, TimeSpan expireIn)
         {
-            var apiKey = "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";
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("demo.sendmail913@gmail.com", "Owl");
-            var to = new EmailAddress(email);
             string domainUrl = System.Web.HttpContext.Current.Request.GetDomain();
-            string activeLink = $"<a href=\"{domainUrl}/portal/active/{activeToken}\">Confirm Account</a>";
-            string htmlContent = $"Please confirm your account via this link: {activeLink}";
-            var plainTextContent = Regex.Replace(htmlContent, "<[^>]*>", "");
-            var msg = MailHelper.CreateSingleEmail(from, to, "Confirm your account", plainTextContent, htmlContent);
+
+            string activeLink = $"<a href='{domainUrl}/portal/auth/active/{activeToken}'>Confirm Account</a>";
+
+            string subject = "Confirm your account";
+
+            string html = $"Please confirm your account via this link: {activeLink}";
+
+            BackgroundJob.Enqueue(() => SendEmail(email, subject, html));
+        }
+
+        public void SendEmail(string email, string subject, string html)
+        {
+            var from = new EmailAddress(SystemConfig.SendGrid.SenderDisplayEmail, SystemConfig.SendGrid.SenderDisplayName);
+
+            var to = new EmailAddress(email);
+
+            var text = Regex.Replace(html, "<[^>]*>", string.Empty);
+
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, text, html);
+            
+            var client = new SendGridClient(SystemConfig.SendGrid.Key);
+
             client.SendEmailAsync(msg).Wait();
         }
     }

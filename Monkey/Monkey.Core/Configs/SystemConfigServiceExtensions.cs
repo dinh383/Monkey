@@ -71,6 +71,7 @@ namespace Monkey.Core.Configs
             SystemConfig.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
             SystemConfig.MvcPath = configuration.GetSection<MvcPathConfigModel>(nameof(SystemConfig.MvcPath)) ?? new MvcPathConfigModel();
             SystemConfig.PagedCollectionParameters = configuration.GetSection<PagedCollectionParametersConfigModel>(nameof(SystemConfig.PagedCollectionParameters)) ?? new PagedCollectionParametersConfigModel();
+            SystemConfig.SendGrid = configuration.GetSection<SendGridConfigModel>(nameof(SystemConfig.SendGrid)) ?? new SendGridConfigModel();
         }
     }
 }

@@ -40,5 +40,10 @@ namespace Monkey.Core.Configs
         ///     [Auto Reload] 
         /// </summary>
         public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; } = new PagedCollectionParametersConfigModel();
+
+        /// <summary>
+        ///     [Auto Reload] 
+        /// </summary>
+        public static SendGridConfigModel SendGrid { get; set; } = new SendGridConfigModel();
     }
 }
