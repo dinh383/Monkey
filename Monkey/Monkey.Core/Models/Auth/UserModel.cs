@@ -37,7 +37,8 @@ namespace Monkey.Core.Models.Auth
         [DataTable(Order = 4)]
         public string Phone { get; set; }
 
-        [DataTable(IsVisible = false, DisplayName = "Role")]
+        [DataTable(IsVisible = false, DisplayName = "Role Id")]
+        [Display(Name = "Role")]
         public int? RoleId { get; set; }
     }
 
@@ -52,22 +53,24 @@ namespace Monkey.Core.Models.Auth
 
         [DataTable(IsVisible = false, Order = 5, DisplayName = "User Name")]
         [Remote("CheckUniqueUserName", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The user name of User already exist, please try another.")]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
-        [DataTable(Order = 2, SortDirection = SortDirection.Ascending, DisplayName = "Full Name")]
-        public string FullName { get; set; }
-
-        [Display(Name = "Banned")]
+        [Display(Name = "Ban")]
         [DataTableIgnore]
         public bool IsBanned { get; set; }
 
-        [Display(Name = "Banned Remark")]
+        [Display(Name = "Ban Remark")]
         [DataTableIgnore]
         public string BannedRemark { get; set; }
     }
 
     public class UserModel : UserUpdateModel
     {
+        [DataTable(Order = 2, SortDirection = SortDirection.Ascending, DisplayName = "Full Name")]
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
+
         [Display(Name = "Banned Time")]
         [DataTable(DisplayName = "Banned Time")]
         public DateTimeOffset? BannedTime { get; set; }

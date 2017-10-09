@@ -74,6 +74,12 @@ namespace Monkey.Business.Logic.Auth
         {
             var userNameNorm = StringHelper.Normalize(userName);
 
+            // Ignore case userName is empty
+            if (string.IsNullOrWhiteSpace(userNameNorm))
+            {
+                return;
+            }
+
             var isExist = _userRepository.Get(x => x.UserNameNorm == userNameNorm).Any();
 
             if (isExist)

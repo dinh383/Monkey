@@ -25,7 +25,7 @@ namespace Monkey.Core.Validators.Auth
 
                 RuleFor(x => x.Phone).NotEmpty().MaximumLength(50).When(x => string.IsNullOrWhiteSpace(x.Email));
 
-                RuleFor(x => x.UserName).NotEmpty().MaximumLength(50);
+                RuleFor(x => x.UserName).MaximumLength(50);
 
                 RuleFor(x => x.BannedRemark).NotEmpty().MaximumLength(250).When(x => x.IsBanned);
             }

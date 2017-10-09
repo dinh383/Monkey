@@ -41,7 +41,7 @@
                     <h3 class="brand-text font-size-40">Owl</h3>
                 </div>
                 <h3 class="font-size-24">Sign In</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <p>Sign In to Protal Website</p>
 
                 @using (Html.BeginForm("SignIn", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
                 {
@@ -67,14 +67,17 @@
                         </span>
                     </button>
                 }
-                <p>
-                    No account? <a href="#">Sign Up</a>
-                </p>
+                @*
+                    <p>
+                        No account? <a href="#">Sign Up</a>
+                    </p>
+                *@
                 <footer class="page-copyright">
                     <p>
-                        WEBSITE BY <a href="http://topnguyen.net">Top Nguyen</a>
+                        WEBSITE BY <a href="http://topnguyen.net">TOP NGUYEN</a>
                     </p>
                     <p>© 2017. All RIGHT RESERVED.</p>
+                    @*
                     <div class="social">
                         <a class="btn btn-icon btn-round social-twitter mx-5" href="javascript:void(0)">
                             <i class="icon bd-twitter" aria-hidden="true"></i>
@@ -86,6 +89,7 @@
                             <i class="icon bd-google-plus" aria-hidden="true"></i>
                         </a>
                     </div>
+                    *@
                 </footer>
             </div>
         </div>
