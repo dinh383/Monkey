@@ -10,9 +10,10 @@ using Puppy.Web.HttpUtils.HttpDetection.Device;
 namespace Monkey.Data.EF.Migrations
 {
     [DbContext(typeof(DbContext))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20171009141249_Token")]
+    partial class Token
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

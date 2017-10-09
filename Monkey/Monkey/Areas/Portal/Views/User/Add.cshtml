@@ -22,12 +22,6 @@
                             @Html.ValidationMessageFor(model => model.Email)
                         </div>
 
-                        <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Phone, new { @class = "form-control-label", @for = $"{nameof(Model.Phone)}" })
-                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Phone)
-                        </div>
-
                         if (listRole?.Any() == true)
                         {
                             <div class="form-group form-material" data-plugin="formMaterial">

@@ -80,13 +80,20 @@ namespace Monkey.Business.Logic.Auth
         {
             var userNameNorm = StringHelper.Normalize(userName);
 
-            // Ignore case userName is empty
+            // Ignore empty case
             if (string.IsNullOrWhiteSpace(userNameNorm))
             {
                 return;
             }
 
-            var isExist = _userRepository.Get(x => x.UserNameNorm == userNameNorm).Any();
+            var query = _userRepository.Get(x => x.UserNameNorm == userNameNorm);
+
+            if (excludeId != null)
+            {
+                query = query.Where(x => x.Id != excludeId);
+            }
+
+            var isExist = query.Any();
 
             if (isExist)
             {
@@ -110,7 +117,20 @@ namespace Monkey.Business.Logic.Auth
         {
             var emailNorm = StringHelper.Normalize(email);
 
-            var isExist = _userRepository.Get(x => x.EmailNorm == emailNorm && x.EmailConfirmedTime != null).Any();
+            // Ignore empty case
+            if (string.IsNullOrWhiteSpace(emailNorm))
+            {
+                return;
+            }
+
+            var query = _userRepository.Get(x => x.EmailNorm == emailNorm);
+
+            if (excludeId != null)
+            {
+                query = query.Where(x => x.Id != excludeId);
+            }
+
+            var isExist = query.Any();
 
             if (isExist)
             {
@@ -120,11 +140,24 @@ namespace Monkey.Business.Logic.Auth
 
         public void CheckUniquePhone(string phone, int? excludeId = null)
         {
-            var isExist = _userRepository.Get(x => x.Phone == phone && x.PhoneConfirmedTime != null).Any();
+            // Ignore empty case
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                return;
+            }
+
+            var query = _userRepository.Get(x => x.Phone == phone);
+
+            if (excludeId != null)
+            {
+                query = query.Where(x => x.Id != excludeId);
+            }
+
+            var isExist = query.Any();
 
             if (isExist)
             {
-                throw new MonkeyException(ErrorCode.UserEmailNotUnique);
+                throw new MonkeyException(ErrorCode.UserPhoneNotUnique);
             }
         }
 
@@ -151,6 +184,54 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.SaveChanges();
 
             return Task.FromResult(userEntity.GlobalId);
+        }
+
+        public string GenerateTokenActiveByEmailAsync(string userSubject, string email, out TimeSpan expireIn)
+        {
+            expireIn = TimeSpan.FromDays(1);
+
+            var expireOn = DateTime.UtcNow.Add(expireIn);
+
+            string token = TokenHelper.GenerateToken(expireOn, nameof(Monkey), new Dictionary<string, string>
+            {
+                {nameof(userSubject), userSubject},
+                {nameof(email), email}
+            });
+
+            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Email == email).Select(x => x.Id).Single();
+
+            _userRepository.Update(new UserEntity
+            {
+                Id = userId,
+                ConfirmEmailToken = token,
+                ConfirmEmailTokenExpireOn = expireOn
+            }, x => x.ConfirmEmailToken, x => x.ConfirmEmailTokenExpireOn);
+
+            _userRepository.SaveChanges();
+
+            return token;
+        }
+
+        public string GenerateTokenActiveByPhoneAsync(string userSubject, string phone, out TimeSpan expireIn)
+        {
+            expireIn = TimeSpan.FromMinutes(10);
+
+            var expireOn = DateTimeOffset.UtcNow.Add(expireIn);
+
+            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Phone == phone).Select(x => x.Id).Single();
+
+            string token = StringHelper.GetRandomString(4, StringHelper.NumberChars);
+
+            _userRepository.Update(new UserEntity
+            {
+                Id = userId,
+                ConfirmPhoneToken = token,
+                ConfirmPhoneTokenExpireOn = expireOn
+            }, x => x.ConfirmPhoneToken, x => x.ConfirmPhoneTokenExpireOn);
+
+            _userRepository.SaveChanges();
+
+            return token;
         }
 
         public async Task ActiveByEmailAsync(string subject, string newUserName, string newPassword)

@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Business;
 using Monkey.Business.Auth;
 using Monkey.Core;
 using Monkey.Core.Constants;
@@ -25,6 +26,7 @@ using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,10 +36,14 @@ namespace Monkey.Service.Facade.Auth
     public class UserService : IUserService
     {
         private readonly IUserBusiness _userBusiness;
+        private readonly IEmailBusiness _emailBusiness;
+        private readonly IRoleBusiness _roleBusiness;
 
-        public UserService(IUserBusiness userBusiness)
+        public UserService(IUserBusiness userBusiness, IEmailBusiness emailBusiness, IRoleBusiness roleBusiness)
         {
             _userBusiness = userBusiness;
+            _emailBusiness = emailBusiness;
+            _roleBusiness = roleBusiness;
         }
 
         public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
@@ -45,19 +51,23 @@ namespace Monkey.Service.Facade.Auth
             return _userBusiness.GetDataTableAsync(model);
         }
 
-        public Task CreateAsync(UserCreateModel model)
+        public async Task CreateByEmailAsync(UserCreateModel model)
         {
-            if (!string.IsNullOrWhiteSpace(model.Email))
+            _userBusiness.CheckUniqueEmail(model.Email);
+
+            string subject = await _userBusiness.CreateUserByEmailAsync(model.Email, model.RoleId).ConfigureAwait(true);
+
+            string activeToken = _userBusiness.GenerateTokenActiveByEmailAsync(subject, model.Email, out TimeSpan expireIn);
+
+            string roleName = null;
+
+            if (model.RoleId != null)
             {
-                _userBusiness.CheckUniqueEmail(model.Email);
+                RoleModel roleModel = await _roleBusiness.GetAsync(model.RoleId.Value).ConfigureAwait(true);
+                roleName = roleModel.Name;
             }
 
-            if (!string.IsNullOrWhiteSpace(model.Phone))
-            {
-                _userBusiness.CheckUniquePhone(model.Phone);
-            }
-
-            return _userBusiness.CreateUserByEmailAsync(model.Email, model.RoleId);
+            _emailBusiness.SendActiveAccountByEmail(activeToken, model.Email, roleName, expireIn);
         }
 
         public Task<UserModel> GetAsync(int id)
@@ -120,6 +130,16 @@ namespace Monkey.Service.Facade.Auth
         public void CheckUniqueUserName(string userName, int? excludeId)
         {
             _userBusiness.CheckUniqueUserName(userName, excludeId);
+        }
+
+        public void CheckUniqueEmail(string email, int? excludeId)
+        {
+            _userBusiness.CheckUniqueEmail(email, excludeId);
+        }
+
+        public void CheckUniquePhone(string phone, int? excludeId)
+        {
+            _userBusiness.CheckUniqueEmail(phone, excludeId);
         }
     }
 }

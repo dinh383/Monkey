@@ -119,5 +119,9 @@ namespace Monkey.Core.Exceptions
         [Display(GroupName = "User")]
         [Description("Can't update this user")]
         UserCannotUpdate= 1010,
+
+        [Display(GroupName = "User")]
+        [Description("Phone is already exist, please try another")]
+        UserPhoneNotUnique = 1011,
     }
 }

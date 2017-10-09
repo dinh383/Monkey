@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Puppy.Web;
 
 namespace Monkey.Extensions
 {
@@ -9,12 +10,12 @@ namespace Monkey.Extensions
         {
             message = message?.Replace("'", "\'");
 
-            controller.TempData[Constants.TempDataKey.Notify] = new NotifyResultViewModel
+            controller.TempData.Set(Constants.TempDataKey.Notify, new NotifyResultViewModel
             {
                 Title = title,
                 Message = message,
                 Status = status
-            };
+            });
         }
 
         public static void RemoveNotify(this Controller controller)

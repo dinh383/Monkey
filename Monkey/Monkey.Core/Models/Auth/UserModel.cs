@@ -32,10 +32,8 @@ namespace Monkey.Core.Models.Auth
     {
         [DataTable(Order = 3)]
         [DataType(DataType.EmailAddress)]
+        [Remote("CheckUniqueEmail", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The email of User already exist, please try another.")]
         public string Email { get; set; }
-
-        [DataTable(Order = 4)]
-        public string Phone { get; set; }
 
         [DataTable(IsVisible = false, DisplayName = "Role Id")]
         [Display(Name = "Role")]
@@ -50,6 +48,10 @@ namespace Monkey.Core.Models.Auth
 
         [DataTable(IsVisible = false, Order = 1)]
         public string Subject { get; set; }
+
+        [DataTable(Order = 4)]
+        [Remote("CheckUniquePhone", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The phone of User already exist, please try another.")]
+        public string Phone { get; set; }
 
         [DataTable(IsVisible = false, Order = 5, DisplayName = "User Name")]
         [Remote("CheckUniqueUserName", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The user name of User already exist, please try another.")]

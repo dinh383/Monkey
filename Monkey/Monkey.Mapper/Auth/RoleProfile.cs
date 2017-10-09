@@ -2,6 +2,7 @@
 using Monkey.Core.Entities.User;
 using Monkey.Core.Models.Auth;
 using Puppy.AutoMapper;
+using System.Linq;
 
 namespace Monkey.Mapper.Auth
 {
@@ -9,7 +10,8 @@ namespace Monkey.Mapper.Auth
     {
         public RoleProfile()
         {
-            CreateMap<RoleEntity, RoleModel>().IgnoreAllNonExisting();
+            CreateMap<RoleEntity, RoleModel>().IgnoreAllNonExisting()
+                .ForMember(d => d.Permissions, o => o.MapFrom(s => s.Permissions.Select(x => x.Permission)));
         }
     }
 }

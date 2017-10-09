@@ -21,6 +21,7 @@ using Monkey.Core.Constants;
 using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,7 +42,7 @@ namespace Monkey.Business.Auth
         void CheckUniquePhone(string phone, int? excludeId = null);
 
         /// <summary>
-        ///     Get list user id have all params permissions
+        ///     Get list user id have all params permissions 
         /// </summary>
         /// <param name="permissions"></param>
         /// <returns></returns>
@@ -54,6 +55,10 @@ namespace Monkey.Business.Auth
         /// <param name="roleId"></param>
         /// <returns></returns>
         Task<string> CreateUserByEmailAsync(string email, int? roleId);
+
+        string GenerateTokenActiveByEmailAsync(string userSubject, string email, out TimeSpan expireIn);
+
+        string GenerateTokenActiveByPhoneAsync(string userSubject, string phone, out TimeSpan expireIn);
 
         /// <summary>
         ///     Active user via email, setup new username and password 

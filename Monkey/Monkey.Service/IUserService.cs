@@ -28,7 +28,7 @@ namespace Monkey.Service
     {
         Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
 
-        Task CreateAsync(UserCreateModel model);
+        Task CreateByEmailAsync(UserCreateModel model);
 
         Task<UserModel> GetAsync(int id);
 
@@ -37,5 +37,9 @@ namespace Monkey.Service
         Task RemoveAsync(int id);
 
         void CheckUniqueUserName(string userName, int? excludeId);
+
+        void CheckUniqueEmail(string email, int? excludeId);
+
+        void CheckUniquePhone(string phone, int? excludeId);
     }
 }

@@ -32,5 +32,7 @@ namespace Monkey.Business.Auth
         Task<int> CreateAsync(string name, string description, params Enums.Permission[] permissions);
 
         Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model);
+
+        Task<RoleModel> GetAsync(int id);
     }
 }

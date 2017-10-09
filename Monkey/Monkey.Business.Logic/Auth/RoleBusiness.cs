@@ -101,5 +101,11 @@ namespace Monkey.Business.Logic.Auth
 
             return Task.FromResult(result);
         }
+
+        public Task<RoleModel> GetAsync(int id)
+        {
+            var roleModel = _roleRepository.Get(x => x.Id == id).QueryTo<RoleModel>().FirstOrDefault();
+            return Task.FromResult(roleModel);
+        }
     }
 }

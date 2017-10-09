@@ -9,9 +9,7 @@ namespace Monkey.Core.Validators.Auth
         {
             public UserCreateModelValidator()
             {
-                RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(500).When(x => string.IsNullOrWhiteSpace(x.Phone));
-
-                RuleFor(x => x.Phone).NotEmpty().MaximumLength(50).When(x => string.IsNullOrWhiteSpace(x.Email));
+                RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(500);
             }
         }
 
@@ -20,12 +18,6 @@ namespace Monkey.Core.Validators.Auth
             public UserUpdateModelValidator()
             {
                 RuleFor(x => x.Id).NotEmpty();
-
-                RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(500).When(x => string.IsNullOrWhiteSpace(x.Phone));
-
-                RuleFor(x => x.Phone).NotEmpty().MaximumLength(50).When(x => string.IsNullOrWhiteSpace(x.Email));
-
-                RuleFor(x => x.UserName).MaximumLength(50);
 
                 RuleFor(x => x.BannedRemark).NotEmpty().MaximumLength(250).When(x => x.IsBanned);
             }

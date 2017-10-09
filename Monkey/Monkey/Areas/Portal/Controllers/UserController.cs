@@ -4,6 +4,7 @@ using Monkey.Auth.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
+using Monkey.Extensions;
 using Monkey.Service;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
@@ -11,7 +12,6 @@ using Puppy.DataTable.Models.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Monkey.Extensions;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers
@@ -26,6 +26,8 @@ namespace Monkey.Areas.Portal.Controllers
         public const string EditEndpoint = "{id}/edit";
         public const string SubmitEditEndpoint = "edit";
         public const string CheckUniqueUserNameEndpoint = "check-unique-username";
+        public const string CheckUniqueEmailEndpoint = "check-unique-email";
+        public const string CheckUniquePhoneEndpoint = "check-unique-phone";
         public const string RemoveEndpoint = "{id}/remove";
 
         private readonly IUserService _userService;
@@ -78,7 +80,7 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("Add", model);
             }
 
-            await _userService.CreateAsync(model).ConfigureAwait(true);
+            await _userService.CreateByEmailAsync(model).ConfigureAwait(true);
             this.SetNotify("Add Success", "Add user successful", ControllerExtensions.NotifyStatus.Success);
 
             return RedirectToAction("Index");
@@ -135,6 +137,46 @@ namespace Monkey.Areas.Portal.Controllers
             catch (MonkeyException monkeyException)
             {
                 if (monkeyException.Code == ErrorCode.UserNameNotUnique)
+                {
+                    return Json(false);
+                }
+
+                throw;
+            }
+        }
+
+        [Route(CheckUniqueEmailEndpoint)]
+        [HttpPost]
+        public JsonResult CheckUniqueEmail(string email, int? id = null)
+        {
+            try
+            {
+                _userService.CheckUniqueEmail(email, id);
+                return Json(true);
+            }
+            catch (MonkeyException monkeyException)
+            {
+                if (monkeyException.Code == ErrorCode.UserEmailNotUnique)
+                {
+                    return Json(false);
+                }
+
+                throw;
+            }
+        }
+
+        [Route(CheckUniquePhoneEndpoint)]
+        [HttpPost]
+        public JsonResult CheckUniquePhone(string phone, int? id = null)
+        {
+            try
+            {
+                _userService.CheckUniquePhone(phone, id);
+                return Json(true);
+            }
+            catch (MonkeyException monkeyException)
+            {
+                if (monkeyException.Code == ErrorCode.UserPhoneNotUnique)
                 {
                     return Json(false);
                 }

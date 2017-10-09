@@ -42,13 +42,19 @@ namespace Monkey.Core.Entities.User
 
         public DateTimeOffset? EmailConfirmedTime { get; set; }
 
+        public string ConfirmEmailToken { get; set; }
+
+        public DateTimeOffset? ConfirmEmailTokenExpireOn { get; set; }
+
         // Phone
 
         public string Phone { get; set; }
 
         public DateTimeOffset? PhoneConfirmedTime { get; set; }
 
-        public virtual ProfileEntity Profile { get; set; }
+        public string ConfirmPhoneToken { get; set; }
+
+        public DateTimeOffset? ConfirmPhoneTokenExpireOn { get; set; }
 
         public DateTimeOffset? ActiveTime { get; set; }
 
@@ -58,9 +64,13 @@ namespace Monkey.Core.Entities.User
 
         public string BannedRemark { get; set; }
 
+        // Role
+
         public int? RoleId { get; set; }
 
         public virtual RoleEntity Role { get; set; }
+
+        public virtual ProfileEntity Profile { get; set; }
 
         public virtual ICollection<RefreshTokenEntity> RefreshTokens { get; set; }
     }

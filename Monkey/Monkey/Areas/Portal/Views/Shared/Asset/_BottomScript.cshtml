@@ -85,7 +85,7 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Owl.min.js")"></script>
 <script type="text/javascript">
     @{
-        var notifyData = TempData[Constants.TempDataKey.Notify] as ControllerExtensions.NotifyResultViewModel;
+        var notifyData = TempData.Get<ControllerExtensions.NotifyResultViewModel>(Constants.TempDataKey.Notify);
         TempData.Remove(Constants.TempDataKey.Notify);
 
         if (notifyData != null)
