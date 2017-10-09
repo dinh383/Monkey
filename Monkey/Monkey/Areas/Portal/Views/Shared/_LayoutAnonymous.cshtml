@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewData[Constants.ViewDataKey.Title]</title>
+    @{
+        await Html.RenderPartialAsync("_Favicon").ConfigureAwait(true);
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_Style.cshtml").ConfigureAwait(true);
+        <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/pages/login-v2.min.css")">
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_HeaderScript.cshtml").ConfigureAwait(true);
+    }
+</head>
+<body class="animsition page-login-v2 layout-full page-dark">
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Page -->
+    <div class="page" data-animsition-in="fade-in" data-animsition-out="fade-out">
+        <div class="page-content">
+            <div class="page-brand-info">
+                <div class="brand">
+                    <img class="brand-img" src="@Url.AbsoluteContent("~/favicons/favicon-72x72.png")" alt="Owl">
+                    <h2 class="brand-text font-size-40">Owl</h2>
+                </div>
+                <p class="font-size-20" id="qoute">
+                    I'm a bit of a night owl because that's when I feel the most creative and alive.
+                </p>
+            </div>
+            <div class="page-login-main">
+                <div class="brand hidden-md-up">
+                    <img class="brand-img" src="@Url.AbsoluteContent("~/favicons/favicon-72x72.png")" alt="Owl">
+                    <h3 class="brand-text font-size-40">Owl</h3>
+                </div>
+                @RenderBody()
+                <footer class="page-copyright">
+                    <p>
+                        WEBSITE BY <a href="http://topnguyen.net">TOP NGUYEN</a>
+                    </p>
+                    <p>© 2017. All RIGHT RESERVED.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_BottomScript.cshtml").ConfigureAwait(true);
+        <script>
+            $.ajax({
+                method: "GET",
+                url: 'https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1',
+                success: function(data) {
+                    var post = data.shift();
+                    $("#qoute").html(post.content + "<p>&mdash; " + post.title + "</p>");
+                },
+                cache: false
+            });
+        </script>
+    }
+</body>
+</html>

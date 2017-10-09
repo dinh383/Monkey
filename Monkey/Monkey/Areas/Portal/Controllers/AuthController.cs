@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Auth.Filters;
+using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
@@ -17,6 +17,7 @@ namespace Monkey.Areas.Portal.Controllers
         public const string SignInEndpoint = "";
         public const string SignInSubmitEndpoint = "signin";
         public const string SignOutEndpoint = "signout";
+        public const string ActiveEndpoint = "active/{token}";
 
         private readonly IAuthenticationService _authenticationService;
 
@@ -98,12 +99,28 @@ namespace Monkey.Areas.Portal.Controllers
 
         [Route(SignOutEndpoint)]
         [HttpGet]
-        [Auth]
         public async Task<IActionResult> SignOut()
         {
             await _authenticationService.SignOutCookieAsync(Response.Cookies).ConfigureAwait(true);
 
             return RedirectToAction("Index", "Auth");
+        }
+
+        [Route(ActiveEndpoint)]
+        [HttpGet]
+        public IActionResult Active(string token)
+        {
+            bool isExpireOrInvalidToken = TokenHelper.IsExpireOrInvalidToken(token);
+
+            if (isExpireOrInvalidToken)
+            {
+                this.SetNotify("Active Fail", "Your link is invalid or expired");
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Token = token;
+
+            return View();
         }
     }
 }
