@@ -18,10 +18,14 @@
 #endregion License
 
 using Monkey.Business.Auth;
+using Monkey.Core;
+using Monkey.Core.Constants;
+using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Monkey.Service.Facade.Auth
@@ -64,6 +68,20 @@ namespace Monkey.Service.Facade.Auth
 
         public Task UpdateAsync(UserUpdateModel model)
         {
+            _userBusiness.CheckExistsById(model.Id);
+
+            if (model.Id == LoggedInUser.Current?.Id)
+            {
+                throw new MonkeyException(ErrorCode.UserSelfUpdate);
+            }
+
+            // Can't update last user have permission
+            var listCannotUpdateUserId = _userBusiness.ListUserIdByPermissions(Enums.Permission.Admin);
+            if (listCannotUpdateUserId.Count == 1 && listCannotUpdateUserId.FirstOrDefault() == model.Id)
+            {
+                throw new MonkeyException(ErrorCode.UserCannotUpdate);
+            }
+
             _userBusiness.CheckUniqueUserName(model.UserName, model.Id);
 
             if (!string.IsNullOrWhiteSpace(model.Email))
@@ -82,6 +100,20 @@ namespace Monkey.Service.Facade.Auth
         public Task RemoveAsync(int id)
         {
             _userBusiness.CheckExistsById(id);
+
+            // Can't remove theme self
+            if (id == LoggedInUser.Current?.Id)
+            {
+                throw new MonkeyException(ErrorCode.UserSelfRemove);
+            }
+
+            // Can't remove last user have permission
+            var listCannotRemoveUserId = _userBusiness.ListUserIdByPermissions(Enums.Permission.Admin);
+            if (listCannotRemoveUserId.Count == 1 && listCannotRemoveUserId.FirstOrDefault() == id)
+            {
+                throw new MonkeyException(ErrorCode.UserCannotRemove);
+            }
+
             return _userBusiness.RemoveAsync(id);
         }
 

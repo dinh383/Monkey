@@ -20,9 +20,11 @@
 using Microsoft.EntityFrameworkCore;
 using Monkey.Auth.Helpers;
 using Monkey.Business.Auth;
+using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
+using Monkey.Data.Auth;
 using Monkey.Data.User;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
@@ -31,8 +33,10 @@ using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Business.Logic.Auth
 {
@@ -40,10 +44,12 @@ namespace Monkey.Business.Logic.Auth
     public class UserBusiness : IUserBusiness
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public UserBusiness(IUserRepository userRepository)
+        public UserBusiness(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository)
         {
             _userRepository = userRepository;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public void CheckExistsById(params int[] ids)
@@ -122,6 +128,15 @@ namespace Monkey.Business.Logic.Auth
             }
         }
 
+        public List<int> ListUserIdByPermissions(params Enums.Permission[] permissions)
+        {
+            List<int> listAdminUserId = _userRepository
+                .Get(x => x.Role.Permissions != null && x.Role.Permissions.All(y => permissions.Contains(y.Permission))).Select(x => x.Id)
+                .ToList();
+
+            return listAdminUserId;
+        }
+
         public Task<string> CreateUserByEmailAsync(string email, int? roleId)
         {
             var userEntity = new UserEntity
@@ -185,16 +200,35 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.SaveChanges();
         }
 
-        public Task RemoveAsync(int id)
+        public async Task RemoveAsync(int id)
         {
+            // Soft delete user
             _userRepository.Delete(new UserEntity
             {
                 Id = id
             });
 
-            _userRepository.SaveChanges();
+            _refreshTokenRepository.SaveChanges();
 
-            return Task.CompletedTask;
+            // Expire all their refresh token
+            var listRefreshToken = await _refreshTokenRepository
+                .Get(x => x.UserId == id)
+                .Select(x =>
+                    new RefreshTokenEntity
+                    {
+                        Id = x.Id
+                    })
+                .ToListAsync().ConfigureAwait(true);
+
+            var dateTimeUtcNow = DateTimeOffset.UtcNow.AddSeconds(-1);
+
+            foreach (var refreshTokenEntity in listRefreshToken)
+            {
+                refreshTokenEntity.ExpireOn = dateTimeUtcNow;
+                _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
+            }
+
+            _userRepository.SaveChanges();
         }
 
         public Task<UserModel> GetAsync(int id)
@@ -218,9 +252,10 @@ namespace Monkey.Business.Logic.Auth
             var userEntity = model.MapTo<UserEntity>();
 
             userEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
+
             userEntity.BannedRemark = model.IsBanned ? null : userEntity.BannedRemark;
 
-            _userRepository.Update(userEntity, x => x.BannedTime, x => x.BannedRemark);
+            _userRepository.Update(userEntity, x => x.RoleId, x => x.BannedTime, x => x.BannedRemark);
 
             _userRepository.SaveChanges();
 

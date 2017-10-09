@@ -50,8 +50,14 @@
             owl.initConfirmDialog();
         }
 
+        var loggedInUserId = parseInt('@LoggedInUser.Current?.Id');
+
         function actionRender(data, type, row) {
             var id = row[0];
+
+            if (id === loggedInUserId) {
+                return '';
+            }
 
             // Edit
             var editUrl = '@Url.AbsoluteAction("Edit", "User", new {id = "PARAMETER_ID"})';

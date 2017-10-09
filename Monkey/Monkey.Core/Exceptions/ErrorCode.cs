@@ -103,5 +103,21 @@ namespace Monkey.Core.Exceptions
         [Display(GroupName = "User")]
         [Description("User name is not exist")]
         UserNameNotExist = 1006,
+
+        [Display(GroupName = "User")]
+        [Description("User can't self update")]
+        UserSelfUpdate = 1007,
+
+        [Display(GroupName = "User")]
+        [Description("User can't self remove")]
+        UserSelfRemove = 1008,
+
+        [Display(GroupName = "User")]
+        [Description("Can't remove this user")]
+        UserCannotRemove = 1009,
+
+        [Display(GroupName = "User")]
+        [Description("Can't update this user")]
+        UserCannotUpdate= 1010,
     }
 }

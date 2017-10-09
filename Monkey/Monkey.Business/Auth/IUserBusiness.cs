@@ -17,9 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Constants;
 using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Monkey.Business.Auth
@@ -37,6 +39,13 @@ namespace Monkey.Business.Auth
         void CheckUniqueEmail(string email, int? excludeId = null);
 
         void CheckUniquePhone(string phone, int? excludeId = null);
+
+        /// <summary>
+        ///     Get list user id have all params permissions
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        List<int> ListUserIdByPermissions(params Enums.Permission[] permissions);
 
         /// <summary>
         ///     Create User and Return Subject of new user 

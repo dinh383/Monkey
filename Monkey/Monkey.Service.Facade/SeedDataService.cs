@@ -46,7 +46,6 @@ namespace Monkey.Service.Facade
 
         public async Task InitialRoleAsync()
         {
-
             foreach (var enumMember in EnumsNET.Enums.GetMembers<Enums.Permission>())
             {
                 string roleName = enumMember.Value.AsString(EnumFormat.Name);
