@@ -9,6 +9,7 @@ using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using System.Threading.Tasks;
 using Monkey.Extensions;
+using Monkey.Service.Auth;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers

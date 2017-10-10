@@ -19,6 +19,7 @@
 
 using Monkey.Business.Auth;
 using Monkey.Core.Models.Auth;
+using Monkey.Service.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;

@@ -23,6 +23,7 @@ using Monkey.Core;
 using Monkey.Core.Constants;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
+using Monkey.Service.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;

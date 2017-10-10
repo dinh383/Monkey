@@ -26,7 +26,7 @@ using SendGrid.Helpers.Mail;
 using System;
 using System.Text.RegularExpressions;
 
-namespace Monkey.Business.Logic.Email
+namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IEmailBusiness))]
     public class EmailBusiness : IEmailBusiness

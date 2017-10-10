@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Monkey.Service.Auth;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers

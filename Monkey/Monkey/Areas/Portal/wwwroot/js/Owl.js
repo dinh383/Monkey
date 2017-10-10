@@ -30,21 +30,6 @@
         });
     },
 
-    initRequiredField: function () {
-        $('[data-val-required!=""]').each(function (i, e) {
-            var label = $("label[for='" + $(this).attr("id") + "']");
-            if (label.length === 0) {
-                $(e).closest(".row").find("label").each(function (idx, el) {
-                    if (el.children.length === 0) {
-                        $(el).append('<span style="color:#f46c93"> *</span>');
-                    }
-                });
-            } else if (label[0].children.length === 0) {
-                $(label).append('<span style="color:#f46c93"> *</span>');
-            }
-        });
-    },
-
     setupAjax: function () {
         $.ajaxSetup({
             headers: { 'X-XSRF-TOKEN': $('[name=ape]').val() },
@@ -114,7 +99,6 @@
 
 $(function () {
     owl.setupAjax();
-    owl.initRequiredField();
     owl.initToolTip();
     owl.initConfirmDialog();
     owl.initSlidePanel();

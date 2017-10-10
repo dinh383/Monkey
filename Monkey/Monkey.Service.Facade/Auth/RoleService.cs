@@ -20,6 +20,7 @@
 using Monkey.Business.Auth;
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
+using Monkey.Service.Auth;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web.Models.Api;
 using System.Threading.Tasks;

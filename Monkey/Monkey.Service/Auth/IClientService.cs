@@ -22,7 +22,7 @@ using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using System.Threading.Tasks;
 
-namespace Monkey.Service
+namespace Monkey.Service.Auth
 {
     public interface IClientService : IBaseService
     {

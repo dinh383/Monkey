@@ -22,7 +22,7 @@ using Monkey.Core.Models.Auth;
 using Puppy.Web.Models.Api;
 using System.Threading.Tasks;
 
-namespace Monkey.Service
+namespace Monkey.Service.Auth
 {
     public interface IRoleService : IBaseService
     {
