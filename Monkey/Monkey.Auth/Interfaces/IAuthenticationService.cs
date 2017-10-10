@@ -70,5 +70,15 @@ namespace Monkey.Auth.Interfaces
         /// <param name="accessToken"></param>
         /// <returns></returns>
         Task ExpireAllRefreshTokenAsync(string accessToken);
+
+        Task SendConfirmEmailOrSetPasswordAsync(string email);
+
+        Task ConfirmEmailAsync(SetPasswordModel model);
+
+        bool IsExpireOrInvalidConfirmEmailToken(string token);
+
+        Task SetPasswordAsync(SetPasswordModel model);
+
+        bool IsExpireOrInvalidSetPasswordToken(string token);
     }
 }

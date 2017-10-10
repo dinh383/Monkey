@@ -35,7 +35,7 @@ namespace Monkey.Mapper.Auth
 
             CreateMap<ProfileEntity, LoggedInUserModel>().IgnoreAllNonExisting();
 
-            CreateMap<LoginModel, RequestTokenModel>().IgnoreAllNonExisting()
+            CreateMap<SignInModel, RequestTokenModel>().IgnoreAllNonExisting()
                 .ForMember(d => d.GrantType, o => o.UseValue(GrantType.Password));
 
             CreateMap<UserCreateModel, UserEntity>().IgnoreAllNonExisting();

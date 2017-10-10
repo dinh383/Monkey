@@ -23,6 +23,8 @@ namespace Monkey.Business
 {
     public interface IEmailBusiness : IBaseBusiness
     {
-        void SendActiveAccountByEmail(string activeToken, string email, string roleName, TimeSpan expireIn);
+        void SendActiveAccount(string token, string email, TimeSpan expireIn);
+
+        void SendSetPassword(string token, string email, TimeSpan expireIn);
     }
 }

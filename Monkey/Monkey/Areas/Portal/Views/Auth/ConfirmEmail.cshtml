@@ -1,0 +1,41 @@
+﻿@model Monkey.Core.Models.Auth.SetPasswordModel
+@{
+    Layout = "/Areas/Portal/Views/Shared/_LayoutAnonymous.cshtml";
+    ViewData[Constants.ViewDataKey.Title] = "Owl | Activation";
+}
+
+<h3 class="font-size-24">Active Account</h3>
+<p>Active account to Sign In to the Website</p>
+
+@using (Html.BeginForm("SubmitConfirmEmail", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group form-material" data-plugin="formMaterial">
+        @Html.LabelFor(m => m.Password, new { @class = "form-control-label", @for = $"{nameof(Model.Password)}" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Password)
+    </div>
+    <div class="form-group form-material" data-plugin="formMaterial">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-control-label", @for = $"{nameof(Model.ConfirmPassword)}" })
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group form-material">
+            <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("CannotSignIn", "Auth")">
+                <span class="ladda-label">
+                    <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
+                </span>
+            </a>
+        </div>
+        <div class="col-md-6 form-group form-material">
+            <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
+                <span class="ladda-label">
+                    <i class="icon md-lock-open mr-10" aria-hidden="true"></i>Active
+                </span>
+            </button>
+        </div>
+    </div>
+}

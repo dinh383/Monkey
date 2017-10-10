@@ -21,7 +21,6 @@ using Monkey.Core.Constants;
 using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,9 +36,13 @@ namespace Monkey.Business.Auth
 
         void CheckExistByUserName(string userName);
 
+        void CheckExistByEmail(string email);
+
         void CheckUniqueEmail(string email, int? excludeId = null);
 
         void CheckUniquePhone(string phone, int? excludeId = null);
+
+        void CheckExistByPhone(string phone);
 
         /// <summary>
         ///     Get list user id have all params permissions 
@@ -56,24 +59,15 @@ namespace Monkey.Business.Auth
         /// <returns></returns>
         Task<string> CreateUserByEmailAsync(string email, int? roleId);
 
-        string GenerateTokenActiveByEmailAsync(string userSubject, string email, out TimeSpan expireIn);
-
-        string GenerateTokenActiveByPhoneAsync(string userSubject, string phone, out TimeSpan expireIn);
-
-        /// <summary>
-        ///     Active user via email, setup new username and password 
-        /// </summary>
-        /// <param name="subject">    </param>
-        /// <param name="newUserName"></param>
-        /// <param name="newPassword"></param>
-        /// <returns></returns>
-        Task ActiveByEmailAsync(string subject, string newUserName, string newPassword);
-
-        Task ActiveByPhoneAsync(string subject, string newUserName, string newPassword);
-
         Task RemoveAsync(int id);
 
         Task<UserModel> GetAsync(int id);
+
+        Task<UserModel> GetByEmailAsync(string email);
+
+        Task<UserModel> GetByPhoneAsync(string phone);
+
+        Task<UserModel> GetBySubjectAsync(string subject);
 
         Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
 

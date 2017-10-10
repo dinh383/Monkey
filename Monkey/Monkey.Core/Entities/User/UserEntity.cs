@@ -34,6 +34,7 @@ namespace Monkey.Core.Entities.User
         public string PasswordHash { get; set; }
 
         public DateTimeOffset? PasswordLastUpdatedTime { get; set; }
+        
         // Email
 
         public string Email { get; set; }
@@ -46,6 +47,12 @@ namespace Monkey.Core.Entities.User
 
         public DateTimeOffset? ConfirmEmailTokenExpireOn { get; set; }
 
+        // Set Password
+
+        public string SetPasswordToken { get; set; }
+
+        public DateTimeOffset? SetPasswordTokenExpireOn { get; set; }
+
         // Phone
 
         public string Phone { get; set; }
@@ -55,6 +62,8 @@ namespace Monkey.Core.Entities.User
         public string ConfirmPhoneToken { get; set; }
 
         public DateTimeOffset? ConfirmPhoneTokenExpireOn { get; set; }
+
+        // Active 
 
         public DateTimeOffset? ActiveTime { get; set; }
 

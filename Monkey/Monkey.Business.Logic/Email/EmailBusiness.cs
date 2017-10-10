@@ -31,15 +31,31 @@ namespace Monkey.Business.Logic.Email
     [PerRequestDependency(ServiceType = typeof(IEmailBusiness))]
     public class EmailBusiness : IEmailBusiness
     {
-        public void SendActiveAccountByEmail(string activeToken, string email, string roleName, TimeSpan expireIn)
+        public void SendActiveAccount(string token, string email, TimeSpan expireIn)
         {
             string domainUrl = System.Web.HttpContext.Current.Request.GetDomain();
 
-            string activeLink = $"<a href='{domainUrl}/portal/auth/active/{activeToken}'>Confirm Account</a>";
+            string activeLink = $"<a href='{domainUrl}/portal/auth/confirm-email/{token}'>Confirm Email Address</a>";
 
-            string subject = "Confirm your account";
+            string subject = "Confirm Your Email";
 
-            string html = $"Please confirm your account via this link: {activeLink}";
+            string html = $"<p>You're on your way!</p>" +
+                          $"<p>Let's confirm your email address by click: {activeLink}.</p>" +
+                          $"<p>The link will expire in {expireIn.Hours}</p>";
+
+            BackgroundJob.Enqueue(() => SendEmail(email, subject, html));
+        }
+
+        public void SendSetPassword(string token, string email, TimeSpan expireIn)
+        {
+            string domainUrl = System.Web.HttpContext.Current.Request.GetDomain();
+
+            string setPasswordLink = $"<a href='{domainUrl}/portal/auth/set-password/{token}'>Set Password</a>";
+
+            string subject = "Set Password for Your Account";
+
+            string html = $"<p>You can set new password for your account by click: {setPasswordLink}.</p>" +
+                          $"<p>The link will expire in {expireIn.Hours}</p>";
 
             BackgroundJob.Enqueue(() => SendEmail(email, subject, html));
         }
@@ -53,7 +69,7 @@ namespace Monkey.Business.Logic.Email
             var text = Regex.Replace(html, "<[^>]*>", string.Empty);
 
             var msg = MailHelper.CreateSingleEmail(from, to, subject, text, html);
-            
+
             var client = new SendGridClient(SystemConfig.SendGrid.Key);
 
             client.SendEmailAsync(msg).Wait();

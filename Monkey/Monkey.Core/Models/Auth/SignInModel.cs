@@ -23,8 +23,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.Auth
 {
-    [Validator(typeof(LoginModelValidator))]
-    public class LoginModel
+    [Validator(typeof(SigInModelValidator))]
+    public class SignInModel
     {
         [Display(Name = "User Name")]
         public string UserName { get; set; }
@@ -35,11 +35,11 @@ namespace Monkey.Core.Models.Auth
 
         public string RedirectUrl { get; set; }
 
-        public LoginModel()
+        public SignInModel()
         {
         }
 
-        public LoginModel(string redirectUrl) : this()
+        public SignInModel(string redirectUrl) : this()
         {
             RedirectUrl = redirectUrl;
         }

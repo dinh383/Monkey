@@ -41,5 +41,7 @@ namespace Monkey.Service
         void CheckUniqueEmail(string email, int? excludeId);
 
         void CheckUniquePhone(string phone, int? excludeId);
+
+        void CheckExistEmail(string email);
     }
 }

@@ -22,9 +22,9 @@ using Monkey.Core.Models.Auth;
 
 namespace Monkey.Core.Validators.Auth
 {
-    public class LoginModelValidator : AbstractValidator<LoginModel>
+    public class SigInModelValidator : AbstractValidator<SignInModel>
     {
-        public LoginModelValidator()
+        public SigInModelValidator()
         {
             RuleFor(x => x.UserName)
                 .NotEmpty().WithMessage("User Name can't be empty")

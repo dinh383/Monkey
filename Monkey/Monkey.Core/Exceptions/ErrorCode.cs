@@ -118,10 +118,26 @@ namespace Monkey.Core.Exceptions
 
         [Display(GroupName = "User")]
         [Description("Can't update this user")]
-        UserCannotUpdate= 1010,
+        UserCannotUpdate = 1010,
 
         [Display(GroupName = "User")]
         [Description("Phone is already exist, please try another")]
         UserPhoneNotUnique = 1011,
+
+        [Display(GroupName = "User")]
+        [Description("Email does not exist, please try another")]
+        UserEmailNotExist = 1012,
+
+        [Display(GroupName = "User")]
+        [Description("Phone does not exist, please try another")]
+        UserPhoneNotExist = 1013,
+
+        [Display(GroupName = "User")]
+        [Description("Confirm email token expired or invalid")]
+        UserConfirmEmailTokenExpireOrInvalid = 1014,
+
+        [Display(GroupName = "User")]
+        [Description("Set password token expired or invalid")]
+        UserSetPasswordTokenExpireOrInvalid = 1015
     }
 }

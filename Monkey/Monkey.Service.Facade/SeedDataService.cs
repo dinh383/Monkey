@@ -30,12 +30,14 @@ namespace Monkey.Service.Facade
     {
         private readonly IRoleBusiness _roleBusiness;
         private readonly IUserBusiness _userBusiness;
+        private readonly IAuthenticationBusiness _authenticationBusiness;
         private int _roleAdminId = 1;
 
-        public SeedDataService(IRoleBusiness roleBusiness, IUserBusiness userBusiness)
+        public SeedDataService(IRoleBusiness roleBusiness, IUserBusiness userBusiness, IAuthenticationBusiness authenticationBusiness)
         {
             _roleBusiness = roleBusiness;
             _userBusiness = userBusiness;
+            _authenticationBusiness = authenticationBusiness;
         }
 
         public void SeedData()
@@ -70,7 +72,6 @@ namespace Monkey.Service.Facade
 
         public async Task InitialUserAsync()
         {
-
             string userName = "topnguyen";
             string email = "topnguyen92@gmail.com";
             string password = "Password123@@";
@@ -80,7 +81,7 @@ namespace Monkey.Service.Facade
                 _userBusiness.CheckUniqueEmail(email);
 
                 var subject = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
-                await _userBusiness.ActiveByEmailAsync(subject, userName, password).ConfigureAwait(true);
+                await _authenticationBusiness.ConfirmEmailAsync(subject, userName, password).ConfigureAwait(true);
             }
             catch
             {

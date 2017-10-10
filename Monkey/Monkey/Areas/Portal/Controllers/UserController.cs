@@ -12,6 +12,7 @@ using Puppy.DataTable.Models.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers
@@ -27,6 +28,7 @@ namespace Monkey.Areas.Portal.Controllers
         public const string SubmitEditEndpoint = "edit";
         public const string CheckUniqueUserNameEndpoint = "check-unique-username";
         public const string CheckUniqueEmailEndpoint = "check-unique-email";
+        public const string CheckExistEmailEndpoint = "check-exist-email";
         public const string CheckUniquePhoneEndpoint = "check-unique-phone";
         public const string RemoveEndpoint = "{id}/remove";
 
@@ -165,8 +167,29 @@ namespace Monkey.Areas.Portal.Controllers
             }
         }
 
+        [Route(CheckExistEmailEndpoint)]
+        [HttpPost]
+        public JsonResult CheckExistEmail(string email)
+        {
+            try
+            {
+                _userService.CheckExistEmail(email);
+                return Json(true);
+            }
+            catch (MonkeyException monkeyException)
+            {
+                if (monkeyException.Code == ErrorCode.UserEmailNotExist)
+                {
+                    return Json(false);
+                }
+
+                throw;
+            }
+        }
+
         [Route(CheckUniquePhoneEndpoint)]
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult CheckUniquePhone(string phone, int? id = null)
         {
             try

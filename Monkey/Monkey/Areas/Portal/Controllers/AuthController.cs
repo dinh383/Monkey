@@ -17,7 +17,12 @@ namespace Monkey.Areas.Portal.Controllers
         public const string SignInEndpoint = "";
         public const string SignInSubmitEndpoint = "signin";
         public const string SignOutEndpoint = "signout";
-        public const string ActiveEndpoint = "active/{token}";
+        public const string ConfirmEmailEndpoint = "confirm-email/{token}";
+        public const string SubmitConfirmEmailEndpoint = "submit-email-confirm";
+        public const string SetPasswordEndpoint = "set-password/{token}";
+        public const string SubmitSetPasswordEndpoint = "submit-set-password";
+        public const string CannotSigInEndpoint = "cannot-signin";
+        public const string SubmitCannotSigInEndpoint = "submit-cannot-signin";
 
         private readonly IAuthenticationService _authenticationService;
 
@@ -36,14 +41,16 @@ namespace Monkey.Areas.Portal.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(new LoginModel(redirectUrl));
+            return View(new SignInModel(redirectUrl));
         }
+
+        #region SignIn and SignOut
 
         [Route(SignInSubmitEndpoint)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<IActionResult> SignIn(LoginModel model)
+        public async Task<IActionResult> SignIn(SignInModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -106,21 +113,144 @@ namespace Monkey.Areas.Portal.Controllers
             return RedirectToAction("Index", "Auth");
         }
 
-        [Route(ActiveEndpoint)]
+        #endregion SignIn and SignOut
+
+        #region Cannot SignIn
+
+        [Route(CannotSigInEndpoint)]
+        [AllowAnonymous]
         [HttpGet]
-        public IActionResult Active(string token)
+        public IActionResult CannotSignIn()
+        {
+            return View(new CannotSigInModel());
+        }
+
+        [Route(SubmitCannotSigInEndpoint)]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> SubmitCannotSignIn([FromForm] CannotSigInModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("CannotSignIn", model);
+            }
+
+            await _authenticationService.SendConfirmEmailOrSetPasswordAsync(model.Email).ConfigureAwait(true);
+
+            this.SetNotify("Send Success", "Please check your email inbox to active or set new password", ControllerExtensions.NotifyStatus.Success);
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion Cannot SignIn
+
+        #region Confirm Email
+
+        [Route(ConfirmEmailEndpoint)]
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ConfirmEmail(string token)
         {
             bool isExpireOrInvalidToken = TokenHelper.IsExpireOrInvalidToken(token);
 
             if (isExpireOrInvalidToken)
             {
-                this.SetNotify("Active Fail", "Your link is invalid or expired");
-                return RedirectToAction("Index");
+                this.SetNotify("Confirm Email Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+
+                return RedirectToAction("CannotSignIn");
             }
 
-            ViewBag.Token = token;
+            var activeModel = new SetPasswordModel
+            {
+                Token = token
+            };
 
-            return View();
+            return View(activeModel);
         }
+
+        [Route(SubmitConfirmEmailEndpoint)]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> SubmitConfirmEmail([FromForm] SetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ConfirmEmail", model);
+            }
+            try
+            {
+                await _authenticationService.ConfirmEmailAsync(model).ConfigureAwait(true);
+
+                this.SetNotify("Active Success", "Now you can sign-in to the system", ControllerExtensions.NotifyStatus.Success);
+
+                return RedirectToAction("Index");
+            }
+            catch (MonkeyException ex)
+            {
+                if (ex.Code == ErrorCode.UserConfirmEmailTokenExpireOrInvalid)
+                {
+                    this.SetNotify("Confirm Email Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+                    return RedirectToAction("CannotSignIn");
+                }
+                throw;
+            }
+        }
+
+        #endregion Confirm Email
+
+        #region Set Password
+
+        [Route(SetPasswordEndpoint)]
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult SetPassword(string token)
+        {
+            bool isExpireOrInvalidToken = TokenHelper.IsExpireOrInvalidToken(token);
+
+            if (isExpireOrInvalidToken)
+            {
+                this.SetNotify("Set Password Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+
+                return RedirectToAction("CannotSignIn");
+            }
+
+            var activeModel = new SetPasswordModel
+            {
+                Token = token
+            };
+
+            return View(activeModel);
+        }
+
+        [Route(SubmitSetPasswordEndpoint)]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> SubmitSetPassword([FromForm] SetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("SetPassword", model);
+            }
+
+            try
+            {
+                await _authenticationService.SetPasswordAsync(model).ConfigureAwait(true);
+
+                this.SetNotify("Set Password Success", "Now you can sign-in to the system", ControllerExtensions.NotifyStatus.Success);
+
+                return RedirectToAction("Index");
+            }
+            catch (MonkeyException ex)
+            {
+                if (ex.Code == ErrorCode.UserSetPasswordTokenExpireOrInvalid)
+                {
+                    this.SetNotify("Set Password Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+                    return RedirectToAction("CannotSignIn");
+                }
+                throw;
+            }
+        }
+
+        #endregion Set Password
     }
 }

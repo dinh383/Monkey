@@ -36,14 +36,16 @@ namespace Monkey.Service.Facade.Auth
     public class UserService : IUserService
     {
         private readonly IUserBusiness _userBusiness;
-        private readonly IEmailBusiness _emailBusiness;
-        private readonly IRoleBusiness _roleBusiness;
 
-        public UserService(IUserBusiness userBusiness, IEmailBusiness emailBusiness, IRoleBusiness roleBusiness)
+        private readonly IEmailBusiness _emailBusiness;
+
+        private readonly IAuthenticationBusiness _authenticationBusiness;
+
+        public UserService(IUserBusiness userBusiness, IEmailBusiness emailBusiness, IAuthenticationBusiness authenticationBusiness)
         {
             _userBusiness = userBusiness;
             _emailBusiness = emailBusiness;
-            _roleBusiness = roleBusiness;
+            _authenticationBusiness = authenticationBusiness;
         }
 
         public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
@@ -57,17 +59,9 @@ namespace Monkey.Service.Facade.Auth
 
             string subject = await _userBusiness.CreateUserByEmailAsync(model.Email, model.RoleId).ConfigureAwait(true);
 
-            string activeToken = _userBusiness.GenerateTokenActiveByEmailAsync(subject, model.Email, out TimeSpan expireIn);
+            string activeToken = _authenticationBusiness.GenerateTokenConfirmEmail(subject, model.Email, out TimeSpan expireIn);
 
-            string roleName = null;
-
-            if (model.RoleId != null)
-            {
-                RoleModel roleModel = await _roleBusiness.GetAsync(model.RoleId.Value).ConfigureAwait(true);
-                roleName = roleModel.Name;
-            }
-
-            _emailBusiness.SendActiveAccountByEmail(activeToken, model.Email, roleName, expireIn);
+            _emailBusiness.SendActiveAccount(activeToken, model.Email, expireIn);
         }
 
         public Task<UserModel> GetAsync(int id)
@@ -140,6 +134,11 @@ namespace Monkey.Service.Facade.Auth
         public void CheckUniquePhone(string phone, int? excludeId)
         {
             _userBusiness.CheckUniqueEmail(phone, excludeId);
+        }
+
+        public void CheckExistEmail(string email)
+        {
+            _userBusiness.CheckExistByEmail(email);
         }
     }
 }

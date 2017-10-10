@@ -18,7 +18,6 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
-using Monkey.Auth.Helpers;
 using Monkey.Business.Auth;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
@@ -161,6 +160,16 @@ namespace Monkey.Business.Logic.Auth
             }
         }
 
+        public void CheckExistByPhone(string phone)
+        {
+            var isExist = _userRepository.Get(x => x.Phone == phone).Any();
+
+            if (!isExist)
+            {
+                throw new MonkeyException(ErrorCode.UserPhoneNotExist);
+            }
+        }
+
         public List<int> ListUserIdByPermissions(params Enums.Permission[] permissions)
         {
             List<int> listAdminUserId = _userRepository
@@ -177,6 +186,7 @@ namespace Monkey.Business.Logic.Auth
             {
                 Email = email,
                 EmailNorm = StringHelper.Normalize(email),
+                UserName = email,
                 RoleId = roleId
             };
 
@@ -184,102 +194,6 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.SaveChanges();
 
             return Task.FromResult(userEntity.GlobalId);
-        }
-
-        public string GenerateTokenActiveByEmailAsync(string userSubject, string email, out TimeSpan expireIn)
-        {
-            expireIn = TimeSpan.FromDays(1);
-
-            var expireOn = DateTime.UtcNow.Add(expireIn);
-
-            string token = TokenHelper.GenerateToken(expireOn, nameof(Monkey), new Dictionary<string, string>
-            {
-                {nameof(userSubject), userSubject},
-                {nameof(email), email}
-            });
-
-            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Email == email).Select(x => x.Id).Single();
-
-            _userRepository.Update(new UserEntity
-            {
-                Id = userId,
-                ConfirmEmailToken = token,
-                ConfirmEmailTokenExpireOn = expireOn
-            }, x => x.ConfirmEmailToken, x => x.ConfirmEmailTokenExpireOn);
-
-            _userRepository.SaveChanges();
-
-            return token;
-        }
-
-        public string GenerateTokenActiveByPhoneAsync(string userSubject, string phone, out TimeSpan expireIn)
-        {
-            expireIn = TimeSpan.FromMinutes(10);
-
-            var expireOn = DateTimeOffset.UtcNow.Add(expireIn);
-
-            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Phone == phone).Select(x => x.Id).Single();
-
-            string token = StringHelper.GetRandomString(4, StringHelper.NumberChars);
-
-            _userRepository.Update(new UserEntity
-            {
-                Id = userId,
-                ConfirmPhoneToken = token,
-                ConfirmPhoneTokenExpireOn = expireOn
-            }, x => x.ConfirmPhoneToken, x => x.ConfirmPhoneTokenExpireOn);
-
-            _userRepository.SaveChanges();
-
-            return token;
-        }
-
-        public async Task ActiveByEmailAsync(string subject, string newUserName, string newPassword)
-        {
-            var utcNow = DateTimeOffset.UtcNow;
-
-            var userEntity = await _userRepository.Get(x => x.GlobalId == subject).SingleAsync().ConfigureAwait(true);
-
-            userEntity.EmailConfirmedTime = utcNow;
-            userEntity.ActiveTime = utcNow;
-            userEntity.UserName = newUserName;
-            userEntity.UserNameNorm = StringHelper.Normalize(newUserName);
-            userEntity.PasswordHash = PasswordHelper.HashPassword(newPassword, utcNow);
-            userEntity.PasswordLastUpdatedTime = utcNow;
-
-            _userRepository.Update(userEntity,
-                x => x.UserName,
-                x => x.UserNameNorm,
-                x => x.ActiveTime,
-                x => x.PhoneConfirmedTime,
-                x => x.PasswordHash,
-                x => x.PasswordLastUpdatedTime);
-
-            _userRepository.SaveChanges();
-        }
-
-        public async Task ActiveByPhoneAsync(string subject, string newUserName, string newPassword)
-        {
-            var utcNow = DateTimeOffset.UtcNow;
-
-            var userEntity = await _userRepository.Get(x => x.GlobalId == subject).SingleAsync().ConfigureAwait(true);
-
-            userEntity.PhoneConfirmedTime = utcNow;
-            userEntity.ActiveTime = utcNow;
-            userEntity.UserName = newUserName;
-            userEntity.UserNameNorm = StringHelper.Normalize(newUserName);
-            userEntity.PasswordHash = PasswordHelper.HashPassword(newPassword, utcNow);
-            userEntity.PasswordLastUpdatedTime = utcNow;
-
-            _userRepository.Update(userEntity,
-                x => x.UserName,
-                x => x.UserNameNorm,
-                x => x.ActiveTime,
-                x => x.PhoneConfirmedTime,
-                x => x.PasswordHash,
-                x => x.PasswordLastUpdatedTime);
-
-            _userRepository.SaveChanges();
         }
 
         public async Task RemoveAsync(int id)
@@ -320,6 +234,28 @@ namespace Monkey.Business.Logic.Auth
             return Task.FromResult(userModel);
         }
 
+        public Task<UserModel> GetByEmailAsync(string email)
+        {
+            string emailNorm = StringHelper.Normalize(email);
+            var userEntity = _userRepository.Get(x => x.EmailNorm == emailNorm).Single();
+            var userModel = userEntity.MapTo<UserModel>();
+            return Task.FromResult(userModel);
+        }
+
+        public Task<UserModel> GetByPhoneAsync(string phone)
+        {
+            var userEntity = _userRepository.Get(x => x.Phone == phone).Single();
+            var userModel = userEntity.MapTo<UserModel>();
+            return Task.FromResult(userModel);
+        }
+
+        public Task<UserModel> GetBySubjectAsync(string subject)
+        {
+            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
+            var userModel = userEntity.MapTo<UserModel>();
+            return Task.FromResult(userModel);
+        }
+
         public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
         {
             var listData = _userRepository.Get().QueryTo<UserModel>();
@@ -342,6 +278,18 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.SaveChanges();
 
             return Task.CompletedTask;
+        }
+
+        public void CheckExistByEmail(string email)
+        {
+            var emailNorm = StringHelper.Normalize(email);
+
+            var isExist = _userRepository.Get(x => x.EmailNorm == emailNorm).Any();
+
+            if (!isExist)
+            {
+                throw new MonkeyException(ErrorCode.UserEmailNotExist);
+            }
         }
     }
 }
