@@ -33,6 +33,10 @@ namespace Monkey.Core.Entities.User
 
         public string FullNameNorm { get; set; }
 
+        public int? AvatarId { get; set; }
+
+        public virtual ImageEntity Avatar { get; set; }
+
         public virtual UserEntity User { get; set; }
     }
 }

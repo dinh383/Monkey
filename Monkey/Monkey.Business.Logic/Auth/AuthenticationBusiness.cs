@@ -20,6 +20,7 @@
 using Microsoft.EntityFrameworkCore;
 using Monkey.Auth.Helpers;
 using Monkey.Business.Auth;
+using Monkey.Core;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
@@ -36,7 +37,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Monkey.Core;
 
 namespace Monkey.Business.Logic.Auth
 {

@@ -100,5 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logs\" />
+    <Folder Include="wwwroot\avatars\" />
   </ItemGroup>
 </Project>
