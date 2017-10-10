@@ -100,10 +100,6 @@ namespace Monkey.Business.Logic.Auth
 
             // Get logged in user
             var loggedInUserModel = user.MapTo<LoggedInUserModel>();
-            var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
-
-            loggedInUserModel.ListPermission = listPermission;
-            user.Profile.MapTo(loggedInUserModel);
 
             return loggedInUserModel;
         }
