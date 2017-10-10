@@ -1,0 +1,51 @@
+﻿@model Monkey.Core.Models.User.UpdateProfileModel
+@{
+    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Update Profiles";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Update Profile</h1>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-6 center-col">
+            <div class="panel">
+                <div class="panel-body">
+                    <form asp-controller="User" asp-action="SubmitUpdateProfile" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            <label asp-for="FirstName" class="form-control-label" for="@nameof(Model.FirstName)"></label>
+                            <input asp-for="FirstName" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="FirstName"></span>
+                        </div>
+
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            <label asp-for="LastName" class="form-control-label" for="@nameof(Model.LastName)"></label>
+                            <input asp-for="LastName" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="LastName"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group form-material">
+                                <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "Home")">
+                                    <span class="ladda-label">
+                                        <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 form-group form-material">
+                                <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
+                                    <span class="ladda-label">
+                                        <i class="icon md-check mr-10" aria-hidden="true"></i>Save
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

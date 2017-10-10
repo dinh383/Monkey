@@ -1,20 +1,19 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Monkey.Auth.Filters;
+using Monkey.Core;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
-using Monkey.Core.Models.Auth;
+using Monkey.Core.Models.User;
 using Monkey.Extensions;
-using Monkey.Service;
+using Monkey.Service.Auth;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Monkey.Core.Models.User;
-using Monkey.Service.Auth;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers
@@ -28,6 +27,8 @@ namespace Monkey.Areas.Portal.Controllers
         public const string AddEndpoint = "add";
         public const string EditEndpoint = "{id}/edit";
         public const string SubmitEditEndpoint = "edit";
+        public const string UpdateProfileEndpoint = "update-profile";
+        public const string SubmitUpdateProfileEndpoint = "submit-update-profile";
         public const string CheckUniqueUserNameEndpoint = "check-unique-username";
         public const string CheckUniqueEmailEndpoint = "check-unique-email";
         public const string CheckExistEmailEndpoint = "check-exist-email";
@@ -119,7 +120,33 @@ namespace Monkey.Areas.Portal.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route(UpdateProfileEndpoint)]
+        [HttpGet]
+        public IActionResult UpdateProfile()
+        {
+            var updateProfileModel = LoggedInUser.Current.MapTo<UpdateProfileModel>();
+            return View(updateProfileModel);
+        }
+
+        [Route(SubmitUpdateProfileEndpoint)]
+        [HttpPost]
+        public async Task<IActionResult> SubmitUpdateProfile([FromForm]UpdateProfileModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("UpdateProfile", model);
+            }
+
+            await _userService.UpdateProfileAsync(model).ConfigureAwait(true);
+
+            this.SetNotify("Edit Profile Success", "Your profile updated new information", ControllerExtensions.NotifyStatus.Success);
+
+            return RedirectToAction("Index", "Home");
+        }
+
         #endregion Edit
+
+        #region Remove
 
         [Route(RemoveEndpoint)]
         [HttpPost]
@@ -128,6 +155,10 @@ namespace Monkey.Areas.Portal.Controllers
             await _userService.RemoveAsync(id).ConfigureAwait(true);
             return Json(new { });
         }
+
+        #endregion Remove
+
+        #region Check
 
         [Route(CheckUniqueUserNameEndpoint)]
         [HttpPost]
@@ -210,6 +241,10 @@ namespace Monkey.Areas.Portal.Controllers
             }
         }
 
+        #endregion Check
+
+        #region Private Helper
+
         private List<SelectListItem> GetRoleSelectList()
         {
             return _roleService.GetListRoleAsync(new PagedCollectionParametersModel()).Result.Items.Select(x =>
@@ -219,5 +254,7 @@ namespace Monkey.Areas.Portal.Controllers
                     Text = x.Name
                 }).ToList();
         }
+
+        #endregion Private Helper
     }
 }

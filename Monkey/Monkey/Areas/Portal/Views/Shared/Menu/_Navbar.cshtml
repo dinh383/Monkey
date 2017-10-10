@@ -90,8 +90,8 @@
                     <div class="dropdown-menu" role="menu">
                         <a class="dropdown-item" href="javascript:void(0)" role="menuitem"> Hi, @LoggedInUser.Current?.UserName</a>
                         <div class="dropdown-divider" role="presentation"></div>
-                        <a class="dropdown-item ladda-button" data-style="slide-right" data-plugin="ladda" href="javascript:void(0)" role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Profile</a>
-                        <a class="dropdown-item ladda-button" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("ChangePassword","Auth")" role="menuitem"><i class="icon md-edit" aria-hidden="true"></i> Change Password</a>
+                        <a class="dropdown-item ladda-button" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("UpdateProfile","User")" role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Profile</a>
+                        <a class="dropdown-item ladda-button" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("ChangePassword","Auth")" role="menuitem"><i class="icon md-edit" aria-hidden="true"></i> Password</a>
                         <div class="dropdown-divider" role="presentation"></div>
                         <a class="dropdown-item ladda-button" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("SignOut", "Auth")" role="menuitem"><i class="icon md-power" aria-hidden="true"></i> Logout</a>
                     </div>

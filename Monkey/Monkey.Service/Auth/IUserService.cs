@@ -43,5 +43,7 @@ namespace Monkey.Service.Auth
         void CheckUniquePhone(string phone, int? excludeId);
 
         void CheckExistEmail(string email);
+
+        Task UpdateProfileAsync(UpdateProfileModel model);
     }
 }

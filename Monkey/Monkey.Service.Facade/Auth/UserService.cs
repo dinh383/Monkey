@@ -141,5 +141,10 @@ namespace Monkey.Service.Facade.Auth
         {
             _userBusiness.CheckExistByEmail(email);
         }
+
+        public Task UpdateProfileAsync(UpdateProfileModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
