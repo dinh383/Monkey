@@ -6,29 +6,29 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> LoggedUserModel.cs </Name>
-//         <Created> 13/09/17 10:33:42 PM </Created>
-//         <Key> 45c835b1-4933-4f5e-8d6e-a89477e16a00 </Key>
+//         <Name> UpdateProfileModelValidator.cs </Name>
+//         <Created> 10/10/17 8:51:21 PM </Created>
+//         <Key> 208787c6-4279-4e33-9d51-90fb13f7ddb4 </Key>
 //     </File>
 //     <Summary>
-//         LoggedUserModel.cs
+//         UpdateProfileModelValidator.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Constants;
-using System.Collections.Generic;
+using FluentValidation;
 using Monkey.Core.Models.User;
 
-namespace Monkey.Core.Models.Auth
+namespace Monkey.Core.Validators.User
 {
-    public class LoggedInUserModel : UserModel
+    public class UpdateProfileModelValidator : AbstractValidator<UpdateProfileModel>
     {
-        public string FirstName { get; set; }
+        public UpdateProfileModelValidator()
+        {
+            RuleFor(x => x.FirstName).Length(0, 50);
 
-        public string LastName { get; set; }
-
-        public List<Enums.Permission> ListPermission { get; set; }
+            RuleFor(x => x.LastName).Length(0, 50);
+        }
     }
 }

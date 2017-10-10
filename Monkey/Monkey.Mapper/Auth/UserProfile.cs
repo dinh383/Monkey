@@ -23,6 +23,8 @@ using Monkey.Core.Entities.User;
 using Monkey.Core.Models.Auth;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
+using System.Linq;
+using Monkey.Core.Models.User;
 
 namespace Monkey.Mapper.Auth
 {
@@ -31,9 +33,15 @@ namespace Monkey.Mapper.Auth
         public UserProfile()
         {
             CreateMap<UserEntity, LoggedInUserModel>().IgnoreAllNonExisting()
-                .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId));
-
-            CreateMap<ProfileEntity, LoggedInUserModel>().IgnoreAllNonExisting();
+                .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
+                .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
+                .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Profile.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(s => s.Profile.LastName))
+                .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
+                .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Path))
+                .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty))
+                .ForMember(d => d.ListPermission, o => o.MapFrom(s => s.Role.Permissions.Select(y => y.Permission)))
+                ;
 
             CreateMap<SignInModel, RequestTokenModel>().IgnoreAllNonExisting()
                 .ForMember(d => d.GrantType, o => o.UseValue(GrantType.Password));
@@ -47,6 +55,7 @@ namespace Monkey.Mapper.Auth
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
                 .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
+                .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Path))
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty));
 
             CreateMap<UserModel, UserUpdateModel>().IgnoreAllNonExisting();

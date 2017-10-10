@@ -166,34 +166,23 @@ namespace Monkey.Business.Logic.Auth
 
         public async Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject)
         {
-            var user = await _userRepository.Get(x => x.GlobalId == subject)
-                .Include(x => x.Profile)
-                .Include(x => x.Role).ThenInclude(x => x.Permissions)
-                .SingleAsync()
-                .ConfigureAwait(true);
+            var loggedInUser = await _userRepository.Get(x => x.GlobalId == subject).QueryTo<LoggedInUserModel>()
+                .SingleAsync().ConfigureAwait(true);
 
-            var listPermission = user.Role?.Permissions?.Select(c => c.Permission).ToList();
-
-            var loggedUser = user.MapTo<LoggedInUserModel>();
-            loggedUser.ListPermission = listPermission;
-            user.Profile.MapTo(loggedUser);
-
-            return loggedUser;
+            return loggedInUser;
         }
 
         public async Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken)
         {
-            var refreshTokenEntity = await _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken)
-                .Include(x => x.User)
-                .ThenInclude(x => x.Profile)
-                .SingleAsync().ConfigureAwait(true);
+            var refreshTokenEntity = await _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken).Select(x => new RefreshTokenEntity
+            {
+                Id = x.Id,
+                TotalUsage = x.TotalUsage,
+                UserId = x.UserId
+            }).SingleAsync().ConfigureAwait(true);
 
-            var listPermission = await _userRepository.Get(x => x.Id == refreshTokenEntity.UserId)
-                .SelectMany(x => x.Role.Permissions.Select(y => y.Permission)).ToListAsync().ConfigureAwait(true);
-
-            var loggedUser = refreshTokenEntity.User.MapTo<LoggedInUserModel>();
-            loggedUser.ListPermission = listPermission;
-            refreshTokenEntity.User.Profile.MapTo(loggedUser);
+            var loggedInUser = await _userRepository.Get(x => x.Id == refreshTokenEntity.UserId)
+                .QueryTo<LoggedInUserModel>().SingleAsync().ConfigureAwait(true);
 
             // Increase total usage
             refreshTokenEntity.TotalUsage++;
@@ -202,7 +191,7 @@ namespace Monkey.Business.Logic.Auth
 
             _refreshTokenRepository.SaveChanges();
 
-            return loggedUser;
+            return loggedInUser;
         }
 
         #endregion

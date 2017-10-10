@@ -6,29 +6,32 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> LoggedUserModel.cs </Name>
-//         <Created> 13/09/17 10:33:42 PM </Created>
-//         <Key> 45c835b1-4933-4f5e-8d6e-a89477e16a00 </Key>
+//         <Name> UpdateProfileModel.cs </Name>
+//         <Created> 10/10/17 8:46:18 PM </Created>
+//         <Key> 5e7bba08-73ff-4787-8e22-60ced3d28882 </Key>
 //     </File>
 //     <Summary>
-//         LoggedUserModel.cs
+//         UpdateProfileModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Constants;
-using System.Collections.Generic;
-using Monkey.Core.Models.User;
+using FluentValidation.Attributes;
+using Microsoft.AspNetCore.Http;
+using Monkey.Core.Validators.User;
 
-namespace Monkey.Core.Models.Auth
+namespace Monkey.Core.Models.User
 {
-    public class LoggedInUserModel : UserModel
+    [Validator(typeof(UpdateProfileModelValidator))]
+    public class UpdateProfileModel
     {
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public List<Enums.Permission> ListPermission { get; set; }
+        public string AvatarUrl { get; set; }
+
+        public IFormFile Avatar { get; set; }
     }
 }

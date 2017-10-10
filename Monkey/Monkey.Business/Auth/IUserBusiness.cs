@@ -18,7 +18,7 @@
 #endregion License
 
 using Monkey.Core.Constants;
-using Monkey.Core.Models.Auth;
+using Monkey.Core.Models.User;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using System.Collections.Generic;

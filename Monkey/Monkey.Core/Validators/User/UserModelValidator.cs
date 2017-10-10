@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Monkey.Core.Models.Auth;
+using Monkey.Core.Models.User;
 
-namespace Monkey.Core.Validators.Auth
+namespace Monkey.Core.Validators.User
 {
     public class UserModelValidator
     {

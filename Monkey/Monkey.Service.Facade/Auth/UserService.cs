@@ -22,7 +22,7 @@ using Monkey.Business.Auth;
 using Monkey.Core;
 using Monkey.Core.Constants;
 using Monkey.Core.Exceptions;
-using Monkey.Core.Models.Auth;
+using Monkey.Core.Models.User;
 using Monkey.Service.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;

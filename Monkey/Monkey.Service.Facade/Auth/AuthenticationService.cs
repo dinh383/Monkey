@@ -27,6 +27,7 @@ using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
+using Monkey.Core.Models.User;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Threading.Tasks;
