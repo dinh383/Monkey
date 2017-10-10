@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System.Linq;
 using AutoMapper;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Entities.User;
@@ -24,9 +25,8 @@ using Monkey.Core.Models.Auth;
 using Monkey.Core.Models.User;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
-using System.Linq;
 
-namespace Monkey.Mapper.Auth
+namespace Monkey.Mapper.User
 {
     public class UserProfile : Profile
     {
