@@ -138,6 +138,6 @@ namespace Monkey.Core.Exceptions
 
         [Display(GroupName = "User")]
         [Description("Set password token expired or invalid")]
-        UserSetPasswordTokenExpireOrInvalid = 1015
+        UserSetPasswordTokenExpireOrInvalid = 1015,
     }
 }

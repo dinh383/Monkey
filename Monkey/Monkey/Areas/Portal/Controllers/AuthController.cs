@@ -14,15 +14,33 @@ namespace Monkey.Areas.Portal.Controllers
     public class AuthController : MvcController
     {
         public const string Endpoint = AreaName + "/auth";
+
+        // SignIn and SignOut
         public const string SignInEndpoint = "";
+
         public const string SignInSubmitEndpoint = "signin";
         public const string SignOutEndpoint = "signout";
+
+        // Confirm Email
         public const string ConfirmEmailEndpoint = "confirm-email/{token}";
+
         public const string SubmitConfirmEmailEndpoint = "submit-email-confirm";
+
+        // Set Password
         public const string SetPasswordEndpoint = "set-password/{token}";
+
         public const string SubmitSetPasswordEndpoint = "submit-set-password";
+
+        // Cannot SignIn
         public const string CannotSigInEndpoint = "cannot-signin";
+
         public const string SubmitCannotSigInEndpoint = "submit-cannot-signin";
+
+        // Change Password
+        public const string ChangePasswordEndpoint = "change-password";
+
+        public const string SubmitChangePasswordEndpoint = "submit-change-password";
+        public const string CheckCurrentPasswordEndpoint = "check-current-password";
 
         private readonly IAuthenticationService _authenticationService;
 
@@ -252,5 +270,65 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         #endregion Set Password
+
+        #region Change Password
+
+        [Route(ChangePasswordEndpoint)]
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View(new ChangePasswordModel());
+        }
+
+        [Route(SubmitChangePasswordEndpoint)]
+        [HttpPost]
+        public async Task<IActionResult> SubmitChangePassword([FromForm] ChangePasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ChangePassword", model);
+            }
+
+            try
+            {
+                await _authenticationService.ChangePasswordAsync(model).ConfigureAwait(true);
+
+                this.SetNotify("Change Password Success", "Now you can sign-in with new password", ControllerExtensions.NotifyStatus.Success);
+
+                return RedirectToAction("Index");
+            }
+            catch (MonkeyException ex)
+            {
+                if (ex.Code == ErrorCode.UserPasswordWrong)
+                {
+                    this.SetNotify("Change Password Fail", "Current password is wrong", ControllerExtensions.NotifyStatus.Error);
+                    return RedirectToAction("ChangePassword");
+                }
+                throw;
+            }
+        }
+
+        [Route(CheckCurrentPasswordEndpoint)]
+        [HttpPost]
+        public JsonResult CheckCurrentPassword(string currentPassword)
+        {
+            try
+            {
+                _authenticationService.CheckCurrentPassword(currentPassword);
+
+                return Json(true);
+            }
+            catch (MonkeyException monkeyException)
+            {
+                if (monkeyException.Code == ErrorCode.UserPasswordWrong)
+                {
+                    return Json(false);
+                }
+
+                throw;
+            }
+        }
+
+        #endregion Change Password
     }
 }

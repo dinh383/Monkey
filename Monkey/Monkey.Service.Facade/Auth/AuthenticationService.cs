@@ -228,5 +228,16 @@ namespace Monkey.Service.Facade.Auth
 
             return _authenticationBusiness.IsExpireOrInvalidSetPasswordToken(token);
         }
+
+        public void CheckCurrentPassword(string currentPassword)
+        {
+            _authenticationBusiness.CheckCurrentPassword(currentPassword);
+        }
+
+        public Task ChangePasswordAsync(ChangePasswordModel model)
+        {
+            _authenticationBusiness.CheckCurrentPassword(model.CurrentPassword);
+            return _authenticationBusiness.SetPasswordAsync(LoggedInUser.Current.Subject, model.Password);
+        }
     }
 }

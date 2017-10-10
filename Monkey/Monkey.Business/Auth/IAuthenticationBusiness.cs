@@ -106,5 +106,7 @@ namespace Monkey.Business.Auth
         void ExpireTokenSetPassword(string token);
 
         #endregion
+
+        void CheckCurrentPassword(string currentPassword);
     }
 }

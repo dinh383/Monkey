@@ -36,6 +36,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Monkey.Core;
 
 namespace Monkey.Business.Logic.Auth
 {
@@ -70,7 +71,9 @@ namespace Monkey.Business.Logic.Auth
             {
                 throw new MonkeyException(ErrorCode.UserPasswordWrong);
             }
+
             password = PasswordHelper.HashPassword(password, user.PasswordLastUpdatedTime.Value);
+
             if (password != user.PasswordHash)
             {
                 throw new MonkeyException(ErrorCode.UserPasswordWrong);
@@ -434,6 +437,28 @@ namespace Monkey.Business.Logic.Auth
             }, x => x.SetPasswordTokenExpireOn);
 
             _userRepository.SaveChanges();
+        }
+
+        public void CheckCurrentPassword(string currentPassword)
+        {
+            var user = _userRepository.Get(x => x.Id == LoggedInUser.Current.Id).Select(x => new
+            {
+                x.PasswordHash,
+                x.PasswordLastUpdatedTime,
+            }).Single();
+
+            // Check Password
+            if (user.PasswordLastUpdatedTime == null)
+            {
+                throw new MonkeyException(ErrorCode.UserPasswordWrong);
+            }
+
+            var password = PasswordHelper.HashPassword(currentPassword, user.PasswordLastUpdatedTime.Value);
+
+            if (password != user.PasswordHash)
+            {
+                throw new MonkeyException(ErrorCode.UserPasswordWrong);
+            }
         }
 
         public bool IsExpireOrInvalidSetPasswordToken(string token)

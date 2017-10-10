@@ -80,5 +80,13 @@ namespace Monkey.Auth.Interfaces
         Task SetPasswordAsync(SetPasswordModel model);
 
         bool IsExpireOrInvalidSetPasswordToken(string token);
+
+        /// <summary>
+        ///     Check current password of logged in user 
+        /// </summary>
+        /// <param name="currentPassword"></param>
+        void CheckCurrentPassword(string currentPassword);
+
+        Task ChangePasswordAsync(ChangePasswordModel model);
     }
 }
