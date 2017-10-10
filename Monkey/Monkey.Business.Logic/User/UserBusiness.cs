@@ -18,11 +18,13 @@
 #endregion License
 
 using Microsoft.EntityFrameworkCore;
-using Monkey.Business.Auth;
+using Monkey.Business.User;
+using Monkey.Core;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.User;
+using Monkey.Data;
 using Monkey.Data.Auth;
 using Monkey.Data.User;
 using Puppy.AutoMapper;
@@ -37,18 +39,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Enums = Monkey.Core.Constants.Enums;
 
-namespace Monkey.Business.Logic.Auth
+namespace Monkey.Business.Logic.User
 {
     [PerRequestDependency(ServiceType = typeof(IUserBusiness))]
     public class UserBusiness : IUserBusiness
     {
         private readonly IUserRepository _userRepository;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IProfileRepository _profileRepository;
+        private readonly IImageRepository _imageRepository;
 
-        public UserBusiness(IUserRepository userRepository, IRefreshTokenRepository refreshTokenRepository)
+        public UserBusiness(IUserRepository userRepository,
+            IRefreshTokenRepository refreshTokenRepository,
+            IProfileRepository profileRepository,
+            IImageRepository imageRepository)
         {
             _userRepository = userRepository;
             _refreshTokenRepository = refreshTokenRepository;
+            _profileRepository = profileRepository;
+            _imageRepository = imageRepository;
         }
 
         public void CheckExistsById(params int[] ids)
@@ -276,6 +285,58 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.Update(userEntity, x => x.RoleId, x => x.BannedTime, x => x.BannedRemark);
 
             _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateProfileAsync(UpdateProfileModel model)
+        {
+            // Remove old avatar
+            if (LoggedInUser.Current.AvatarId.HasValue)
+            {
+                _imageRepository.RemoveImage(LoggedInUser.Current.AvatarId.Value);
+            }
+
+            // Save new avatar
+            var avatarImageModel = _imageRepository.SaveImage(model.AvatarFile);
+
+            // Update information and avatar to profile
+            var profile = new ProfileEntity
+            {
+                Id = LoggedInUser.Current.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                AvatarId = avatarImageModel?.Id
+            };
+
+            profile.FirstNameNorm = StringHelper.Normalize(profile.FirstName);
+            profile.LastNameNorm = StringHelper.Normalize(profile.LastName);
+            profile.FullName = string.Join(" ", profile.FirstName, profile.LastName);
+            profile.FullNameNorm = StringHelper.Normalize(profile.FullName);
+
+            if (profile.AvatarId != null)
+            {
+                _profileRepository.Update(profile,
+                    x => x.LastName,
+                    x => x.LastNameNorm,
+                    x => x.FirstName,
+                    x => x.FirstNameNorm,
+                    x => x.FullName,
+                    x => x.FullNameNorm,
+                    x => x.AvatarId);
+            }
+            else
+            {
+                _profileRepository.Update(profile,
+                    x => x.LastName,
+                    x => x.LastNameNorm,
+                    x => x.FirstName,
+                    x => x.FirstNameNorm,
+                    x => x.FullName,
+                    x => x.FullNameNorm);
+            }
+
+            _profileRepository.SaveChanges();
 
             return Task.CompletedTask;
         }

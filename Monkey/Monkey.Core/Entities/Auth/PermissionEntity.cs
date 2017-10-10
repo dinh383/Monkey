@@ -19,7 +19,7 @@
 
 using Monkey.Core.Constants;
 
-namespace Monkey.Core.Entities.User
+namespace Monkey.Core.Entities.Auth
 {
     public class PermissionEntity : Entity
     {

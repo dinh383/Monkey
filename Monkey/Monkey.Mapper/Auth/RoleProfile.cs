@@ -3,6 +3,7 @@ using Monkey.Core.Entities.User;
 using Monkey.Core.Models.Auth;
 using Puppy.AutoMapper;
 using System.Linq;
+using Monkey.Core.Entities.Auth;
 
 namespace Monkey.Mapper.Auth
 {

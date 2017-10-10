@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using Puppy.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Extensions
 {

@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Filters;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
-using Monkey.Service;
+using Monkey.Extensions;
+using Monkey.Service.Auth;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using System.Threading.Tasks;
-using Monkey.Extensions;
-using Monkey.Service.Auth;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers

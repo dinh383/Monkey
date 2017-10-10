@@ -23,6 +23,7 @@ using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Business;
 using Monkey.Business.Auth;
+using Monkey.Business.User;
 using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Exceptions;

@@ -17,11 +17,25 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
 using Monkey.Core.Entities;
+using Monkey.Core.Models;
 
 namespace Monkey.Data
 {
-	public interface IImageRepository: IEntityRepository<ImageEntity> 
-	{
-	}
+    public interface IImageRepository : IEntityRepository<ImageEntity>
+    {
+        /// <summary>
+        ///     Save image file to physical and database as well 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        ImageModel SaveImage(IFormFile file);
+
+        /// <summary>
+        ///     Remove image file from physical and database as well 
+        /// </summary>
+        /// <param name="id"></param>
+        void RemoveImage(int id);
+    }
 }

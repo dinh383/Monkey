@@ -10,8 +10,8 @@ using Puppy.Web.HttpUtils.HttpDetection.Device;
 namespace Monkey.Data.EF.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20171006161749_ReInitial")]
-    partial class ReInitial
+    [Migration("20171010174241_ReInitialV3")]
+    partial class ReInitialV3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,44 @@ namespace Monkey.Data.EF.Migrations
                     b.HasIndex("Secret");
 
                     b.ToTable("Client");
+                });
+
+            modelBuilder.Entity("Monkey.Core.Entities.Auth.PermissionEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CreatedBy");
+
+                    b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<int?>("DeletedBy");
+
+                    b.Property<DateTimeOffset?>("DeletedTime");
+
+                    b.Property<string>("GlobalId")
+                        .IsRequired()
+                        .HasMaxLength(68);
+
+                    b.Property<int?>("LastUpdatedBy");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime");
+
+                    b.Property<int>("Permission");
+
+                    b.Property<int>("RoleId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedTime");
+
+                    b.HasIndex("GlobalId");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("Monkey.Core.Entities.Auth.RefreshTokenEntity", b =>
@@ -167,7 +205,7 @@ namespace Monkey.Data.EF.Migrations
                     b.ToTable("RefreshToken");
                 });
 
-            modelBuilder.Entity("Monkey.Core.Entities.User.PermissionEntity", b =>
+            modelBuilder.Entity("Monkey.Core.Entities.Auth.RoleEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -180,6 +218,8 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedTime");
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("GlobalId")
                         .IsRequired()
                         .HasMaxLength(68);
@@ -188,9 +228,9 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<DateTimeOffset?>("LastUpdatedTime");
 
-                    b.Property<int>("Permission");
+                    b.Property<string>("Name");
 
-                    b.Property<int>("RoleId");
+                    b.Property<string>("NameNorm");
 
                     b.HasKey("Id");
 
@@ -200,14 +240,62 @@ namespace Monkey.Data.EF.Migrations
 
                     b.HasIndex("Id");
 
-                    b.HasIndex("RoleId");
+                    b.ToTable("Role");
+                });
 
-                    b.ToTable("Permission");
+            modelBuilder.Entity("Monkey.Core.Entities.ImageEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("ContentLength");
+
+                    b.Property<int?>("CreatedBy");
+
+                    b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<int?>("DeletedBy");
+
+                    b.Property<DateTimeOffset?>("DeletedTime");
+
+                    b.Property<string>("Extension");
+
+                    b.Property<string>("GlobalId")
+                        .IsRequired()
+                        .HasMaxLength(68);
+
+                    b.Property<string>("ImageDominantHexColor");
+
+                    b.Property<int>("ImageHeightPx");
+
+                    b.Property<int>("ImageWidthPx");
+
+                    b.Property<int?>("LastUpdatedBy");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedTime");
+
+                    b.Property<string>("MimeType");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeletedTime");
+
+                    b.HasIndex("GlobalId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("Monkey.Core.Entities.User.ProfileEntity", b =>
                 {
                     b.Property<int>("Id");
+
+                    b.Property<int?>("AvatarId");
 
                     b.Property<int?>("CreatedBy");
 
@@ -239,6 +327,8 @@ namespace Monkey.Data.EF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvatarId");
+
                     b.HasIndex("DeletedTime");
 
                     b.HasIndex("GlobalId");
@@ -247,46 +337,6 @@ namespace Monkey.Data.EF.Migrations
                         .IsUnique();
 
                     b.ToTable("Profile");
-                });
-
-            modelBuilder.Entity("Monkey.Core.Entities.User.RoleEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("CreatedBy");
-
-                    b.Property<DateTimeOffset>("CreatedTime");
-
-                    b.Property<int?>("DeletedBy");
-
-                    b.Property<DateTimeOffset?>("DeletedTime");
-
-                    b.Property<string>("Description");
-
-                    b.Property<double>("DisplayOrder");
-
-                    b.Property<string>("GlobalId")
-                        .IsRequired()
-                        .HasMaxLength(68);
-
-                    b.Property<int?>("LastUpdatedBy");
-
-                    b.Property<DateTimeOffset?>("LastUpdatedTime");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("NameNorm");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeletedTime");
-
-                    b.HasIndex("GlobalId");
-
-                    b.HasIndex("Id");
-
-                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("Monkey.Core.Entities.User.UserEntity", b =>
@@ -299,6 +349,14 @@ namespace Monkey.Data.EF.Migrations
                     b.Property<string>("BannedRemark");
 
                     b.Property<DateTimeOffset?>("BannedTime");
+
+                    b.Property<string>("ConfirmEmailToken");
+
+                    b.Property<DateTimeOffset?>("ConfirmEmailTokenExpireOn");
+
+                    b.Property<string>("ConfirmPhoneToken");
+
+                    b.Property<DateTimeOffset?>("ConfirmPhoneTokenExpireOn");
 
                     b.Property<int?>("CreatedBy");
 
@@ -332,6 +390,10 @@ namespace Monkey.Data.EF.Migrations
 
                     b.Property<int?>("RoleId");
 
+                    b.Property<string>("SetPasswordToken");
+
+                    b.Property<DateTimeOffset?>("SetPasswordTokenExpireOn");
+
                     b.Property<string>("UserName");
 
                     b.Property<string>("UserNameNorm");
@@ -357,6 +419,13 @@ namespace Monkey.Data.EF.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Monkey.Core.Entities.Auth.PermissionEntity", b =>
+                {
+                    b.HasOne("Monkey.Core.Entities.Auth.RoleEntity", "Role")
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleId");
+                });
+
             modelBuilder.Entity("Monkey.Core.Entities.Auth.RefreshTokenEntity", b =>
                 {
                     b.HasOne("Monkey.Core.Entities.Auth.ClientEntity", "Client")
@@ -368,15 +437,12 @@ namespace Monkey.Data.EF.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Monkey.Core.Entities.User.PermissionEntity", b =>
-                {
-                    b.HasOne("Monkey.Core.Entities.User.RoleEntity", "Role")
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleId");
-                });
-
             modelBuilder.Entity("Monkey.Core.Entities.User.ProfileEntity", b =>
                 {
+                    b.HasOne("Monkey.Core.Entities.ImageEntity", "Avatar")
+                        .WithMany()
+                        .HasForeignKey("AvatarId");
+
                     b.HasOne("Monkey.Core.Entities.User.UserEntity", "User")
                         .WithOne("Profile")
                         .HasForeignKey("Monkey.Core.Entities.User.ProfileEntity", "Id");
@@ -384,7 +450,7 @@ namespace Monkey.Data.EF.Migrations
 
             modelBuilder.Entity("Monkey.Core.Entities.User.UserEntity", b =>
                 {
-                    b.HasOne("Monkey.Core.Entities.User.RoleEntity", "Role")
+                    b.HasOne("Monkey.Core.Entities.Auth.RoleEntity", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId");
                 });

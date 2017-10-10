@@ -19,11 +19,12 @@
 
 using Monkey.Business;
 using Monkey.Business.Auth;
+using Monkey.Business.User;
 using Monkey.Core;
 using Monkey.Core.Constants;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.User;
-using Monkey.Service.Auth;
+using Monkey.Service.User;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
@@ -31,7 +32,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Monkey.Service.Facade.Auth
+namespace Monkey.Service.Facade.User
 {
     [PerRequestDependency(ServiceType = typeof(IUserService))]
     public class UserService : IUserService
@@ -144,7 +145,7 @@ namespace Monkey.Service.Facade.Auth
 
         public Task UpdateProfileAsync(UpdateProfileModel model)
         {
-            throw new NotImplementedException();
+            return _userBusiness.UpdateProfileAsync(model);
         }
     }
 }

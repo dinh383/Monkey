@@ -16,6 +16,17 @@
                         @Html.AntiForgeryToken()
 
                         <div class="form-group form-material" data-plugin="formMaterial">
+                            <label asp-for="AvatarFile" class="form-control-label" for="@nameof(Model.AvatarFile)"></label>
+                            <input type="text" class="form-control" placeholder="Browse.." readonly="">
+                            <input asp-for="AvatarFile" class="form-control" type="file" />
+                            <span asp-validation-for="AvatarFile"></span>
+                            @if (!string.IsNullOrWhiteSpace(Model.AvatarUrl))
+                            {
+                                <img src="@Url.AbsoluteContent(Model.AvatarUrl)" />
+                            }
+                        </div>
+
+                        <div class="form-group form-material" data-plugin="formMaterial">
                             <label asp-for="FirstName" class="form-control-label" for="@nameof(Model.FirstName)"></label>
                             <input asp-for="FirstName" class="form-control" />
                             <span asp-validation-for="FirstName"></span>

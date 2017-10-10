@@ -17,8 +17,17 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
+using Monkey.Core.Constants;
 using Monkey.Core.Entities;
+using Monkey.Core.Models;
+using Puppy.AutoMapper;
+using Puppy.Core.FileUtils;
+using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Monkey.Data.EF.Repositories
 {
@@ -27,6 +36,52 @@ namespace Monkey.Data.EF.Repositories
     {
         public ImageRepository(IDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public ImageModel SaveImage(IFormFile file)
+        {
+            if (file.Length <= 0)
+            {
+                return null;
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                var imageEntity = new ImageEntity();
+
+                file.CopyTo(stream);
+
+                var stringBase64 = Convert.ToBase64String(stream.ToArray());
+
+                var savePath = Path.Combine(PathConsts.ImageFolder, imageEntity.GlobalId);
+
+                var fileModel = FileHelper.Save(stringBase64, file.FileName, savePath);
+
+                fileModel.MapTo(imageEntity);
+
+                Add(imageEntity);
+
+                SaveChanges();
+
+                var imageModel = imageEntity.MapTo<ImageModel>();
+
+                return imageModel;
+            }
+        }
+
+        public void RemoveImage(int id)
+        {
+            var path = Get(x => x.Id == id).Select(x => x.Url).Single();
+
+            path = path.GetFullPath();
+
+            // Delete physical
+            FileHelper.SafeDelete(path);
+
+            // Delete database
+            Delete(new ImageEntity { Id = id }, true);
+
+            SaveChanges();
         }
     }
 }

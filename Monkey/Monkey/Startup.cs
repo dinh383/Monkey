@@ -5,11 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Auth;
 using Monkey.Core.Configs;
+using Monkey.Core.Constants;
 using Monkey.Data;
 using Monkey.Data.EF.Factory;
 using Monkey.Extensions;
 using Monkey.Mapper;
 using Monkey.Service;
+using Puppy.Core.FileUtils;
 using Puppy.Core.TypeUtils;
 using Puppy.DataTable;
 using Puppy.DependencyInjection;
@@ -155,6 +157,8 @@ namespace Monkey
 
             ISeedDataService seedDataService = app.Resolve<ISeedDataService>();
             seedDataService.SeedData();
+
+            DirectoryHelper.CreateIfNotExist(PathConsts.ImageFolder);
         }
     }
 }

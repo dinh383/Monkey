@@ -18,8 +18,8 @@
 #endregion License
 
 using Monkey.Core.Constants;
-using System.Collections.Generic;
 using Monkey.Core.Models.User;
+using System.Collections.Generic;
 
 namespace Monkey.Core.Models.Auth
 {

@@ -19,6 +19,7 @@
 
 using EnumsNET;
 using Monkey.Business.Auth;
+using Monkey.Business.User;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading.Tasks;
 using Enums = Monkey.Core.Constants.Enums;

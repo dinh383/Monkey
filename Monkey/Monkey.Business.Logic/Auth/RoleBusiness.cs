@@ -18,7 +18,7 @@
 #endregion License
 
 using Monkey.Business.Auth;
-using Monkey.Core.Entities.User;
+using Monkey.Core.Entities.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;

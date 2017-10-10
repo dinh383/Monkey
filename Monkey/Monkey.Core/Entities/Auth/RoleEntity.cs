@@ -17,9 +17,10 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Entities.User;
 using System.Collections.Generic;
 
-namespace Monkey.Core.Entities.User
+namespace Monkey.Core.Entities.Auth
 {
     public class RoleEntity : Entity
     {
@@ -28,8 +29,6 @@ namespace Monkey.Core.Entities.User
         public string NameNorm { get; set; }
 
         public string Description { get; set; }
-
-        public double DisplayOrder { get; set; }
 
         public virtual ICollection<PermissionEntity> Permissions { get; set; }
 

@@ -21,6 +21,6 @@ namespace Monkey.Core.Constants
 {
     public static class PathConsts
     {
-        public const string AvatarFolder = "avatars";
+        public const string ImageFolder = "wwwroot/images";
     }
 }

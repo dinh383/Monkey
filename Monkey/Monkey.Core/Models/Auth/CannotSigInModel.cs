@@ -1,7 +1,7 @@
 ﻿using FluentValidation.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using Monkey.Core.Validators.Auth;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.Auth
 {

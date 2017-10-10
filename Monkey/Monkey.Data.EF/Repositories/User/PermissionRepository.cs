@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Entities.User;
+using Monkey.Core.Entities.Auth;
 using Monkey.Data.User;
 using Puppy.DependencyInjection.Attributes;
 

@@ -10,8 +10,8 @@
 
 <form asp-controller="Auth" asp-action="SignIn" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
     @Html.AntiForgeryToken()
-    
-    <input type="hidden" asp-for="RedirectUrl"/>
+
+    <input type="hidden" asp-for="RedirectUrl" />
 
     <div class="form-group form-material" data-plugin="formMaterial">
         <label asp-for="UserName" class="form-control-label" for="@nameof(Model.UserName)"></label>

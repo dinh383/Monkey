@@ -17,14 +17,13 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
-using System.ComponentModel.DataAnnotations;
 using FluentValidation.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Core.Validators.Auth;
 using Monkey.Core.Validators.User;
 using Puppy.DataTable.Attributes;
 using Puppy.DataTable.Constants;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.User
 {
@@ -73,6 +72,9 @@ namespace Monkey.Core.Models.User
         [DataTable(Order = 2, SortDirection = SortDirection.Ascending, DisplayName = "Full Name")]
         [Display(Name = "Full Name")]
         public string FullName { get; set; }
+
+        [DataTableIgnore]
+        public int? AvatarId { get; set; }
 
         [DataTable(Order = 3, DisplayName = "Avatar")]
         [Display(Name = "Avatar")]

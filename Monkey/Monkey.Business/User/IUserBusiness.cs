@@ -24,7 +24,7 @@ using Puppy.DataTable.Models.Response;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Monkey.Business.Auth
+namespace Monkey.Business.User
 {
     public interface IUserBusiness : IBaseBusiness
     {
@@ -72,5 +72,7 @@ namespace Monkey.Business.Auth
         Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
 
         Task UpdateAsync(UserUpdateModel model);
+
+        Task UpdateProfileAsync(UpdateProfileModel model);
     }
 }

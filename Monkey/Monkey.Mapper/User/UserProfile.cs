@@ -44,7 +44,7 @@ namespace Monkey.Mapper.User
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
                 .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
-                .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Path))
+                .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Url))
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty));
 
             CreateMap<UserEntity, LoggedInUserModel>().IgnoreAllNonExisting()
@@ -53,7 +53,7 @@ namespace Monkey.Mapper.User
                 .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Profile.FirstName))
                 .ForMember(d => d.LastName, o => o.MapFrom(s => s.Profile.LastName))
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
-                .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Path))
+                .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Url))
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty))
                 .ForMember(d => d.ListPermission, o => o.MapFrom(s => s.Role.Permissions.Select(y => y.Permission)));
 

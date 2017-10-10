@@ -8,6 +8,7 @@ using Monkey.Core.Models;
 using Monkey.Core.Models.User;
 using Monkey.Extensions;
 using Monkey.Service.Auth;
+using Monkey.Service.User;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
