@@ -6,43 +6,43 @@
     <members>
         <member name="M:Monkey.Controllers.Api.TestApiController.DeviceInfo">
             <summary>
-                Device Info
+                Device Info 
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Controllers.Api.TestApiController.LoggedInUser">
             <summary>
-                Logged In User
+                Logged In User 
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Controllers.Api.TokenApiController.Token(Monkey.Core.Models.Auth.RequestTokenModel)">
             <summary>
-                Token
+                Token 
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Extensions.ApiExtensions.AddApiFilter(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
+                [Api Filter] Model Validation, Global Exception Filer and Authorize Filter 
             </summary>
             <param name="services"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddMvcCustom(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                [Mvc] Json, Xml serialize, area, response caching and filters
+                [Mvc] Json, Xml serialize, area, response caching and filters 
             </summary>
             <param name="services"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.UseMvcCustom(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing
+                [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
             </summary>
             <param name="app"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcExtensions.AddAntiforgeryToken(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-                Configures the anti-forgery tokens for better security.
+                Configures the anti-forgery tokens for better security. 
             </summary>
             <param name="services"></param>
             <remarks> See: http://www.asp.net/mvc/overview/security/xsrfcsrf-prevention-in-aspnet-mvc-and-web-pages </remarks>

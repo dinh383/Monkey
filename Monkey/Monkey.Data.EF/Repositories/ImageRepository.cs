@@ -18,6 +18,7 @@
 #endregion License
 
 using Microsoft.AspNetCore.Http;
+using Monkey.Core;
 using Monkey.Core.Constants;
 using Monkey.Core.Entities;
 using Monkey.Core.Models;
@@ -40,31 +41,34 @@ namespace Monkey.Data.EF.Repositories
 
         public ImageModel SaveImage(IFormFile file)
         {
-            if (file.Length <= 0)
+            if (file == null || file.Length <= 0)
             {
                 return null;
             }
 
             using (var stream = new MemoryStream())
             {
-                var imageEntity = new ImageEntity();
-
                 file.CopyTo(stream);
 
                 var stringBase64 = Convert.ToBase64String(stream.ToArray());
 
-                var savePath = Path.Combine(PathConsts.ImageFolder, imageEntity.GlobalId);
+                var imageEntity = new ImageEntity();
 
+                // Url and Save Path
+                imageEntity.Url = Path.Combine(PathConsts.ImageFolder, imageEntity.GlobalId);
+                var savePath = SystemUtils.GetWebPhysicalPath(imageEntity.Url); // Relative path from web root
+
+                // Save to Physical
                 var fileModel = FileHelper.Save(stringBase64, file.FileName, savePath);
 
+                // Update Image Entity by FileModel
                 fileModel.MapTo(imageEntity);
+                imageEntity.Url = SystemUtils.GetWebUrl(fileModel.Location);
 
                 Add(imageEntity);
-
                 SaveChanges();
 
                 var imageModel = imageEntity.MapTo<ImageModel>();
-
                 return imageModel;
             }
         }

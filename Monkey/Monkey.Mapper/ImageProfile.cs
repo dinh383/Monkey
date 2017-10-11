@@ -33,7 +33,6 @@ namespace Monkey.Mapper
 
             CreateMap<FileModel, ImageEntity>()
                 .IgnoreAllNonExisting()
-                .ForMember(d => d.Url, o => o.MapFrom(s => s.Location))
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.OriginalFileName));
         }
     }

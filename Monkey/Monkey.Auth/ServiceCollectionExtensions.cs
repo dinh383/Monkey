@@ -26,6 +26,7 @@ using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core;
 using Monkey.Core.Constants.Auth;
+using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection;
 using Puppy.Web.Middlewares;
@@ -118,34 +119,47 @@ namespace Monkey.Auth
                 // Sign In to the context
                 IAuthenticationService authenticationService = _appBuilder.Resolve<IAuthenticationService>();
 
-                var accessTokenModel = await authenticationService.SignInCookieAsync(context.Request.Cookies).ConfigureAwait(true);
-
-                if (accessTokenModel == null)
+                try
                 {
-                    await _next.Invoke(context).ConfigureAwait(true);
-                    return;
+                    var accessTokenModel = await authenticationService.SignInCookieAsync(context.Request.Cookies).ConfigureAwait(true);
+
+                    if (accessTokenModel == null)
+                    {
+                        await _next.Invoke(context).ConfigureAwait(true);
+                        return;
+                    }
+
+                    // If current cookie access token is valid but expire, then auto refresh. This
+                    // logic just for WEB Cookie
+                    if (TokenHelper.IsExpire(accessTokenModel.AccessToken))
+                    {
+                        RequestTokenModel requestTokenModel = new RequestTokenModel
+                        {
+                            GrantType = GrantType.RefreshToken,
+                            RefreshToken = accessTokenModel.RefreshToken
+                        };
+
+                        var newAccessTokenModel = await authenticationService.SignInAsync(requestTokenModel).ConfigureAwait(true);
+
+                        context.Response.OnStarting(state =>
+                        {
+                            var httpContext = (HttpContext)state;
+
+                            TokenHelper.SetAccessTokenInCookie(httpContext.Response.Cookies, newAccessTokenModel);
+
+                            return Task.CompletedTask;
+                        }, context);
+                    }
                 }
-
-                // If current cookie access token is valid but expire, then auto refresh. This logic
-                // just for WEB Cookie
-                if (TokenHelper.IsExpire(accessTokenModel.AccessToken))
+                catch (MonkeyException ex)
                 {
-                    RequestTokenModel requestTokenModel = new RequestTokenModel
+                    if (ex.Code == ErrorCode.UserNotExist)
                     {
-                        GrantType = GrantType.RefreshToken,
-                        RefreshToken = accessTokenModel.RefreshToken
-                    };
+                        await _next.Invoke(context).ConfigureAwait(true);
+                        return;
+                    }
 
-                    var newAccessTokenModel = await authenticationService.SignInAsync(requestTokenModel).ConfigureAwait(true);
-
-                    context.Response.OnStarting(state =>
-                    {
-                        var httpContext = (HttpContext)state;
-
-                        TokenHelper.SetAccessTokenInCookie(httpContext.Response.Cookies, newAccessTokenModel);
-
-                        return Task.CompletedTask;
-                    }, context);
+                    throw;
                 }
 
                 await _next.Invoke(context).ConfigureAwait(true);

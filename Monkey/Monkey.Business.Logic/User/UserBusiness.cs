@@ -196,7 +196,8 @@ namespace Monkey.Business.Logic.User
                 Email = email,
                 EmailNorm = StringHelper.Normalize(email),
                 UserName = email,
-                RoleId = roleId
+                RoleId = roleId,
+                Profile = new ProfileEntity()
             };
 
             _userRepository.Add(userEntity);
