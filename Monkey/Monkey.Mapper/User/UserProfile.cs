@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Linq;
 using AutoMapper;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Entities.User;
@@ -25,6 +24,7 @@ using Monkey.Core.Models.Auth;
 using Monkey.Core.Models.User;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
+using System.Linq;
 
 namespace Monkey.Mapper.User
 {
@@ -44,17 +44,20 @@ namespace Monkey.Mapper.User
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
                 .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
+                .ForMember(d => d.AvatarId, o => o.MapFrom(s => s.Profile.AvatarId))
                 .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Url))
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty));
 
             CreateMap<UserEntity, LoggedInUserModel>().IgnoreAllNonExisting()
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
                 .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
-                .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Profile.FirstName))
-                .ForMember(d => d.LastName, o => o.MapFrom(s => s.Profile.LastName))
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
+                .ForMember(d => d.AvatarId, o => o.MapFrom(s => s.Profile.AvatarId))
                 .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Url))
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty))
+                // More information than UserModel
+                .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Profile.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(s => s.Profile.LastName))
                 .ForMember(d => d.ListPermission, o => o.MapFrom(s => s.Role.Permissions.Select(y => y.Permission)));
 
             CreateMap<UserModel, UserUpdateModel>().IgnoreAllNonExisting();

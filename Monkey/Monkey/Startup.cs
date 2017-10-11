@@ -158,7 +158,7 @@ namespace Monkey
             ISeedDataService seedDataService = app.Resolve<ISeedDataService>();
             seedDataService.SeedData();
 
-            DirectoryHelper.CreateIfNotExist(PathConsts.ImageFolder);
+            DirectoryHelper.CreateIfNotExist(PathConsts.UploadFolder);
         }
     }
 }

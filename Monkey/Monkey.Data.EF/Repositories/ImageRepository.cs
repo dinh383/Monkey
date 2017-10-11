@@ -55,7 +55,7 @@ namespace Monkey.Data.EF.Repositories
                 var imageEntity = new ImageEntity();
 
                 // Url and Save Path
-                imageEntity.Url = Path.Combine(PathConsts.ImageFolder, imageEntity.GlobalId);
+                imageEntity.Url = Path.Combine(PathConsts.UploadFolder, imageEntity.GlobalId);
                 var savePath = SystemUtils.GetWebPhysicalPath(imageEntity.Url); // Relative path from web root
 
                 // Save to Physical

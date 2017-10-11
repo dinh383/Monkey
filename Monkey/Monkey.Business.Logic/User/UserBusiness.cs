@@ -292,12 +292,6 @@ namespace Monkey.Business.Logic.User
 
         public Task UpdateProfileAsync(UpdateProfileModel model)
         {
-            // Remove old avatar
-            if (LoggedInUser.Current.AvatarId.HasValue)
-            {
-                _imageRepository.RemoveImage(LoggedInUser.Current.AvatarId.Value);
-            }
-
             // Save new avatar
             var avatarImageModel = _imageRepository.SaveImage(model.AvatarFile);
 
@@ -338,6 +332,12 @@ namespace Monkey.Business.Logic.User
             }
 
             _profileRepository.SaveChanges();
+
+            // Remove old avatar
+            if (LoggedInUser.Current.AvatarId.HasValue)
+            {
+                _imageRepository.RemoveImage(LoggedInUser.Current.AvatarId.Value);
+            }
 
             return Task.CompletedTask;
         }

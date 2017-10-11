@@ -143,9 +143,12 @@ namespace Monkey.Service.Facade.User
             _userBusiness.CheckExistByEmail(email);
         }
 
-        public Task UpdateProfileAsync(UpdateProfileModel model)
+        public async Task UpdateProfileAsync(UpdateProfileModel model)
         {
-            return _userBusiness.UpdateProfileAsync(model);
+            await _userBusiness.UpdateProfileAsync(model).ConfigureAwait(true);
+
+            // Update Logged In User
+            LoggedInUser.Current = await _authenticationBusiness.GetLoggedInUserBySubjectAsync(LoggedInUser.Current.Subject).ConfigureAwait(true);
         }
     }
 }
