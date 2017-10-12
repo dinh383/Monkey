@@ -5,7 +5,6 @@
 @{
     ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User";
 }
-
 <div class="page-header">
     <h1 class="page-title">Users</h1>
     <ol class="breadcrumb">
@@ -33,6 +32,14 @@
                     IsSortable = false,
                     MRenderFunction = "actionRender",
                 });
+
+                var avatarUrlCol = model.Columns.FirstOrDefault(x => x.Name == nameof(UserModel.AvatarUrl));
+
+                if (avatarUrlCol != null)
+                {
+                    avatarUrlCol.MRenderFunction = "renderAvatar";
+                }
+
                 model.GlobalJsVariableName = "oTable";
             }
 
@@ -46,11 +53,15 @@
 
     <script type="text/javascript">
         function drawCallBack(oSettings) {
-            owl.initToolTip();
-            owl.initConfirmDialog();
+            eatup.initToolTip();
+            eatup.initConfirmDialog();
         }
 
         var loggedInUserId = parseInt('@LoggedInUser.Current?.Id');
+
+        function renderAvatar(data, type, row) {
+            return '<div class="col-lg-8 text-center"><img src="' + data + '" class="avatar"/></div>';
+        }
 
         function actionRender(data, type, row) {
             var id = parseInt(row[0]);
