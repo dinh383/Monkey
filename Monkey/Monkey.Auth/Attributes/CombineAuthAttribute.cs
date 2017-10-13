@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Monkey.Auth.Filters
+namespace Monkey.Auth.Attributes
 {
     /// <inheritdoc />
     /// <summary>

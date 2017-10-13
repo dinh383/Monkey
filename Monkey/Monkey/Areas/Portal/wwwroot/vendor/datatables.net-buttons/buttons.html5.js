@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * HTML5 export buttons for Buttons and DataTables.
  * 2016 SpryMedia Ltd - datatables.net/license
  *

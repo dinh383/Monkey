@@ -1,4 +1,4 @@
-/**
+﻿/**
 * jQuery asScrollable v0.4.7
 * https://github.com/amazingSurge/jquery-asScrollable
 *

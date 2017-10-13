@@ -1,4 +1,4 @@
-/*! RowGroup 1.0.0
+﻿/*! RowGroup 1.0.0
  * ©2017 SpryMedia Ltd - datatables.net/license
  */
 

@@ -1,4 +1,4 @@
-/*! ColReorder 1.3.3
+﻿/*! ColReorder 1.3.3
  * ©2010-2015 SpryMedia Ltd - datatables.net/license
  */
 

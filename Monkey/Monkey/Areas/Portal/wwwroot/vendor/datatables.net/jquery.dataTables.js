@@ -1,4 +1,4 @@
-/*! DataTables 1.10.15
+﻿/*! DataTables 1.10.15
  * ©2008-2017 SpryMedia Ltd - datatables.net/license
  */
 
@@ -10445,7 +10445,7 @@
 		 * table has already been initialised, this parameter will cause DataTables
 		 * to simply return the object that has already been set up - it will not take
 		 * account of any changes you might have made to the initialisation object
-		 * passed to DataTables (setting this parameter to true is an acknowledgement
+		 * passed to DataTables (setting this parameter to true is an acknmonkeyedgement
 		 * that you understand this). `destroy` can be used to reinitialise a table if
 		 * you need.
 		 *  @type boolean

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Monkey.Auth.Attributes;
+using Monkey.Auth.Filters.Attributes;
+using Monkey.Core.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Monkey.Core;
-using Monkey.Core.Constants;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -99,12 +100,12 @@ namespace Monkey.Auth.Filters
 
         private static bool IsUserAuthenticated(HttpContext context)
         {
-            return context.User.Identity.IsAuthenticated || LoggedInUser.Current != null;
+            return context.User.Identity.IsAuthenticated || Core.LoggedInUser.Current != null;
         }
 
         private static List<Enums.Permission> GetUserListPermission()
         {
-            return LoggedInUser.Current?.ListPermission;
+            return Core.LoggedInUser.Current?.ListPermission;
         }
     }
 }

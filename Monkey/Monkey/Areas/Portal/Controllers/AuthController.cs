@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
@@ -80,10 +80,10 @@ namespace Monkey.Areas.Portal.Controllers
             try
             {
                 // Sign In and get access token
-                AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken).ConfigureAwait(true);
+                AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 // Sign In to Cookie, for web only
-                await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel).ConfigureAwait(true);
+                await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 if (string.IsNullOrWhiteSpace(model.RedirectUrl))
                 {
@@ -126,7 +126,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public async Task<IActionResult> SignOut()
         {
-            await _authenticationService.SignOutCookieAsync(Response.Cookies).ConfigureAwait(true);
+            await _authenticationService.SignOutCookieAsync(Response.Cookies, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
             return RedirectToAction("Index", "Auth");
         }
@@ -153,7 +153,7 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("CannotSignIn", model);
             }
 
-            await _authenticationService.SendConfirmEmailOrSetPasswordAsync(model.Email).ConfigureAwait(true);
+            await _authenticationService.SendConfirmEmailOrSetPasswordAsync(model.Email, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
             this.SetNotify("Send Success", "Please check your email inbox to active or set new password", ControllerExtensions.NotifyStatus.Success);
 
@@ -197,7 +197,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
             try
             {
-                await _authenticationService.ConfirmEmailAsync(model).ConfigureAwait(true);
+                await _authenticationService.ConfirmEmailAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 this.SetNotify("Active Success", "Now you can sign-in to the system", ControllerExtensions.NotifyStatus.Success);
 
@@ -252,7 +252,7 @@ namespace Monkey.Areas.Portal.Controllers
 
             try
             {
-                await _authenticationService.SetPasswordAsync(model).ConfigureAwait(true);
+                await _authenticationService.SetPasswordAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 this.SetNotify("Set Password Success", "Now you can sign-in to the system", ControllerExtensions.NotifyStatus.Success);
 
@@ -291,7 +291,7 @@ namespace Monkey.Areas.Portal.Controllers
 
             try
             {
-                await _authenticationService.ChangePasswordAsync(model).ConfigureAwait(true);
+                await _authenticationService.ChangePasswordAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 this.SetNotify("Change Password Success", "Now you can sign-in with new password", ControllerExtensions.NotifyStatus.Success);
 

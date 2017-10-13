@@ -55,7 +55,6 @@ namespace Monkey.Extensions
 
             // Filter
             services.AddScoped<PortalMvcExceptionFilter>();
-            services.AddScoped<MvcAuthActionFilter>();
             services.AddScoped<AjaxModelValidationActionFilter>();
 
             // Enable Session to use TempData

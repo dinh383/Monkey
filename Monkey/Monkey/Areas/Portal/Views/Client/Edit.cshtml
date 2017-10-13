@@ -2,7 +2,7 @@
 @using Puppy.Web.HtmlHelperUtils
 @model Monkey.Core.Models.Auth.ClientUpdateModel
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Client - Edit";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Client - Edit";
 }
 
 <div class="page-header">
@@ -121,7 +121,7 @@
             $.ajax({
                 url: url,
                 success: function(data) {
-                    owl.notify("Success", "Generate new secret for the Client", "success");
+                    monkey.notify("Success", "Generate new secret for the Client", "success");
                     $("#Secret").val(data.secret);
                 }
             });

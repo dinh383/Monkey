@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Monkey.Auth.Filters;
+﻿using Monkey.Auth.Filters.Attributes;
 using Monkey.Core;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
@@ -9,6 +6,9 @@ using Monkey.Core.Models.User;
 using Monkey.Extensions;
 using Monkey.Service.Auth;
 using Monkey.Service.User;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;

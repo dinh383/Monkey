@@ -17,10 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using EnumsNET;
 using Monkey.Business.Auth;
 using Monkey.Business.User;
+using EnumsNET;
 using Puppy.DependencyInjection.Attributes;
+using System.Threading;
 using System.Threading.Tasks;
 using Enums = Monkey.Core.Constants.Enums;
 
@@ -57,7 +58,7 @@ namespace Monkey.Service.Facade
                 {
                     _roleBusiness.CheckUniqueName(roleName);
 
-                    var roleId = await _roleBusiness.CreateAsync(roleName, roleDescription, enumMember.Value).ConfigureAwait(true);
+                    var roleId = await _roleBusiness.CreateAsync(roleName, roleDescription, default(CancellationToken), enumMember.Value).ConfigureAwait(true);
 
                     if (enumMember.Value == Enums.Permission.Admin)
                     {

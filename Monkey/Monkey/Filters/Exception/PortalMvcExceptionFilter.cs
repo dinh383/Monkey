@@ -17,6 +17,8 @@ namespace Monkey.Filters.Exception
 
                 context.Result = new JsonResult(errorModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
 
+                context.ExceptionHandled = true;
+
                 // Keep base Exception
                 base.OnException(context);
 
@@ -39,6 +41,8 @@ namespace Monkey.Filters.Exception
                 // Redirect to Oops page
                 context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal" }, false);
             }
+
+            context.ExceptionHandled = true;
 
             // Keep base Exception
             base.OnException(context);

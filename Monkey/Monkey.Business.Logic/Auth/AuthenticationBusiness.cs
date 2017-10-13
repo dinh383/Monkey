@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Microsoft.EntityFrameworkCore;
 using Monkey.Auth.Helpers;
 using Monkey.Business.Auth;
 using Monkey.Core;
@@ -35,6 +34,7 @@ using Puppy.Web.HttpUtils.HttpDetection.Device;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -90,16 +90,13 @@ namespace Monkey.Business.Logic.Auth
         {
             userName = StringHelper.Normalize(userName);
 
-            var user = _userRepository.Get(x => x.UserNameNorm == userName)
-                .Include(x => x.Profile)
-                .Include(x => x.Role).ThenInclude(x => x.Permissions)
-                .Single();
-
-            // Generate and save refresh token
-            refreshToken = GenerateRefreshToken(user.Id, clientId);
+            var user = _userRepository.Get(x => x.UserNameNorm == userName).Single();
 
             // Get logged in user
             var loggedInUserModel = user.MapTo<LoggedInUserModel>();
+
+            // Generate and save refresh token
+            refreshToken = GenerateRefreshToken(loggedInUserModel.Id, loggedInUserModel.ClientId);
 
             return loggedInUserModel;
         }
@@ -151,6 +148,7 @@ namespace Monkey.Business.Logic.Auth
             };
 
             _refreshTokenRepository.Add(refreshTokenEntity);
+
             _refreshTokenRepository.SaveChanges();
 
             return refreshToken;
@@ -160,34 +158,35 @@ namespace Monkey.Business.Logic.Auth
 
         #region Get Logged In User
 
-        public async Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject)
+        public Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var loggedInUser = await _userRepository.Get(x => x.GlobalId == subject).QueryTo<LoggedInUserModel>()
-                .SingleAsync().ConfigureAwait(true);
+            var loggedInUser = _userRepository.Get(x => x.GlobalId == subject).QueryTo<LoggedInUserModel>().Single();
 
-            return loggedInUser;
+            return Task.FromResult(loggedInUser);
         }
 
-        public async Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken)
+        public Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var refreshTokenEntity = await _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken).Select(x => new RefreshTokenEntity
+            var refreshTokenEntity = _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken).Select(x => new RefreshTokenEntity
             {
                 Id = x.Id,
                 TotalUsage = x.TotalUsage,
                 UserId = x.UserId
-            }).SingleAsync().ConfigureAwait(true);
+            }).Single();
 
-            var loggedInUser = await _userRepository.Get(x => x.Id == refreshTokenEntity.UserId)
-                .QueryTo<LoggedInUserModel>().SingleAsync().ConfigureAwait(true);
+            var loggedInUser = _userRepository.Get(x => x.Id == refreshTokenEntity.UserId).QueryTo<LoggedInUserModel>().Single();
 
             // Increase total usage
             refreshTokenEntity.TotalUsage++;
 
             _refreshTokenRepository.Update(refreshTokenEntity, x => x.TotalUsage);
 
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _refreshTokenRepository.SaveChanges();
 
-            return loggedInUser;
+            return Task.FromResult(loggedInUser);
         }
 
         #endregion
@@ -204,13 +203,15 @@ namespace Monkey.Business.Logic.Auth
                 throw new MonkeyException(ErrorCode.InvalidRefreshToken);
         }
 
-        public async Task ExpireAllRefreshTokenAsync(string subject)
+        public Task ExpireAllRefreshTokenAsync(string subject, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var listRefreshToken = await _refreshTokenRepository.Get(x => x.User.GlobalId == subject).Select(x =>
-                new RefreshTokenEntity
-                {
-                    Id = x.Id
-                }).ToListAsync().ConfigureAwait(true);
+            var listRefreshToken =
+                _refreshTokenRepository.Get(x => x.User.GlobalId == subject)
+                    .Select(x =>
+                        new RefreshTokenEntity
+                        {
+                            Id = x.Id
+                        }).ToList();
 
             var dateTimeUtcNow = DateTimeOffset.UtcNow.AddSeconds(-1);
 
@@ -220,7 +221,12 @@ namespace Monkey.Business.Logic.Auth
                 _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
             }
 
-            _refreshTokenRepository.SaveChanges();
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
         }
 
         #endregion
@@ -259,11 +265,11 @@ namespace Monkey.Business.Logic.Auth
             return token;
         }
 
-        public async Task ConfirmEmailAsync(string subject, string newUserName, string newPassword)
+        public Task ConfirmEmailAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default(CancellationToken))
         {
             var utcNow = DateTimeOffset.UtcNow;
 
-            var userEntity = await _userRepository.Get(x => x.GlobalId == subject).SingleAsync().ConfigureAwait(true);
+            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
 
             userEntity.EmailConfirmedTime = utcNow;
             userEntity.ActiveTime = utcNow;
@@ -280,7 +286,12 @@ namespace Monkey.Business.Logic.Auth
                 x => x.PasswordHash,
                 x => x.PasswordLastUpdatedTime);
 
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
         }
 
         public void ExpireTokenConfirmEmail(string token)
@@ -328,11 +339,11 @@ namespace Monkey.Business.Logic.Auth
             return token;
         }
 
-        public async Task ConfirmPhoneAsync(string subject, string newUserName, string newPassword)
+        public Task ConfirmPhoneAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default(CancellationToken))
         {
             var utcNow = DateTimeOffset.UtcNow;
 
-            var userEntity = await _userRepository.Get(x => x.GlobalId == subject).SingleAsync().ConfigureAwait(true);
+            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
 
             userEntity.PhoneConfirmedTime = utcNow;
             userEntity.ActiveTime = utcNow;
@@ -349,7 +360,12 @@ namespace Monkey.Business.Logic.Auth
                 x => x.PasswordHash,
                 x => x.PasswordLastUpdatedTime);
 
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
         }
 
         public void ExpireTokenConfirmPhone(string token)
@@ -401,14 +417,21 @@ namespace Monkey.Business.Logic.Auth
             return token;
         }
 
-        public async Task SetPasswordAsync(string subject, string password)
+        public Task SetPasswordAsync(string subject, string password, CancellationToken cancellationToken = default(CancellationToken))
         {
             var utcNow = DateTimeOffset.UtcNow;
-            var userEntity = await _userRepository.Get(x => x.GlobalId == subject).SingleAsync().ConfigureAwait(true);
+            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
+
             userEntity.PasswordHash = PasswordHelper.HashPassword(password, utcNow);
             userEntity.PasswordLastUpdatedTime = utcNow;
             _userRepository.Update(userEntity, x => x.PasswordHash, x => x.PasswordLastUpdatedTime);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
         }
 
         public void ExpireTokenSetPassword(string token)

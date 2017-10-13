@@ -1,4 +1,4 @@
-﻿var owl = {
+﻿var monkey = {
     initToolTip: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
@@ -44,9 +44,9 @@
                 } else {
                     var data = JSON.parse(xhr.responseText);
                     if (data.code) {
-                        owl.notify("Error", data.message, "error");
+                        monkey.notify("Error", data.message, "error");
                     } else {
-                        owl.notify("Error", "System error, please try again later or contact administrator!", "error");
+                        monkey.notify("Error", "System error, please try again later or contact administrator!", "error");
                     }
                 }
             }
@@ -100,8 +100,8 @@
 };
 
 $(function () {
-    owl.setupAjax();
-    owl.initToolTip();
-    owl.initConfirmDialog();
-    owl.initSlidePanel();
+    monkey.setupAjax();
+    monkey.initToolTip();
+    monkey.initConfirmDialog();
+    monkey.initSlidePanel();
 });

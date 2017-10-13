@@ -1,4 +1,4 @@
-/**
+﻿/**
 * jQuery slidePanel v0.3.4
 * https://github.com/amazingSurge/jquery-slidePanel
 *
@@ -158,7 +158,7 @@ let Support = {};
 
 ((support) => {
   /**
-   * Borrowed from Owl carousel
+   * Borrowed from Monkey carousel
    **/
    'use strict';
 

@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Microsoft.EntityFrameworkCore;
 using Monkey.Business.User;
 using Monkey.Core;
 using Monkey.Core.Entities.Auth;
@@ -36,6 +35,7 @@ using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Enums = Monkey.Core.Constants.Enums;
 
@@ -189,7 +189,7 @@ namespace Monkey.Business.Logic.User
             return listAdminUserId;
         }
 
-        public Task<string> CreateUserByEmailAsync(string email, int? roleId)
+        public Task<string> CreateUserByEmailAsync(string email, int? roleId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userEntity = new UserEntity
             {
@@ -201,12 +201,16 @@ namespace Monkey.Business.Logic.User
             };
 
             _userRepository.Add(userEntity);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _userRepository.SaveChanges();
 
             return Task.FromResult(userEntity.GlobalId);
         }
 
-        public async Task RemoveAsync(int id)
+        public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Soft delete user
             _userRepository.Delete(new UserEntity
@@ -217,14 +221,14 @@ namespace Monkey.Business.Logic.User
             _refreshTokenRepository.SaveChanges();
 
             // Expire all their refresh token
-            var listRefreshToken = await _refreshTokenRepository
+            var listRefreshToken = _refreshTokenRepository
                 .Get(x => x.UserId == id)
                 .Select(x =>
                     new RefreshTokenEntity
                     {
                         Id = x.Id
                     })
-                .ToListAsync().ConfigureAwait(true);
+                .ToList();
 
             var dateTimeUtcNow = DateTimeOffset.UtcNow.AddSeconds(-1);
 
@@ -234,39 +238,40 @@ namespace Monkey.Business.Logic.User
                 _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
             }
 
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
         }
 
-        public Task<UserModel> GetAsync(int id)
+        public Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var userEntity = _userRepository.Get(x => x.Id == id).Single();
-            var userModel = userEntity.MapTo<UserModel>();
+            var userModel = _userRepository.Get(x => x.Id == id).QueryTo<UserModel>().FirstOrDefault();
             return Task.FromResult(userModel);
         }
 
-        public Task<UserModel> GetByEmailAsync(string email)
+        public Task<UserModel> GetByEmailAsync(string email, CancellationToken cancellationToken = default(CancellationToken))
         {
             string emailNorm = StringHelper.Normalize(email);
-            var userEntity = _userRepository.Get(x => x.EmailNorm == emailNorm).Single();
-            var userModel = userEntity.MapTo<UserModel>();
+            var userModel = _userRepository.Get(x => x.EmailNorm == emailNorm).QueryTo<UserModel>().FirstOrDefault();
             return Task.FromResult(userModel);
         }
 
-        public Task<UserModel> GetByPhoneAsync(string phone)
+        public Task<UserModel> GetByPhoneAsync(string phone, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var userEntity = _userRepository.Get(x => x.Phone == phone).Single();
-            var userModel = userEntity.MapTo<UserModel>();
+            var userModel = _userRepository.Get(x => x.Phone == phone).QueryTo<UserModel>().FirstOrDefault();
             return Task.FromResult(userModel);
         }
 
-        public Task<UserModel> GetBySubjectAsync(string subject)
+        public Task<UserModel> GetBySubjectAsync(string subject, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
-            var userModel = userEntity.MapTo<UserModel>();
+            var userModel = _userRepository.Get(x => x.GlobalId == subject).QueryTo<UserModel>().FirstOrDefault();
             return Task.FromResult(userModel);
         }
 
-        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
+        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             var listData = _userRepository.Get().QueryTo<UserModel>();
 
@@ -275,7 +280,7 @@ namespace Monkey.Business.Logic.User
             return Task.FromResult(result);
         }
 
-        public Task UpdateAsync(UserUpdateModel model)
+        public Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userEntity = model.MapTo<UserEntity>();
 
@@ -285,12 +290,15 @@ namespace Monkey.Business.Logic.User
 
             _userRepository.Update(userEntity, x => x.RoleId, x => x.BannedTime, x => x.BannedRemark);
 
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _userRepository.SaveChanges();
 
             return Task.CompletedTask;
         }
 
-        public Task UpdateProfileAsync(UpdateProfileModel model)
+        public Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             // Save new avatar
             var avatarImageModel = _imageRepository.SaveImage(model.AvatarFile);
@@ -331,10 +339,13 @@ namespace Monkey.Business.Logic.User
                     x => x.FullNameNorm);
             }
 
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
             _profileRepository.SaveChanges();
 
             // Remove old avatar
-            if (LoggedInUser.Current.AvatarId.HasValue)
+            if (LoggedInUser.Current.AvatarId.HasValue && avatarImageModel != null)
             {
                 _imageRepository.RemoveImage(LoggedInUser.Current.AvatarId.Value);
             }

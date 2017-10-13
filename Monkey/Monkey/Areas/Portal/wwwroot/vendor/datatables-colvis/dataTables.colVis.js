@@ -1,4 +1,4 @@
-/*! ColVis 1.1.2
+﻿/*! ColVis 1.1.2
  * ©2010-2015 SpryMedia Ltd - datatables.net/license
  */
 

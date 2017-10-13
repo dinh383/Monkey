@@ -1,7 +1,7 @@
 ﻿using Monkey.Core.Constants;
 using System;
 
-namespace Monkey.Auth.Filters
+namespace Monkey.Auth.Filters.Attributes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class AuthAttribute : Attribute

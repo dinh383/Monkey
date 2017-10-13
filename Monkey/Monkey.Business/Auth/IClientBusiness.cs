@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System.Threading;
 using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
@@ -26,26 +27,26 @@ namespace Monkey.Business.Auth
 {
     public interface IClientBusiness : IBaseBusiness
     {
-        Task<int> CreateAsync(ClientCreateModel model);
+        Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task UpdateAsync(ClientUpdateModel model);
+        Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<ClientModel> GetAsync(int id);
+        Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
+        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<string> GenerateSecretAsync(int id);
+        Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
         void CheckUniqueName(string name, int? excludeId = null);
 
         void CheckExist(params int[] ids);
 
-        Task<int> GetIdAsync(string subject, string secret);
+        Task<int> GetIdAsync(string subject, string secret, CancellationToken cancellationToken = default(CancellationToken));
 
         void CheckExist(string subject, string secret);
 
         void CheckBanned(string subject, string secret);
 
-        Task RemoveAsync(int id);
+        Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

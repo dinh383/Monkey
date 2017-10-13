@@ -26,6 +26,9 @@ namespace Monkey.Filters.Exception
                 context.Result = new JsonResult(errorModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
             }
 
+            context.ExceptionHandled = true;
+
+
             // Keep base Exception
             base.OnException(context);
         }

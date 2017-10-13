@@ -28,6 +28,7 @@ using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web.Models.Api;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Enums = Monkey.Core.Constants.Enums;
 
@@ -55,7 +56,7 @@ namespace Monkey.Business.Logic.Auth
             }
         }
 
-        public async Task<int> CreateAsync(string name, string description, params Enums.Permission[] permissions)
+        public Task<int> CreateAsync(string name, string description, CancellationToken cancellationToken = default(CancellationToken), params Enums.Permission[] permissions)
         {
             var roleEntity = new RoleEntity
             {
@@ -70,12 +71,15 @@ namespace Monkey.Business.Logic.Auth
 
             _roleRepository.Add(roleEntity);
 
-            await _roleRepository.SaveChangesAsync().ConfigureAwait(true);
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
 
-            return roleEntity.Id;
+            _roleRepository.SaveChanges();
+
+            return Task.FromResult(roleEntity.Id);
         }
 
-        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model)
+        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             var query = _roleRepository.Get();
 
@@ -87,6 +91,9 @@ namespace Monkey.Business.Logic.Auth
             }
 
             var total = query.LongCount();
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
 
             var listRoleModel = query.OrderByDescending(x => x.NameNorm).Skip(model.Skip).Take(model.Take).QueryTo<RoleModel>();
 
@@ -102,7 +109,7 @@ namespace Monkey.Business.Logic.Auth
             return Task.FromResult(result);
         }
 
-        public Task<RoleModel> GetAsync(int id)
+        public Task<RoleModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             var roleModel = _roleRepository.Get(x => x.Id == id).QueryTo<RoleModel>().FirstOrDefault();
             return Task.FromResult(roleModel);

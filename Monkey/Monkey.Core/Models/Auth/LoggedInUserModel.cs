@@ -25,6 +25,8 @@ namespace Monkey.Core.Models.Auth
 {
     public class LoggedInUserModel : UserModel
     {
+        public int? ClientId { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

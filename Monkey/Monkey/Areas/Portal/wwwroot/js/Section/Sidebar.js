@@ -1,4 +1,4 @@
-(function (global, factory) {
+﻿(function (global, factory) {
   if (typeof define === "function" && define.amd) {
     define('/Section/Sidebar', ['exports', 'jquery', 'Base', 'Plugin'], factory);
   } else if (typeof exports !== "undefined") {

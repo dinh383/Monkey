@@ -1,4 +1,4 @@
-/*! Bootstrap 4 integration for DataTables' Responsive
+﻿/*! Bootstrap 4 integration for DataTables' Responsive
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 

@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 * screenfull
 * v3.3.1 - 2017-07-07
 * (c) Sindre Sorhus; MIT License

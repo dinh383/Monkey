@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Models.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Monkey.Core.Models.Auth;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
 using Puppy.Core.StringUtils;

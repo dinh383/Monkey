@@ -1,4 +1,4 @@
-(function (global, factory) {
+﻿(function (global, factory) {
   if (typeof define === "function" && define.amd) {
     define('/Site', ['exports', 'jquery', 'Config', 'Base', 'Menubar', 'Sidebar', 'PageAside'], factory);
   } else if (typeof exports !== "undefined") {

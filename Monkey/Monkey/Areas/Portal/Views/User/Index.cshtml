@@ -1,10 +1,12 @@
 ﻿@using Monkey.Areas.Portal.Controllers
+@using Monkey.Core.Models.User
 @using Puppy.DataTable
 @using Puppy.DataTable.Models.Config.Column
 @using Constants = Monkey.Constants
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - User";
 }
+
 <div class="page-header">
     <h1 class="page-title">Users</h1>
     <ol class="breadcrumb">
@@ -53,8 +55,8 @@
 
     <script type="text/javascript">
         function drawCallBack(oSettings) {
-            eatup.initToolTip();
-            eatup.initConfirmDialog();
+            monkey.initToolTip();
+            monkey.initConfirmDialog();
         }
 
         var loggedInUserId = parseInt('@LoggedInUser.Current?.Id');

@@ -1,4 +1,4 @@
-/**
+﻿/**
 * jQuery asScrollbar v0.5.4
 * https://github.com/amazingSurge/jquery-asScrollbar
 *
@@ -248,7 +248,7 @@
 
     (function(support) {
       /**
-       * Borrowed from Owl carousel
+       * Borrowed from Monkey carousel
        **/
       'use strict';
 

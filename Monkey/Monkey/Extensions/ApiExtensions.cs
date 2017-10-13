@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Monkey.Auth.Filters;
-using Monkey.Filters.Exception;
+﻿using Monkey.Filters.Exception;
 using Monkey.Filters.ModelValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Monkey.Extensions
 {
@@ -15,7 +14,6 @@ namespace Monkey.Extensions
         {
             // Filter
             services.AddScoped<ApiExceptionFilter>();
-            services.AddScoped<ApiAuthActionFilter>();
             services.AddScoped<ApiModelValidationActionFilter>();
             return services;
         }

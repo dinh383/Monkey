@@ -1,4 +1,4 @@
-/*! Select for DataTables 1.2.2
+﻿/*! Select for DataTables 1.2.2
  * 2015-2016 SpryMedia Ltd - datatables.net/license/mit
  */
 
@@ -467,7 +467,7 @@ function info ( api )
 		) ) );
 	};
 
-	// Internal knowledge of DataTables to loop over all information elements
+	// Internal knmonkeyedge of DataTables to loop over all information elements
 	$.each( ctx.aanFeatures.i, function ( i, el ) {
 		el = $(el);
 
