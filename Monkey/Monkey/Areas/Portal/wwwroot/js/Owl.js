@@ -61,6 +61,8 @@
         options.progressBar = options.progressBar || true;
         options.timeOut = options.timeOut || 5000;
         options.preventDuplicates = options.preventDuplicates || false;
+        options.positionClass = options.positionClass || "toast-bottom-right";
+
         switch (type) {
             case 'success':
                 toastr.success(message, title, options);
