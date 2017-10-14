@@ -120,10 +120,10 @@ namespace Monkey.Auth.Helpers
         public static void RemoveAccessTokenInCookie(IResponseCookies cookies)
         {
             // Access Token
-            cookies.Delete(AccessTokenCookieName);
+            cookies.Delete(AccessTokenCookieName.Encrypt(AuthConfig.SecretKey).EncodeBase64Url());
 
             // Refresh Token
-            cookies.Delete(RefreshTokenCookieName);
+            cookies.Delete(RefreshTokenCookieName.Encrypt(AuthConfig.SecretKey).EncodeBase64Url());
         }
 
         public static AccessTokenModel GetAccessTokenInCookie(IRequestCookieCollection cookies)
