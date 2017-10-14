@@ -58,7 +58,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpPost]
         public DataTableActionResult<UserModel> GetDataTable([FromForm] DataTableParamModel model)
         {
-            var result = _userService.GetDataTableAsync(model);
+            var result = _userService.GetDataTableAsync(model, this.GetRequestCancellationToken());
             var response = result.Result.GetDataTableActionResult<UserModel>();
             return response;
         }
@@ -86,7 +86,7 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("Add", model);
             }
 
-            await _userService.CreateByEmailAsync(model).ConfigureAwait(true);
+            await _userService.CreateByEmailAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
             this.SetNotify("Add Success", "Add user successful", ControllerExtensions.NotifyStatus.Success);
 
             return RedirectToAction("Index");
@@ -100,7 +100,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var userModel = await _userService.GetAsync(id).ConfigureAwait(true);
+            var userModel = await _userService.GetAsync(id, this.GetRequestCancellationToken()).ConfigureAwait(true);
             var userUpdateModel = userModel.MapTo<UserUpdateModel>();
             ViewBag.RoleSelectList = GetRoleSelectList();
             return View(userUpdateModel);
@@ -116,7 +116,7 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("Edit", model);
             }
 
-            await _userService.UpdateAsync(model).ConfigureAwait(true);
+            await _userService.UpdateAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
             this.SetNotify("Edit Success", "Edit user successful", ControllerExtensions.NotifyStatus.Success);
             return RedirectToAction("Index");
         }
@@ -138,7 +138,7 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("UpdateProfile", model);
             }
 
-            await _userService.UpdateProfileAsync(model).ConfigureAwait(true);
+            await _userService.UpdateProfileAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
             this.SetNotify("Edit Profile Success", "Your profile updated new information", ControllerExtensions.NotifyStatus.Success);
 
@@ -153,7 +153,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpPost]
         public async Task<JsonResult> Remove(int id)
         {
-            await _userService.RemoveAsync(id).ConfigureAwait(true);
+            await _userService.RemoveAsync(id, this.GetRequestCancellationToken()).ConfigureAwait(true);
             return Json(new { });
         }
 

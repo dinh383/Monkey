@@ -20,12 +20,13 @@
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
 using Puppy.Web.Models.Api;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monkey.Service.Auth
 {
     public interface IRoleService : IBaseService
     {
-        Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model);
+        Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

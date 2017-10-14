@@ -36,10 +36,10 @@
             type: "POST",
             cache: false,
             error: function (xhr, textStatus, errorThrown) {
-                console.log("ajax error", data);
-                if (xhr.status == 401 || xhr.status == 403) {
+                console.log("ajax error", xhr);
+                if (xhr.status === 401 || xhr.status === 403) {
                     window.location.href = "/Portal/Auth";
-                } else if (xhr.status == 404 || xhr.status == 403) {
+                } else if (xhr.status === 404) {
                     window.location.href = "/Portal";
                 } else {
                     var data = JSON.parse(xhr.responseText);

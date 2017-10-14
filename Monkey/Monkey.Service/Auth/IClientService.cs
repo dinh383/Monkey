@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System.Threading;
 using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
@@ -26,18 +27,18 @@ namespace Monkey.Service.Auth
 {
     public interface IClientService : IBaseService
     {
-        Task<int> CreateAsync(ClientCreateModel model);
+        Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task UpdateAsync(ClientUpdateModel model);
+        Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<ClientModel> GetAsync(int id);
+        Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
+        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<string> GenerateSecretAsync(int id);
+        Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
         void CheckUniqueName(string name, int? excludeId);
 
-        Task RemoveAsync(int id);
+        Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

@@ -22,7 +22,6 @@
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_GirdMenu.cshtml").ConfigureAwait(true);
     }
 <div class="page">
-    @Html.AntiForgeryToken()
     @RenderBody()
 </div>
     @{

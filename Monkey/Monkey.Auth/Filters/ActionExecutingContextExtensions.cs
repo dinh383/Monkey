@@ -100,7 +100,10 @@ namespace Monkey.Auth.Filters
 
         private static bool IsUserAuthenticated(HttpContext context)
         {
-            return context.User.Identity.IsAuthenticated || Core.LoggedInUser.Current != null;
+            var isIdentityAuthen = context.User.Identity.IsAuthenticated;
+            var iHaveCurrentLoggedInUser = Core.LoggedInUser.Current != null;
+
+            return isIdentityAuthen || iHaveCurrentLoggedInUser;
         }
 
         private static List<Enums.Permission> GetUserListPermission()

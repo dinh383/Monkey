@@ -19,6 +19,7 @@
 
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
+using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
@@ -45,13 +46,17 @@ namespace Monkey.Auth.Filters
                     return;
                 }
 
-                Core.LoggedInUser.Current = authenticationService.GetLoggedInUserAsync(token).Result;
+                // Update Current Logged In User in both Static Global variable and HttpContext
+                LoggedInUser.Current = authenticationService.GetLoggedInUserAsync(token).Result;
+                context.HttpContext.User = TokenHelper.GetClaimsPrincipal(token);
+
                 return;
             }
 
             // Cookie case
             try
             {
+                // Sign In by Cookie
                 var accessTokenModel = authenticationService.SignInCookieAsync(context.HttpContext.Request.Cookies).Result;
 
                 if (accessTokenModel == null)
@@ -68,6 +73,7 @@ namespace Monkey.Auth.Filters
                         RefreshToken = accessTokenModel.RefreshToken
                     };
 
+                    // Sign In by Request Token Model
                     accessTokenModel = authenticationService.SignInAsync(requestTokenModel).Result;
 
                     context.HttpContext.Response.OnStarting(state =>
@@ -79,8 +85,6 @@ namespace Monkey.Auth.Filters
                         return Task.CompletedTask;
                     }, context);
                 }
-
-                Core.LoggedInUser.Current = authenticationService.GetLoggedInUserAsync(accessTokenModel.AccessToken).Result;
             }
             catch (MonkeyException ex)
             {

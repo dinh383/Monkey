@@ -46,7 +46,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpPost]
         public DataTableActionResult<ClientModel> GetDataTable([FromForm] DataTableParamModel model)
         {
-            var result = _clientService.GetDataTableAsync(model);
+            var result = _clientService.GetDataTableAsync(model, this.GetRequestCancellationToken());
             var response = result.Result.GetDataTableActionResult<ClientModel>();
             return response;
         }
@@ -72,7 +72,7 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("Add", model);
             }
 
-            await _clientService.CreateAsync(model).ConfigureAwait(true);
+            await _clientService.CreateAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
             this.SetNotify("Add Success", "Add client successful", ControllerExtensions.NotifyStatus.Success);
 
             return RedirectToAction("Index");
@@ -112,7 +112,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpPost]
         public async Task<JsonResult> Remove(int id)
         {
-            await _clientService.RemoveAsync(id).ConfigureAwait(true);
+            await _clientService.RemoveAsync(id, this.GetRequestCancellationToken()).ConfigureAwait(true);
             return Json(new { });
         }
 
@@ -122,7 +122,7 @@ namespace Monkey.Areas.Portal.Controllers
         {
             try
             {
-                string secret = await _clientService.GenerateSecretAsync(id).ConfigureAwait(true);
+                string secret = await _clientService.GenerateSecretAsync(id, this.GetRequestCancellationToken()).ConfigureAwait(true);
                 return Json(new
                 {
                     secret

@@ -17,6 +17,10 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Configs;
+using Monkey.Core.Validators;
+using Monkey.Filters.Exception;
+using Monkey.Filters.ModelValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +30,6 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
-using Monkey.Auth.Filters;
-using Monkey.Core.Configs;
-using Monkey.Core.Validators;
-using Monkey.Filters.Exception;
-using Monkey.Filters.ModelValidation;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.DataTable;
 using Puppy.Web.Constants;

@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System.Threading;
 using Monkey.Core.Models.User;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
@@ -26,15 +27,15 @@ namespace Monkey.Service.User
 {
     public interface IUserService
     {
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model);
+        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task CreateByEmailAsync(UserCreateModel model);
+        Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<UserModel> GetAsync(int id);
+        Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task UpdateAsync(UserUpdateModel model);
+        Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task RemoveAsync(int id);
+        Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
         void CheckUniqueUserName(string userName, int? excludeId);
 
@@ -44,6 +45,6 @@ namespace Monkey.Service.User
 
         void CheckExistEmail(string email);
 
-        Task UpdateProfileAsync(UpdateProfileModel model);
+        Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

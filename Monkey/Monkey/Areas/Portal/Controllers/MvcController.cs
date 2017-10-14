@@ -7,12 +7,11 @@ using Puppy.Swagger.Filters;
 namespace Monkey.Areas.Portal.Controllers
 {
     [HideInDocs]
-    [ServiceFilter(typeof(PortalMvcExceptionFilter))]
-    [ServiceFilter(typeof(MvcAuthActionFilter))]
-    [ServiceFilter(typeof(BindingLoggedInUserFilter))]
     [Area(AreaName)]
     [Auth]
-    [AutoValidateAntiforgeryToken]
+    [ServiceFilter(typeof(PortalMvcExceptionFilter))]
+    [ServiceFilter(typeof(BindingLoggedInUserFilter))]
+    [ServiceFilter(typeof(MvcAuthActionFilter))]
     public class MvcController : Controller
     {
         public const string AreaName = "portal";

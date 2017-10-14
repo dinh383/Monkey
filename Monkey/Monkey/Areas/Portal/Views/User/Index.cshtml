@@ -6,7 +6,7 @@
 @{
     ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - User";
 }
-
+@Html.AntiForgeryToken()
 <div class="page-header">
     <h1 class="page-title">Users</h1>
     <ol class="breadcrumb">
@@ -44,7 +44,6 @@
 
                 model.GlobalJsVariableName = "oTable";
             }
-
             @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableHtml.cshtml", model).ConfigureAwait(true)
         </div>
     </div>

@@ -6,11 +6,11 @@ using Puppy.Web.Constants;
 
 namespace Monkey.Controllers.Api
 {
+    [Produces(ContentType.Json, ContentType.Xml)]
     [ServiceFilter(typeof(ApiExceptionFilter))]
+    [ServiceFilter(typeof(BindingLoggedInUserFilter))]
     [ServiceFilter(typeof(ApiAuthActionFilter))]
     [ServiceFilter(typeof(ApiModelValidationActionFilter))]
-    [ServiceFilter(typeof(BindingLoggedInUserFilter))]
-    [Produces(ContentType.Json, ContentType.Xml)]
     public class ApiController : Controller
     {
         public const string AreaName = "api";

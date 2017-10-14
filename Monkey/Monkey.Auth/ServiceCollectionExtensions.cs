@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Puppy.Core.ServiceCollectionUtils;
+using Puppy.Web.Middlewares;
 using System;
 using System.Linq;
 
@@ -50,6 +51,9 @@ namespace Monkey.Auth
             services.AddScopedIfNotExist<MvcAuthActionFilter>();
             services.AddScopedIfNotExist<BindingLoggedInUserFilter>();
 
+            // Add System.HttpContext.Current
+            services.AddHttpContextAccessor();
+
             return services;
         }
 
@@ -66,6 +70,9 @@ namespace Monkey.Auth
         public static IApplicationBuilder UseHybridAuth(this IApplicationBuilder app)
         {
             _configuration.BuildConfig(_configSection);
+
+            // Use System.HttpContext.Current
+            app.UseHttpContextAccessor();
 
             ChangeToken.OnChange(_configuration.GetReloadToken, () =>
             {
