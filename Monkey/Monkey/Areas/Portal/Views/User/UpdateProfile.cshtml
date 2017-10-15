@@ -13,8 +13,6 @@
                 <div class="panel-body">
                     <form asp-controller="User" asp-action="SubmitUpdateProfile" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
 
-                        @Html.AntiForgeryToken()
-
                         @if (!string.IsNullOrWhiteSpace(Model.AvatarUrl))
                         {
                             <div class="form-group form-material text-center" data-plugin="formMaterial">
@@ -24,7 +22,7 @@
 
                         <div class="form-group form-material" data-plugin="formMaterial">
                             <label asp-for="AvatarFile" class="form-control-label" for="@nameof(Model.AvatarFile)"></label>
-                            <input type="text" class="form-control" placeholder="Browse.." readonly="">
+                            <input type="text" class="form-control" placeholder="Browse.." readonly="readonly">
                             <input asp-for="AvatarFile" class="form-control" type="file" />
                             <span asp-validation-for="AvatarFile"></span>
                         </div>

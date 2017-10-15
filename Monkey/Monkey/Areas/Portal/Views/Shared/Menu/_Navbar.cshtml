@@ -85,11 +85,11 @@
                         <span class="avatar avatar-online">
                             @if (!string.IsNullOrWhiteSpace(LoggedInUser.Current?.AvatarUrl))
                             {
-                                <img src="@Url.AbsoluteContent(LoggedInUser.Current.AvatarUrl)"/>
+                                <img src="@Url.AbsoluteContent(LoggedInUser.Current.AvatarUrl)" />
                             }
                             else
                             {
-                                <img src="@Url.AbsoluteContent("~/portal/images/no-avatar.jpg")"/>
+                                <img src="@Url.AbsoluteContent("~/portal/images/no-avatar.jpg")" />
                             }
                             <i></i>
                         </span>

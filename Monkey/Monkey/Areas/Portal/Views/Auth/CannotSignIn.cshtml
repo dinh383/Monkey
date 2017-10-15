@@ -8,7 +8,6 @@
 <p>System will send active account or set password link to your email</p>
 
 <form asp-controller="Auth" asp-action="SubmitCannotSignIn" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
-    @Html.AntiForgeryToken()
 
     <div class="form-group form-material" data-plugin="formMaterial">
         <label asp-for="Email" class="form-control-label" for="@nameof(Model.Email)"></label>

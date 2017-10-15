@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Validators.User;
 using FluentValidation.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using Monkey.Core.Validators.User;
 using Puppy.DataTable.Attributes;
 using Puppy.DataTable.Constants;
 using System;

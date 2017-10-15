@@ -17,11 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading;
 using Monkey.Core.Constants;
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
 using Puppy.Web.Models.Api;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monkey.Business.Auth

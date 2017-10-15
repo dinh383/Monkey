@@ -28,7 +28,6 @@ namespace Monkey.Filters.Exception
 
             context.ExceptionHandled = true;
 
-
             // Keep base Exception
             base.OnException(context);
         }

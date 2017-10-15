@@ -49,7 +49,7 @@ namespace Monkey.Auth
 
             services.AddScopedIfNotExist<ApiAuthActionFilter>();
             services.AddScopedIfNotExist<MvcAuthActionFilter>();
-            services.AddScopedIfNotExist<BindingLoggedInUserFilter>();
+            services.AddScopedIfNotExist<LoggedInUserBinderFilter>();
 
             // Add System.HttpContext.Current
             services.AddHttpContextAccessor();

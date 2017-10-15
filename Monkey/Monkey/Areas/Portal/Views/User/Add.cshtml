@@ -1,5 +1,4 @@
-﻿@using Monkey.Core.Models.User
-@model Monkey.Core.Models.User.UserCreateModel
+﻿@model Monkey.Core.Models.User.UserCreateModel
 @{
     ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - User - Add";
     var listRole = ViewBag.RoleSelectList as List<SelectListItem>;
@@ -14,7 +13,6 @@
             <div class="panel">
                 <div class="panel-body">
                     <form asp-controller="User" asp-action="SubmitAdd" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
-                        @Html.AntiForgeryToken()
 
                         <div class="form-group form-material" data-plugin="formMaterial">
                             <label asp-for="Email" class="form-control-label" for="@nameof(Model.Email)"></label>

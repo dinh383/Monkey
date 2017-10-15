@@ -6,7 +6,9 @@
 @{
     ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - User";
 }
+
 @Html.AntiForgeryToken()
+
 <div class="page-header">
     <h1 class="page-title">Users</h1>
     <ol class="breadcrumb">
@@ -61,7 +63,10 @@
         var loggedInUserId = parseInt('@LoggedInUser.Current?.Id');
 
         function renderAvatar(data, type, row) {
-            return '<div class="col-lg-8 text-center"><img src="' + data + '" class="avatar"/></div>';
+            if (!data || data.length <= 0) {
+                return '<div class="col-lg-8 text-center"><img src="@Url.AbsoluteContent("~/portal/images/no-avatar.jpg")")" class="avatar" /></div>';
+            }
+            return '<div class="col-lg-8 text-center"><img src="' + data + '" class="avatar" /></div>';
         }
 
         function actionRender(data, type, row) {

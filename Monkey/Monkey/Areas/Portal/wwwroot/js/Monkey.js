@@ -36,17 +36,21 @@
             type: "POST",
             cache: false,
             error: function (xhr, textStatus, errorThrown) {
-                console.log("ajax error", xhr);
+                console.log("[Request Error]", xhr);
                 if (xhr.status === 401 || xhr.status === 403) {
                     window.location.href = "/Portal/Auth";
                 } else if (xhr.status === 404) {
                     window.location.href = "/Portal";
                 } else {
-                    var data = JSON.parse(xhr.responseText);
-                    if (data.code) {
-                        monkey.notify("Error", data.message, "error");
-                    } else {
-                        monkey.notify("Error", "System error, please try again later or contact administrator!", "error");
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        if (data.code) {
+                            monkey.notify("Error", data.message, "error");
+                        } else {
+                            monkey.notify("Error", "System error, please try again or contact administrator!", "error");
+                        }
+                    } catch (e) {
+                        monkey.notify("Error", "System error, please try again or contact administrator!", "error");
                     }
                 }
             }
@@ -82,15 +86,15 @@
     },
 
     initSlidePanel: function () {
-        $('[data-toggle="slidePanel"]').click(function() {
+        $('[data-toggle="slidePanel"]').click(function () {
             var $this = $(this);
             $.slidePanel.show({
-                    url: $this.data("url"),
-                    settings: {
-                        method: 'GET',
-                        cache: false
-                    }
-                },
+                url: $this.data("url"),
+                settings: {
+                    method: 'GET',
+                    cache: false
+                }
+            },
                 // Option
                 {
                     direction: 'right',

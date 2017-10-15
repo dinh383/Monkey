@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Monkey.Core.Entities.Auth;
 using Puppy.EF.Maps;
 
 namespace Monkey.Data.EF.Map.Auth

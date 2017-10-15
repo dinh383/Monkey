@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Monkey.Core.Exceptions;
+﻿using Monkey.Core.Exceptions;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Logger;
 using System;

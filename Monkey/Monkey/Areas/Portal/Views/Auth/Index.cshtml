@@ -9,7 +9,6 @@
 <p>Sign In to Protal Website</p>
 
 <form asp-controller="Auth" asp-action="SignIn" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
-    @Html.AntiForgeryToken()
 
     <input type="hidden" asp-for="RedirectUrl" />
 

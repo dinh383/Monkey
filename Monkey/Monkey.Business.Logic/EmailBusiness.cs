@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Hangfire;
 using Monkey.Core.Configs;
+using Hangfire;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web.HttpUtils;
 using SendGrid;

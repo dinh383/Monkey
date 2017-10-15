@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Microsoft.AspNetCore.Http;
 using Monkey.Core.Entities;
 using Monkey.Core.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Monkey.Data
 {

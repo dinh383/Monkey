@@ -18,7 +18,6 @@
 #endregion License
 
 using Monkey.Core.Configs;
-using Monkey.Core.Validators;
 using Monkey.Filters.Exception;
 using Monkey.Filters.ModelValidation;
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +30,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
 using Puppy.Core.EnvironmentUtils;
-using Puppy.DataTable;
 using Puppy.Web.Constants;
 using Puppy.Web.Render;
 using System.IO;
@@ -71,9 +69,6 @@ namespace Monkey.Extensions
                     options.RespectBrowserAcceptHeader = true; // false by default
                     options.Filters.Add(new ProducesAttribute(ContentType.Xml));
                     options.Filters.Add(new ProducesAttribute(ContentType.Json));
-
-                    // [DataTable]
-                    options.AddDataTableModelBinderProvider();
                 })
                 .AddXmlDataContractSerializerFormatters()
                 .AddJsonOptions(options =>
@@ -83,8 +78,7 @@ namespace Monkey.Extensions
                     options.SerializerSettings.DateTimeZoneHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.DateTimeZoneHandling;
                     options.SerializerSettings.Formatting = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.Formatting;
                     options.SerializerSettings.ContractResolver = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ContractResolver;
-                })
-                .AddValidator();
+                });
 
             // Setup Areas
             services.Configure<RazorViewEngineOptions>(options =>

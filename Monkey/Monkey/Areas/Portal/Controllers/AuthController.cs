@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Monkey.Auth.Helpers;
+﻿using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Monkey.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Puppy.AutoMapper;
 using System.Threading.Tasks;
 
@@ -70,6 +70,11 @@ namespace Monkey.Areas.Portal.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn(SignInModel model)
         {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("Index", model);

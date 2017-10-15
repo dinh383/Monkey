@@ -17,10 +17,10 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using FluentValidation.Attributes;
-using Microsoft.AspNetCore.Mvc;
 using Monkey.Core.Constants;
 using Monkey.Core.Validators.Auth;
+using FluentValidation.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using Puppy.DataTable.Attributes;
 using Puppy.DataTable.Constants;
 using System;

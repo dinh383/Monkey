@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Validators.User;
 using FluentValidation.Attributes;
 using Microsoft.AspNetCore.Http;
-using Monkey.Core.Validators.User;
 using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.User

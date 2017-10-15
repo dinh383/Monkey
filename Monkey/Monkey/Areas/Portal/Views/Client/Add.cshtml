@@ -14,7 +14,6 @@
             <div class="panel">
                 <div class="panel-body">
                     <form asp-controller="Client" asp-action="SubmitAdd" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
-                        @Html.AntiForgeryToken()
 
                         <div class="form-group form-material" data-plugin="formMaterial">
                             <label asp-for="Name" class="form-control-label" for="@nameof(Model.Name)"></label>

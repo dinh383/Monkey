@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Monkey.Data.EF.Factory;
+﻿using Monkey.Data.EF.Factory;
+using Microsoft.EntityFrameworkCore;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
 using Puppy.EF.Maps;

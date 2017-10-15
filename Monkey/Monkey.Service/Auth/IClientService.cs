@@ -17,10 +17,10 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading;
 using Monkey.Core.Models.Auth;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monkey.Service.Auth

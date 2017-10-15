@@ -8,7 +8,6 @@
 <p>Active account to Sign In to the Website</p>
 
 <form asp-controller="Auth" asp-action="SubmitConfirmEmail" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
-    @Html.AntiForgeryToken()
 
     <div class="form-group form-material" data-plugin="formMaterial">
         <label asp-for="Password" class="form-control-label" for="@nameof(Model.Password)"></label>

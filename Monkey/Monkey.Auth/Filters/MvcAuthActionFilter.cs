@@ -25,9 +25,9 @@ using Puppy.Web.HttpUtils;
 
 namespace Monkey.Auth.Filters
 {
-    public class MvcAuthActionFilter : IActionFilter
+    public class MvcAuthActionFilter : IAuthorizationFilter
     {
-        public void OnActionExecuting(ActionExecutingContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (context.HttpContext.Request.IsAjaxRequest())
             {
@@ -59,11 +59,6 @@ namespace Monkey.Auth.Filters
             {
                 context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal" }, false);
             }
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            // Nothing to filter in Action Executed
         }
     }
 }

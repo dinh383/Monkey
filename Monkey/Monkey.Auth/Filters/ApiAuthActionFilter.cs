@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Monkey.Auth.Filters
 {
-    public class ApiAuthActionFilter : IActionFilter
+    public class ApiAuthActionFilter : IAuthorizationFilter
     {
-        public void OnActionExecuting(ActionExecutingContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (!context.IsAuthenticated())
             {
@@ -18,11 +18,6 @@ namespace Monkey.Auth.Filters
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
             }
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            // Nothing to filter in Action Executed
         }
     }
 }
