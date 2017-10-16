@@ -310,7 +310,8 @@ namespace Monkey.Business.Logic.Auth
         public bool IsExpireOrInvalidConfirmEmailToken(string token)
         {
             var checkTime = DateTimeOffset.UtcNow;
-            return _userRepository.Get(x => x.ConfirmEmailToken == token && x.ConfirmEmailTokenExpireOn >= checkTime).Any();
+            var isValid = _userRepository.Get(x => x.ConfirmEmailToken == token && x.ConfirmEmailTokenExpireOn >= checkTime).Any();
+            return !isValid;
         }
 
         #endregion
@@ -472,7 +473,8 @@ namespace Monkey.Business.Logic.Auth
         public bool IsExpireOrInvalidSetPasswordToken(string token)
         {
             var checkTime = DateTimeOffset.UtcNow;
-            return _userRepository.Get(x => x.SetPasswordToken == token && x.SetPasswordTokenExpireOn >= checkTime).Any();
+            var isValid = _userRepository.Get(x => x.SetPasswordToken == token && x.SetPasswordTokenExpireOn >= checkTime).Any();
+            return !isValid;
         }
 
         #endregion

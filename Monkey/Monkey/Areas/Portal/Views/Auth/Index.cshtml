@@ -1,8 +1,8 @@
 ﻿@using Monkey.Core.Models.Auth
-@model SignInModel
+@model Monkey.Core.Models.Auth.SignInModel
 @{
     Layout = "/Areas/Portal/Views/Shared/_LayoutAnonymous.cshtml";
-    ViewData[Constants.ViewDataKey.Title] = "Monkey | Authentication";
+    ViewData[Constants.ViewDataKey.Title] = "Eatup | Authentication";
 }
 
 <h3 class="font-size-24">Sign In</h3>
@@ -17,14 +17,17 @@
         <input asp-for="UserName" class="form-control" type="text" />
         <span asp-validation-for="UserName"></span>
     </div>
+
     <div class="form-group form-material" data-plugin="formMaterial">
         <label asp-for="Password" class="form-control-label" for="@nameof(Model.Password)"></label>
         <input asp-for="Password" class="form-control" type="password" />
         <span asp-validation-for="Password"></span>
     </div>
+
     <div class="form-group clearfix">
         <a class="float-right" href="@Url.AbsoluteAction("CannotSignIn", "Auth")">Cannot Sign In?</a>
     </div>
+
     <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
         <span class="ladda-label">
             Sign in<i class="icon md-long-arrow-right mr-10" aria-hidden="true"></i>

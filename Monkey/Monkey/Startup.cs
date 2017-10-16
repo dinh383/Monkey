@@ -1,17 +1,16 @@
-﻿using Monkey.Auth;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Monkey.Auth;
 using Monkey.Core.Configs;
 using Monkey.Core.Constants;
-using Monkey.Core.Validators;
 using Monkey.Data;
 using Monkey.Data.EF.Factory;
 using Monkey.Extensions;
 using Monkey.Mapper;
 using Monkey.Service;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Puppy.Core.FileUtils;
 using Puppy.Core.TypeUtils;
 using Puppy.DataTable;
@@ -86,20 +85,14 @@ namespace Monkey
                 // [MVC] Anti Forgery
                 .AddAntiforgeryToken()
 
-                // [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
-                .AddApiFilter()
-
                 // [Authentication] Json Web Toke + Cookie
                 .AddHybridAuth(ConfigurationRoot)
 
                 // [DataTable]
                 .AddDataTable(ConfigurationRoot)
 
-                // [Mvc] Json, Xml serialize, area, response caching and filters
-                .AddMvcCustom()
-
-                // [Validator] Model Validator
-                .AddModelValidator();
+                // [Mvc - API] Json, Xml serialize, area, response caching and filters
+                .AddMvcApi();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
@@ -141,9 +134,8 @@ namespace Monkey
                 // [DataTable]
                 .UseDataTable()
 
-                // [MVC] Keep In Last. Static files configuration, routing [Mvc] Static files
-                // configuration, routing
-                .UseMvcCustom();
+                // [Mvc - API] Static files configuration, routing [Mvc] Static files configuration, routing
+                .UseMvcApi();
 
             // [Application Start] Initial functions
             ApplicationStart(app);

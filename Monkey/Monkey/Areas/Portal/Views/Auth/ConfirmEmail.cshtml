@@ -4,10 +4,12 @@
     ViewData[Constants.ViewDataKey.Title] = "Monkey | Activation";
 }
 
-<h3 class="font-size-24">Active Account</h3>
-<p>Active account to Sign In to the Website</p>
+<h3 class="font-size-24">Confirm Email & Active Account</h3>
+<p>Active account to Sign-in to the Website</p>
 
 <form asp-controller="Auth" asp-action="SubmitConfirmEmail" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
+
+    <input type="hidden" asp-for="Token" />
 
     <div class="form-group form-material" data-plugin="formMaterial">
         <label asp-for="Password" class="form-control-label" for="@nameof(Model.Password)"></label>

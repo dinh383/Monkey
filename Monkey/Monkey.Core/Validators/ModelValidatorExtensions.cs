@@ -25,23 +25,25 @@ namespace Monkey.Core.Validators
     public static class ModelValidatorExtensions
     {
         /// <summary>
-        ///     [Validator] Model Validator 
+        ///     [Validator] Model Validator, Must after "Add Mvc" 
         /// </summary>
-        /// <param name="services"></param>
+        /// <param name="mvcBuilder"></param>
         /// <returns></returns>
-        public static IServiceCollection AddModelValidator(this IServiceCollection services)
+        public static IMvcBuilder AddModelValidator(this IMvcBuilder mvcBuilder)
         {
-            services.Configure<IMvcBuilder>(builder =>
+            // Enable Microsoft.jQuery.Unobtrusive.Validation for Front-end
+            mvcBuilder.AddViewOptions(options =>
             {
-                builder.AddViewOptions(options =>
-                    {
-                        // Enable Microsoft.jQuery.Unobtrusive.Validation
-                        options.HtmlHelperOptions.ClientValidationEnabled = true;
-                    })
-                    .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<IModelValidator>());
+                options.HtmlHelperOptions.ClientValidationEnabled = true;
             });
 
-            return services;
+            // Register Fluent Validation Rules
+            mvcBuilder.AddFluentValidation(fvc =>
+            {
+                fvc.RegisterValidatorsFromAssemblyContaining<IModelValidator>();
+            });
+
+            return mvcBuilder;
         }
     }
 }

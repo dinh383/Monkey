@@ -6,20 +6,17 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> MvcExtensions.cs </Name>
+//         <Name> MvcApiExtensions.cs </Name>
 //         <Created> 31/07/17 10:42:40 PM </Created>
 //         <Key> f0c4a37a-1d5d-422e-885f-38e3acce572e </Key>
 //     </File>
 //     <Summary>
-//         MvcExtensions.cs
+//         MvcApiExtensions.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Configs;
-using Monkey.Filters.Exception;
-using Monkey.Filters.ModelValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +26,10 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
+using Monkey.Core.Configs;
+using Monkey.Core.Validators;
+using Monkey.Filters.Exception;
+using Monkey.Filters.ModelValidation;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Web.Constants;
 using Puppy.Web.Render;
@@ -38,19 +39,23 @@ using System.Reflection;
 
 namespace Monkey.Extensions
 {
-    public static class MvcExtensions
+    public static class MvcApiExtensions
     {
         /// <summary>
-        ///     [Mvc] Json, Xml serialize, area, response caching and filters 
+        ///     [Mvc - API] Json, Xml serialize, area, response caching and filters 
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddMvcCustom(this IServiceCollection services)
+        public static IServiceCollection AddMvcApi(this IServiceCollection services)
         {
+            // Api Filter
+            services.AddScoped<ApiExceptionFilter>();
+            services.AddScoped<ApiModelValidationActionFilter>();
+
             // Mvc Services
             services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
 
-            // Filter
+            // Mvc Filter
             services.AddScoped<PortalMvcExceptionFilter>();
             services.AddScoped<AjaxModelValidationActionFilter>();
 
@@ -78,7 +83,9 @@ namespace Monkey.Extensions
                     options.SerializerSettings.DateTimeZoneHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.DateTimeZoneHandling;
                     options.SerializerSettings.Formatting = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.Formatting;
                     options.SerializerSettings.ContractResolver = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ContractResolver;
-                });
+                })
+                // [Validator] Model Validator, Must after "Add Mvc"
+                .AddModelValidator();
 
             // Setup Areas
             services.Configure<RazorViewEngineOptions>(options =>
@@ -92,10 +99,10 @@ namespace Monkey.Extensions
         }
 
         /// <summary>
-        ///     [Mvc] Static files configuration, routing [Mvc] Static files configuration, routing 
+        ///     [Mvc - API] Static files configuration, routing [Mvc] Static files configuration, routing
         /// </summary>
         /// <param name="app"></param>
-        public static IApplicationBuilder UseMvcCustom(this IApplicationBuilder app)
+        public static IApplicationBuilder UseMvcApi(this IApplicationBuilder app)
         {
             if (!EnvironmentHelper.IsDevelopment())
             {

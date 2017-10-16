@@ -41,7 +41,7 @@ namespace Monkey.Business.Logic
 
             string html = $"<p>You're on your way!</p>" +
                           $"<p>Let's confirm your email address by click: {activeLink}.</p>" +
-                          $"<p>The link will expire in {expireIn.Hours}</p>";
+                          $"<p>The link will expire in {expireIn.TotalHours} hour(s)</p>";
 
             BackgroundJob.Enqueue(() => SendEmail(email, subject, html));
         }
@@ -55,7 +55,7 @@ namespace Monkey.Business.Logic
             string subject = "Set Password for Your Account";
 
             string html = $"<p>You can set new password for your account by click: {setPasswordLink}.</p>" +
-                          $"<p>The link will expire in {expireIn.Hours}</p>";
+                          $"<p>The link will expire in {expireIn.TotalHours} hour(s)</p>";
 
             BackgroundJob.Enqueue(() => SendEmail(email, subject, html));
         }
@@ -72,7 +72,11 @@ namespace Monkey.Business.Logic
 
             var client = new SendGridClient(SystemConfig.SendGrid.Key);
 
-            client.SendEmailAsync(msg).Wait();
+            var sendEmail = client.SendEmailAsync(msg);
+
+            sendEmail.Wait();
+
+            var response = sendEmail.Result;
         }
     }
 }

@@ -20,7 +20,6 @@ using Enums = Monkey.Core.Constants.Enums;
 namespace Monkey.Areas.Portal.Controllers
 {
     [Route(Endpoint)]
-    [Auth(Enums.Permission.Admin)]
     public class UserController : MvcController
     {
         public const string Endpoint = AreaName + "/user";
@@ -48,6 +47,7 @@ namespace Monkey.Areas.Portal.Controllers
         #region Listing
 
         [Route(ListingEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpGet]
         public IActionResult Index()
         {
@@ -55,6 +55,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(ListingEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         public DataTableActionResult<UserModel> GetDataTable([FromForm] DataTableParamModel model)
         {
@@ -68,6 +69,7 @@ namespace Monkey.Areas.Portal.Controllers
         #region Add
 
         [Route(AddEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpGet]
         public IActionResult Add()
         {
@@ -76,6 +78,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(AddEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitAdd([FromForm]UserCreateModel model)
@@ -97,6 +100,7 @@ namespace Monkey.Areas.Portal.Controllers
         #region Edit
 
         [Route(EditEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -107,6 +111,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(SubmitEditEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         public async Task<IActionResult> SubmitEdit([FromForm]UserUpdateModel model)
         {
@@ -123,6 +128,7 @@ namespace Monkey.Areas.Portal.Controllers
 
         [Route(UpdateProfileEndpoint)]
         [HttpGet]
+        [Auth]
         public IActionResult UpdateProfile()
         {
             var updateProfileModel = LoggedInUser.Current.MapTo<UpdateProfileModel>();
@@ -131,6 +137,7 @@ namespace Monkey.Areas.Portal.Controllers
 
         [Route(SubmitUpdateProfileEndpoint)]
         [HttpPost]
+        [Auth]
         public async Task<IActionResult> SubmitUpdateProfile([FromForm]UpdateProfileModel model)
         {
             if (!ModelState.IsValid)
@@ -150,6 +157,7 @@ namespace Monkey.Areas.Portal.Controllers
         #region Remove
 
         [Route(RemoveEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         public async Task<JsonResult> Remove(int id)
         {
@@ -162,6 +170,7 @@ namespace Monkey.Areas.Portal.Controllers
         #region Check
 
         [Route(CheckUniqueUserNameEndpoint)]
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult CheckUniqueUserName(string userName, int? id = null)
         {
@@ -182,6 +191,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(CheckUniqueEmailEndpoint)]
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult CheckUniqueEmail(string email, int? id = null)
         {
@@ -202,6 +212,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(CheckExistEmailEndpoint)]
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult CheckExistEmail(string email)
         {
@@ -222,8 +233,8 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(CheckUniquePhoneEndpoint)]
-        [HttpPost]
         [AllowAnonymous]
+        [HttpPost]
         public JsonResult CheckUniquePhone(string phone, int? id = null)
         {
             try

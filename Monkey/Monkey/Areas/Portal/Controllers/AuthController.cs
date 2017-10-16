@@ -1,10 +1,10 @@
-﻿using Monkey.Auth.Helpers;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Monkey.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Puppy.AutoMapper;
 using System.Threading.Tasks;
 
@@ -101,25 +101,25 @@ namespace Monkey.Areas.Portal.Controllers
             {
                 if (ex.Code == ErrorCode.UserInActive)
                 {
-                    this.SetNotify("SignIn Fail", "Your account is in-active, please active via your email and try sign-in again", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", "Your account is in-active, please active via your email and try sign-in again", ControllerExtensions.NotifyStatus.Error);
                     return View("Index", model);
                 }
 
                 if (ex.Code == ErrorCode.UserBanned)
                 {
-                    this.SetNotify("SignIn Fail", $"Your account is banned! {ex.Message}", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", $"Your account is banned! {ex.Message}", ControllerExtensions.NotifyStatus.Error);
                     return View("Index", model);
                 }
 
                 if (ex.Code == ErrorCode.UserNameNotExist)
                 {
-                    this.SetNotify("SignIn Fail", "Your account is not exist", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", "Your account is not exist", ControllerExtensions.NotifyStatus.Error);
                     return View("Index", model);
                 }
 
                 if (ex.Code == ErrorCode.UserPasswordWrong)
                 {
-                    this.SetNotify("SignIn Fail", "Your password is wrong, please try again", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", "Your password is wrong, please try again", ControllerExtensions.NotifyStatus.Error);
                     return View("Index", model);
                 }
 
