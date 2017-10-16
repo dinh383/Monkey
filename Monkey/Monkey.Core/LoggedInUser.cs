@@ -33,9 +33,17 @@ namespace Monkey.Core
 
         public static LoggedInUserModel Current
         {
-            get => HttpContext.Current.Items.TryGetValue(HttpContextItemKey, out var value)
-                ? value.ConvertTo<LoggedInUserModel>()
-                : null;
+            get
+            {
+                if (HttpContext.Current?.Items != null)
+                {
+                    return HttpContext.Current.Items.TryGetValue(HttpContextItemKey, out var value)
+                        ? value?.ConvertTo<LoggedInUserModel>()
+                        : null;
+                }
+
+                return null;
+            }
             set
             {
                 // Update Current Logged In User in both Static Global variable and HttpContext
