@@ -296,7 +296,12 @@ namespace Monkey.Business.Logic.Auth
 
         public void ExpireTokenConfirmEmail(string token)
         {
-            var userId = _userRepository.Get(x => x.ConfirmPhoneToken == token).Select(x => x.Id).Single();
+            var userId = _userRepository.Get(x => x.ConfirmEmailToken == token).Select(x => x.Id).FirstOrDefault();
+
+            if (userId == default(int))
+            {
+                return;
+            }
 
             _userRepository.Update(new UserEntity
             {
@@ -437,7 +442,12 @@ namespace Monkey.Business.Logic.Auth
 
         public void ExpireTokenSetPassword(string token)
         {
-            var userId = _userRepository.Get(x => x.SetPasswordToken == token).Select(x => x.Id).Single();
+            var userId = _userRepository.Get(x => x.SetPasswordToken == token).Select(x => x.Id).FirstOrDefault();
+
+            if (userId == default(int))
+            {
+                return;
+            }
 
             _userRepository.Update(new UserEntity
             {
