@@ -1,4 +1,7 @@
-﻿using Monkey.Auth.Filters.Attributes;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Monkey.Auth.Filters.Attributes;
 using Monkey.Core;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
@@ -6,9 +9,6 @@ using Monkey.Core.Models.User;
 using Monkey.Extensions;
 using Monkey.Service.Auth;
 using Monkey.Service.User;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
@@ -90,7 +90,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _userService.CreateByEmailAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
-            this.SetNotify("Add Success", "Add user successful", ControllerExtensions.NotifyStatus.Success);
+            this.SetNotify("Add Success", "Add user successful", NotifyStatus.Success);
 
             return RedirectToAction("Index");
         }
@@ -122,7 +122,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _userService.UpdateAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
-            this.SetNotify("Edit Success", "Edit user successful", ControllerExtensions.NotifyStatus.Success);
+            this.SetNotify("Edit Success", "Edit user successful", NotifyStatus.Success);
             return RedirectToAction("Index");
         }
 
@@ -147,7 +147,7 @@ namespace Monkey.Areas.Portal.Controllers
 
             await _userService.UpdateProfileAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
-            this.SetNotify("Edit Profile Success", "Your profile updated new information", ControllerExtensions.NotifyStatus.Success);
+            this.SetNotify("Edit Profile Success", "Your profile updated new information", NotifyStatus.Success);
 
             return RedirectToAction("Index", "Home");
         }

@@ -1,10 +1,10 @@
-﻿using Monkey.Auth.Filters.Attributes;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Monkey.Auth.Filters.Attributes;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Monkey.Extensions;
 using Monkey.Service.Auth;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
@@ -73,7 +73,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _clientService.CreateAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
-            this.SetNotify("Add Success", "Add client successful", ControllerExtensions.NotifyStatus.Success);
+            this.SetNotify("Add Success", "Add client successful", NotifyStatus.Success);
 
             return RedirectToAction("Index");
         }
@@ -101,7 +101,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
 
             await _clientService.UpdateAsync(model).ConfigureAwait(true);
-            this.SetNotify("Edit Success", "Edit client successful", ControllerExtensions.NotifyStatus.Success);
+            this.SetNotify("Edit Success", "Edit client successful", NotifyStatus.Success);
 
             return RedirectToAction("Index");
         }
