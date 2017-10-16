@@ -25,7 +25,7 @@ namespace Monkey.Core.Validators
     public static class ModelValidatorExtensions
     {
         /// <summary>
-        ///     [Validator] Model Validator, Must after "Add Mvc" 
+        ///     [Validator] Model Validator, Must after "AddMvc" 
         /// </summary>
         /// <param name="mvcBuilder"></param>
         /// <returns></returns>

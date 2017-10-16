@@ -84,7 +84,7 @@ namespace Monkey.Extensions
                     options.SerializerSettings.Formatting = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.Formatting;
                     options.SerializerSettings.ContractResolver = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ContractResolver;
                 })
-                // [Validator] Model Validator, Must after "Add Mvc"
+                // [Validator] Model Validator, Must after "AddMvc"
                 .AddModelValidator();
 
             // Setup Areas
