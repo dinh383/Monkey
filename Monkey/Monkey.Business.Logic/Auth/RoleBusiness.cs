@@ -22,7 +22,7 @@ using Monkey.Core.Entities.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
-using Monkey.Data.User;
+using Monkey.Data.Auth;
 using Puppy.AutoMapper;
 using Puppy.Core.StringUtils;
 using Puppy.DependencyInjection.Attributes;

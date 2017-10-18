@@ -19,7 +19,7 @@
 
 using Monkey.Core.Entities.Auth;
 
-namespace Monkey.Data.User
+namespace Monkey.Data.Auth
 {
     public interface IRoleRepository : IEntityRepository<RoleEntity>
     {

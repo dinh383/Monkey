@@ -6,27 +6,27 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Repository </Project>
 //     <File>
-//         <Name> PermissionRepository.cs </Name>
-//         <Created> 13/09/17 11:40:23 PM </Created>
-//         <Key> a43b8779-27bd-411b-b519-df8e3144673d </Key>
+//         <Name> RoleRepository.cs </Name>
+//         <Created> 13/09/17 11:39:47 PM </Created>
+//         <Key> 026c160c-1236-446d-91af-b6f820e90d01 </Key>
 //     </File>
 //     <Summary>
-//         PermissionRepository.cs
+//         RoleRepository.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
 using Monkey.Core.Entities.Auth;
-using Monkey.Data.User;
+using Monkey.Data.Auth;
 using Puppy.DependencyInjection.Attributes;
 
-namespace Monkey.Data.EF.Repositories.User
+namespace Monkey.Data.EF.Repositories.Auth
 {
-    [PerRequestDependency(ServiceType = typeof(IPermissionRepository))]
-    public class PermissionRepository : EntityRepository<PermissionEntity>, IPermissionRepository
+    [PerRequestDependency(ServiceType = typeof(IRoleRepository))]
+    public class RoleRepository : EntityRepository<RoleEntity>, IRoleRepository
     {
-        public PermissionRepository(IDbContext dbContext) : base(dbContext)
+        public RoleRepository(IDbContext dbContext) : base(dbContext)
         {
         }
     }
