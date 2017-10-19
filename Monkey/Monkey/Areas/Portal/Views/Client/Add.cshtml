@@ -1,7 +1,8 @@
 ﻿@using Monkey.Core.Constants
+@using Puppy.Web.HtmlHelperUtils
 @model Monkey.Core.Models.Auth.ClientCreateModel
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Client - Add";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Client - Add";
 }
 
 <div class="page-header">
@@ -12,26 +13,25 @@
         <div class="col-lg-6 center-col">
             <div class="panel">
                 <div class="panel-body">
-                    @using (Html.BeginForm("SubmitAdd", "Client", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
+                    <form asp-controller="Client" asp-action="SubmitAdd" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Name, new { @class = "form-control-label", @for = $"{nameof(Model.Name)}" })
-                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Name)
+                            <label asp-for="Name" class="form-control-label" for="@nameof(Model.Name)"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Domains, new { @class = "form-control-label", @for = $"{nameof(Model.Domains)}" })
-                            @Html.TextBoxFor(m => m.Domains, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Domains)
+                            <label asp-for="Domains" class="form-control-label" for="@nameof(Model.Domains)"></label>
+                            <input asp-for="Domains" class="form-control" />
+                            <small class="text-help">@Html.DescriptionFor(model => model.Domains)</small>
+                            <span asp-validation-for="Domains"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Type, new { @class = "form-control-label", @for = $"{nameof(Model.Type)}" })
-                            @Html.DropDownListFor(model => model.Type, typeof(Enums.ClientType).GetEnumSelectList(Model.Type.ToString()), new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Type)
+                                <label asp-for="Type" class="form-control-label" for="@nameof(Model.Type)"></label>
+                                <select asp-for="Type" asp-items="@typeof(Enums.ClientType).GetEnumSelectList(Model.Type.ToString())" class="form-control"></select>
+                                <span asp-validation-for="Type"></span>
                         </div>
 
                         <div class="row">
@@ -50,7 +50,7 @@
                                 </button>
                             </div>
                         </div>
-                    }
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,15 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
-using Monkey.Auth.Filters;
+﻿using Monkey.Auth.Filters;
+using Monkey.Auth.Filters.Attributes;
 using Monkey.Filters.Exception;
+using Microsoft.AspNetCore.Mvc;
 using Puppy.Swagger.Filters;
 
 namespace Monkey.Areas.Portal.Controllers
 {
     [HideInDocs]
-    [ServiceFilter(typeof(PortalMvcExceptionFilter))]
-    [ServiceFilter(typeof(MvcAuthActionFilter))]
-    [Area(AreaName)]
     [Auth]
+    [Area(AreaName)]
+    [ServiceFilter(typeof(PortalMvcExceptionFilter))]
+    [ServiceFilter(typeof(LoggedInUserBinderFilter))]
+    [ServiceFilter(typeof(MvcAuthActionFilter))]
     [AutoValidateAntiforgeryToken]
     public class MvcController : Controller
     {

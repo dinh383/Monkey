@@ -1,6 +1,6 @@
-﻿@model Monkey.Core.Models.Auth.UserCreateModel
+﻿@model Monkey.Core.Models.User.UserCreateModel
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User - Add";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - User - Add";
     var listRole = ViewBag.RoleSelectList as List<SelectListItem>;
 }
 
@@ -12,22 +12,20 @@
         <div class="col-lg-6 center-col">
             <div class="panel">
                 <div class="panel-body">
-                    @using (Html.BeginForm("SubmitAdd", "User", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
+                    <form asp-controller="User" asp-action="SubmitAdd" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Email, new { @class = "form-control-label", @for = $"{nameof(Model.Email)}" })
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Email)
+                            <label asp-for="Email" class="form-control-label" for="@nameof(Model.Email)"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email"></span>
                         </div>
 
-                        if (listRole?.Any() == true)
+                        @if (listRole?.Any() == true)
                         {
                             <div class="form-group form-material" data-plugin="formMaterial">
-                                @Html.LabelFor(m => m.RoleId, new { @class = "form-control-label", @for = $"{nameof(Model.RoleId)}" })
-                                @Html.DropDownListFor(model => model.RoleId, listRole, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.RoleId)
+                                <label asp-for="RoleId" class="form-control-label" for="@nameof(Model.RoleId)"></label>
+                                <select asp-for="RoleId" class="form-control" asp-items="@listRole"></select>
+                                <span asp-validation-for="RoleId"></span>
                             </div>
                         }
                         <div class="row">
@@ -46,7 +44,7 @@
                                 </button>
                             </div>
                         </div>
-                    }
+                    </form>
                 </div>
             </div>
         </div>

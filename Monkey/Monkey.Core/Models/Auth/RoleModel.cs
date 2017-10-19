@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Monkey.Core.Constants;
+﻿using Monkey.Core.Constants;
+using System.Collections.Generic;
 
 namespace Monkey.Core.Models.Auth
 {

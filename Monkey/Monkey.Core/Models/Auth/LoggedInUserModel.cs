@@ -18,28 +18,18 @@
 #endregion License
 
 using Monkey.Core.Constants;
-using System;
+using Monkey.Core.Models.User;
 using System.Collections.Generic;
 
 namespace Monkey.Core.Models.Auth
 {
-    public class LoggedInUserModel
+    public class LoggedInUserModel : UserModel
     {
-        public string Subject { get; set; }
+        public int? ClientId { get; set; }
 
-        public int Id { get; set; }
+        public string FirstName { get; set; }
 
-        public string UserName { get; set; }
-
-        public string FullName { get; set; }
-
-        public string Email { get; set; }
-
-        public DateTimeOffset? EmailConfirmedTime { get; set; }
-
-        public string Phone { get; set; }
-
-        public DateTimeOffset? PhoneConfirmedTime { get; set; }
+        public string LastName { get; set; }
 
         public List<Enums.Permission> ListPermission { get; set; }
     }

@@ -2,7 +2,7 @@
 @using Puppy.Web.HtmlHelperUtils
 @model Monkey.Core.Models.Auth.ClientUpdateModel
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Client - Edit";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Client - Edit";
 }
 
 <div class="page-header">
@@ -13,40 +13,46 @@
         <div class="col-lg-6 center-col">
             <div class="panel">
                 <div class="panel-body">
-                    @using (Html.BeginForm("SubmitEdit", "Client", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(x => x.Id)
+                    <form asp-controller="Client" asp-action="SubmitEdit" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
+
+                        <input type="hidden" asp-for="Id" />
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Name, new { @class = "form-control-label", @for = $"{nameof(Model.Name)}" })
-                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Name)
+                            <label asp-for="Name" class="form-control-label" for="@nameof(Model.Name)"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Domains, new { @class = "form-control-label", @for = $"{nameof(Model.Domains)}" })
-                            @Html.TextBoxFor(m => m.Domains, new { @class = "form-control" })
+                            <label asp-for="Domains" class="form-control-label" for="@nameof(Model.Domains)"></label>
+                            <input asp-for="Domains" class="form-control" />
                             <small class="text-help">@Html.DescriptionFor(model => model.Domains)</small>
-                            @Html.ValidationMessageFor(model => model.Domains)
+                            <span asp-validation-for="Domains"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Type, new { @class = "form-control-label", @for = $"{nameof(Model.Type)}" })
-                            @Html.DropDownListFor(model => model.Type, typeof(Enums.ClientType).GetEnumSelectList(Model.Type.ToString()), new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Type)
+                            <label asp-for="Type" class="form-control-label" for="@nameof(Model.Type)"></label>
+                            <select asp-for="Type" asp-items="@typeof(Enums.ClientType).GetEnumSelectList(Model.Type.ToString())" class="form-control"></select>
+                            <span asp-validation-for="Type"></span>
                         </div>
 
                         <div class="checkbox-custom checkbox-primary">
-                            @Html.CheckBoxFor(m => m.IsBanned, new { @class = "form-control", @checked = Model.IsBanned ? "checked" : string.Empty })
-                            @Html.LabelFor(m => m.IsBanned, new { @for = $"{nameof(Model.IsBanned)}" })
-                            @Html.ValidationMessageFor(model => model.IsBanned)
+                            @if (Model.IsBanned)
+                            {
+                                <input asp-for="IsBanned" type="checkbox" class="form-control" checked="checked" />
+                            }
+                            else
+                            {
+                                <input asp-for="IsBanned" type="checkbox" class="form-control" />
+                            }
+                            <label asp-for="IsBanned" class="form-control-label" for="@nameof(Model.IsBanned)"></label>
+                            <span asp-validation-for="IsBanned"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.BannedRemark, new { @class = "form-control-label", @for = $"{nameof(Model.BannedRemark)}" })
-                            @Html.TextAreaFor(m => m.BannedRemark, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.BannedRemark)
+                            <label asp-for="BannedRemark" class="form-control-label" for="@nameof(Model.BannedRemark)"></label>
+                            <input asp-for="BannedRemark" class="form-control" />
+                            <span asp-validation-for="BannedRemark"></span>
                         </div>
 
                         <div class="row">
@@ -55,7 +61,7 @@
                                     <span class="ladda-label">
                                         <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
                                     </span>
-                               </a>
+                                </a>
                             </div>
                             <div class="col-xs-8 center-col col-md-6 center-col form-group form-material">
                                 <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
@@ -65,7 +71,7 @@
                                 </button>
                             </div>
                         </div>
-                    }
+                    </form>
                 </div>
             </div>
         </div>
@@ -73,15 +79,15 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="form-group form-material" data-plugin="formMaterial">
-                        @Html.LabelFor(m => m.Subject, new { @class = "form-control-label", @for = $"{nameof(Model.Name)}" })
-                        @Html.TextBoxFor(m => m.Subject, new { @class = "form-control", @readonly = "readonly" })
-                        @Html.ValidationMessageFor(model => model.Subject)
+                        <label asp-for="Subject" class="form-control-label" for="@nameof(Model.Subject)"></label>
+                        <input asp-for="Subject" class="form-control" readonly="readonly" />
+                        <span asp-validation-for="Subject"></span>
                     </div>
 
                     <div class="form-group form-material" data-plugin="formMaterial">
-                        @Html.LabelFor(m => m.Secret, new { @class = "form-control-label", @for = $"{nameof(Model.Name)}" })
-                        @Html.TextBoxFor(m => m.Secret, new { @class = "form-control", @readonly = "readonly" })
-                        @Html.ValidationMessageFor(model => model.Secret)
+                        <label asp-for="Secret" class="form-control-label" for="@nameof(Model.Secret)"></label>
+                        <input asp-for="Secret" class="form-control" readonly="readonly" />
+                        <span asp-validation-for="Secret"></span>
                     </div>
 
                     <div class="row">
@@ -114,7 +120,7 @@
             $.ajax({
                 url: url,
                 success: function(data) {
-                    owl.notify("Success", "Generate new secret for the Client", "success");
+                    monkey.notify("Success", "Generate new secret for the Client", "success");
                     $("#Secret").val(data.secret);
                 }
             });

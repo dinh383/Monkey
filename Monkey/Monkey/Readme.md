@@ -120,3 +120,6 @@ BackgroundJob.Enqueue(() => Method));	 // make sure Method is public and allow a
 // Let use Job with Interface by DI
 BackgroundJob.Enqueue<Interface>(x => x.Method));
 ```
+
+# File Upload Note
+- Please follow the [this tutorial](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads)

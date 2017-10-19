@@ -1,25 +1,26 @@
 ﻿@model Monkey.Core.Models.Auth.SetPasswordModel
 @{
     Layout = "/Areas/Portal/Views/Shared/_LayoutAnonymous.cshtml";
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Activation";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Activation";
 }
 
-<h3 class="font-size-24">Active Account</h3>
-<p>Active account to Sign In to the Website</p>
+<h3 class="font-size-24">Confirm Email & Active Account</h3>
+<p>Active account to Sign-in to the Website</p>
 
-@using (Html.BeginForm("SubmitConfirmEmail", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
-{
-    @Html.AntiForgeryToken()
+<form asp-controller="Auth" asp-action="SubmitConfirmEmail" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
+
+    <input type="hidden" asp-for="Token" />
 
     <div class="form-group form-material" data-plugin="formMaterial">
-        @Html.LabelFor(m => m.Password, new { @class = "form-control-label", @for = $"{nameof(Model.Password)}" })
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Password)
+        <label asp-for="Password" class="form-control-label" for="@nameof(Model.Password)"></label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <span asp-validation-for="Password"></span>
     </div>
+
     <div class="form-group form-material" data-plugin="formMaterial">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-control-label", @for = $"{nameof(Model.ConfirmPassword)}" })
-        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.ConfirmPassword)
+        <label asp-for="ConfirmPassword" class="form-control-label" for="@nameof(Model.ConfirmPassword)"></label>
+        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+        <span asp-validation-for="ConfirmPassword"></span>
     </div>
 
     <div class="row">
@@ -38,4 +39,4 @@
             </button>
         </div>
     </div>
-}
+</form>

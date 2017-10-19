@@ -18,11 +18,42 @@
 #endregion License
 
 using Monkey.Core.Models.Auth;
+using Puppy.Core.DictionaryUtils;
+using Puppy.Core.ObjectUtils;
+using Puppy.Core.TypeUtils;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace Monkey.Core
 {
     public static class LoggedInUser
     {
-        public static LoggedInUserModel Current { get; set; }
+        private static string HttpContextItemKey => typeof(LoggedInUser).GetAssembly().FullName;
+
+        public static LoggedInUserModel Current
+        {
+            get
+            {
+                if (HttpContext.Current?.Items != null)
+                {
+                    return HttpContext.Current.Items.TryGetValue(HttpContextItemKey, out var value)
+                        ? value?.ConvertTo<LoggedInUserModel>()
+                        : null;
+                }
+
+                return null;
+            }
+            set
+            {
+                // Update Current Logged In User in both Static Global variable and HttpContext
+                if (HttpContext.Current.Items?.Any() != null)
+                {
+                    HttpContext.Current.Items = new Dictionary<object, object>();
+                }
+
+                HttpContext.Current.Items.AddOrUpdate(HttpContextItemKey, value);
+            }
+        }
     }
 }

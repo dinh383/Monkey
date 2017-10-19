@@ -17,16 +17,37 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Puppy.Web.HttpUtils;
 
 namespace Monkey.Auth.Filters
 {
-    public class MvcAuthActionFilter : IActionFilter
+    public class MvcAuthActionFilter : IAuthorizationFilter
     {
-        public void OnActionExecuting(ActionExecutingContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
+            if (context.HttpContext.Request.IsAjaxRequest())
+            {
+                if (!context.IsAuthenticated())
+                {
+                    context.Result = new JsonResult(new { });
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return;
+                }
+
+                if (!context.IsAuthorized())
+                {
+                    context.Result = new JsonResult(new { });
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return;
+                }
+
+                return;
+            }
+
             if (!context.IsAuthenticated())
             {
                 var redirectUrl = context.HttpContext.Request.GetDisplayUrl();
@@ -38,11 +59,6 @@ namespace Monkey.Auth.Filters
             {
                 context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal" }, false);
             }
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            // Nothing to filter in Action Executed
         }
     }
 }

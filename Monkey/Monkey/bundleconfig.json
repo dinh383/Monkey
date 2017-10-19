@@ -1,8 +1,8 @@
-[
+﻿[
   {
-    "outputFileName": "Areas/Portal/wwwroot/css/skins/owl.min.css",
+    "outputFileName": "Areas/Portal/wwwroot/css/skins/monkey.min.css",
     "inputFiles": [
-      "Areas/Portal/wwwroot/css/skins/owl.css"
+      "Areas/Portal/wwwroot/css/skins/monkey.css"
     ]
   },
   {
@@ -12,9 +12,9 @@
     ]
   },
   {
-    "outputFileName": "Areas/Portal/wwwroot/css/owl.min.css",
+    "outputFileName": "Areas/Portal/wwwroot/css/monkey.min.css",
     "inputFiles": [
-      "Areas/Portal/wwwroot/css/owl.css"
+      "Areas/Portal/wwwroot/css/monkey.css"
     ]
   },
   {
@@ -24,9 +24,9 @@
     ]
   },
   {
-    "outputFileName": "Areas/Portal/wwwroot/css/skins/owl-skin.min.css",
+    "outputFileName": "Areas/Portal/wwwroot/css/skins/monkey-skin.min.css",
     "inputFiles": [
-      "Areas/Portal/wwwroot/css/skins/owl-skin.css"
+      "Areas/Portal/wwwroot/css/skins/monkey-skin.css"
     ]
   },
   {
@@ -78,15 +78,15 @@
     ]
   },
   {
-    "outputFileName": "Areas/Portal/wwwroot/js/OwlUtils.min.js",
+    "outputFileName": "Areas/Portal/wwwroot/js/MonkeyUtils.min.js",
     "inputFiles": [
-      "Areas/Portal/wwwroot/js/OwlUtils.js"
+      "Areas/Portal/wwwroot/js/MonkeyUtils.js"
     ]
   },
   {
-    "outputFileName": "Areas/Portal/wwwroot/js/Owl.min.js",
+    "outputFileName": "Areas/Portal/wwwroot/js/Monkey.min.js",
     "inputFiles": [
-      "Areas/Portal/wwwroot/js/Owl.js"
+      "Areas/Portal/wwwroot/js/Monkey.js"
     ]
   },
   {

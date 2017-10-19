@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Monkey.Core.Models.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Monkey.Core.Models.Auth;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
 using Puppy.Core.StringUtils;
@@ -39,13 +39,13 @@ namespace Monkey.Auth.Helpers
         /// <summary>
         ///     Access token cookie name depend on Assembly and Secret Key to make difference between systems.
         /// </summary>
-        private static readonly string AccessTokenCookieName = $"{nameof(AccessTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthConfig.SecretKey);
+        private static readonly string AccessTokenCookieName = $"Access_{typeof(TokenHelper).GetAssemblySimpleName()}";
 
         /// <summary>
         ///     Refresh token cookie name depend on Assembly and Secret Key to make difference
         ///     between systems.
         /// </summary>
-        private static readonly string RefreshTokenCookieName = $"{nameof(RefreshTokenCookieName)}|{typeof(TokenHelper).GetAssemblySimpleName()}".Encrypt(AuthConfig.SecretKey);
+        private static readonly string RefreshTokenCookieName = $"Refresh_{typeof(TokenHelper).GetAssemblySimpleName()}";
 
         #region Generate
 
@@ -120,10 +120,10 @@ namespace Monkey.Auth.Helpers
         public static void RemoveAccessTokenInCookie(IResponseCookies cookies)
         {
             // Access Token
-            cookies.Delete(AccessTokenCookieName);
+            cookies.Delete(AccessTokenCookieName.Encrypt(AuthConfig.SecretKey).EncodeBase64Url());
 
             // Refresh Token
-            cookies.Delete(RefreshTokenCookieName);
+            cookies.Delete(RefreshTokenCookieName.Encrypt(AuthConfig.SecretKey).EncodeBase64Url());
         }
 
         public static AccessTokenModel GetAccessTokenInCookie(IRequestCookieCollection cookies)
@@ -152,22 +152,29 @@ namespace Monkey.Auth.Helpers
 
         public static string GetCookieValue(IRequestCookieCollection cookies, string key)
         {
+            key = key.Encrypt(AuthConfig.SecretKey).EncodeBase64Url();
+
             if (!cookies.TryGetValue(key, out var cookieValue))
             {
                 return null;
             }
 
-            if (!cookieValue.TryDecrypt(AuthConfig.SecretKey, out var accessToken))
+            cookieValue = cookieValue.DecodeBase64Url();
+
+            if (!cookieValue.TryDecrypt(AuthConfig.SecretKey, out var cookieValueData))
             {
                 return null;
             }
 
-            return accessToken;
+            return cookieValueData;
         }
 
         public static void SetCookieValue(IResponseCookies cookies, string key, string value)
         {
-            cookies.Append(key, value.Encrypt(AuthConfig.SecretKey), new CookieOptions
+            key = key.Encrypt(AuthConfig.SecretKey).EncodeBase64Url();
+            value = value.Encrypt(AuthConfig.SecretKey).EncodeBase64Url();
+
+            cookies.Append(key, value, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = false // allow transmit via http and https

@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Microsoft.EntityFrameworkCore;
 using Monkey.Business.Auth;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Exceptions;
@@ -31,6 +30,7 @@ using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monkey.Business.Logic.Auth
@@ -45,41 +45,45 @@ namespace Monkey.Business.Logic.Auth
             _clientRepository = clientRepository;
         }
 
-        public Task<int> CreateAsync(ClientCreateModel model)
+        public Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             var clientEntity = model.MapTo<ClientEntity>();
 
             _clientRepository.Add(clientEntity);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
 
             _clientRepository.SaveChanges();
 
             return Task.FromResult(clientEntity.Id);
         }
 
-        public Task UpdateAsync(ClientUpdateModel model)
+        public Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             var clientEntity = model.MapTo<ClientEntity>();
 
             clientEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
+
             clientEntity.BannedRemark = model.IsBanned ? null : clientEntity.BannedRemark;
 
             _clientRepository.Update(clientEntity, x => x.Name, x => x.Domains, x => x.Type, x => x.BannedTime, x => x.BannedRemark);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
 
             _clientRepository.SaveChanges();
 
             return Task.CompletedTask;
         }
 
-        public async Task<ClientModel> GetAsync(int id)
+        public Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var clientEntity = await _clientRepository.Get(x => x.Id == id).SingleAsync().ConfigureAwait(true);
-
-            ClientModel model = clientEntity.MapTo<ClientModel>();
-
-            return model;
+            var model = _clientRepository.Get(x => x.Id == id).QueryTo<ClientModel>().FirstOrDefault();
+            return Task.FromResult(model);
         }
 
-        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model)
+        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             var listData = _clientRepository.Get().QueryTo<ClientModel>();
 
@@ -88,7 +92,7 @@ namespace Monkey.Business.Logic.Auth
             return Task.FromResult(result);
         }
 
-        public async Task<string> GenerateSecretAsync(int id)
+        public Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             ClientEntity client = new ClientEntity
             {
@@ -98,9 +102,12 @@ namespace Monkey.Business.Logic.Auth
 
             _clientRepository.Update(client, x => x.GlobalId);
 
-            await _clientRepository.SaveChangesAsync().ConfigureAwait(true);
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
 
-            return client.GlobalId;
+            _clientRepository.SaveChanges();
+
+            return Task.FromResult(client.GlobalId);
         }
 
         public void CheckExist(params int[] ids)
@@ -113,10 +120,10 @@ namespace Monkey.Business.Logic.Auth
             }
         }
 
-        public async Task<int> GetIdAsync(string subject, string secret)
+        public Task<int> GetIdAsync(string subject, string secret, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var clientId = await _clientRepository.Get(x => x.GlobalId == subject && x.Secret == secret).Select(x => x.Id).SingleAsync().ConfigureAwait(true);
-            return clientId;
+            var clientId = _clientRepository.Get(x => x.GlobalId == subject && x.Secret == secret).Select(x => x.Id).Single();
+            return Task.FromResult(clientId);
         }
 
         public void CheckExist(string subject, string secret)
@@ -143,12 +150,15 @@ namespace Monkey.Business.Logic.Auth
             }
         }
 
-        public Task RemoveAsync(int id)
+        public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
         {
             _clientRepository.Delete(new ClientEntity
             {
                 Id = id
             });
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
 
             _clientRepository.SaveChanges();
 

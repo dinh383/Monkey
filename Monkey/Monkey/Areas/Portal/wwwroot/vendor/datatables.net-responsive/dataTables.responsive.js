@@ -1,4 +1,4 @@
-/*! Responsive 2.1.1
+﻿/*! Responsive 2.1.1
  * 2014-2016 SpryMedia Ltd - datatables.net/license
  */
 

@@ -1,24 +1,25 @@
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Monkey.Auth.Filters;
+using Monkey.Auth.Filters.Attributes;
+using Monkey.Core;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
-using Monkey.Core.Models.Auth;
+using Monkey.Core.Models.User;
 using Monkey.Extensions;
-using Monkey.Service;
+using Monkey.Service.Auth;
+using Monkey.Service.User;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Areas.Portal.Controllers
 {
     [Route(Endpoint)]
-    [Auth(Enums.Permission.Admin)]
     public class UserController : MvcController
     {
         public const string Endpoint = AreaName + "/user";
@@ -26,6 +27,8 @@ namespace Monkey.Areas.Portal.Controllers
         public const string AddEndpoint = "add";
         public const string EditEndpoint = "{id}/edit";
         public const string SubmitEditEndpoint = "edit";
+        public const string UpdateProfileEndpoint = "update-profile";
+        public const string SubmitUpdateProfileEndpoint = "submit-update-profile";
         public const string CheckUniqueUserNameEndpoint = "check-unique-username";
         public const string CheckUniqueEmailEndpoint = "check-unique-email";
         public const string CheckExistEmailEndpoint = "check-exist-email";
@@ -44,6 +47,7 @@ namespace Monkey.Areas.Portal.Controllers
         #region Listing
 
         [Route(ListingEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpGet]
         public IActionResult Index()
         {
@@ -51,10 +55,11 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(ListingEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         public DataTableActionResult<UserModel> GetDataTable([FromForm] DataTableParamModel model)
         {
-            var result = _userService.GetDataTableAsync(model);
+            var result = _userService.GetDataTableAsync(model, this.GetRequestCancellationToken());
             var response = result.Result.GetDataTableActionResult<UserModel>();
             return response;
         }
@@ -64,6 +69,7 @@ namespace Monkey.Areas.Portal.Controllers
         #region Add
 
         [Route(AddEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpGet]
         public IActionResult Add()
         {
@@ -72,6 +78,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(AddEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitAdd([FromForm]UserCreateModel model)
@@ -82,8 +89,8 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("Add", model);
             }
 
-            await _userService.CreateByEmailAsync(model).ConfigureAwait(true);
-            this.SetNotify("Add Success", "Add user successful", ControllerExtensions.NotifyStatus.Success);
+            await _userService.CreateByEmailAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
+            this.SetNotify("Add Success", "Add user successful", NotifyStatus.Success);
 
             return RedirectToAction("Index");
         }
@@ -93,16 +100,18 @@ namespace Monkey.Areas.Portal.Controllers
         #region Edit
 
         [Route(EditEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var userModel = await _userService.GetAsync(id).ConfigureAwait(true);
+            var userModel = await _userService.GetAsync(id, this.GetRequestCancellationToken()).ConfigureAwait(true);
             var userUpdateModel = userModel.MapTo<UserUpdateModel>();
             ViewBag.RoleSelectList = GetRoleSelectList();
             return View(userUpdateModel);
         }
 
         [Route(SubmitEditEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         public async Task<IActionResult> SubmitEdit([FromForm]UserUpdateModel model)
         {
@@ -112,22 +121,56 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("Edit", model);
             }
 
-            await _userService.UpdateAsync(model).ConfigureAwait(true);
-            this.SetNotify("Edit Success", "Edit user successful", ControllerExtensions.NotifyStatus.Success);
+            await _userService.UpdateAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
+            this.SetNotify("Edit Success", "Edit user successful", NotifyStatus.Success);
             return RedirectToAction("Index");
+        }
+
+        [Route(UpdateProfileEndpoint)]
+        [HttpGet]
+        [Auth]
+        public IActionResult UpdateProfile()
+        {
+            var updateProfileModel = LoggedInUser.Current.MapTo<UpdateProfileModel>();
+            return View(updateProfileModel);
+        }
+
+        [Route(SubmitUpdateProfileEndpoint)]
+        [HttpPost]
+        [Auth]
+        public async Task<IActionResult> SubmitUpdateProfile([FromForm]UpdateProfileModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("UpdateProfile", model);
+            }
+
+            await _userService.UpdateProfileAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
+
+            this.SetNotify("Edit Profile Success", "Your profile updated new information", NotifyStatus.Success);
+
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion Edit
 
+        #region Remove
+
         [Route(RemoveEndpoint)]
+        [Auth(Enums.Permission.Admin)]
         [HttpPost]
         public async Task<JsonResult> Remove(int id)
         {
-            await _userService.RemoveAsync(id).ConfigureAwait(true);
+            await _userService.RemoveAsync(id, this.GetRequestCancellationToken()).ConfigureAwait(true);
             return Json(new { });
         }
 
+        #endregion Remove
+
+        #region Check
+
         [Route(CheckUniqueUserNameEndpoint)]
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult CheckUniqueUserName(string userName, int? id = null)
         {
@@ -148,6 +191,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(CheckUniqueEmailEndpoint)]
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult CheckUniqueEmail(string email, int? id = null)
         {
@@ -168,6 +212,7 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(CheckExistEmailEndpoint)]
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult CheckExistEmail(string email)
         {
@@ -188,8 +233,8 @@ namespace Monkey.Areas.Portal.Controllers
         }
 
         [Route(CheckUniquePhoneEndpoint)]
-        [HttpPost]
         [AllowAnonymous]
+        [HttpPost]
         public JsonResult CheckUniquePhone(string phone, int? id = null)
         {
             try
@@ -208,6 +253,10 @@ namespace Monkey.Areas.Portal.Controllers
             }
         }
 
+        #endregion Check
+
+        #region Private Helper
+
         private List<SelectListItem> GetRoleSelectList()
         {
             return _roleService.GetListRoleAsync(new PagedCollectionParametersModel()).Result.Items.Select(x =>
@@ -217,5 +266,7 @@ namespace Monkey.Areas.Portal.Controllers
                     Text = x.Name
                 }).ToList();
         }
+
+        #endregion Private Helper
     }
 }

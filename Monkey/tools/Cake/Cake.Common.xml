@@ -3587,6 +3587,14 @@
             <param name="variable">The environment variable name.</param>
             <returns>The environment variable.</returns>
         </member>
+        <member name="M:Cake.Common.Build.GitLabCI.GitLabCIInfo.GetEnvironmentString(System.String,System.String)">
+            <summary>
+            Gets an environment variable as a <see cref="T:System.String"/>.
+            </summary>
+            <param name="primaryVariable">The primary environment variable name.</param>
+            <param name="secondaryVariable">The secondary environment variable name.</param>
+            <returns>The environment variable.</returns>
+        </member>
         <member name="M:Cake.Common.Build.GitLabCI.GitLabCIInfo.GetEnvironmentInteger(System.String)">
             <summary>
             Gets an environment variable as a <see cref="T:System.Int32"/>.
@@ -3594,11 +3602,27 @@
             <param name="variable">The environment variable name.</param>
             <returns>The environment variable.</returns>
         </member>
+        <member name="M:Cake.Common.Build.GitLabCI.GitLabCIInfo.GetEnvironmentInteger(System.String,System.String)">
+            <summary>
+            Gets an environment variable as a <see cref="T:System.Int32"/>.
+            </summary>
+            <param name="primaryVariable">The primary environment variable name.</param>
+            <param name="secondaryVariable">The secondary environment variable name.</param>
+            <returns>The environment variable.</returns>
+        </member>
         <member name="M:Cake.Common.Build.GitLabCI.GitLabCIInfo.GetEnvironmentBoolean(System.String)">
             <summary>
             Gets an environment variable as a <see cref="T:System.Boolean"/>.
             </summary>
             <param name="variable">The environment variable name.</param>
+            <returns>The environment variable.</returns>
+        </member>
+        <member name="M:Cake.Common.Build.GitLabCI.GitLabCIInfo.GetEnvironmentBoolean(System.String,System.String)">
+            <summary>
+            Gets an environment variable as a <see cref="T:System.Boolean"/>.
+            </summary>
+            <param name="primaryVariable">The primary environment variable name.</param>
+            <param name="secondaryVariable">The secondary environment variable name.</param>
             <returns>The environment variable.</returns>
         </member>
         <member name="T:Cake.Common.Build.GitLabCI.GitLabCIProvider">
@@ -4103,7 +4127,7 @@
         </member>
         <member name="T:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo">
             <summary>
-            Provides Jenkins build information for a current build.
+            Provides Jenkins build information for the current build.
             </summary>
         </member>
         <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo.BuildNumber">
@@ -4116,7 +4140,7 @@
         </member>
         <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo.BuildId">
             <summary>
-            Gets the build identifier.
+            Gets the build identifier which is identical to <see cref="P:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo.BuildNumber"/> starting from Jenkins 1.597 and a YYYY-MM-DD_hh-mm-ss timestamp for older builds.
             </summary>
             <value>
             The build identifier.
@@ -4132,10 +4156,10 @@
         </member>
         <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo.BuildTag">
             <summary>
-            Gets the build URL.
+            Gets the build tag which is a string of "jenkins-${JOB_NAME}-${BUILD_NUMBER}". All forward slashes (/) in the JOB_NAME are replaced with dashes (-).
             </summary>
             <value>
-            The build URL.
+            The build tag.
             </value>
         </member>
         <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo.BuildUrl">
@@ -4154,9 +4178,84 @@
             The executor number.
             </value>
         </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo.Workspace">
+            <summary>
+            Gets the absolute path of the workspace directory assigned to the build.
+            </summary>
+            <value>
+            The workspace directory path.
+            </value>
+        </member>
         <member name="M:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo.#ctor(Cake.Core.ICakeEnvironment)">
             <summary>
              Initializes a new instance of the <see cref="T:Cake.Common.Build.Jenkins.Data.JenkinsBuildInfo"/> class.
+            </summary>
+            <param name="environment">The environment.</param>
+        </member>
+        <member name="T:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo">
+            <summary>
+            Provides Jenkins change information for the current build in multibranch projects.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.Id">
+            <summary>
+            Gets the change id.
+            </summary>
+            <value>
+            The change id.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.Url">
+            <summary>
+            Gets the change URL.
+            </summary>
+            <value>
+            The change URL.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.Title">
+            <summary>
+            Gets change title.
+            </summary>
+            <value>
+            The change title.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.Author">
+            <summary>
+            Gets change author.
+            </summary>
+            <value>
+            The change author.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.AuthorDisplayName">
+            <summary>
+            Gets the human name of the change author.
+            </summary>
+            <value>
+            The human name of the change author.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.AuthorEmail">
+            <summary>
+            Gets the email address of the change author.
+            </summary>
+            <value>
+            The email address of the change author.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.Target">
+            <summary>
+            Gets the target of the change.
+            </summary>
+            <value>
+            The target of the change.
+            </value>
+        </member>
+        <member name="M:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo.#ctor(Cake.Core.ICakeEnvironment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Common.Build.Jenkins.Data.JenkinsChangeInfo"/> class.
             </summary>
             <param name="environment">The environment.</param>
         </member>
@@ -4197,36 +4296,28 @@
             The node.
             </value>
         </member>
-        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsEnvironmentInfo.JenkinsHome">
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsEnvironmentInfo.Change">
             <summary>
-            Gets the jenkins home.
+            Gets the change.
             </summary>
             <value>
-            The jenkins home.
+            The change.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsEnvironmentInfo.JenkinsHome">
+            <summary>
+            Gets the absolute path of the directory assigned on the master node for Jenkins to store data.
+            </summary>
+            <value>
+            The absolute path of the directory assigned on the master node for Jenkins to store data.
             </value>
         </member>
         <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsEnvironmentInfo.JenkinsUrl">
             <summary>
-            Gets the jenkins URL.
+            Gets the full URL of Jenkins (note: only available if Jenkins URL is set in system configuration).
             </summary>
             <value>
-            The jenkins URL.
-            </value>
-        </member>
-        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsEnvironmentInfo.ExecutorNumber">
-            <summary>
-            Gets the executor number.
-            </summary>
-            <value>
-            The executor number.
-            </value>
-        </member>
-        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsEnvironmentInfo.Workspace">
-            <summary>
-            Gets the workspace.
-            </summary>
-            <value>
-            The workspace.
+            The full URL of Jenkins.
             </value>
         </member>
         <member name="M:Cake.Common.Build.Jenkins.Data.JenkinsEnvironmentInfo.#ctor(Cake.Core.ICakeEnvironment)">
@@ -4248,12 +4339,20 @@
             The name of the job.
             </value>
         </member>
-        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsJobInfo.JobUrl">
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsJobInfo.JobBaseName">
             <summary>
-            Gets the name of the job.
+            Gets the short name of the project of this build stripping off folder paths, such as "foo" for "bar/foo".
             </summary>
             <value>
-            The name of the job.
+            The base name of the job.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsJobInfo.JobUrl">
+            <summary>
+            Gets the URL of the job.
+            </summary>
+            <value>
+            The URL of the job.
             </value>
         </member>
         <member name="M:Cake.Common.Build.Jenkins.Data.JenkinsJobInfo.#ctor(Cake.Core.ICakeEnvironment)">
@@ -4293,6 +4392,14 @@
             <summary>
             Provides Jenkins repository information for the current build.
             </summary>
+        </member>
+        <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsRepositoryInfo.BranchName">
+            <summary>
+            Gets the branch name which will be build in a multibranch project.
+            </summary>
+            <value>
+            The branch name.
+            </value>
         </member>
         <member name="P:Cake.Common.Build.Jenkins.Data.JenkinsRepositoryInfo.GitCommitSha">
             <summary>
@@ -6720,6 +6827,27 @@
               <c>true</c> if the build script running on a Unix or Linux based system; otherwise <c>false</c>.
             </returns>
         </member>
+        <member name="T:Cake.Common.IO.DeleteDirectorySettings">
+            <summary>
+            Contains settings used by <c>DeleteDirectory</c>.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.IO.DeleteDirectorySettings.Recursive">
+            <summary>
+            Gets or sets a value indicating whether to perform a recursive delete if set to <c>true</c>.
+            <remarks>
+            It is set to <c>false</c> by default.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Cake.Common.IO.DeleteDirectorySettings.Force">
+            <summary>
+            Gets or sets a value indicating whether to delete read-only files if set to <c>true</c>.
+            <remarks>
+            It is set to <c>false</c> by default.
+            </remarks>
+            </summary>
+        </member>
         <member name="T:Cake.Common.IO.DirectoryAliases">
             <summary>
             Contains extension methods for working with directories.
@@ -6760,6 +6888,26 @@
             <param name="directories">The directory paths.</param>
             <param name="recursive">Will perform a recursive delete if set to <c>true</c>.</param>
         </member>
+        <member name="M:Cake.Common.IO.DirectoryAliases.DeleteDirectories(Cake.Core.ICakeContext,System.Collections.Generic.IEnumerable{Cake.Core.IO.DirectoryPath},Cake.Common.IO.DeleteDirectorySettings)">
+            <summary>
+            Deletes the specified directories.
+            </summary>
+            <example>
+            <code>
+            var directoriesToDelete = new DirectoryPath[]{
+                Directory("be"),
+                Directory("gone")
+            };
+            DeleteDirectories(directoriesToDelete, new DeleteDirectorySettings {
+                Recursive = true,
+                Force = true
+            });
+            </code>
+            </example>
+            <param name="context">The context.</param>
+            <param name="directories">The directory paths.</param>
+            <param name="settings">The delete settings.</param>
+        </member>
         <member name="M:Cake.Common.IO.DirectoryAliases.DeleteDirectories(Cake.Core.ICakeContext,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
             <summary>
             Deletes the specified directories.
@@ -6777,6 +6925,26 @@
             <param name="directories">The directory paths.</param>
             <param name="recursive">Will perform a recursive delete if set to <c>true</c>.</param>
         </member>
+        <member name="M:Cake.Common.IO.DirectoryAliases.DeleteDirectories(Cake.Core.ICakeContext,System.Collections.Generic.IEnumerable{System.String},Cake.Common.IO.DeleteDirectorySettings)">
+            <summary>
+            Deletes the specified directories.
+            </summary>
+            <example>
+            <code>
+            var directoriesToDelete = new []{
+                "be",
+                "gone"
+            };
+            DeleteDirectories(directoriesToDelete, new DeleteDirectorySettings {
+                Recursive = true,
+                Force = true
+            });
+            </code>
+            </example>
+            <param name="context">The context.</param>
+            <param name="directories">The directory paths.</param>
+            <param name="settings">The delete settings.</param>
+        </member>
         <member name="M:Cake.Common.IO.DirectoryAliases.DeleteDirectory(Cake.Core.ICakeContext,Cake.Core.IO.DirectoryPath,System.Boolean)">
             <summary>
             Deletes the specified directory.
@@ -6789,6 +6957,22 @@
             <param name="context">The context.</param>
             <param name="path">The directory path.</param>
             <param name="recursive">Will perform a recursive delete if set to <c>true</c>.</param>
+        </member>
+        <member name="M:Cake.Common.IO.DirectoryAliases.DeleteDirectory(Cake.Core.ICakeContext,Cake.Core.IO.DirectoryPath,Cake.Common.IO.DeleteDirectorySettings)">
+            <summary>
+            Deletes the specified directory.
+            </summary>
+            <example>
+            <code>
+            DeleteDirectory("./be/gone", new DeleteDirectorySettings {
+                Recursive = true,
+                Force = true
+            });
+            </code>
+            </example>
+            <param name="context">The context.</param>
+            <param name="path">The directory path.</param>
+            <param name="settings">The delete settings.</param>
         </member>
         <member name="M:Cake.Common.IO.DirectoryAliases.CleanDirectories(Cake.Core.ICakeContext,System.String)">
             <summary>
@@ -6958,6 +7142,19 @@
             MoveDirectory("mydir", "newparent/newdir");
             </code>
             </example>
+        </member>
+        <member name="M:Cake.Common.IO.DirectoryAliases.GetSubDirectories(Cake.Core.ICakeContext,Cake.Core.IO.DirectoryPath)">
+            <summary>
+            Gets a list of all the directories inside a directory.
+            </summary>
+            <example>
+            <code>
+            var directories = GetSubDirectories("some/dir");
+            </code>
+            </example>
+            <param name="context">The context.</param>
+            <param name="directoryPath">The directory path.</param>
+            <returns>An absolute directory path.</returns>
         </member>
         <member name="T:Cake.Common.IO.FileAliases">
             <summary>
@@ -7863,19 +8060,68 @@
              <param name="context">The context.</param>
              <param name="fileName">Name of the file.</param>
              <param name="settings">The settings.</param>
-             <param name="redirectedOutput">outputs process output <see cref="P:Cake.Core.IO.ProcessSettings.RedirectStandardOutput">RedirectStandardOutput</see> is true</param>
+             <param name="redirectedStandardOutput">Returns process output if <see cref="P:Cake.Core.IO.ProcessSettings.RedirectStandardOutput"/> is true.
+             Otherwise <c>null</c> is returned.</param>
              <returns>The exit code that the started process specified when it terminated.</returns>
              <example>
              <code>
-             IEnumerable&lt;string&gt; redirectedOutput;
-             var exitCodeWithArgument = StartProcess("ping", new ProcessSettings{
-             Arguments = "localhost",
-             RedirectStandardOutput = true
-             },
-             out redirectedOutput
-             );
-             //Output last line of process output
-             Information("Last line of output: {0}", redirectedOutput.LastOrDefault());
+             IEnumerable&lt;string&gt; redirectedStandardOutput;
+             var exitCodeWithArgument =
+                 StartProcess(
+                     "ping",
+                     new ProcessSettings {
+                         Arguments = "localhost",
+                         RedirectStandardOutput = true
+                     },
+                     out redirectedStandardOutput
+                 );
+            
+             // Output last line of process output.
+             Information("Last line of output: {0}", redirectedStandardOutput.LastOrDefault());
+            
+             // This should output 0 as valid arguments supplied
+             Information("Exit code: {0}", exitCodeWithArgument);
+             </code>
+             </example>
+        </member>
+        <member name="M:Cake.Common.ProcessAliases.StartProcess(Cake.Core.ICakeContext,Cake.Core.IO.FilePath,Cake.Core.IO.ProcessSettings,System.Collections.Generic.IEnumerable{System.String}@,System.Collections.Generic.IEnumerable{System.String}@)">
+             <summary>
+             Starts the process resource that is specified by the filename and settings.
+             </summary>
+             <param name="context">The context.</param>
+             <param name="fileName">Name of the file.</param>
+             <param name="settings">The settings.</param>
+             <param name="redirectedStandardOutput">Returns process output if <see cref="P:Cake.Core.IO.ProcessSettings.RedirectStandardOutput"/> is true.
+             Otherwise <c>null</c> is returned.</param>
+             <param name="redirectedErrorOutput">Returns process error output if <see cref="P:Cake.Core.IO.ProcessSettings.RedirectStandardError"/> is true.
+             Otherwise <c>null</c> is returned.</param>
+             <returns>The exit code that the started process specified when it terminated.</returns>
+             <example>
+             <code>
+             IEnumerable&lt;string&gt; redirectedStandardOutput;
+             IEnumerable&lt;string&gt; redirectedErrorOutput;
+             var exitCodeWithArgument =
+                 StartProcess(
+                     "ping",
+                     new ProcessSettings {
+                         Arguments = "localhost",
+                         RedirectStandardOutput = true
+                     },
+                     out redirectedStandardOutput,
+                     out redirectedErrorOutput
+                 );
+            
+             // Output last line of process output.
+             Information("Last line of output: {0}", redirectedStandardOutput.LastOrDefault());
+            
+             // Throw exception if anything was written to the standard error.
+             if (redirectedErrorOutput.Any())
+             {
+                 throw new Exception(
+                     string.Format(
+                         "Errors ocurred: {0}",
+                         string.Join(", ", redirectedErrorOutput));
+             }
             
              // This should output 0 as valid arguments supplied
              Information("Exit code: {0}", exitCodeWithArgument);
@@ -9496,6 +9742,43 @@
             </code>
             </example>
         </member>
+        <member name="T:Cake.Common.Tools.MSBuild.MSBuildBinaryLogImports">
+            <summary>
+            What files to include in the binary log
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.MSBuild.MSBuildBinaryLogImports.Unspecified">
+            <summary>Don't specify imports</summary>
+        </member>
+        <member name="F:Cake.Common.Tools.MSBuild.MSBuildBinaryLogImports.None">
+            <summary>Do not collect project and imports files</summary>
+        </member>
+        <member name="F:Cake.Common.Tools.MSBuild.MSBuildBinaryLogImports.Embed">
+            <summary>Embed in the binlog file</summary>
+        </member>
+        <member name="F:Cake.Common.Tools.MSBuild.MSBuildBinaryLogImports.ZipFile">
+            <summary>Produce a separate .ProjectImports.zip</summary>
+        </member>
+        <member name="T:Cake.Common.Tools.MSBuild.MSBuildBinaryLogSettings">
+            <summary>
+            MSBuild binary logging settings used by <see cref="T:Cake.Common.Tools.MSBuild.MSBuildSettings"/>.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.MSBuild.MSBuildBinaryLogSettings.Enabled">
+            <summary>
+            Gets or sets a value indicating whether binary logging should be enabled.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.MSBuild.MSBuildBinaryLogSettings.FileName">
+            <summary>
+            Gets or sets the output filename.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.MSBuild.MSBuildBinaryLogSettings.Imports">
+            <summary>
+            Gets or sets what source files should be included in the log.
+            </summary>
+        </member>
         <member name="T:Cake.Common.Tools.MSBuild.MSBuildFileLogger">
             <summary>
             Contains settings for specifying a MSBuild file logger.
@@ -9563,10 +9846,11 @@
             Gets or sets Specifies the encoding for the file (for example, UTF-8, Unicode, or ASCII).
             </summary>
         </member>
-        <member name="M:Cake.Common.Tools.MSBuild.MSBuildFileLogger.GetParameters">
+        <member name="M:Cake.Common.Tools.MSBuild.MSBuildFileLogger.GetParameters(Cake.Core.ICakeEnvironment)">
             <summary>
             Process the file logger config and return parameters as a string.
             </summary>
+            <param name="environment">The environment.</param>
             <returns>The parameters separated by semi-colons.</returns>
         </member>
         <member name="T:Cake.Common.Tools.MSBuild.MSBuildFileLoggerOutput">
@@ -9759,6 +10043,29 @@
             Gets the file loggers
             </summary>
         </member>
+        <member name="P:Cake.Common.Tools.MSBuild.MSBuildSettings.BinaryLogger">
+            <summary>
+            Gets or sets the binary logging options
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.MSBuild.MSBuildSettings.WarningsAsError">
+            <summary>
+            Gets or sets a value indicating whether warnings should be treated as errors.
+            Treats all warnings as errors unless <see cref="P:Cake.Common.Tools.MSBuild.MSBuildSettings.WarningsAsErrorCodes"/> has specific codes specified.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.MSBuild.MSBuildSettings.WarningsAsErrorCodes">
+            <summary>
+            Gets the warning codes to treat as errors.
+            If any specified <seealso cref="P:Cake.Common.Tools.MSBuild.MSBuildSettings.WarningsAsError"/> will implicitly be treated as true.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.MSBuild.MSBuildSettings.WarningsAsMessageCodes">
+            <summary>
+            Gets the warning codes to NOT treat as errors.
+            </summary>
+            <remarks>Only available MSBuild version 15 (VS2017) and newer.</remarks>
+        </member>
         <member name="M:Cake.Common.Tools.MSBuild.MSBuildSettings.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Cake.Common.Tools.MSBuild.MSBuildSettings"/> class.
@@ -9889,6 +10196,22 @@
             <param name="settings">The settings.</param>
             <returns>The same <see cref="T:Cake.Common.Tools.MSBuild.MSBuildSettings"/> instance so that multiple calls can be chained.</returns>
         </member>
+        <member name="M:Cake.Common.Tools.MSBuild.MSBuildSettingsExtensions.WithWarningsAsError(Cake.Common.Tools.MSBuild.MSBuildSettings,System.String[])">
+            <summary>
+            Treat warnnings as errors, if no codes specified all errors will be treated as errors.
+            </summary>
+            <param name="settings">The settings.</param>
+            <param name="codes">Only treat specified warning codes as errors.</param>
+            <returns>The same <see cref="T:Cake.Common.Tools.MSBuild.MSBuildSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Common.Tools.MSBuild.MSBuildSettingsExtensions.WithWarningsAsMessage(Cake.Common.Tools.MSBuild.MSBuildSettings,System.String[])">
+            <summary>
+            Warnings to not treat as errors.
+            </summary>
+            <param name="settings">The settings.</param>
+            <param name="codes">Warning codes to not treat as errors.</param>
+            <returns>The same <see cref="T:Cake.Common.Tools.MSBuild.MSBuildSettings"/> instance so that multiple calls can be chained.</returns>
+        </member>
         <member name="T:Cake.Common.Tools.MSBuild.MSBuildToolVersion">
             <summary>
             Represents a MSBuild tool version.
@@ -9978,6 +10301,18 @@
             <summary>
             MSBuild tool version: <c>Visual Studio 2017</c>
             </summary>
+        </member>
+        <member name="T:Cake.Common.Tools.MSBuild.MSBuildVerbosityExtensions">
+            <summary>
+            Contains functionality related to MSBuild verbosity.
+            </summary>
+        </member>
+        <member name="M:Cake.Common.Tools.MSBuild.MSBuildVerbosityExtensions.GetMSBuildVerbosityName(Cake.Core.Diagnostics.Verbosity)">
+            <summary>
+            Gets the MSBuild verbosity from <see cref="T:Cake.Core.Diagnostics.Verbosity"/>.
+            </summary>
+            <param name="verbosity">The verbosity.</param>
+            <returns>MSBuild verbosity string.</returns>
         </member>
         <member name="T:Cake.Common.Tools.MSBuild.MSBuildVersion">
             <summary>
@@ -10526,6 +10861,12 @@
             <c>true</c> if the temporarily autogenerated NuSpec file should be kept; otherwise <c>false</c>.
             </value>
         </member>
+        <member name="P:Cake.Common.Tools.NuGet.Pack.NuGetPackSettings.Language">
+            <summary>
+            Gets or sets the package language.
+            </summary>
+            <value>The package language.</value>
+        </member>
         <member name="T:Cake.Common.Tools.NuGet.Pack.NuSpecContent">
             <summary>
             Represents a NuGet nuspec file
@@ -10915,6 +11256,11 @@
             <c>true</c> if password is stored as unencrypted; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="P:Cake.Common.Tools.NuGet.Sources.NuGetSourcesSettings.ConfigFile">
+            <summary>
+            Gets or sets the location of the NuGet configuration file. If not specified, file %AppData%\NuGet\NuGet.config is used as configuration file.
+            </summary>
+        </member>
         <member name="T:Cake.Common.Tools.NuGet.Update.NamespaceDoc">
             <summary>
             This namespace contain types used to
@@ -11088,6 +11434,81 @@
             If not specified, the file <c>%AppData%\NuGet\NuGet.config</c> is used as the configuration file.
             </summary>
             <value>The NuGet configuration file.</value>
+        </member>
+        <member name="T:Cake.Common.Tools.NuGet.List.NuGetList">
+            <summary>
+            The NuGet package lister used to list NuGet packages from a source.
+            </summary>
+        </member>
+        <member name="M:Cake.Common.Tools.NuGet.List.NuGetList.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.ICakeEnvironment,Cake.Core.IO.IProcessRunner,Cake.Core.Tooling.IToolLocator,Cake.Core.IO.NuGet.INuGetToolResolver)">
+            <summary>
+             Initializes a new instance of the <see cref="T:Cake.Common.Tools.NuGet.List.NuGetList"/> class.
+            </summary>
+            <param name="fileSystem">The file system.</param>
+            <param name="environment">The environment.</param>
+            <param name="processRunner">The process runner.</param>
+            <param name="tools">The tool locator.</param>
+            <param name="resolver">The NuGet tool resolver.</param>
+        </member>
+        <member name="M:Cake.Common.Tools.NuGet.List.NuGetList.List(Cake.Common.Tools.NuGet.List.NuGetListSettings)">
+            <summary>
+            Lists available packages with their versions
+            </summary>
+            <param name="settings">The settings</param>
+            <returns>A list of available packages</returns>
+        </member>
+        <member name="M:Cake.Common.Tools.NuGet.List.NuGetList.List(System.String,Cake.Common.Tools.NuGet.List.NuGetListSettings)">
+            <summary>
+            Lists available packages with their versions
+            </summary>
+            <param name="packageId">The source package id. If it equals an empty string, it will match all packageIds</param>
+            <param name="settings">The settings</param>
+            <returns>A list of available packages</returns>
+        </member>
+        <member name="T:Cake.Common.Tools.NuGet.List.NuGetListItem">
+            <summary>
+            An item as returned by <see cref="T:Cake.Common.Tools.NuGet.List.NuGetList"/>
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NuGet.List.NuGetListItem.Name">
+            <summary>
+            Gets or sets the name of the NuGetListItem
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NuGet.List.NuGetListItem.Version">
+            <summary>
+            Gets or sets the version of the NuGetListItem as string
+            </summary>
+        </member>
+        <member name="T:Cake.Common.Tools.NuGet.List.NuGetListSettings">
+            <summary>
+            Contains settings used by <see cref="T:Cake.Common.Tools.NuGet.List.NuGetList"/>.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NuGet.List.NuGetListSettings.AllVersions">
+            <summary>
+            Gets or sets a value indicating whether list all versions of a package.By default, only the latest package version is displayed
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NuGet.List.NuGetListSettings.Prerelease">
+            <summary>
+            Gets or sets a value indicating whether to allow prerelease packages to be shown.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NuGet.List.NuGetListSettings.IncludeDelisted">
+            <summary>
+            Gets or sets a value indicating whether to allow unlisted packages to be shown.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NuGet.List.NuGetListSettings.ConfigFile">
+            <summary>
+            Gets or sets the NuGet configuration file. If not specified, file %AppData%\NuGet\NuGet.config is used as configuration file.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NuGet.List.NuGetListSettings.Source">
+            <summary>
+            Gets or sets a list of packages sources to search.
+            </summary>
         </member>
         <member name="T:Cake.Common.Tools.NuGet.NuGetAliases">
             <summary>
@@ -11778,6 +12199,64 @@
             </code>
             </example>
         </member>
+        <member name="M:Cake.Common.Tools.NuGet.NuGetAliases.NuGetList(Cake.Core.ICakeContext,System.String,Cake.Common.Tools.NuGet.List.NuGetListSettings)">
+            <summary>
+            List packages on available from source using specified settings
+            </summary>
+            <param name="context">The context.</param>
+            <param name="packageId">The package Id</param>
+            <param name="settings">The settings.</param>
+            <returns>List of packages with their version</returns>
+            <example>
+            <code>
+            var packageList = NuGetList("Cake", new NuGetListSettings {
+                AllVersions = false,
+                Prerelease = false
+                });
+            foreach(var package in packageList)
+            {
+                Information("Found package {0}, version {1}", package.Name, package.Version);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Cake.Common.Tools.NuGet.NuGetAliases.NuGetList(Cake.Core.ICakeContext,System.String)">
+            <summary>
+            List packages on available from source using specified settings
+            </summary>
+            <param name="context">The context.</param>
+            <param name="packageId">The package Id</param>
+            <returns>List of packages with their version</returns>
+            <example>
+            <code>
+            var packageList = NuGetList("Cake");
+            foreach(var package in packageList)
+            {
+                Information("Found package {0}, version {1}", package.Name, package.Version);
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Cake.Common.Tools.NuGet.NuGetAliases.NuGetList(Cake.Core.ICakeContext,Cake.Common.Tools.NuGet.List.NuGetListSettings)">
+            <summary>
+            List packages on available from source using specified settings
+            </summary>
+            <param name="context">The context.</param>
+            <param name="settings">The settings.</param>
+            <returns>List of packages with their version</returns>
+            <example>
+            <code>
+            var packageList = NuGetList(new NuGetListSettings {
+                AllVersions = false,
+                Prerelease = false
+                });
+            foreach(var package in packageList)
+            {
+                Information("Found package {0}, version {1}", package.Name, package.Version);
+            }
+            </code>
+            </example>
+        </member>
         <member name="T:Cake.Common.Tools.NuGet.NuGetMSBuildVersion">
             <summary>
             NuGet MSBuild version
@@ -12029,6 +12508,38 @@
             All the tests are run in the nunit-console process.
             </summary>
         </member>
+        <member name="T:Cake.Common.Tools.NUnit.NUnit3Result">
+            <summary>
+            Contains information for the results that should be exported.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.NUnit.NUnit3Result.FileName">
+            <summary>
+            Gets or sets the name of the XML result file.
+            </summary>
+            <value>
+            The name of the XML result file. Defaults to <c>TestResult.xml</c>.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Tools.NUnit.NUnit3Result.Format">
+            <summary>
+            Gets or sets the format that the results should be in. <see cref="P:Cake.Common.Tools.NUnit.NUnit3Result.FileName"/> must be set to
+            have any effect. Specify nunit2 to output the results in NUnit 2 xml format.
+            nunit3 may be specified for NUnit 3 format, however this is the default. Additional
+            formats may be supported in the future, check the NUnit documentation.
+            </summary>
+            <value>
+            The format of the result file. Defaults to <c>nunit3</c>.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Tools.NUnit.NUnit3Result.Transform">
+            <summary>
+            Gets or sets the file name of an XSL transform that will be applied to the results.
+            </summary>
+            <value>
+            The name of an XSLT file that will be applied to the results.
+            </value>
+        </member>
         <member name="T:Cake.Common.Tools.NUnit.NUnit3Runner">
             <summary>
             The NUnit unit test runner.
@@ -12172,30 +12683,9 @@
         </member>
         <member name="P:Cake.Common.Tools.NUnit.NUnit3Settings.Results">
             <summary>
-            Gets or sets the name of the XML result file.
+            Gets or sets the results that should be saved.
             </summary>
-            <value>
-            The name of the XML result file. Defaults to <c>TestResult.xml</c>.
-            </value>
-        </member>
-        <member name="P:Cake.Common.Tools.NUnit.NUnit3Settings.ResultFormat">
-            <summary>
-            Gets or sets the format that the results should be in. Results must be set to
-            have any effect. Specify nunit2 to output the results in NUnit 2 xml format.
-            nunit3 may be specified for NUnit 3 format, however this is the default. Additional
-            formats may be supported in the future, check the NUnit documentation.
-            </summary>
-            <value>
-            The format of the result file. Defaults to <c>nunit3</c>.
-            </value>
-        </member>
-        <member name="P:Cake.Common.Tools.NUnit.NUnit3Settings.ResultTransform">
-            <summary>
-            Gets or sets the file name of an XSL transform that will be applied to the results.
-            </summary>
-            <value>
-            The name of an XSLT file that will be applied to the results.
-            </value>
+            <value>The package owners.</value>
         </member>
         <member name="P:Cake.Common.Tools.NUnit.NUnit3Settings.NoResults">
             <summary>
@@ -12311,6 +12801,14 @@
             </summary>
             <value>
             The maximum number of test assembly agents to run at one time.
+            </value>
+        </member>
+        <member name="P:Cake.Common.Tools.NUnit.NUnit3Settings.Params">
+            <summary>
+            Gets or sets the params that should be passed to the runner.
+            </summary>
+            <value>
+            List of parametes (key/value) which are passed to the runner.
             </value>
         </member>
         <member name="T:Cake.Common.Tools.NUnit.NUnitAliases">
@@ -16687,6 +17185,12 @@
             Requires Chocolatey business edition.
             </summary>
         </member>
+        <member name="P:Cake.Common.Tools.Chocolatey.Download.ChocolateyDownloadSettings.InternalizeAllUrls">
+            <summary>
+            Gets or sets a value indicating whether all URLs, not only from known helpers, should be internalized.
+            Requires Chocolatey business edition (Licensed version 1.11.1+).
+            </summary>
+        </member>
         <member name="P:Cake.Common.Tools.Chocolatey.Download.ChocolateyDownloadSettings.ResourcesLocation">
             <summary>
             Gets or sets the location for downloaded resource when <see cref="P:Cake.Common.Tools.Chocolatey.Download.ChocolateyDownloadSettings.Internalize"/> is set.
@@ -20789,6 +21293,150 @@
             <param name="values">The option values.</param>
             <returns>The same <see cref="T:Cake.Common.Tools.Fixie.FixieSettings"/> instance so that multiple calls can be chained.</returns>
         </member>
+        <member name="T:Cake.Common.Tools.GitLink.GitLink3Aliases">
+            <summary>
+            <para>Contains functionality related to <see href="https://github.com/gittools/gitlink">GitLink</see> version 3.</para>
+            <para>
+            In order to use the commands for this alias, include the following in your build.cake file to download and
+            install from NuGet.org, or specify the ToolPath within the <see cref="T:Cake.Common.Tools.GitLink.GitLink3Settings" /> class:
+            <code>
+            #tool "nuget:?package=gitlink"
+            </code>
+            </para>
+            </summary>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Aliases.GitLink3(Cake.Core.ICakeContext,Cake.Core.IO.FilePath)">
+            <summary>
+            Update the pdb file to link all sources.
+            This will allow anyone to step through the source code while debugging without a symbol source server.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="pdbFilePath">The PDB File to analyze.</param>
+            <example>
+            <code>
+            GitLink3("C:/temp/solution/bin/my.pdb");
+            </code>
+            </example>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Aliases.GitLink3(Cake.Core.ICakeContext,Cake.Core.IO.FilePath,Cake.Common.Tools.GitLink.GitLink3Settings)">
+            <summary>
+            Update the pdb file to link all sources.
+            This will allow anyone to step through the source code while debugging without a symbol source server.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="pdbFilePath">The PDB File to analyze.</param>
+            <param name="settings">The settings.</param>
+            <example>
+            <code>
+            GitLink3("C:/temp/solution/bin/my.pdb", new GitLink3Settings {
+                RepositoryUrl = "http://mydomain.com",
+                ShaHash       = "abcdef"
+            });
+            </code>
+            </example>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Aliases.GitLink3(Cake.Core.ICakeContext,System.Collections.Generic.IEnumerable{Cake.Core.IO.FilePath})">
+            <summary>
+            Update the pdb files to link all sources.
+            This will allow anyone to step through the source code while debugging without a symbol source server.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="pdbFiles">The PDB File collection to analyze.</param>
+            <example>
+            <code>
+            GitLink3("C:/temp/solution/bin/**/*.pdb");
+            </code>
+            </example>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Aliases.GitLink3(Cake.Core.ICakeContext,System.Collections.Generic.IEnumerable{Cake.Core.IO.FilePath},Cake.Common.Tools.GitLink.GitLink3Settings)">
+            <summary>
+            Update the pdb files to link all sources.
+            This will allow anyone to step through the source code while debugging without a symbol source server.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="pdbFiles">The PDB File collection to analyze.</param>
+            <param name="settings">The settings.</param>
+            <example>
+            <code>
+            GitLink3("C:/temp/solution/bin/**/*.pdb", new GitLink3Settings {
+                RepositoryUrl = "http://mydomain.com",
+                ShaHash       = "abcdef"
+            });
+            </code>
+            </example>
+        </member>
+        <member name="T:Cake.Common.Tools.GitLink.GitLink3Runner">
+            <summary>
+            GitLink runner
+            </summary>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Runner.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.ICakeEnvironment,Cake.Core.IO.IProcessRunner,Cake.Core.Tooling.IToolLocator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Common.Tools.GitLink.GitLink3Runner"/> class.
+            </summary>
+            <param name="fileSystem">The file system.</param>
+            <param name="environment">The environment.</param>
+            <param name="processRunner">The process runner.</param>
+            <param name="tools">The tool locator.</param>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Runner.Run(Cake.Core.IO.FilePath,Cake.Common.Tools.GitLink.GitLink3Settings)">
+            <summary>
+            Update pdb file to link all sources
+            </summary>
+            <param name="pdbFile">The path to the pdb file to link.</param>
+            <param name="settings">The settings.</param>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Runner.Run(System.Collections.Generic.IEnumerable{Cake.Core.IO.FilePath},Cake.Common.Tools.GitLink.GitLink3Settings)">
+            <summary>
+            Update pdb files to link all sources
+            </summary>
+            <param name="pdbFiles">The file path collection for the pdb files to link.</param>
+            <param name="settings">The settings.</param>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Runner.GetToolName">
+            <summary>
+            Gets the name of the tool.
+            </summary>
+            <returns>The name of the tool.</returns>
+        </member>
+        <member name="M:Cake.Common.Tools.GitLink.GitLink3Runner.GetToolExecutableNames">
+            <summary>
+            Gets the possible names of the tool executable.
+            </summary>
+            <returns>The tool executable name.</returns>
+        </member>
+        <member name="T:Cake.Common.Tools.GitLink.GitLink3Settings">
+            <summary>
+            Contains settings used by <see cref="T:Cake.Common.Tools.GitLink.GitLink3Runner"/> .
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.GitLink.GitLink3Settings.RepositoryUrl">
+            <summary>
+            Gets or sets the Url to remote git repository.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.GitLink.GitLink3Settings.ShaHash">
+            <summary>
+            Gets or sets the SHA-1 hash of the git commit to be used.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.GitLink.GitLink3Settings.BaseDir">
+            <summary>
+            Gets or sets the path to the root of the git repository
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.GitLink.GitLink3Settings.UsePowerShell">
+            <summary>
+            Gets or sets a value indicating whether the Use PowerShell Command option should be enabled.
+            This option will use PowerShell instead of HTTP in SRCSRV to retreive the source code.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.GitLink.GitLink3Settings.SkipVerify">
+            <summary>
+            Gets or sets a value indicating whether the Skip Verify option should be enabled.
+            This option indicates whether verification of all source files are available in source control.
+            </summary>
+        </member>
         <member name="T:Cake.Common.Tools.GitLink.GitLinkAliases">
             <summary>
             <para>Contains functionality related to <see href="https://github.com/gittools/gitlink">GitLink</see>.</para>
@@ -20796,7 +21444,7 @@
             In order to use the commands for this alias, include the following in your build.cake file to download and
             install from NuGet.org, or specify the ToolPath within the <see cref="T:Cake.Common.Tools.GitLink.GitLinkSettings" /> class:
             <code>
-            #tool "nuget:?package=gitlink"
+            #tool "nuget:?package=gitlink&amp;version=2.4.0"
             </code>
             </para>
             </summary>
@@ -22643,6 +23291,51 @@
             </code>
             </example>
         </member>
+        <member name="T:Cake.Common.Tools.OpenCover.OpenCoverLogLevel">
+            <summary>
+            Represents the logging output level for OpenCover.
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.Info">
+            <summary>
+            Logs info messages and above (default)
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.Off">
+            <summary>
+            This log level disables logging
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.Fatal">
+            <summary>
+            Logs fatal messages
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.Error">
+            <summary>
+            Logs error messages and above
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.Warn">
+            <summary>
+            Logs warn messages and above
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.Debug">
+            <summary>
+            Logs debug messages and above
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.Verbose">
+            <summary>
+            Logs verbose messages and above
+            </summary>
+        </member>
+        <member name="F:Cake.Common.Tools.OpenCover.OpenCoverLogLevel.All">
+            <summary>
+            Logs all messages
+            </summary>
+        </member>
         <member name="T:Cake.Common.Tools.OpenCover.OpenCoverRunner">
             <summary>
             The OpenCover runner.
@@ -22727,6 +23420,45 @@
         <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.MergeOutput">
             <summary>
             Gets or sets a value indicating whether to merge the results with an existing file
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.ExcludeDirectories">
+            <summary>
+            Gets a list of directories where assemblies being loaded from will be ignored.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.LogLevel">
+            <summary>
+            Gets or sets the log level of OpenCover.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.MergeByHash">
+            <summary>
+            Gets or sets a value indicating whether to merge the coverage results for an assembly
+            regardless of where it was loaded assuming it has the same file-hash in each location.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.NoDefaultFilters">
+            <summary>
+            Gets or sets a value indicating whether the default filters should be applied or not.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.SearchDirectories">
+            <summary>
+            Gets a list of directories with alternative locations to look for PDBs.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.IsService">
+            <summary>
+            Gets or sets a value indicating whether if the value provided in the target parameter
+            is the name of a service rather than a name of a process.
+            </summary>
+        </member>
+        <member name="P:Cake.Common.Tools.OpenCover.OpenCoverSettings.TargetDirectory">
+            <summary>
+            Gets or sets a value indicating the path to the target directory.
+            If the target already contains a path, this parameter can be used
+            as additional path where PDBs may be found.
             </summary>
         </member>
         <member name="M:Cake.Common.Tools.OpenCover.OpenCoverSettings.#ctor">
@@ -23938,6 +24670,11 @@
             Gets or sets the name of the property to return. Defaults to "value" format.
             </summary>
         </member>
+        <member name="P:Cake.Common.Tools.VSWhere.VSWhereSettings.IncludePrerelease">
+            <summary>
+            Gets or sets a value indicating whether VSWhere should include prerelease installations
+            </summary>
+        </member>
         <member name="M:Cake.Common.Tools.VSWhere.VSWhereSettings.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Cake.Common.Tools.VSWhere.VSWhereSettings"/> class.
@@ -24244,8 +24981,8 @@
             <para>XML document:</para>
             <![CDATA[
             <?xml version="1.0" encoding="UTF-8"?>
-            <pastery xmlns = "http://cakebuild.net/pastery" >
-                < cake price="1.62" />
+            <pastery xmlns = "https://cakebuild.net/pastery" >
+                <cake price="1.62" />
             </pastery>
             ]]>
             </code>
@@ -24253,12 +24990,12 @@
             <code>
             string version = XmlPeek("./pastery.xml", "/pastery:pastery/pastery:cake/@price",
                 new XmlPeekSettings {
-                    Namespaces = new Dictionary&lt;string, string&gt; {{ "pastery", "http://cakebuild.net/pastery" }}
+                    Namespaces = new Dictionary&lt;string, string&gt; {{ "pastery", "https://cakebuild.net/pastery" }}
                 });
             string unknown = XmlPeek("./pastery.xml", "/pastery:pastery/pastery:cake/@recipe",
                 new XmlPeekSettings {
-                    Namespaces = new Dictionary&lt;string, string&gt; {{ "pastery", "http://cakebuild.net/pastery" }},
-                    SuppressWarnings = true
+                    Namespaces = new Dictionary&lt;string, string&gt; {{ "pastery", "https://cakebuild.net/pastery" }},
+                    SuppressWarning = true
                 });
             </code>
             </example>
@@ -24700,7 +25437,7 @@
             </para>
             </example>
         </member>
-        <member name="M:Cake.Common.Xml.XmlPokeAliases.XmlPoke(System.Xml.XmlReader,System.Xml.XmlWriter,System.String,System.String,Cake.Common.Xml.XmlPokeSettings)">
+        <member name="M:Cake.Common.Xml.XmlPokeAliases.XmlPoke(System.IO.Stream,System.IO.Stream,System.String,System.String,Cake.Common.Xml.XmlPokeSettings)">
             <summary>
             Set the value of, or remove, target nodes.
             </summary>
@@ -24716,6 +25453,13 @@
             </summary>
             <returns>The xml reader settings.</returns>
             <param name="settings">Additional settings to tweak Xml Poke behavior.</param>
+        </member>
+        <member name="M:Cake.Common.Xml.XmlPokeAliases.GetXmlWriterSettings(Cake.Common.Xml.XmlPokeSettings)">
+            <summary>
+            Gets a XmlWriterSettings from a XmlPokeSettings
+            </summary>
+            <param name="settings">Additional settings to tweak Xml Poke behavior.</param>
+            <returns>The xml writer settings.</returns>
         </member>
         <member name="T:Cake.Common.Xml.XmlPokeSettings">
             <summary>

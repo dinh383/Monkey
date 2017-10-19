@@ -15,23 +15,49 @@
             </summary>
             <value>The task's actions.</value>
         </member>
+        <member name="P:Cake.Core.ActionTask.DelayedActions">
+            <summary>
+            Gets the task's actions that are run at execution time to additionally populate <see cref="P:Cake.Core.ActionTask.Actions"/>.
+            </summary>
+            <value>The task's delayed actions actions.</value>
+        </member>
+        <member name="P:Cake.Core.ActionTask.DeferExceptions">
+            <summary>
+            Gets a value indicating whether gets the task's state if it will defer exceptions until the end of the task.
+            </summary>
+            <value>The task's defer exceptions state.</value>
+        </member>
         <member name="M:Cake.Core.ActionTask.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Cake.Core.ActionTask"/> class.
             </summary>
             <param name="name">The name of the task.</param>
         </member>
-        <member name="M:Cake.Core.ActionTask.AddAction(System.Action{Cake.Core.ICakeContext})">
+        <member name="M:Cake.Core.ActionTask.AddAction(System.Func{Cake.Core.ICakeContext,System.Threading.Tasks.Task})">
             <summary>
             Adds an action to the task.
             </summary>
             <param name="action">The action.</param>
+        </member>
+        <member name="M:Cake.Core.ActionTask.AddDelayedAction(System.Action)">
+            <summary>
+            Adds a delayed action to the task.
+            This method will be executed the first time the task is executed.
+            </summary>
+            <param name="action">The action.</param>
+        </member>
+        <member name="M:Cake.Core.ActionTask.SetDeferExceptions(System.Boolean)">
+            <summary>
+            Wait until all actions have executed to report failure.
+            </summary>
+            <param name="value">The value.</param>
         </member>
         <member name="M:Cake.Core.ActionTask.Execute(Cake.Core.ICakeContext)">
             <summary>
             Executes the task using the specified context.
             </summary>
             <param name="context">The context.</param>
+            <returns>Returned Task</returns>
         </member>
         <member name="T:Cake.Core.Annotations.CakeAliasAttribute">
             <summary>
@@ -114,6 +140,62 @@
             <summary>
             This namespace contain attributes used by
             the Cake engine and addins.
+            </summary>
+        </member>
+        <member name="T:Cake.Core.CakeConsole">
+            <summary>
+            The default console implementation.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.CakeConsole.ForegroundColor">
+            <summary>
+            Gets or sets the foreground color.
+            </summary>
+            <value>The foreground color.</value>
+        </member>
+        <member name="P:Cake.Core.CakeConsole.BackgroundColor">
+            <summary>
+            Gets or sets the background color.
+            </summary>
+            <value>The background color.</value>
+        </member>
+        <member name="M:Cake.Core.CakeConsole.Write(System.String,System.Object[])">
+            <summary>
+            Writes the text representation of the specified array of objects to the
+            console output using the specified format information.
+            </summary>
+            <param name="format">A composite format string</param>
+            <param name="arg">An array of objects to write using format.</param>
+        </member>
+        <member name="M:Cake.Core.CakeConsole.WriteLine(System.String,System.Object[])">
+            <summary>
+            Writes the text representation of the specified array of objects, followed
+            by the current line terminator, to the console output using the specified
+            format information.
+            </summary>
+            <param name="format">A composite format string</param>
+            <param name="arg">An array of objects to write using format.</param>
+        </member>
+        <member name="M:Cake.Core.CakeConsole.WriteError(System.String,System.Object[])">
+            <summary>
+            Writes the text representation of the specified array of objects to the
+            console error output using the specified format information.
+            </summary>
+            <param name="format">A composite format string</param>
+            <param name="arg">An array of objects to write using format.</param>
+        </member>
+        <member name="M:Cake.Core.CakeConsole.WriteErrorLine(System.String,System.Object[])">
+            <summary>
+            Writes the text representation of the specified array of objects, followed
+            by the current line terminator, to the console error output using the
+            specified format information.
+            </summary>
+            <param name="format">A composite format string</param>
+            <param name="arg">An array of objects to write using format.</param>
+        </member>
+        <member name="M:Cake.Core.CakeConsole.ResetColor">
+            <summary>
+            Sets the foreground and background console colors to their defaults.
             </summary>
         </member>
         <member name="T:Cake.Core.CakeContext">
@@ -323,7 +405,7 @@
             Raised during teardown after all other tasks have been run.
             </summary>
         </member>
-        <member name="M:Cake.Core.CakeEngine.RunTarget(Cake.Core.ICakeContext,Cake.Core.IExecutionStrategy,System.String)">
+        <member name="M:Cake.Core.CakeEngine.RunTargetAsync(Cake.Core.ICakeContext,Cake.Core.IExecutionStrategy,System.String)">
             <summary>
             Runs the specified target.
             </summary>
@@ -601,6 +683,24 @@
             <param name="duration">The duration.</param>
             <param name="executionStatus">The execution status.</param>
         </member>
+        <member name="T:Cake.Core.CakeReportPrinter">
+            <summary>
+            The default report printer.
+            </summary>
+        </member>
+        <member name="M:Cake.Core.CakeReportPrinter.#ctor(Cake.Core.IConsole,Cake.Core.ICakeContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Core.CakeReportPrinter"/> class.
+            </summary>
+            <param name="console">The console.</param>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:Cake.Core.CakeReportPrinter.Write(Cake.Core.CakeReport)">
+            <summary>
+            Writes the specified report to a target.
+            </summary>
+            <param name="report">The report to write.</param>
+        </member>
         <member name="T:Cake.Core.CakeRuntime">
             <summary>
             Represents the runtime that Cake is running in.
@@ -652,6 +752,12 @@
             </summary>
             <value>The task's dependencies.</value>
         </member>
+        <member name="P:Cake.Core.CakeTask.Dependees">
+            <summary>
+            Gets the tasks that the task want to be a dependency of.
+            </summary>
+            <value>The tasks that the task want to be a dependency of.</value>
+        </member>
         <member name="P:Cake.Core.CakeTask.Criterias">
             <summary>
             Gets the task's criterias.
@@ -680,11 +786,19 @@
             </summary>
             <param name="name">The name of the task.</param>
         </member>
-        <member name="M:Cake.Core.CakeTask.AddDependency(System.String)">
+        <member name="M:Cake.Core.CakeTask.AddDependency(System.String,System.Boolean)">
             <summary>
             Adds a dependency to the task.
             </summary>
             <param name="name">The name of the dependency.</param>
+            <param name="required">Whether or not the dependency is required.</param>
+        </member>
+        <member name="M:Cake.Core.CakeTask.AddReverseDependency(System.String,System.Boolean)">
+            <summary>
+            Makes this task a dependency of some other task.
+            </summary>
+            <param name="name">The name of the task that this task want to be a dependency of.</param>
+            <param name="required">Whether or not the dependency is required.</param>
         </member>
         <member name="M:Cake.Core.CakeTask.AddCriteria(System.Func{Cake.Core.ICakeContext,System.Boolean})">
             <summary>
@@ -721,6 +835,7 @@
             Executes the task using the specified context.
             </summary>
             <param name="context">The context.</param>
+            <returns>Returned Task</returns>
         </member>
         <member name="T:Cake.Core.CakeTaskBuilder`1">
             <summary>
@@ -764,6 +879,15 @@
             <param name="other">The name of the dependent task.</param>
             <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
         </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.IsDependeeOf``1(Cake.Core.CakeTaskBuilder{``0},System.String)">
+            <summary>
+            Makes the task a dependency of another task.
+            </summary>
+            <typeparam name="T">The task type.</typeparam>
+            <param name="builder">The task builder.</param>
+            <param name="name">The name of the task the current task will be a dependency of.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
         <member name="M:Cake.Core.CakeTaskBuilderExtensions.WithCriteria``1(Cake.Core.CakeTaskBuilder{``0},System.Boolean)">
             <summary>
             Adds a criteria that has to be fulfilled for the task to run.
@@ -801,12 +925,77 @@
             <param name="action">The action.</param>
             <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
         </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.Does(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask},System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Adds an action to be executed when the task is invoked.
+            </summary>
+            <param name="builder">The task builder.</param>
+            <param name="action">The action.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
         <member name="M:Cake.Core.CakeTaskBuilderExtensions.Does(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask},System.Action{Cake.Core.ICakeContext})">
             <summary>
             Adds an action to be executed when the task is invoked.
             </summary>
             <param name="builder">The task builder.</param>
             <param name="action">The action.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.Does(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask},System.Func{Cake.Core.ICakeContext,System.Threading.Tasks.Task})">
+            <summary>
+            Adds an action to be executed when the task is invoked.
+            </summary>
+            <param name="builder">The task builder.</param>
+            <param name="action">The action.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.DoesForEach``1(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask},System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            Adds an action to be executed foreach item in the list.
+            </summary>
+            <typeparam name="TItem">The item type.</typeparam>
+            <param name="builder">The task builder.</param>
+            <param name="items">The items.</param>
+            <param name="action">The action.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.DoesForEach``1(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask},System.Collections.Generic.IEnumerable{``0},System.Action{``0,Cake.Core.ICakeContext})">
+            <summary>
+            Adds an action to be executed foreach item in the list.
+            </summary>
+            <typeparam name="TItem">The item type.</typeparam>
+            <param name="builder">The task builder.</param>
+            <param name="items">The items.</param>
+            <param name="action">The action.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.DoesForEach``1(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask},System.Func{System.Collections.Generic.IEnumerable{``0}},System.Action{``0})">
+            <summary>
+            Adds an action to be executed foreach item returned by the items function.
+            This method will be executed the first time the task is executed.
+            </summary>
+            <typeparam name="TItem">The item type.</typeparam>
+            <param name="builder">The task builder.</param>
+            <param name="itemsFunc">The items.</param>
+            <param name="action">The action.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.DoesForEach``1(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask},System.Func{System.Collections.Generic.IEnumerable{``0}},System.Action{``0,Cake.Core.ICakeContext})">
+            <summary>
+            Adds an action to be executed foreach item returned by the items function.
+            This method will be executed the first time the task is executed.
+            </summary>
+            <typeparam name="TItem">The item type.</typeparam>
+            <param name="builder">The task builder.</param>
+            <param name="itemsFunc">The items.</param>
+            <param name="action">The action.</param>
+            <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="M:Cake.Core.CakeTaskBuilderExtensions.DeferOnError(Cake.Core.CakeTaskBuilder{Cake.Core.ActionTask})">
+            <summary>
+            Defers all exceptions until after all actions for this task have completed
+            </summary>
+            <param name="builder">The task builder.</param>
             <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
         </member>
         <member name="M:Cake.Core.CakeTaskBuilderExtensions.Description``1(Cake.Core.CakeTaskBuilder{``0},System.String)">
@@ -861,6 +1050,28 @@
             <param name="builder">The builder.</param>
             <param name="errorReporter">The finally handler.</param>
             <returns>The same <see cref="T:Cake.Core.CakeTaskBuilder`1"/> instance so that multiple calls can be chained.</returns>
+        </member>
+        <member name="T:Cake.Core.CakeTaskDependency">
+            <summary>
+            Represents a task dependency.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.CakeTaskDependency.Name">
+            <summary>
+            Gets the name of the dependency.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.CakeTaskDependency.Required">
+            <summary>
+            Gets a value indicating whether or not the dependency is required.
+            </summary>
+        </member>
+        <member name="M:Cake.Core.CakeTaskDependency.#ctor(System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Core.CakeTaskDependency"/> class.
+            </summary>
+            <param name="name">The name of the task.</param>
+            <param name="required">Whether or not the dependency is required.</param>
         </member>
         <member name="T:Cake.Core.CakeTaskExecutionStatus">
             <summary>
@@ -979,6 +1190,24 @@
             <param name="builder">The registration builder.</param>
             <returns>The same <see cref="T:Cake.Core.Composition.ICakeRegistrationBuilder"/> instance so that multiple calls can be chained.</returns>
         </member>
+        <member name="T:Cake.Core.Configuration.CakeConfiguration">
+            <summary>
+            The default implementation of the Cake configuration.
+            </summary>
+        </member>
+        <member name="M:Cake.Core.Configuration.CakeConfiguration.#ctor(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Core.Configuration.CakeConfiguration"/> class.
+            </summary>
+            <param name="lookup">The initial configuration table.</param>
+        </member>
+        <member name="M:Cake.Core.Configuration.CakeConfiguration.GetValue(System.String)">
+            <summary>
+            Gets the value that corresponds to the specified configuration key.
+            </summary>
+            <param name="key">The configuration key.</param>
+            <returns>The value for the specified configuration key, or <c>null</c> if key doesn't exists.</returns>
+        </member>
         <member name="T:Cake.Core.Configuration.CakeConfigurationProvider">
             <summary>
             Implementation of the Cake configuration provider.
@@ -1036,12 +1265,13 @@
             <param name="action">The action.</param>
             <param name="teardownContext">The context.</param>
         </member>
-        <member name="M:Cake.Core.DefaultExecutionStrategy.Execute(Cake.Core.CakeTask,Cake.Core.ICakeContext)">
+        <member name="M:Cake.Core.DefaultExecutionStrategy.ExecuteAsync(Cake.Core.CakeTask,Cake.Core.ICakeContext)">
             <summary>
             Executes the specified task.
             </summary>
             <param name="task">The task to execute.</param>
             <param name="context">The context.</param>
+            <returns>Returned Task</returns>
         </member>
         <member name="M:Cake.Core.DefaultExecutionStrategy.Skip(Cake.Core.CakeTask)">
             <summary>
@@ -1082,6 +1312,34 @@
             </summary>
             <param name="action">The action.</param>
             <param name="taskTeardownContext">The context.</param>
+        </member>
+        <member name="T:Cake.Core.Diagnostics.CakeBuildLog">
+            <summary>
+            The default Cake build log.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.Diagnostics.CakeBuildLog.Verbosity">
+            <summary>
+            Gets or sets the verbosity.
+            </summary>
+            <value>The verbosity.</value>
+        </member>
+        <member name="M:Cake.Core.Diagnostics.CakeBuildLog.#ctor(Cake.Core.IConsole,Cake.Core.Diagnostics.Verbosity)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Core.Diagnostics.CakeBuildLog" /> class.
+            </summary>
+            <param name="console">The console.</param>
+            <param name="verbosity">The verbosity.</param>
+        </member>
+        <member name="M:Cake.Core.Diagnostics.CakeBuildLog.Write(Cake.Core.Diagnostics.Verbosity,Cake.Core.Diagnostics.LogLevel,System.String,System.Object[])">
+            <summary>
+            Writes the text representation of the specified array of objects to the
+            log using the specified verbosity, log level and format information.
+            </summary>
+            <param name="verbosity">The verbosity.</param>
+            <param name="level">The log level.</param>
+            <param name="format">A composite format string.</param>
+            <param name="args">An array of objects to write using format.</param>
         </member>
         <member name="T:Cake.Core.Diagnostics.ICakeLog">
             <summary>
@@ -2288,7 +2546,7 @@
             Raised during teardown after all other tasks have been run.
             </summary>
         </member>
-        <member name="M:Cake.Core.ICakeEngine.RunTarget(Cake.Core.ICakeContext,Cake.Core.IExecutionStrategy,System.String)">
+        <member name="M:Cake.Core.ICakeEngine.RunTargetAsync(Cake.Core.ICakeContext,Cake.Core.IExecutionStrategy,System.String)">
             <summary>
             Runs the specified target using the specified <see cref="T:Cake.Core.IExecutionStrategy"/>.
             </summary>
@@ -2472,6 +2730,12 @@
             </summary>
             <value>The task's dependencies.</value>
         </member>
+        <member name="P:Cake.Core.ICakeTaskInfo.Dependees">
+            <summary>
+            Gets the tasks that the task want to be a dependency of.
+            </summary>
+            <value>The tasks that the task want to be a dependency of.</value>
+        </member>
         <member name="T:Cake.Core.IConsole">
             <summary>
             Represents console output.
@@ -2547,12 +2811,13 @@
             <param name="action">The action.</param>
             <param name="teardownContext">The context.</param>
         </member>
-        <member name="M:Cake.Core.IExecutionStrategy.Execute(Cake.Core.CakeTask,Cake.Core.ICakeContext)">
+        <member name="M:Cake.Core.IExecutionStrategy.ExecuteAsync(Cake.Core.CakeTask,Cake.Core.ICakeContext)">
             <summary>
             Executes the specified task.
             </summary>
             <param name="task">The task to execute.</param>
             <param name="context">The context.</param>
+            <returns>Returned Task</returns>
         </member>
         <member name="M:Cake.Core.IExecutionStrategy.Skip(Cake.Core.CakeTask)">
             <summary>
@@ -3270,6 +3535,54 @@
               <see cref="T:Cake.Core.IO.Path" /> instances matching the specified pattern.
             </returns>
         </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobParserContext.Peek">
+            <summary>
+            Gets the next GlobToken from the context
+            </summary>
+            <returns>The Peek'd token</returns>
+        </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobParserContext.Accept">
+            <summary>
+            Accepts the current GlobToken and loads the next into CurrentToken
+            </summary>
+        </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobParserContext.Accept(Cake.Core.IO.Globbing.GlobTokenKind[])">
+            <summary>
+            Accepts the CurrentToken if it is of the specified TokenKind(s), and fetches the next token.
+            </summary>
+            <param name="kind">The types of acceptable <see cref="T:Cake.Core.IO.Globbing.GlobTokenKind"/></param>
+        </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobTokenizer.Scan">
+            <summary>
+            Gets the next token from the pattern.
+            </summary>
+            <returns>The next GlobToken.</returns>
+        </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobTokenizer.Peek">
+            <summary>
+            Peeks the next token from the pattern.
+            </summary>
+            <returns>The peek'd GlobToken.</returns>
+        </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobTokenizer.QueueTokens">
+            <summary>
+            Loads the tokens into the token queue.
+            </summary>
+            <returns>A queue of tokens representing the pattern.</returns>
+        </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobTokenizer.GetGlobTokenKindAndTrimRemainingPattern">
+            <summary>
+            Searches the private dictionary for a set of tokens matching the current (and future) character position(s).
+            Performs a greedy match of the keys in the dictionary against the remaining pattern.
+            </summary>
+            <returns>The GlobTokenKind associated with the mathing entry, or GlobTokenKind.Identifier if none were found. </returns>
+        </member>
+        <member name="M:Cake.Core.IO.Globbing.GlobTokenizer.HandlePeriod">
+            <summary>
+            Determine what GlobTokenKind a period represents given the context
+            </summary>
+            <returns>The appropriate GlobTokenKind depending on the next character</returns>
+        </member>
         <member name="T:Cake.Core.IO.IDirectory">
             <summary>
             Represents a directory.
@@ -3330,6 +3643,12 @@
             Gets the length of the file.
             </summary>
             <value>The length of the file.</value>
+        </member>
+        <member name="P:Cake.Core.IO.IFile.Attributes">
+            <summary>
+            Gets or sets the file attributes.
+            </summary>
+            <value>The file attributes.</value>
         </member>
         <member name="M:Cake.Core.IO.IFile.Copy(Cake.Core.IO.FilePath,System.Boolean)">
             <summary>
@@ -4216,6 +4535,12 @@
             </summary>
             <param name="line">The script line to add.</param>
         </member>
+        <member name="M:Cake.Core.Scripting.Analysis.IScriptAnalyzerContext.AddScriptError(System.String)">
+            <summary>
+            Adds a script error to the result.
+            </summary>
+            <param name="error">The script error to add.</param>
+        </member>
         <member name="T:Cake.Core.Scripting.Analysis.IScriptInformation">
             <summary>
             Represents information about a script.
@@ -4251,6 +4576,18 @@
             </summary>
             <value>The using aliases defined by the script.</value>
         </member>
+        <member name="P:Cake.Core.Scripting.Analysis.IScriptInformation.UsingStaticDirectives">
+            <summary>
+            Gets all types referenced with the using static directive.
+            </summary>
+            <value>The fully qualified type names referenced by using static in the script.</value>
+        </member>
+        <member name="P:Cake.Core.Scripting.Analysis.IScriptInformation.Defines">
+            <summary>
+            Gets the defines directives defined by the scripts.
+            </summary>
+            <value>The defines.</value>
+        </member>
         <member name="P:Cake.Core.Scripting.Analysis.IScriptInformation.Tools">
             <summary>
             Gets the tools.
@@ -4283,6 +4620,34 @@
             </summary>
             <param name="path">The path to the script to analyze.</param>
             <returns>The script analysis result.</returns>
+        </member>
+        <member name="T:Cake.Core.Scripting.Analysis.ScriptAnalyzerError">
+            <summary>
+            Represents a script analysis error.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerError.File">
+            <summary>
+            Gets the file containing the error.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerError.Line">
+            <summary>
+            Gets the line number for the error.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerError.Message">
+            <summary>
+            Gets the error message.
+            </summary>
+        </member>
+        <member name="M:Cake.Core.Scripting.Analysis.ScriptAnalyzerError.#ctor(Cake.Core.IO.FilePath,System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cake.Core.Scripting.Analysis.ScriptAnalyzerError"/> class.
+            </summary>
+            <param name="file">The file containing the error.</param>
+            <param name="line">The line number for the error.</param>
+            <param name="message">The error message.</param>
         </member>
         <member name="T:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult">
             <summary>
@@ -4319,6 +4684,17 @@
             </summary>
             <value>The using aliases.</value>
         </member>
+        <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult.UsingStaticDirectives">
+            <summary>
+            Gets all types referenced with the using static directive.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult.Defines">
+            <summary>
+            Gets the defines.
+            </summary>
+            <value>The defines.</value>
+        </member>
         <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult.Addins">
             <summary>
             Gets the addins.
@@ -4331,12 +4707,23 @@
             </summary>
             <value>The tools.</value>
         </member>
-        <member name="M:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult.#ctor(Cake.Core.Scripting.Analysis.IScriptInformation,System.Collections.Generic.IReadOnlyList{System.String})">
+        <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult.Succeeded">
+            <summary>
+            Gets a value indicating whether to analysis succeded without errors.
+            </summary>
+        </member>
+        <member name="P:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult.Errors">
+            <summary>
+            Gets the list of analyzer errors.
+            </summary>
+        </member>
+        <member name="M:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult.#ctor(Cake.Core.Scripting.Analysis.IScriptInformation,System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyList{Cake.Core.Scripting.Analysis.ScriptAnalyzerError})">
             <summary>
             Initializes a new instance of the <see cref="T:Cake.Core.Scripting.Analysis.ScriptAnalyzerResult"/> class.
             </summary>
             <param name="script">The script.</param>
             <param name="lines">The merged script lines.</param>
+            <param name="errors">The analyzer errors.</param>
         </member>
         <member name="T:Cake.Core.Scripting.CodeGen.GenericParameterConstraintEmitter">
             <summary>
@@ -4416,12 +4803,11 @@
             Represents a script engine.
             </summary>
         </member>
-        <member name="M:Cake.Core.Scripting.IScriptEngine.CreateSession(Cake.Core.Scripting.IScriptHost,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:Cake.Core.Scripting.IScriptEngine.CreateSession(Cake.Core.Scripting.IScriptHost)">
             <summary>
             Creates a new script session.
             </summary>
             <param name="host">The host.</param>
-            <param name="arguments">The script arguments.</param>
             <returns>A new script session.</returns>
         </member>
         <member name="T:Cake.Core.Scripting.IScriptHost">
@@ -4511,24 +4897,31 @@
             <param name="target">The target to run.</param>
             <returns>The resulting report.</returns>
         </member>
+        <member name="M:Cake.Core.Scripting.IScriptHost.RunTargetAsync(System.String)">
+            <summary>
+            Runs the specified target.
+            </summary>
+            <param name="target">The target to run.</param>
+            <returns>The resulting report.</returns>
+        </member>
         <member name="T:Cake.Core.Scripting.IScriptProcessor">
             <summary>
             Represents a script processor.
             </summary>
         </member>
-        <member name="M:Cake.Core.Scripting.IScriptProcessor.InstallAddins(Cake.Core.Scripting.Analysis.ScriptAnalyzerResult,Cake.Core.IO.DirectoryPath)">
+        <member name="M:Cake.Core.Scripting.IScriptProcessor.InstallAddins(System.Collections.Generic.IReadOnlyCollection{Cake.Core.Packaging.PackageReference},Cake.Core.IO.DirectoryPath)">
             <summary>
             Installs the addins.
             </summary>
-            <param name="analyzerResult">The analyzer result.</param>
+            <param name="addins">The addins to install.</param>
             <param name="installPath">The install path.</param>
             <returns>A list containing file paths to installed addin assemblies.</returns>
         </member>
-        <member name="M:Cake.Core.Scripting.IScriptProcessor.InstallTools(Cake.Core.Scripting.Analysis.ScriptAnalyzerResult,Cake.Core.IO.DirectoryPath)">
+        <member name="M:Cake.Core.Scripting.IScriptProcessor.InstallTools(System.Collections.Generic.IReadOnlyCollection{Cake.Core.Packaging.PackageReference},Cake.Core.IO.DirectoryPath)">
             <summary>
-            Installs the tools specified in the build scripts.
+            Installs the tools.
             </summary>
-            <param name="analyzerResult">The analyzer result.</param>
+            <param name="tools">The tools to install.</param>
             <param name="installPath">The install path.</param>
         </member>
         <member name="T:Cake.Core.Scripting.IScriptRunner">
@@ -4604,7 +4997,19 @@
             </summary>
             <value>The using alias directives.</value>
         </member>
-        <member name="M:Cake.Core.Scripting.Script.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{Cake.Core.Scripting.ScriptAlias},System.Collections.Generic.IEnumerable{System.String})">
+        <member name="P:Cake.Core.Scripting.Script.UsingStaticDirectives">
+            <summary>
+            Gets the using static directives.
+            </summary>
+            <value>The using static directives.</value>
+        </member>
+        <member name="P:Cake.Core.Scripting.Script.Defines">
+            <summary>
+            Gets the defines.
+            </summary>
+            <value>The defines.</value>
+        </member>
+        <member name="M:Cake.Core.Scripting.Script.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{Cake.Core.Scripting.ScriptAlias},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Initializes a new instance of the <see cref="T:Cake.Core.Scripting.Script" /> class.
             </summary>
@@ -4612,6 +5017,8 @@
             <param name="lines">The scrip lines.</param>
             <param name="aliases">The script aliases.</param>
             <param name="usingAliasDirectives">The using alias directives.</param>
+            <param name="usingStaticDirectives">The using static directives.</param>
+            <param name="defines">The defines.</param>
         </member>
         <member name="T:Cake.Core.Scripting.ScriptAlias">
             <summary>
@@ -4695,13 +5102,12 @@
             The script conventions used by Cake.
             </summary>
         </member>
-        <member name="M:Cake.Core.Scripting.ScriptConventions.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.Reflection.IAssemblyLoader,Cake.Core.Diagnostics.ICakeLog)">
+        <member name="M:Cake.Core.Scripting.ScriptConventions.#ctor(Cake.Core.IO.IFileSystem,Cake.Core.Reflection.IAssemblyLoader)">
             <summary>
             Initializes a new instance of the <see cref="T:Cake.Core.Scripting.ScriptConventions"/> class.
             </summary>
             <param name="fileSystem">The file system.</param>
             <param name="loader">The assembly loader.</param>
-            <param name="log">The log.</param>
         </member>
         <member name="M:Cake.Core.Scripting.ScriptConventions.GetDefaultNamespaces">
             <summary>
@@ -4830,6 +5236,13 @@
             <param name="target">The target to run.</param>
             <returns>The resulting report.</returns>
         </member>
+        <member name="M:Cake.Core.Scripting.ScriptHost.RunTargetAsync(System.String)">
+            <summary>
+            Runs the specified target.
+            </summary>
+            <param name="target">The target to run.</param>
+            <returns>The resulting report.</returns>
+        </member>
         <member name="T:Cake.Core.Scripting.ScriptProcessor">
             <summary>
             Implementation of a script processor.
@@ -4845,19 +5258,19 @@
             <param name="tools">The tool locator.</param>
             <param name="installers">The available package installers.</param>
         </member>
-        <member name="M:Cake.Core.Scripting.ScriptProcessor.InstallAddins(Cake.Core.Scripting.Analysis.ScriptAnalyzerResult,Cake.Core.IO.DirectoryPath)">
+        <member name="M:Cake.Core.Scripting.ScriptProcessor.InstallAddins(System.Collections.Generic.IReadOnlyCollection{Cake.Core.Packaging.PackageReference},Cake.Core.IO.DirectoryPath)">
             <summary>
             Installs the addins.
             </summary>
-            <param name="analyzerResult">The analyzer result.</param>
+            <param name="addins">The addins to install.</param>
             <param name="installPath">The install path.</param>
             <returns>A list containing file paths to installed addin assemblies.</returns>
         </member>
-        <member name="M:Cake.Core.Scripting.ScriptProcessor.InstallTools(Cake.Core.Scripting.Analysis.ScriptAnalyzerResult,Cake.Core.IO.DirectoryPath)">
+        <member name="M:Cake.Core.Scripting.ScriptProcessor.InstallTools(System.Collections.Generic.IReadOnlyCollection{Cake.Core.Packaging.PackageReference},Cake.Core.IO.DirectoryPath)">
             <summary>
-            Installs the tools specified in the build scripts.
+            Installs the tools.
             </summary>
-            <param name="analyzerResult">The analyzer result.</param>
+            <param name="tools">The tools to install.</param>
             <param name="installPath">The install path.</param>
         </member>
         <member name="T:Cake.Core.Scripting.ScriptRunner">
@@ -5106,6 +5519,13 @@
             </summary>
             <param name="settings">The settings.</param>
             <returns>The environment variables for the tool.</returns>
+        </member>
+        <member name="M:Cake.Core.Tooling.Tool`1.GetToolPath(`0)">
+            <summary>
+            Gets the resolved tool path.
+            </summary>
+            <param name="settings">The settings.</param>
+            <returns>The resolved tool path.</returns>
         </member>
         <member name="T:Cake.Core.Tooling.ToolLocator">
             <summary>
@@ -5359,14 +5779,14 @@
         </member>
         <member name="M:Cake.Core.Reflection.IAssemblyLoader.Load(System.Reflection.AssemblyName)">
             <summary>
-            Loads the specified assembly from its assembly name.
+            Loads an assembly from its assembly name.
             </summary>
             <param name="assemblyName">The assembly name.</param>
             <returns>The loaded assembly.</returns>
         </member>
         <member name="M:Cake.Core.Reflection.IAssemblyLoader.Load(Cake.Core.IO.FilePath,System.Boolean)">
             <summary>
-            Loads the specified assembly from the specified path.
+            Loads an assembly from the specified path.
             </summary>
             <param name="path">The assembly path to load.</param>
             <param name="verify">If the assembly should be verified whether or not it will work properly with Cake or not.</param>

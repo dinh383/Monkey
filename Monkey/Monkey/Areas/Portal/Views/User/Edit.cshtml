@@ -1,7 +1,6 @@
-﻿@using Puppy.Web.HtmlHelperUtils
-@model Monkey.Core.Models.Auth.UserUpdateModel
+﻿@model Monkey.Core.Models.User.UserUpdateModel
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - User - Edit";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - User - Edit";
     var listRole = ViewBag.RoleSelectList as List<SelectListItem>;
 }
 
@@ -13,48 +12,54 @@
         <div class="col-lg-6 center-col">
             <div class="panel">
                 <div class="panel-body">
-                    @using (Html.BeginForm("SubmitEdit", "User", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(x => x.Id)
+                    <form asp-controller="User" asp-action="SubmitEdit" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
+
+                        <input type="hidden" asp-for="Id" />
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.UserName, new {@class = "form-control-label", @for = $"{nameof(Model.UserName)}"})
-                            @Html.TextBoxFor(m => m.UserName, new {@class = "form-control", @readonly = "readonly" })
-                            @Html.ValidationMessageFor(model => model.UserName)
+                            <label asp-for="UserName" class="form-control-label" for="@nameof(Model.UserName)"></label>
+                            <input asp-for="UserName" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="UserName"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Email, new {@class = "form-control-label", @for = $"{nameof(Model.Email)}"})
-                            @Html.TextBoxFor(m => m.Email, new {@class = "form-control", @readonly = "readonly" })
-                            @Html.ValidationMessageFor(model => model.Email)
+                            <label asp-for="Email" class="form-control-label" for="@nameof(Model.Email)"></label>
+                            <input asp-for="Email" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="Email"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.Phone, new {@class = "form-control-label", @for = $"{nameof(Model.Phone)}"})
-                            @Html.TextBoxFor(m => m.Phone, new {@class = "form-control", @readonly = "readonly" })
-                            @Html.ValidationMessageFor(model => model.Phone)
+                            <label asp-for="Phone" class="form-control-label" for="@nameof(Model.Phone)"></label>
+                            <input asp-for="Phone" class="form-control" readonly="readonly" />
+                            <span asp-validation-for="Phone"></span>
                         </div>
 
-                        if (listRole?.Any() == true)
+                        @if (listRole?.Any() == true)
                         {
                             <div class="form-group form-material" data-plugin="formMaterial">
-                                @Html.LabelFor(m => m.RoleId, new {@class = "form-control-label", @for = $"{nameof(Model.RoleId)}"})
-                                @Html.DropDownListFor(model => model.RoleId, listRole, new {@class = "form-control"})
-                                @Html.ValidationMessageFor(model => model.RoleId)
+                                <label asp-for="RoleId" class="form-control-label" for="@nameof(Model.RoleId)"></label>
+                                <select asp-for="RoleId" class="form-control" asp-items="@listRole"></select>
+                                <span asp-validation-for="RoleId"></span>
                             </div>
                         }
 
                         <div class="checkbox-custom checkbox-primary">
-                            @Html.CheckBoxFor(m => m.IsBanned, new {@class = "form-control", @checked = Model.IsBanned ? "checked" : string.Empty})
-                            @Html.LabelFor(m => m.IsBanned, new {@for = $"{nameof(Model.IsBanned)}"})
-                            @Html.ValidationMessageFor(model => model.IsBanned)
+                            @if (Model.IsBanned)
+                            {
+                                <input asp-for="IsBanned" type="checkbox" class="form-control" checked="checked" />
+                            }
+                            else
+                            {
+                                <input asp-for="IsBanned" type="checkbox" class="form-control" />
+                            }
+                            <label asp-for="IsBanned" class="form-control-label" for="@nameof(Model.IsBanned)"></label>
+                            <span asp-validation-for="IsBanned"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            @Html.LabelFor(m => m.BannedRemark, new {@class = "form-control-label", @for = $"{nameof(Model.BannedRemark)}"})
-                            @Html.TextAreaFor(m => m.BannedRemark, new {@class = "form-control"})
-                            @Html.ValidationMessageFor(model => model.BannedRemark)
+                            <label asp-for="BannedRemark" class="form-control-label" for="@nameof(Model.BannedRemark)"></label>
+                            <input asp-for="BannedRemark" class="form-control" />
+                            <span asp-validation-for="BannedRemark"></span>
                         </div>
 
                         <div class="row">
@@ -73,7 +78,7 @@
                                 </button>
                             </div>
                         </div>
-                    }
+                    </form>
                 </div>
             </div>
         </div>

@@ -19,9 +19,10 @@
 
 #endregion License
 
-using Microsoft.EntityFrameworkCore;
+using Monkey.Core.Entities;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
+using Microsoft.EntityFrameworkCore;
 
 namespace Monkey.Data.EF
 {
@@ -38,5 +39,7 @@ namespace Monkey.Data.EF
         public DbSet<RoleEntity> Roles { get; set; }
 
         public DbSet<PermissionEntity> Permissions { get; set; }
+
+        public DbSet<ImageEntity> Images { get; set; }
     }
 }

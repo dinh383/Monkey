@@ -82,16 +82,16 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/ladda.min.js")"></script>
 
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Owl.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
 <script type="text/javascript">
     @{
-        var notifyData = TempData.Get<ControllerExtensions.NotifyResultViewModel>(Constants.TempDataKey.Notify);
+        var notifyData = TempData.Get<NotifyResultViewModel>(Constants.TempDataKey.Notify);
         TempData.Remove(Constants.TempDataKey.Notify);
 
         if (notifyData != null)
         {
             string type = notifyData.Status.AsString(EnumFormat.DisplayName);
-            @Html.Raw($"owl.notify('{notifyData.Title}', '{notifyData.Message}', '{type}');")
+            @Html.Raw($"monkey.notify('{notifyData.Title}', '{notifyData.Message}', '{type}');")
         }
     }
     var constant = {

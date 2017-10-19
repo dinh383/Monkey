@@ -1,20 +1,18 @@
 ﻿@model Monkey.Core.Models.Auth.CannotSigInModel
 @{
     Layout = "/Areas/Portal/Views/Shared/_LayoutAnonymous.cshtml";
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Cannot Sign In";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Cannot Sign In";
 }
 
 <h3 class="font-size-24">Can Not Sign In</h3>
 <p>System will send active account or set password link to your email</p>
 
-@using (Html.BeginForm("SubmitCannotSignIn", "Auth", FormMethod.Post, new { id = "sign-in-form" }))
-{
-    @Html.AntiForgeryToken()
+<form asp-controller="Auth" asp-action="SubmitCannotSignIn" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
 
     <div class="form-group form-material" data-plugin="formMaterial">
-        @Html.LabelFor(m => m.Email, new { @class = "form-control-label", @for = $"{nameof(Model.Email)}" })
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Email)
+        <label asp-for="Email" class="form-control-label" for="@nameof(Model.Email)"></label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email"></span>
     </div>
 
     <div class="row">
@@ -33,4 +31,4 @@
             </button>
         </div>
     </div>
-}
+</form>

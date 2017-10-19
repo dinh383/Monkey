@@ -27,7 +27,7 @@ namespace Monkey.Auth.Helpers
         public static string HashPassword(string password, DateTimeOffset hashTime)
         {
             var passwordSalt = hashTime.ToString("O") + AuthConfig.SecretKey;
-            var passwordHash = password.HashPassword(passwordSalt);
+            var passwordHash = password?.HashPassword(passwordSalt);
             return passwordHash;
         }
     }

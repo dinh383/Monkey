@@ -20,8 +20,10 @@
 using Monkey.Business.Auth;
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
+using Monkey.Service.Auth;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.Web.Models.Api;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monkey.Service.Facade.Auth
@@ -36,9 +38,9 @@ namespace Monkey.Service.Facade.Auth
             _roleBusiness = roleBusiness;
         }
 
-        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model)
+        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _roleBusiness.GetListRoleAsync(model);
+            return _roleBusiness.GetListRoleAsync(model, cancellationToken);
         }
     }
 }

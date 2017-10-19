@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Toastr
  * Copyright 2012-2015
  * Authors: John Papa, Hans Fjällemark, and Tim Ferrell.

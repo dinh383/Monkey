@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
@@ -70,6 +70,11 @@ namespace Monkey.Areas.Portal.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn(SignInModel model)
         {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("Index", model);
@@ -80,10 +85,10 @@ namespace Monkey.Areas.Portal.Controllers
             try
             {
                 // Sign In and get access token
-                AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken).ConfigureAwait(true);
+                AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 // Sign In to Cookie, for web only
-                await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel).ConfigureAwait(true);
+                await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 if (string.IsNullOrWhiteSpace(model.RedirectUrl))
                 {
@@ -96,25 +101,25 @@ namespace Monkey.Areas.Portal.Controllers
             {
                 if (ex.Code == ErrorCode.UserInActive)
                 {
-                    this.SetNotify("SignIn Fail", "Your account is in-active, please active via your email and try sign-in again", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", "Your account is in-active, please active via your email and try sign-in again", NotifyStatus.Error);
                     return View("Index", model);
                 }
 
                 if (ex.Code == ErrorCode.UserBanned)
                 {
-                    this.SetNotify("SignIn Fail", $"Your account is banned! {ex.Message}", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", $"Your account is banned! {ex.Message}", NotifyStatus.Error);
                     return View("Index", model);
                 }
 
                 if (ex.Code == ErrorCode.UserNameNotExist)
                 {
-                    this.SetNotify("SignIn Fail", "Your account is not exist", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", "Your account is not exist", NotifyStatus.Error);
                     return View("Index", model);
                 }
 
                 if (ex.Code == ErrorCode.UserPasswordWrong)
                 {
-                    this.SetNotify("SignIn Fail", "Your password is wrong, please try again", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Sign-in Fail", "Your password is wrong, please try again", NotifyStatus.Error);
                     return View("Index", model);
                 }
 
@@ -126,7 +131,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public async Task<IActionResult> SignOut()
         {
-            await _authenticationService.SignOutCookieAsync(Response.Cookies).ConfigureAwait(true);
+            await _authenticationService.SignOutCookieAsync(Response.Cookies, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
             return RedirectToAction("Index", "Auth");
         }
@@ -153,9 +158,9 @@ namespace Monkey.Areas.Portal.Controllers
                 return View("CannotSignIn", model);
             }
 
-            await _authenticationService.SendConfirmEmailOrSetPasswordAsync(model.Email).ConfigureAwait(true);
+            await _authenticationService.SendConfirmEmailOrSetPasswordAsync(model.Email, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
-            this.SetNotify("Send Success", "Please check your email inbox to active or set new password", ControllerExtensions.NotifyStatus.Success);
+            this.SetNotify("Send Success", "Please check your email inbox to active or set new password", NotifyStatus.Success);
 
             return RedirectToAction("Index");
         }
@@ -173,7 +178,7 @@ namespace Monkey.Areas.Portal.Controllers
 
             if (isExpireOrInvalidToken)
             {
-                this.SetNotify("Confirm Email Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+                this.SetNotify("Confirm Email Fail", "Your link is invalid or expired", NotifyStatus.Error);
 
                 return RedirectToAction("CannotSignIn");
             }
@@ -197,9 +202,9 @@ namespace Monkey.Areas.Portal.Controllers
             }
             try
             {
-                await _authenticationService.ConfirmEmailAsync(model).ConfigureAwait(true);
+                await _authenticationService.ConfirmEmailAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
-                this.SetNotify("Active Success", "Now you can sign-in to the system", ControllerExtensions.NotifyStatus.Success);
+                this.SetNotify("Active Success", "Now you can sign-in to the system", NotifyStatus.Success);
 
                 return RedirectToAction("Index");
             }
@@ -207,7 +212,7 @@ namespace Monkey.Areas.Portal.Controllers
             {
                 if (ex.Code == ErrorCode.UserConfirmEmailTokenExpireOrInvalid)
                 {
-                    this.SetNotify("Confirm Email Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Confirm Email Fail", "Your link is invalid or expired", NotifyStatus.Error);
                     return RedirectToAction("CannotSignIn");
                 }
                 throw;
@@ -227,7 +232,7 @@ namespace Monkey.Areas.Portal.Controllers
 
             if (isExpireOrInvalidToken)
             {
-                this.SetNotify("Set Password Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+                this.SetNotify("Set Password Fail", "Your link is invalid or expired", NotifyStatus.Error);
 
                 return RedirectToAction("CannotSignIn");
             }
@@ -252,9 +257,9 @@ namespace Monkey.Areas.Portal.Controllers
 
             try
             {
-                await _authenticationService.SetPasswordAsync(model).ConfigureAwait(true);
+                await _authenticationService.SetPasswordAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
-                this.SetNotify("Set Password Success", "Now you can sign-in to the system", ControllerExtensions.NotifyStatus.Success);
+                this.SetNotify("Set Password Success", "Now you can sign-in to the system", NotifyStatus.Success);
 
                 return RedirectToAction("Index");
             }
@@ -262,7 +267,7 @@ namespace Monkey.Areas.Portal.Controllers
             {
                 if (ex.Code == ErrorCode.UserSetPasswordTokenExpireOrInvalid)
                 {
-                    this.SetNotify("Set Password Fail", "Your link is invalid or expired", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Set Password Fail", "Your link is invalid or expired", NotifyStatus.Error);
                     return RedirectToAction("CannotSignIn");
                 }
                 throw;
@@ -291,9 +296,9 @@ namespace Monkey.Areas.Portal.Controllers
 
             try
             {
-                await _authenticationService.ChangePasswordAsync(model).ConfigureAwait(true);
+                await _authenticationService.ChangePasswordAsync(model, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
-                this.SetNotify("Change Password Success", "Now you can sign-in with new password", ControllerExtensions.NotifyStatus.Success);
+                this.SetNotify("Change Password Success", "Now you can sign-in with new password", NotifyStatus.Success);
 
                 return RedirectToAction("Index");
             }
@@ -301,7 +306,7 @@ namespace Monkey.Areas.Portal.Controllers
             {
                 if (ex.Code == ErrorCode.UserPasswordWrong)
                 {
-                    this.SetNotify("Change Password Fail", "Current password is wrong", ControllerExtensions.NotifyStatus.Error);
+                    this.SetNotify("Change Password Fail", "Current password is wrong", NotifyStatus.Error);
                     return RedirectToAction("ChangePassword");
                 }
                 throw;

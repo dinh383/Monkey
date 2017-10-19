@@ -17,18 +17,21 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Microsoft.AspNetCore.Http;
 using Monkey.Auth;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Business;
 using Monkey.Business.Auth;
+using Monkey.Business.User;
 using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
+using Monkey.Core.Models.User;
+using Microsoft.AspNetCore.Http;
 using Puppy.DependencyInjection.Attributes;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using HttpContext = System.Web.HttpContext;
 
@@ -50,7 +53,7 @@ namespace Monkey.Service.Facade.Auth
             _emailBusiness = emailBusiness;
         }
 
-        public async Task<AccessTokenModel> SignInAsync(RequestTokenModel model)
+        public async Task<AccessTokenModel> SignInAsync(RequestTokenModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             int? clientId = null;
 
@@ -61,7 +64,7 @@ namespace Monkey.Service.Facade.Auth
 
                 _clientBusiness.CheckBanned(model.ClientId, model.ClientSecret);
 
-                clientId = await _clientBusiness.GetIdAsync(model.ClientId, model.ClientSecret).ConfigureAwait(true);
+                clientId = await _clientBusiness.GetIdAsync(model.ClientId, model.ClientSecret, cancellationToken).ConfigureAwait(true);
             }
 
             AccessTokenModel accessTokenModel = null;
@@ -83,7 +86,7 @@ namespace Monkey.Service.Facade.Auth
             {
                 _authenticationBusiness.CheckValidRefreshToken(model.RefreshToken, clientId);
 
-                LoggedInUser.Current = await _authenticationBusiness.GetLoggedInUserByRefreshTokenAsync(model.RefreshToken).ConfigureAwait(true);
+                LoggedInUser.Current = await _authenticationBusiness.GetLoggedInUserByRefreshTokenAsync(model.RefreshToken, cancellationToken).ConfigureAwait(true);
 
                 // Generate access token
                 accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, AuthConfig.AccessTokenExpireIn, model.RefreshToken);
@@ -94,16 +97,16 @@ namespace Monkey.Service.Facade.Auth
             return accessTokenModel;
         }
 
-        public async Task SignInCookieAsync(IResponseCookies cookies, AccessTokenModel accessTokenModel)
+        public async Task SignInCookieAsync(IResponseCookies cookies, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default(CancellationToken))
         {
             TokenHelper.SetAccessTokenInCookie(cookies, accessTokenModel);
 
-            LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken).ConfigureAwait(true);
+            LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken, cancellationToken).ConfigureAwait(true);
 
             HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
         }
 
-        public async Task<AccessTokenModel> SignInCookieAsync(IRequestCookieCollection cookies)
+        public async Task<AccessTokenModel> SignInCookieAsync(IRequestCookieCollection cookies, CancellationToken cancellationToken = default(CancellationToken))
         {
             var accessTokenModel = TokenHelper.GetAccessTokenInCookie(cookies);
 
@@ -119,14 +122,14 @@ namespace Monkey.Service.Facade.Auth
                 return null;
             }
 
-            LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken).ConfigureAwait(true);
+            LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken, cancellationToken).ConfigureAwait(true);
 
             HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
 
             return accessTokenModel;
         }
 
-        public Task SignOutCookieAsync(IResponseCookies cookies)
+        public Task SignOutCookieAsync(IResponseCookies cookies, CancellationToken cancellationToken = default(CancellationToken))
         {
             TokenHelper.RemoveAccessTokenInCookie(cookies);
 
@@ -140,25 +143,25 @@ namespace Monkey.Service.Facade.Auth
             return Task.CompletedTask;
         }
 
-        public Task<LoggedInUserModel> GetLoggedInUserAsync(string accessToken)
+        public Task<LoggedInUserModel> GetLoggedInUserAsync(string accessToken, CancellationToken cancellationToken = default(CancellationToken))
         {
             string subject = TokenHelper.GetAccessTokenSubject(accessToken);
             _userBusiness.CheckExistsBySubject(subject);
-            return _authenticationBusiness.GetLoggedInUserBySubjectAsync(subject);
+            return _authenticationBusiness.GetLoggedInUserBySubjectAsync(subject, cancellationToken);
         }
 
-        public Task ExpireAllRefreshTokenAsync(string accessToken)
+        public Task ExpireAllRefreshTokenAsync(string accessToken, CancellationToken cancellationToken = default(CancellationToken))
         {
             string subject = TokenHelper.GetAccessTokenSubject(accessToken);
             _userBusiness.CheckExistsBySubject(subject);
-            return _authenticationBusiness.ExpireAllRefreshTokenAsync(subject);
+            return _authenticationBusiness.ExpireAllRefreshTokenAsync(subject, cancellationToken);
         }
 
-        public async Task SendConfirmEmailOrSetPasswordAsync(string email)
+        public async Task SendConfirmEmailOrSetPasswordAsync(string email, CancellationToken cancellationToken = default(CancellationToken))
         {
             _userBusiness.CheckExistByEmail(email);
 
-            UserModel userModel = await _userBusiness.GetByEmailAsync(email).ConfigureAwait(true);
+            UserModel userModel = await _userBusiness.GetByEmailAsync(email, cancellationToken).ConfigureAwait(true);
 
             if (userModel.ActiveTime == null)
             {
@@ -172,7 +175,7 @@ namespace Monkey.Service.Facade.Auth
             }
         }
 
-        public async Task ConfirmEmailAsync(SetPasswordModel model)
+        public async Task ConfirmEmailAsync(SetPasswordModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (IsExpireOrInvalidConfirmEmailToken(model.Token))
             {
@@ -185,12 +188,12 @@ namespace Monkey.Service.Facade.Auth
 
             _userBusiness.CheckExistsBySubject(subject);
 
-            await _authenticationBusiness.ConfirmEmailAsync(subject, email, model.Password).ConfigureAwait(true);
+            await _authenticationBusiness.ConfirmEmailAsync(subject, email, model.Password, cancellationToken).ConfigureAwait(true);
 
             _authenticationBusiness.ExpireTokenConfirmEmail(model.Token);
         }
 
-        public bool IsExpireOrInvalidConfirmEmailToken(string token)
+        public bool IsExpireOrInvalidConfirmEmailToken(string token, CancellationToken cancellationToken = default(CancellationToken))
         {
             bool isExpireOrInvalidToken = TokenHelper.IsExpireOrInvalidToken(token);
 
@@ -202,7 +205,7 @@ namespace Monkey.Service.Facade.Auth
             return _authenticationBusiness.IsExpireOrInvalidConfirmEmailToken(token);
         }
 
-        public async Task SetPasswordAsync(SetPasswordModel model)
+        public async Task SetPasswordAsync(SetPasswordModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (IsExpireOrInvalidSetPasswordToken(model.Token))
             {
@@ -213,11 +216,11 @@ namespace Monkey.Service.Facade.Auth
 
             _userBusiness.CheckExistsBySubject(subject);
 
-            await _authenticationBusiness.SetPasswordAsync(subject, model.Password).ConfigureAwait(true);
+            await _authenticationBusiness.SetPasswordAsync(subject, model.Password, cancellationToken).ConfigureAwait(true);
             _authenticationBusiness.ExpireTokenSetPassword(model.Token);
         }
 
-        public bool IsExpireOrInvalidSetPasswordToken(string token)
+        public bool IsExpireOrInvalidSetPasswordToken(string token, CancellationToken cancellationToken = default(CancellationToken))
         {
             bool isExpireOrInvalidToken = TokenHelper.IsExpireOrInvalidToken(token);
 
@@ -229,15 +232,15 @@ namespace Monkey.Service.Facade.Auth
             return _authenticationBusiness.IsExpireOrInvalidSetPasswordToken(token);
         }
 
-        public void CheckCurrentPassword(string currentPassword)
+        public void CheckCurrentPassword(string currentPassword, CancellationToken cancellationToken = default(CancellationToken))
         {
             _authenticationBusiness.CheckCurrentPassword(currentPassword);
         }
 
-        public Task ChangePasswordAsync(ChangePasswordModel model)
+        public Task ChangePasswordAsync(ChangePasswordModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             _authenticationBusiness.CheckCurrentPassword(model.CurrentPassword);
-            return _authenticationBusiness.SetPasswordAsync(LoggedInUser.Current.Subject, model.Password);
+            return _authenticationBusiness.SetPasswordAsync(LoggedInUser.Current.Subject, model.Password, cancellationToken);
         }
     }
 }

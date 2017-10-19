@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Monkey.Core.Entities.User;
+using Monkey.Core.Entities.Auth;
 using Monkey.Core.Models.Auth;
 using Puppy.AutoMapper;
 using System.Linq;

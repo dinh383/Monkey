@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
 using Puppy.Core.StringUtils;
 using System;
@@ -47,6 +48,8 @@ namespace Monkey.Auth
         internal static SymmetricSecurityKey SecurityKey { get; private set; }
 
         internal static SigningCredentials SigningCredentials { get; private set; }
+
+        internal static IApplicationBuilder AppBuilder { get; set; }
 
         internal static TokenValidationParameters TokenValidationParameters => new TokenValidationParameters
         {

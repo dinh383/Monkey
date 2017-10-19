@@ -21,6 +21,7 @@ using Monkey.Core.Constants;
 using Monkey.Core.Models;
 using Monkey.Core.Models.Auth;
 using Puppy.Web.Models.Api;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monkey.Business.Auth
@@ -29,10 +30,10 @@ namespace Monkey.Business.Auth
     {
         void CheckUniqueName(string name, int? excludeId = null);
 
-        Task<int> CreateAsync(string name, string description, params Enums.Permission[] permissions);
+        Task<int> CreateAsync(string name, string description, CancellationToken cancellationToken = default(CancellationToken), params Enums.Permission[] permissions);
 
-        Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model);
+        Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<RoleModel> GetAsync(int id);
+        Task<RoleModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

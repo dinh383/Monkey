@@ -3,8 +3,10 @@
 @using Puppy.DataTable.Models.Config.Column
 @using Constants = Monkey.Constants
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Owl | Portal - Client";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Client";
 }
+
+@Html.AntiForgeryToken()
 
 <div class="page-header">
     <h1 class="page-title">Clients</h1>
@@ -13,7 +15,7 @@
         <li class="breadcrumb-item active">Client</li>
     </ol>
     <div class="page-header-actions">
-        <a class="btn btn-sm btn-primary btn-round waves-effect waves-classic" href="@Url.AbsoluteAction("Add", "Client")">
+        <a class="btn btn-sm btn-primary btn-round waves-effect waves-classic ladda-button" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Add", "Client")">
             <i class="icon md-plus" aria-hidden="true"></i>
             <span class="hidden-sm-down">Add Client</span>
         </a>
@@ -46,8 +48,8 @@
 
     <script type="text/javascript">
         function drawCallBack(oSettings) {
-            owl.initToolTip();
-            owl.initConfirmDialog();
+            monkey.initToolTip();
+            monkey.initConfirmDialog();
         }
 
         function actionRender(data, type, row) {

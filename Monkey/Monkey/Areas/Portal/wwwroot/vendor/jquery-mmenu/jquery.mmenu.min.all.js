@@ -1,4 +1,4 @@
-/*
+﻿/*
  * jQuery mmenu v5.5.2
  * @requires jQuery 1.7.0 or later
  *

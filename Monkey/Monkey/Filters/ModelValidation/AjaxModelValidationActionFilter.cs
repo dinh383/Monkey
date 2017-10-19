@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Monkey.Core.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Monkey.Core.Exceptions;
 using Newtonsoft.Json;
 using Puppy.Logger;
 using Puppy.Web.Constants;

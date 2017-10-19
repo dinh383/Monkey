@@ -5,6 +5,8 @@
 - Use [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/index)
   > EF Core is re-build, re-design version of Entity Framework. So, some function will not have and extra more feature in Core.
 
+- Don't query or save change async because EF have issue [5816](https://github.com/aspnet/EntityFrameworkCore/issues/5816)
+
 ## Initial Database
 Setup by Command Windows of current project 
 

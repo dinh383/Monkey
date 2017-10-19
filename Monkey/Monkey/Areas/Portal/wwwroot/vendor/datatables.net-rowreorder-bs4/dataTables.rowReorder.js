@@ -1,4 +1,4 @@
-/*! RowReorder 1.2.0
+﻿/*! RowReorder 1.2.0
  * 2015-2016 SpryMedia Ltd - datatables.net/license
  */
 

@@ -5,11 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Auth;
 using Monkey.Core.Configs;
+using Monkey.Core.Constants;
 using Monkey.Data;
 using Monkey.Data.EF.Factory;
 using Monkey.Extensions;
 using Monkey.Mapper;
 using Monkey.Service;
+using Puppy.Core.FileUtils;
 using Puppy.Core.TypeUtils;
 using Puppy.DataTable;
 using Puppy.DependencyInjection;
@@ -45,14 +47,17 @@ namespace Monkey
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                // [API Cros]
-                .AddCors(ConfigurationRoot)
-
                 // [System Configs]
                 .AddSystemConfiguration(Environment, ConfigurationRoot)
 
+                // [HttpContext]
+                .AddHttpContextAccessor()
+
                 // [Injection]
                 .AddDependencyInjection(nameof(Monkey))
+
+                // [API Cros]
+                .AddCors(ConfigurationRoot)
 
                 // [Mapper]
                 .AddAutoMapperMonkey()
@@ -80,20 +85,14 @@ namespace Monkey
                 // [MVC] Anti Forgery
                 .AddAntiforgeryToken()
 
-                // [Api Filter] Model Validation, Global Exception Filer and Authorize Filter
-                .AddApiFilter()
-
                 // [Authentication] Json Web Toke + Cookie
                 .AddHybridAuth(ConfigurationRoot)
-
-                // [HttpContext]
-                .AddHttpContextAccessor()
 
                 // [DataTable]
                 .AddDataTable(ConfigurationRoot)
 
-                // [Mvc] Json, Xml serialize, area, response caching and filters
-                .AddMvcCustom();
+                // [Mvc - API] Json, Xml serialize, area, response caching and filters
+                .AddMvcApi();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
@@ -102,8 +101,14 @@ namespace Monkey
             // Don't mad it !!!
 
             app
+                // [Response] Time Executed Information
+                .UseProcessingTime()
+
                 // [HttpContext]
                 .UseHttpContextAccessor()
+
+                // [System Configs]
+                .UseSystemConfiguration(loggerFactory)
 
                 // [API Cros]
                 .UseCors()
@@ -113,12 +118,6 @@ namespace Monkey
 
                 // [Logger]
                 .UseLogger(loggerFactory, appLifetime)
-
-                // [System Configs]
-                .UseSystemConfiguration(loggerFactory)
-
-                // [Response] Time Executed Information
-                .UseProcessingTime()
 
                 // [Server Info]
                 .UseServerInfo(ConfigurationRoot)
@@ -135,9 +134,8 @@ namespace Monkey
                 // [DataTable]
                 .UseDataTable()
 
-                // [MVC] Keep In Last. Static files configuration, routing [Mvc] Static files
-                // configuration, routing
-                .UseMvcCustom();
+                // [Mvc - API] Static files configuration, routing [Mvc] Static files configuration, routing
+                .UseMvcApi();
 
             // [Application Start] Initial functions
             ApplicationStart(app);
@@ -155,6 +153,9 @@ namespace Monkey
 
             ISeedDataService seedDataService = app.Resolve<ISeedDataService>();
             seedDataService.SeedData();
+
+            // Directories/Folders need to have
+            DirectoryHelper.CreateIfNotExist(PathConsts.UploadFolder);
         }
     }
 }

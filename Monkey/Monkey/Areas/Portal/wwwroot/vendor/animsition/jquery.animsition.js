@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * animsition v3.6.0
  * A simple and easy jQuery plugin for CSS animated page transitions.
  * http://blivesta.github.io/animsition

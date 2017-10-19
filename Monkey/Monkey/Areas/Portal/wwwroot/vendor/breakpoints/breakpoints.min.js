@@ -1,4 +1,4 @@
-/**
+﻿/**
 * breakpoints-js v1.0.4
 * https://github.com/amazingSurge/breakpoints-js
 *
