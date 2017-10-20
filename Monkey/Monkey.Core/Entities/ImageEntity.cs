@@ -36,5 +36,6 @@ namespace Monkey.Core.Entities
         public int ImageWidthPx { get; set; }
 
         public int ImageHeightPx { get; set; }
+        public string Caption { get; set; }
     }
 }

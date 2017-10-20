@@ -39,7 +39,7 @@ namespace Monkey.Data.EF.Repositories
         {
         }
 
-        public ImageModel SaveImage(IFormFile file)
+        public ImageModel SaveImage(IFormFile file, string caption = "", string imageDominantHexColor = null)
         {
             if (file == null || file.Length <= 0)
             {
@@ -64,6 +64,12 @@ namespace Monkey.Data.EF.Repositories
                 // Update Image Entity by FileModel
                 fileModel.MapTo(imageEntity);
                 imageEntity.Url = SystemUtils.GetWebUrl(fileModel.Location);
+
+                imageEntity.Caption = caption;
+                if (imageDominantHexColor !=  null)
+                {
+                    imageEntity.ImageDominantHexColor = imageDominantHexColor;
+                }
 
                 Add(imageEntity);
                 SaveChanges();

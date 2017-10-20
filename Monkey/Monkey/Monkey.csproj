@@ -45,6 +45,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Areas\Portal\Controllers\ImageController.cs" />
+  </ItemGroup>
 
   <!-- Puppy -->
   <ItemGroup>
@@ -97,5 +100,8 @@
     <!-- C# Utitlity -->
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 </Project>

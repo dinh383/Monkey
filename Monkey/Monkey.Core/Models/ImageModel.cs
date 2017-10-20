@@ -18,31 +18,49 @@
 #endregion License
 
 using System;
+using Microsoft.AspNetCore.Http;
+using Puppy.DataTable.Attributes;
 
 namespace Monkey.Core.Models
 {
     public class ImageModel
     {
+        [DataTable(IsVisible = false, Order = 1)]
         public int Id { get; set; }
 
+        [DataTableIgnore]
         public string GlobalId { get; set; }
 
+        [DataTableIgnore]
         public DateTimeOffset CreatedTime { get; set; }
 
+        [DataTableIgnore]
         public string Name { get; set; }
 
+        [DataTableIgnore]
         public string Url { get; set; }
 
         public string Extension { get; set; }
 
+        [DataTableIgnore]
         public string MineType { get; set; }
 
+        [DataTableIgnore]
         public double ContentLength { get; set; }
 
         public string ImageDominantHexColor { get; set; }
 
+        [DataTableIgnore]
         public int ImageWidthPx { get; set; }
 
+        [DataTableIgnore]
         public int ImageHeightPx { get; set; }
+
+        public string Caption { get; set; }
+    }
+
+    public class ImageAddModel : ImageModel
+    {
+        public IFormFile File { get; set; }
     }
 }

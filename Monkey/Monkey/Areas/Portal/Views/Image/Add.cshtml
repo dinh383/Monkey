@@ -1,0 +1,78 @@
+﻿@using Monkey.Core.Constants
+@using Puppy.Web.HtmlHelperUtils
+@model Monkey.Core.Models.ImageAddModel
+@{
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Image - Add";
+}
+
+<div class="page-header">
+    <h1 class="page-title">Add Client</h1>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-6 center-col">
+            <div class="panel">
+                <div class="panel-body">
+                    <form asp-controller="Image" asp-action="SubmitAdd" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            <label asp-for="Caption" class="form-control-label" for="@nameof(Model.Caption)"></label>
+                            <input asp-for="Caption" class="form-control" />
+                            <span asp-validation-for="Caption"></span>
+                        </div>
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            <label asp-for="File" class="form-control-label" for="@nameof(Model.File)" >File input</label>
+                            <input id="uploadImage" asp-for="File" class="form-control" type="file">
+                            <span asp-validation-for="File"></span>
+                        </div>
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            <img style="width: 100%;" id="imageDemo" src="@Model.Url" alt="Smiley face">
+                        </div>
+                        
+                        <div class="form-group form-material" data-plugin="formMaterial">
+                            <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
+                            <input id="ImgColor" asp-for="ImageDominantHexColor" type="color" value="@Model.ImageDominantHexColor">
+                            <span asp-validation-for="ImageDominantHexColor"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group form-material">
+                                <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "Client")">
+                                    <span class="ladda-label">
+                                        <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 form-group form-material">
+                                <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
+                                    <span class="ladda-label">
+                                        <i class="icon md-plus mr-10" aria-hidden="true"></i>Add
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function() {
+            $("#uploadImage").on("change",
+                function() {
+                    readUrl(this);
+                });
+
+            function readUrl(input) {
+                console.log(input.files[0]);
+                var fileReader = new FileReader();
+                fileReader.onload = function(fileLoadedEvent) {
+                    var base64 = fileLoadedEvent.target.result;
+                    $("#imageDemo").attr("src", base64);
+                }
+                fileReader.readAsDataURL(input.files[0]);
+            }
+        });
+    </script>
+}

@@ -29,8 +29,10 @@ namespace Monkey.Data
         ///     Save image file to physical and database as well 
         /// </summary>
         /// <param name="file"></param>
+        /// <param name="caption"></param>
+        /// <param name="imageDominantHexColor"></param>
         /// <returns></returns>
-        ImageModel SaveImage(IFormFile file);
+        ImageModel SaveImage(IFormFile file, string caption = "", string imageDominantHexColor = null);
 
         /// <summary>
         ///     Remove image file from physical and database as well 
