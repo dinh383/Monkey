@@ -143,19 +143,14 @@ namespace Monkey
 
         public static void ApplicationStart(IApplicationBuilder app)
         {
-            // Verify Redis Setting is Fine
-            IRedisCacheManager redisCacheManager = app.Resolve<IRedisCacheManager>();
-
-            redisCacheManager.VerifySetup();
+            // Directories/Folders need to have
+            DirectoryHelper.CreateIfNotExist(PathConsts.UploadFolder);
 
             // Migrate Database
             app.MigrateDatabase();
 
-            ISeedDataService seedDataService = app.Resolve<ISeedDataService>();
-            seedDataService.SeedData();
-
-            // Directories/Folders need to have
-            DirectoryHelper.CreateIfNotExist(PathConsts.UploadFolder);
+            // Seed Data
+            app.Resolve<ISeedDataService>().SeedData();
         }
     }
 }
