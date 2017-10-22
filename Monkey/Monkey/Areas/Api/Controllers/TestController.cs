@@ -1,16 +1,16 @@
-﻿using Monkey.Auth.Filters.Attributes;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Monkey.Auth.Filters.Attributes;
 using Puppy.Web.HttpUtils;
 
-namespace Monkey.Controllers.Api
+namespace Monkey.Areas.Api.Controllers
 {
     [Route(Endpoint)]
-    public class TestApiController : ApiController
+    public class TestController : ApiController
     {
         public const string Endpoint = AreaName + "/test";
 
         /// <summary>
-        ///     Device Info 
+        ///     Device Info
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -22,7 +22,7 @@ namespace Monkey.Controllers.Api
         }
 
         /// <summary>
-        ///     Logged In User 
+        ///     Logged In User
         /// </summary>
         /// <returns></returns>
         [HttpGet]

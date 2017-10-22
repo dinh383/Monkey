@@ -1,11 +1,11 @@
-﻿using Monkey.Auth.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
+using Monkey.Auth.Filters;
 using Monkey.Auth.Filters.Attributes;
 using Monkey.Filters.Exception;
 using Monkey.Filters.ModelValidation;
-using Microsoft.AspNetCore.Mvc;
 using Puppy.Web.Constants;
 
-namespace Monkey.Controllers.Api
+namespace Monkey.Areas.Api.Controllers
 {
     [Auth]
     [Produces(ContentType.Json, ContentType.Xml)]
