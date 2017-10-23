@@ -4,21 +4,21 @@
         <name>Monkey</name>
     </assembly>
     <members>
-        <member name="M:Monkey.Controllers.Api.TestApiController.DeviceInfo">
+        <member name="M:Monkey.Areas.Api.Controllers.TestController.DeviceInfo">
             <summary>
-                Device Info 
+                Device Info
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Controllers.Api.TestApiController.LoggedInUser">
+        <member name="M:Monkey.Areas.Api.Controllers.TestController.LoggedInUser">
             <summary>
-                Logged In User 
+                Logged In User
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Controllers.Api.TokenApiController.Token(Monkey.Core.Models.Auth.RequestTokenModel)">
+        <member name="M:Monkey.Areas.Api.Controllers.TokenController.Token(Monkey.Core.Models.Auth.RequestTokenModel)">
             <summary>
-                Token 
+                Token
             </summary>
             <returns></returns>
         </member>

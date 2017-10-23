@@ -20,17 +20,16 @@
                             <span asp-validation-for="Caption"></span>
                         </div>
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            <label asp-for="File" class="form-control-label" for="@nameof(Model.File)" >File input</label>
+                            <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">File input</label>
                             <input id="uploadImage" asp-for="File" class="form-control" type="file">
                             <span asp-validation-for="File"></span>
                         </div>
                         <div class="form-group form-material" data-plugin="formMaterial">
                             <img style="width: 100%;" id="imageDemo" src="@Model.Url" alt="Smiley face">
                         </div>
-                        
-                        <div class="form-group form-material" data-plugin="formMaterial">
+                        <div class="example">
                             <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
-                            <input id="ImgColor" asp-for="ImageDominantHexColor" type="color" value="@Model.ImageDominantHexColor">
+                            <input class="form-control" data-plugin="asColorPicker" data-mode="complex" type="text" />
                             <span asp-validation-for="ImageDominantHexColor"></span>
                         </div>
                         <div class="row">
@@ -57,17 +56,23 @@
 </div>
 
 @section Scripts{
+    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolor/jquery-asColor.js")"></script>
+    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/asgradient/jquery-asGradient.js")"></script>
+    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolorpicker/jquery-asColorPicker.js")"></script>
+    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/ascolorpicker.js")"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            debugger;
+            $('.example').asColorPicker(); 
             $("#uploadImage").on("change",
-                function() {
+                function () {
                     readUrl(this);
                 });
 
             function readUrl(input) {
                 console.log(input.files[0]);
                 var fileReader = new FileReader();
-                fileReader.onload = function(fileLoadedEvent) {
+                fileReader.onload = function (fileLoadedEvent) {
                     var base64 = fileLoadedEvent.target.result;
                     $("#imageDemo").attr("src", base64);
                 }
