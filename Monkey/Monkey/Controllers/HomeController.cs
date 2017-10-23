@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Monkey.Controllers.Mvc
+namespace Monkey.Controllers
 {
     [Route(Endpoint)]
     public class HomeController : MvcController
