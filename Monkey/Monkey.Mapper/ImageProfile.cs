@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System.IO;
 using AutoMapper;
 using Monkey.Core.Entities;
 using Monkey.Core.Models;
@@ -30,9 +31,6 @@ namespace Monkey.Mapper
         public ImageProfile()
         {
             CreateMap<ImageEntity, ImageModel>().IgnoreAllNonExisting();
-            CreateMap<ImageAddModel, ImageEntity>().IgnoreAllNonExisting();
-            CreateMap<ImageEntity, ImageAddModel>().IgnoreAllNonExisting();
-            CreateMap<ImageModel, ImageAddModel>().IgnoreAllNonExisting();
 
             CreateMap<FileModel, ImageEntity>()
                 .IgnoreAllNonExisting()

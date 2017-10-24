@@ -57,13 +57,13 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new ImageAddModel());
+            return View(new AddImageModel());
         }
 
         [Route(AddEndpoint)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitAdd([FromForm]ImageAddModel model)
+        public async Task<IActionResult> SubmitAdd([FromForm]AddImageModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -85,13 +85,13 @@ namespace Monkey.Areas.Portal.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var imageModel = await _imageService.GetAsync(id).ConfigureAwait(true);
-            var imageUpdateModel = imageModel.MapTo<ImageAddModel>();
+            var imageUpdateModel = imageModel.MapTo<UpdateImageModel>();
             return View(imageUpdateModel);
         }
 
         [Route(SubmitEditEndpoint)]
         [HttpPost]
-        public async Task<IActionResult> SubmitEdit([FromForm]ImageAddModel model)
+        public async Task<IActionResult> SubmitEdit([FromForm]UpdateImageModel model)
         {
             if (!ModelState.IsValid)
             {

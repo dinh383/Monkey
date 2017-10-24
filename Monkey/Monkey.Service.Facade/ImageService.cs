@@ -36,12 +36,12 @@ namespace Monkey.Service.Facade
             _imageBusiness = imageBusiness;
         }
 
-	    public Task<int> CreateAsync(ImageAddModel model, CancellationToken cancellationToken = new CancellationToken())
+	    public Task<int> CreateAsync(AddImageModel model, CancellationToken cancellationToken = new CancellationToken())
 	    {
 	        return _imageBusiness.CreateAsync(model, cancellationToken);
         }
 
-	    public Task UpdateAsync(ImageAddModel model, CancellationToken cancellationToken = new CancellationToken())
+	    public Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = new CancellationToken())
 	    {
 	        _imageBusiness.CheckExist(model.Id);
 	        return _imageBusiness.UpdateAsync(model, cancellationToken);

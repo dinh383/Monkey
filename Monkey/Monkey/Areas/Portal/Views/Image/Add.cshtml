@@ -1,6 +1,6 @@
 ﻿@using Monkey.Core.Constants
 @using Puppy.Web.HtmlHelperUtils
-@model Monkey.Core.Models.ImageAddModel
+@model Monkey.Core.Models.AddImageModel
 @{
     ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Image - Add";
 }
@@ -19,13 +19,13 @@
                             <input asp-for="Caption" class="form-control" />
                             <span asp-validation-for="Caption"></span>
                         </div>
+                        
+                        <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">File input</label>
+                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="File" data-default-file class="form-control" type="file">
+                        <span asp-validation-for="File"></span>
+
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">File input</label>
-                            <input id="uploadImage" asp-for="File" class="form-control" type="file">
-                            <span asp-validation-for="File"></span>
-                        </div>
-                        <div class="form-group form-material" data-plugin="formMaterial">
-                            <img style="width: 100%;" id="imageDemo" src="@Model.Url" alt="Smiley face">
+                            <img hidden="hidden" id="imageDemo">
                         </div>
                         <div class="example">
                             <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
@@ -62,7 +62,7 @@
         }
 
         $(document).ready(function () {
-            $('.example').asColorPicker(); 
+            $('.example').asColorPicker();
             $("#uploadImage").on("change",
                 function () {
                     readUrl(this);

@@ -29,9 +29,9 @@ namespace Monkey.Service
 {
     public interface IImageService : IBaseService
     {
-        Task<int> CreateAsync(ImageAddModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> CreateAsync(AddImageModel model, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task UpdateAsync(ImageAddModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<ImageModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 

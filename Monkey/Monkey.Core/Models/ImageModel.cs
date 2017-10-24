@@ -64,8 +64,18 @@ namespace Monkey.Core.Models
         public string Caption { get; set; }
     }
 
-    public class ImageAddModel : ImageModel
+    public class AddImageModel
     {
+        public string Caption { get; set; }
+
         public IFormFile File { get; set; }
+
+        public string ImageDominantHexColor { get; set; }
+    }
+
+    public class UpdateImageModel: AddImageModel
+    {
+        public int Id { get; set; }
+        public string Url { get; set; }
     }
 }

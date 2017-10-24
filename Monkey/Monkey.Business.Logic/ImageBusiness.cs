@@ -42,7 +42,7 @@ namespace Monkey.Business.Logic
         	_imageRepository = imageRepository;
         }
 
-	    public Task<int> CreateAsync(ImageAddModel model, CancellationToken cancellationToken = new CancellationToken())
+	    public Task<int> CreateAsync(AddImageModel model, CancellationToken cancellationToken = new CancellationToken())
 	    {
 	        var result = _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
 
@@ -51,7 +51,7 @@ namespace Monkey.Business.Logic
 	        return Task.FromResult(result.Id);
         }
 
-	    public Task UpdateAsync(ImageAddModel model, CancellationToken cancellationToken = new CancellationToken())
+	    public Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = new CancellationToken())
 	    {
             //TODO: improvement update image without delete image
             _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);

@@ -28,7 +28,14 @@
                 var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (ImageController controller) => controller.GetDataTable(null));
                 model.IsUseColumnFilter = true;
                 model.DrawCallbackFunctionName = "drawCallBack";
-                model.Columns[2].MRenderFunction = "renderColor";
+
+                // Color Render
+                var colorCol = model.Columns.FirstOrDefault(x => x.Name == nameof(ImageModel.ImageDominantHexColor));
+                if (colorCol != null)
+                {
+                    colorCol.MRenderFunction = "renderColor";
+                }
+
                 model.Columns.Add(new ColumnModel("Action", typeof(string))
                 {
                     DisplayName = "Action",
