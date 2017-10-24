@@ -18,6 +18,7 @@
 #endregion License
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Puppy.DataTable.Attributes;
 
@@ -40,6 +41,7 @@ namespace Monkey.Core.Models
         [DataTableIgnore]
         public string Url { get; set; }
 
+        [DataTable(Order = 3)]
         public string Extension { get; set; }
 
         [DataTableIgnore]
@@ -48,6 +50,8 @@ namespace Monkey.Core.Models
         [DataTableIgnore]
         public double ContentLength { get; set; }
 
+        [Display(Name = "Color")]
+        [DataTable(DisplayName = "Color", Order = 2)]
         public string ImageDominantHexColor { get; set; }
 
         [DataTableIgnore]
@@ -56,6 +60,7 @@ namespace Monkey.Core.Models
         [DataTableIgnore]
         public int ImageHeightPx { get; set; }
 
+        [DataTable(Order = 1)]
         public string Caption { get; set; }
     }
 

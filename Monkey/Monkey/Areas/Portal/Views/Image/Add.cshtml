@@ -6,7 +6,7 @@
 }
 
 <div class="page-header">
-    <h1 class="page-title">Add Client</h1>
+    <h1 class="page-title">Add Image</h1>
 </div>
 <div class="page-content">
     <div class="row">
@@ -29,12 +29,12 @@
                         </div>
                         <div class="example">
                             <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
-                            <input class="form-control" data-plugin="asColorPicker" data-mode="complex" type="text" />
+                            <input asp-for="ImageDominantHexColor" class="form-control" data-plugin="asColorPicker" data-mode="complex" type="text" />
                             <span asp-validation-for="ImageDominantHexColor"></span>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group form-material">
-                                <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "Client")">
+                                <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "Image")">
                                     <span class="ladda-label">
                                         <i class="icon md-long-arrow-left mr-10" aria-hidden="true"></i>Back
                                     </span>
@@ -56,13 +56,12 @@
 </div>
 
 @section Scripts{
-    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolor/jquery-asColor.js")"></script>
-    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/asgradient/jquery-asGradient.js")"></script>
-    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolorpicker/jquery-asColorPicker.js")"></script>
-    <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/ascolorpicker.js")"></script>
     <script>
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
         $(document).ready(function () {
-            debugger;
             $('.example').asColorPicker(); 
             $("#uploadImage").on("change",
                 function () {
@@ -70,11 +69,20 @@
                 });
 
             function readUrl(input) {
-                console.log(input.files[0]);
                 var fileReader = new FileReader();
                 fileReader.onload = function (fileLoadedEvent) {
                     var base64 = fileLoadedEvent.target.result;
                     $("#imageDemo").attr("src", base64);
+
+                    var image = document.querySelector('#imageDemo');
+                    image.onload = function () {
+                        var colorThief = new ColorThief();
+                        var color = colorThief.getColor(image);
+                        var hexColor = rgbToHex(color[0], color[1], color[2]);
+                        $("#ImageDominantHexColor").val(hexColor);
+                        $("input[name=ImageDominantHexColor]").val(hexColor);
+                        $(".colorInputUi-trigger > span").css("background", hexColor);
+                    };
                 }
                 fileReader.readAsDataURL(input.files[0]);
             }

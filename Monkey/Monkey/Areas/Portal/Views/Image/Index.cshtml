@@ -28,6 +28,7 @@
                 var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (ImageController controller) => controller.GetDataTable(null));
                 model.IsUseColumnFilter = true;
                 model.DrawCallbackFunctionName = "drawCallBack";
+                model.Columns[2].MRenderFunction = "renderColor";
                 model.Columns.Add(new ColumnModel("Action", typeof(string))
                 {
                     DisplayName = "Action",
@@ -50,6 +51,10 @@
         function drawCallBack(oSettings) {
             monkey.initToolTip();
             monkey.initConfirmDialog();
+        }
+
+        function renderColor(data, type, row) {
+            return "<span style='background:" + data + ";width: 40px; height: 40px; display: inline-block;'></span>";
         }
 
         function actionRender(data, type, row) {

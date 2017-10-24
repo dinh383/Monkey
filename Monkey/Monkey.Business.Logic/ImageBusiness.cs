@@ -53,10 +53,13 @@ namespace Monkey.Business.Logic
 
 	    public Task UpdateAsync(ImageAddModel model, CancellationToken cancellationToken = new CancellationToken())
 	    {
-	        var imageEntity = model.MapTo<ImageEntity>();
-            _imageRepository.Update(imageEntity);
-
-	        cancellationToken.ThrowIfCancellationRequested();
+            //TODO: improvement update image without delete image
+            _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
+	        _imageRepository.Delete(new ImageEntity
+	        {
+	            Id = model.Id
+	        });
+            cancellationToken.ThrowIfCancellationRequested();
 
 	        _imageRepository.SaveChanges();
             return Task.CompletedTask;
