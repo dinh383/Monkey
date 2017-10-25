@@ -14,7 +14,7 @@
                     <form asp-controller="User" asp-action="SubmitUpdateProfile" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
 
                         <label asp-for="AvatarFile" class="form-control-label" for="@nameof(Model.AvatarFile)">Avatar</label>
-                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="AvatarFile" data-default-file="@Model.AvatarUrl" class="form-control" type="file">
+                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="AvatarFile" data-default-file="@Url.AbsoluteContent(Model.AvatarUrl)" class="form-control" type="file">
                         <span asp-validation-for="AvatarFile"></span>
 
                         <div class="form-group form-material" data-plugin="formMaterial">

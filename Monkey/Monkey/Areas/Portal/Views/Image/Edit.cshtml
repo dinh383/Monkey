@@ -24,7 +24,7 @@
                         </div>
                        
                         <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">File input</label>
-                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="File" data-default-file="@Model.Url" class="form-control" type="file">
+                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="File" data-default-file="@Url.AbsoluteContent(Model.Url)" class="form-control" type="file">
                         <span asp-validation-for="File"></span>
 
                         <div hidden="hidden" class="form-group form-material" data-plugin="formMaterial">
