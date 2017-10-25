@@ -55,7 +55,7 @@ namespace Monkey.Data.EF.Repositories
                 var imageEntity = new ImageEntity();
 
                 // Url and Save Path
-                var fileName = $"{Path.GetFileName(file.FileName)}-{imageEntity.GlobalId}{Path.GetExtension(file.FileName)}";
+                var fileName = $"{Path.GetFileNameWithoutExtension(file.FileName)}-{imageEntity.GlobalId}{Path.GetExtension(file.FileName)}";
                 fileName = fileName.Replace(" ", "-").ToLowerInvariant();
                 fileName = FileHelper.MakeValidFileName(fileName);
 
