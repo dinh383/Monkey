@@ -13,19 +13,9 @@
                 <div class="panel-body">
                     <form asp-controller="User" asp-action="SubmitUpdateProfile" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
 
-                        @if (!string.IsNullOrWhiteSpace(Model.AvatarUrl))
-                        {
-                            <div class="form-group form-material text-center" data-plugin="formMaterial">
-                                <img src="@Url.AbsoluteContent(Model.AvatarUrl)" class="col-lg-6" />
-                            </div>
-                        }
-
-                        <div class="form-group form-material" data-plugin="formMaterial">
-                            <label asp-for="AvatarFile" class="form-control-label" for="@nameof(Model.AvatarFile)"></label>
-                            <input type="text" class="form-control" placeholder="Browse.." readonly="readonly">
-                            <input asp-for="AvatarFile" class="form-control" type="file" />
-                            <span asp-validation-for="AvatarFile"></span>
-                        </div>
+                        <label asp-for="AvatarFile" class="form-control-label" for="@nameof(Model.AvatarFile)">Avatar</label>
+                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="AvatarFile" data-default-file="@Model.AvatarUrl" class="form-control" type="file">
+                        <span asp-validation-for="AvatarFile"></span>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
                             <label asp-for="FirstName" class="form-control-label" for="@nameof(Model.FirstName)"></label>

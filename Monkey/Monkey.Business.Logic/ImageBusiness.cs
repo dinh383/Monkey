@@ -57,16 +57,12 @@ namespace Monkey.Business.Logic
             if (model.File != null)
             {
                 _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
-                _imageRepository.Delete(new ImageEntity
-                {
-                    Id = model.Id
-                });
+                _imageRepository.RemoveImage(model.Id);
             }
             else
             {
                 var imageEntity = model.MapTo<ImageEntity>();
-                _imageRepository.Update(imageEntity, x=>x.Caption, x=>x.ImageDominantHexColor);
-
+                _imageRepository.Update(imageEntity, x => x.Caption, x => x.ImageDominantHexColor);
             }
             cancellationToken.ThrowIfCancellationRequested();
             _imageRepository.SaveChanges();
@@ -100,10 +96,7 @@ namespace Monkey.Business.Logic
 
         public Task RemoveAsync(int id, CancellationToken cancellationToken = new CancellationToken())
         {
-            _imageRepository.Delete(new ImageEntity
-            {
-                Id = id
-            });
+            _imageRepository.RemoveImage(id);
 
             // Check cancellation token
             cancellationToken.ThrowIfCancellationRequested();

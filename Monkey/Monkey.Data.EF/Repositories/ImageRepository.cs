@@ -70,7 +70,7 @@ namespace Monkey.Data.EF.Repositories
                 imageEntity.Url = SystemUtils.GetWebUrl(fileModel.Location);
 
                 imageEntity.Caption = caption;
-                if (!String.IsNullOrWhiteSpace(imageDominantHexColor))
+                if (!string.IsNullOrWhiteSpace(imageDominantHexColor))
                 {
                     imageEntity.ImageDominantHexColor = imageDominantHexColor;
                 }
