@@ -1,26 +1,26 @@
-﻿using Monkey.Auth.Interfaces;
-using Monkey.Core.Models.Auth;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Monkey.Auth.Interfaces;
+using Monkey.Core.Models.Auth;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Threading.Tasks;
 
-namespace Monkey.Controllers.Api
+namespace Monkey.Areas.Api.Controllers
 {
     [Route(EndPoint)]
-    public class TokenApiController : ApiController
+    public class TokenController : ApiController
     {
         private const string EndPoint = AreaName + "/token";
 
         private readonly IAuthenticationService _authenticationService;
 
-        public TokenApiController(IAuthenticationService authenticationService)
+        public TokenController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
 
         /// <summary>
-        ///     Token 
+        ///     Token
         /// </summary>
         /// <returns></returns>
         [HttpPost]
