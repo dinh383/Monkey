@@ -17,11 +17,11 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
 using Monkey.Core;
 using Monkey.Core.Constants;
 using Monkey.Core.Entities;
 using Monkey.Core.Models;
-using Microsoft.AspNetCore.Http;
 using Puppy.AutoMapper;
 using Puppy.Core.FileUtils;
 using Puppy.Core.StringUtils;
@@ -81,7 +81,7 @@ namespace Monkey.Data.EF.Repositories
         {
             var path = Get(x => x.Id == id).Select(x => x.Url).Single();
 
-            path = path.GetFullPath();
+            path = SystemUtils.GetWebPhysicalPath(path).GetFullPath();
 
             // Delete physical
             FileHelper.SafeDelete(path);
