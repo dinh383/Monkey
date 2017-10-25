@@ -31,7 +31,7 @@ namespace Monkey.Core
 
         public static string GetWebUrl(string path)
         {
-            return path.Replace(SystemConfig.MvcPath.WebRootFolderName, string.Empty);
+            return path.Replace(SystemConfig.MvcPath.WebRootFolderName, string.Empty).TrimStart('/').TrimStart('/').TrimStart('\\').TrimStart('\\');
         }
     }
 }
