@@ -33,76 +33,84 @@ using Puppy.DependencyInjection.Attributes;
 namespace Monkey.Business.Logic
 {
     [PerRequestDependency(ServiceType = typeof(IImageBusiness))]
-    public class ImageBusiness: IImageBusiness
-	{
-		private readonly IImageRepository _imageRepository;
+    public class ImageBusiness : IImageBusiness
+    {
+        private readonly IImageRepository _imageRepository;
 
         public ImageBusiness(IImageRepository imageRepository)
         {
-        	_imageRepository = imageRepository;
+            _imageRepository = imageRepository;
         }
 
-	    public Task<int> CreateAsync(AddImageModel model, CancellationToken cancellationToken = new CancellationToken())
-	    {
-	        var result = _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
+        public Task<int> CreateAsync(AddImageModel model, CancellationToken cancellationToken = new CancellationToken())
+        {
+            var result = _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
 
-	        cancellationToken.ThrowIfCancellationRequested();
-
-	        return Task.FromResult(result.Id);
-        }
-
-	    public Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = new CancellationToken())
-	    {
-            //TODO: improvement update image without delete image
-            _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
-	        _imageRepository.Delete(new ImageEntity
-	        {
-	            Id = model.Id
-	        });
             cancellationToken.ThrowIfCancellationRequested();
 
-	        _imageRepository.SaveChanges();
+            return Task.FromResult(result.Id);
+        }
+
+        public Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = new CancellationToken())
+        {
+            //TODO: improvement update image without delete image
+            if (model.File != null)
+            {
+                _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
+                _imageRepository.Delete(new ImageEntity
+                {
+                    Id = model.Id
+                });
+            }
+            else
+            {
+                var imageEntity = model.MapTo<ImageEntity>();
+                _imageRepository.Update(imageEntity, x=>x.Caption, x=>x.ImageDominantHexColor);
+
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _imageRepository.SaveChanges();
             return Task.CompletedTask;
         }
 
-	    public Task<ImageModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
-	    {
-	        var model = _imageRepository.Get(x => x.Id == id).QueryTo<ImageModel>().FirstOrDefault();
-	        return Task.FromResult(model);
+        public Task<ImageModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var model = _imageRepository.Get(x => x.Id == id).QueryTo<ImageModel>().FirstOrDefault();
+            return Task.FromResult(model);
         }
 
-	    public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
-	    {
-	        var listData = _imageRepository.Get().QueryTo<ImageModel>();
+        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
+        {
+            var listData = _imageRepository.Get().QueryTo<ImageModel>();
 
-	        var result = listData.GetDataTableResponse(model);
+            var result = listData.GetDataTableResponse(model);
 
-	        return Task.FromResult(result);
+            return Task.FromResult(result);
         }
 
-	    public void CheckExist(params int[] ids)
-	    {
-	        ids = ids.Distinct().ToArray();
-	        int totalInDb = _imageRepository.Get(x => ids.Contains(x.Id)).Count();
-	        if (totalInDb != ids.Length)
-	        {
-	            throw new MonkeyException(ErrorCode.ClientNotFound);
-	        }
+        public void CheckExist(params int[] ids)
+        {
+            ids = ids.Distinct().ToArray();
+            int totalInDb = _imageRepository.Get(x => ids.Contains(x.Id)).Count();
+            if (totalInDb != ids.Length)
+            {
+                throw new MonkeyException(ErrorCode.ClientNotFound);
+            }
         }
 
-	    public Task RemoveAsync(int id, CancellationToken cancellationToken = new CancellationToken())
-	    {
-	        _imageRepository.Delete(new ImageEntity
-	        {
-	            Id = id
-	        });
+        public Task RemoveAsync(int id, CancellationToken cancellationToken = new CancellationToken())
+        {
+            _imageRepository.Delete(new ImageEntity
+            {
+                Id = id
+            });
 
-	        // Check cancellation token
-	        cancellationToken.ThrowIfCancellationRequested();
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
 
-	        _imageRepository.SaveChanges();
+            _imageRepository.SaveChanges();
 
-	        return Task.CompletedTask;
+            return Task.CompletedTask;
         }
-	}
+    }
 }

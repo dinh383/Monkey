@@ -2,11 +2,11 @@
 @using Puppy.Web.HtmlHelperUtils
 @model Monkey.Core.Models.UpdateImageModel
 @{
-    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Client - Edit";
+    ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Image - Edit";
 }
 
 <div class="page-header">
-    <h1 class="page-title">Edit Client</h1>
+    <h1 class="page-title">Edit Image</h1>
 </div>
 <div class="page-content">
     <div class="row">
@@ -32,7 +32,7 @@
                         </div>
                         <div class="example" data-plugin="formMaterial">
                             <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
-                            <input asp-for="ImageDominantHexColor" class="form-control" value="@Model.ImageDominantHexColor" data-plugin="asColorPicker"
+                            <input id="imageDominantHexColor" asp-for="ImageDominantHexColor" class="form-control" value="@Model.ImageDominantHexColor" data-plugin="asColorPicker"
                                    data-mode="complex" type="text" />
                             <span asp-validation-for="ImageDominantHexColor"></span>
                         </div>
@@ -47,7 +47,7 @@
                             <div class="col-md-6 form-group form-material">
                                 <button type="submit" class="btn btn-primary ladda-button btn-block" data-style="slide-right" data-plugin="ladda">
                                     <span class="ladda-label">
-                                        <i class="icon md-plus mr-10" aria-hidden="true"></i>Edit
+                                        <i class="icon md-check mr-10" aria-hidden="true"></i>Save
                                     </span>
                                 </button>
                             </div>
@@ -65,7 +65,6 @@
         }
 
         $(document).ready(function () {
-            $('.example').asColorPicker();
             $("#uploadImage").on("change",
                 function () {
                     readUrl(this);
@@ -82,8 +81,7 @@
                         var colorThief = new ColorThief();
                         var color = colorThief.getColor(image);
                         var hexColor = rgbToHex(color[0], color[1], color[2]);
-                        $("#ImageDominantHexColor").val(hexColor);
-                        $("input[name=ImageDominantHexColor]").val(hexColor);
+                        $("#imageDominantHexColor").val(hexColor);
                         $(".colorInputUi-trigger > span").css("background", hexColor);
                     };
                 }

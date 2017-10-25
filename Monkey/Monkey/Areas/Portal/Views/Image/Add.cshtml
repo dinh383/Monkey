@@ -4,7 +4,6 @@
 @{
     ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Image - Add";
 }
-
 <div class="page-header">
     <h1 class="page-title">Add Image</h1>
 </div>
@@ -20,16 +19,16 @@
                             <span asp-validation-for="Caption"></span>
                         </div>
                         
-                        <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">File input</label>
+                        <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">Image</label>
                         <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="File" data-default-file class="form-control" type="file">
-                        <span asp-validation-for="File"></span>
+                        <span asp-validation-for="File"></span> 
 
                         <div class="form-group form-material" data-plugin="formMaterial">
                             <img hidden="hidden" id="imageDemo">
                         </div>
                         <div class="example">
-                            <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
-                            <input asp-for="ImageDominantHexColor" class="form-control" data-plugin="asColorPicker" data-mode="complex" type="text" />
+                            <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Color</label>
+                            <input id="imageDominantHexColor" asp-for="ImageDominantHexColor" class="form-control" data-plugin="asColorPicker" data-mode="complex" type="text" />
                             <span asp-validation-for="ImageDominantHexColor"></span>
                         </div>
                         <div class="row">
@@ -62,7 +61,10 @@
         }
 
         $(document).ready(function () {
-            $('.example').asColorPicker();
+            $('.the-element').on('asColorPicker::change', function (e) {
+                // on value change 
+            });
+
             $("#uploadImage").on("change",
                 function () {
                     readUrl(this);
@@ -79,9 +81,10 @@
                         var colorThief = new ColorThief();
                         var color = colorThief.getColor(image);
                         var hexColor = rgbToHex(color[0], color[1], color[2]);
-                        $("#ImageDominantHexColor").val(hexColor);
-                        $("input[name=ImageDominantHexColor]").val(hexColor);
+                        $("#imageDominantHexColor").val(hexColor);
                         $(".colorInputUi-trigger > span").css("background", hexColor);
+                        $(".colorInputUi-hex").val(hexColor);
+
                     };
                 }
                 fileReader.readAsDataURL(input.files[0]);

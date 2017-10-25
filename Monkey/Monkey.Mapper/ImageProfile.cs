@@ -31,7 +31,8 @@ namespace Monkey.Mapper
         public ImageProfile()
         {
             CreateMap<ImageEntity, ImageModel>().IgnoreAllNonExisting();
-
+            CreateMap<ImageModel, UpdateImageModel>().IgnoreAllNonExisting();
+            CreateMap<UpdateImageModel, ImageEntity>().IgnoreAllNonExisting();
             CreateMap<FileModel, ImageEntity>()
                 .IgnoreAllNonExisting()
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.OriginalFileName));
