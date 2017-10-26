@@ -29,7 +29,7 @@
 
                         <div hidden="hidden" class="form-group form-material" data-plugin="formMaterial">
                             <img style="width: 100%;" id="imageDemo" src="@Url.AbsoluteContent(Model.Url)">
-                        </div>
+                        </div>      
                         <div class="example" data-plugin="formMaterial">
                             <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
                             <input id="imageDominantHexColor" asp-for="ImageDominantHexColor" class="form-control" value="@Model.ImageDominantHexColor" data-plugin="asColorPicker"
@@ -81,8 +81,7 @@
                         var colorThief = new ColorThief();
                         var color = colorThief.getColor(image);
                         var hexColor = rgbToHex(color[0], color[1], color[2]);
-                        $("#imageDominantHexColor").val(hexColor);
-                        $(".colorInputUi-trigger > span").css("background", hexColor);
+                        $("#imageDominantHexColor").asColorPicker('val', hexColor);
                     };
                 }
                 fileReader.readAsDataURL(input.files[0]);
