@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using EnumsNET;
 using Monkey.Business.Auth;
 using Monkey.Business.User;
-using EnumsNET;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -82,8 +82,8 @@ namespace Monkey.Service.Facade
                 _userBusiness.CheckUniqueUserName(userName);
                 _userBusiness.CheckUniqueEmail(email);
 
-                var subject = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
-                await _authenticationBusiness.ConfirmEmailAsync(subject, userName, password).ConfigureAwait(true);
+                var createUserResult = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
+                await _authenticationBusiness.ConfirmEmailAsync(createUserResult.Subject, userName, password).ConfigureAwait(true);
             }
             catch
             {

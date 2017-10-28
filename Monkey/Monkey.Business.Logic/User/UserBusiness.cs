@@ -94,7 +94,7 @@ namespace Monkey.Business.Logic.User
                 return;
             }
 
-            var query = _userRepository.Get(x => x.UserNameNorm == userNameNorm);
+            var query = _userRepository.Get(x => x.UserNameNorm == userNameNorm && x.ActiveTime != null);
 
             if (excludeId != null)
             {
@@ -131,7 +131,7 @@ namespace Monkey.Business.Logic.User
                 return;
             }
 
-            var query = _userRepository.Get(x => x.EmailNorm == emailNorm);
+            var query = _userRepository.Get(x => x.EmailNorm == emailNorm && x.ActiveTime != null);
 
             if (excludeId != null)
             {
@@ -154,7 +154,7 @@ namespace Monkey.Business.Logic.User
                 return;
             }
 
-            var query = _userRepository.Get(x => x.Phone == phone);
+            var query = _userRepository.Get(x => x.Phone == phone && x.ActiveTime != null);
 
             if (excludeId != null)
             {
@@ -189,7 +189,7 @@ namespace Monkey.Business.Logic.User
             return listAdminUserId;
         }
 
-        public Task<string> CreateUserByEmailAsync(string email, int? roleId, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userEntity = new UserEntity
             {
@@ -207,7 +207,31 @@ namespace Monkey.Business.Logic.User
 
             _userRepository.SaveChanges();
 
-            return Task.FromResult(userEntity.GlobalId);
+            var result = userEntity.MapTo<CreateUserResultModel>();
+
+            return Task.FromResult(result);
+        }
+
+        public Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var userEntity = new UserEntity
+            {
+                Phone = phone,
+                UserName = phone,
+                RoleId = roleId,
+                Profile = new ProfileEntity()
+            };
+
+            _userRepository.Add(userEntity);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _userRepository.SaveChanges();
+
+            var result = userEntity.MapTo<CreateUserResultModel>();
+
+            return Task.FromResult(result);
         }
 
         public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))

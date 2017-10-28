@@ -52,13 +52,9 @@ namespace Monkey.Business.User
         /// <returns></returns>
         List<int> ListUserIdByPermissions(params Enums.Permission[] permissions);
 
-        /// <summary>
-        ///     Create User and Return Subject of new user 
-        /// </summary>
-        /// <param name="email"> </param>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        Task<string> CreateUserByEmailAsync(string email, int? roleId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, CancellationToken cancellationToken = default(CancellationToken));
 
         Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
