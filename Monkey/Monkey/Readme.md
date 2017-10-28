@@ -5,6 +5,7 @@
 - Just add dependencies and use Framework, Core and Service (Contract only)
 - Don't add all other project dependencies (reference)
 - Follow [README](../../Puppy/Puppy.DependencyInjection/Readme.md) of `Puppy.DependencyInjection`
+- Portal HTML Template by Remark: [click to download](https://goo.gl/K29C9A)
 
 # Region/Areas Note
 - I already have Area `Developers` for `API Docs` and `Background Job`
