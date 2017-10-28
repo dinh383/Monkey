@@ -81,10 +81,7 @@
                         var colorThief = new ColorThief();
                         var color = colorThief.getColor(image);
                         var hexColor = rgbToHex(color[0], color[1], color[2]);
-                        $("#imageDominantHexColor").val(hexColor);
-                        $(".colorInputUi-trigger > span").css("background", hexColor);
-                        $(".colorInputUi-hex").val(hexColor);
-
+                        $("#imageDominantHexColor").asColorPicker('val', hexColor);
                     };
                 }
                 fileReader.readAsDataURL(input.files[0]);
