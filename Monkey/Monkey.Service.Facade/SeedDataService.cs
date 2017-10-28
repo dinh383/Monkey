@@ -75,6 +75,7 @@ namespace Monkey.Service.Facade
         public async Task InitialUserAsync()
         {
             string userName = "topnguyen";
+            string fullName = "Top Nguyễn";
             string email = "topnguyen92@gmail.com";
             string password = "Password123@@";
             try
@@ -82,7 +83,7 @@ namespace Monkey.Service.Facade
                 _userBusiness.CheckUniqueUserName(userName);
                 _userBusiness.CheckUniqueEmail(email);
 
-                var createUserResult = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId).ConfigureAwait(true);
+                var createUserResult = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId, fullName).ConfigureAwait(true);
                 await _authenticationBusiness.ConfirmEmailAsync(createUserResult.Subject, userName, password).ConfigureAwait(true);
             }
             catch

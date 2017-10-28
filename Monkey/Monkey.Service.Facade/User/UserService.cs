@@ -60,7 +60,7 @@ namespace Monkey.Service.Facade.User
         {
             _userBusiness.CheckUniqueEmail(model.Email);
 
-            var createUserResult = await _userBusiness.CreateUserByEmailAsync(model.Email, model.RoleId, cancellationToken).ConfigureAwait(true);
+            var createUserResult = await _userBusiness.CreateUserByEmailAsync(model.Email, model.RoleId, null, cancellationToken).ConfigureAwait(true);
 
             string activeToken = _authenticationBusiness.GenerateTokenConfirmEmail(createUserResult.Subject, model.Email, out TimeSpan expireIn);
 

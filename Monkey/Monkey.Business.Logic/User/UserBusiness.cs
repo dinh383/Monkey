@@ -201,7 +201,7 @@ namespace Monkey.Business.Logic.User
             return listAdminUserId;
         }
 
-        public Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userEntity = new UserEntity
             {
@@ -211,6 +211,21 @@ namespace Monkey.Business.Logic.User
                 RoleId = roleId,
                 Profile = new ProfileEntity()
             };
+
+            if (!string.IsNullOrWhiteSpace(fullName))
+            {
+                userEntity.Profile.FullName = fullName;
+                userEntity.Profile.FullNameNorm = StringHelper.Normalize(userEntity.Profile.FullName);
+
+                var fullNameParts = fullName.Split(' ');
+                userEntity.Profile.LastName = fullNameParts.Length > 1 ? fullNameParts.FirstOrDefault() : string.Empty;
+
+                userEntity.Profile.LastNameNorm = StringHelper.Normalize(userEntity.Profile.LastName);
+
+                userEntity.Profile.FirstName = fullName.Replace(userEntity.Profile.LastName, string.Empty);
+
+                userEntity.Profile.FirstNameNorm = StringHelper.Normalize(userEntity.Profile.FirstName);
+            }
 
             _userRepository.Add(userEntity);
 
@@ -224,7 +239,19 @@ namespace Monkey.Business.Logic.User
             return Task.FromResult(result);
         }
 
-        public Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CreateUserResultModel> CreateOrGetUserByEmailAsync(string email, int? roleId, string fullName,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var emailNorm = StringHelper.Normalize(email);
+
+            CreateUserResultModel result =
+                _userRepository.Get(x => x.Email == emailNorm).QueryTo<CreateUserResultModel>().FirstOrDefault()
+                ?? await CreateUserByPhoneAsync(email, roleId, fullName, cancellationToken).ConfigureAwait(true);
+
+            return result;
+        }
+
+        public Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken))
         {
             var userEntity = new UserEntity
             {
@@ -233,6 +260,21 @@ namespace Monkey.Business.Logic.User
                 RoleId = roleId,
                 Profile = new ProfileEntity()
             };
+
+            if (!string.IsNullOrWhiteSpace(fullName))
+            {
+                userEntity.Profile.FullName = fullName;
+                userEntity.Profile.FullNameNorm = StringHelper.Normalize(userEntity.Profile.FullName);
+
+                var fullNameParts = fullName.Split(' ');
+                userEntity.Profile.LastName = fullNameParts.Length > 1 ? fullNameParts.FirstOrDefault() : string.Empty;
+
+                userEntity.Profile.LastNameNorm = StringHelper.Normalize(userEntity.Profile.LastName);
+
+                userEntity.Profile.FirstName = fullName.Replace(userEntity.Profile.LastName, string.Empty);
+
+                userEntity.Profile.FirstNameNorm = StringHelper.Normalize(userEntity.Profile.FirstName);
+            }
 
             _userRepository.Add(userEntity);
 
@@ -244,6 +286,15 @@ namespace Monkey.Business.Logic.User
             var result = userEntity.MapTo<CreateUserResultModel>();
 
             return Task.FromResult(result);
+        }
+
+        public async Task<CreateUserResultModel> CreateOrGetUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            CreateUserResultModel result =
+                _userRepository.Get(x => x.Phone == phone).QueryTo<CreateUserResultModel>().FirstOrDefault()
+                ?? await CreateUserByPhoneAsync(phone, roleId, fullName, cancellationToken).ConfigureAwait(true);
+
+            return result;
         }
 
         public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))

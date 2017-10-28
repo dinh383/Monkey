@@ -52,9 +52,13 @@ namespace Monkey.Business.User
         /// <returns></returns>
         List<int> ListUserIdByPermissions(params Enums.Permission[] permissions);
 
-        Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<CreateUserResultModel> CreateOrGetUserByEmailAsync(string email, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<CreateUserResultModel> CreateOrGetUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
 
         Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
