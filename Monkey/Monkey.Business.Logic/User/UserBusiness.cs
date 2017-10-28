@@ -169,6 +169,18 @@ namespace Monkey.Business.Logic.User
             }
         }
 
+        public void CheckExistByEmail(string email)
+        {
+            var emailNorm = StringHelper.Normalize(email);
+
+            var isExist = _userRepository.Get(x => x.EmailNorm == emailNorm).Any();
+
+            if (!isExist)
+            {
+                throw new MonkeyException(ErrorCode.UserEmailNotExist);
+            }
+        }
+
         public void CheckExistByPhone(string phone)
         {
             var isExist = _userRepository.Get(x => x.Phone == phone).Any();
@@ -375,18 +387,6 @@ namespace Monkey.Business.Logic.User
             }
 
             return Task.CompletedTask;
-        }
-
-        public void CheckExistByEmail(string email)
-        {
-            var emailNorm = StringHelper.Normalize(email);
-
-            var isExist = _userRepository.Get(x => x.EmailNorm == emailNorm).Any();
-
-            if (!isExist)
-            {
-                throw new MonkeyException(ErrorCode.UserEmailNotExist);
-            }
         }
     }
 }
