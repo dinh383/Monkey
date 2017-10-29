@@ -22,12 +22,12 @@ namespace Monkey.Areas.Portal.Controllers
         public const string SignOutEndpoint = "signout";
 
         // Confirm Email
-        public const string ConfirmEmailEndpoint = "confirm-email/{token}";
+        public const string ConfirmEmailEndpoint = "confirm-email";
 
         public const string SubmitConfirmEmailEndpoint = "submit-email-confirm";
 
         // Set Password
-        public const string SetPasswordEndpoint = "set-password/{token}";
+        public const string SetPasswordEndpoint = "set-password";
 
         public const string SubmitSetPasswordEndpoint = "submit-set-password";
 
