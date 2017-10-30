@@ -35,7 +35,7 @@ namespace Monkey.Business.Logic
         {
             string domainUrl = System.Web.HttpContext.Current.Request.GetDomain();
 
-            string activeLink = $"<a href='{domainUrl}/portal/auth/confirm-email/{token}'>Confirm Email Address</a>";
+            string activeLink = $"<a href='{domainUrl}/portal/auth/confirm-email?token={token}'>Confirm Email Address</a>";
 
             string subject = "Confirm Your Email";
 
@@ -50,7 +50,7 @@ namespace Monkey.Business.Logic
         {
             string domainUrl = System.Web.HttpContext.Current.Request.GetDomain();
 
-            string setPasswordLink = $"<a href='{domainUrl}/portal/auth/set-password/{token}'>Set Password</a>";
+            string setPasswordLink = $"<a href='{domainUrl}/portal/auth/set-password?token={token}'>Set Password</a>";
 
             string subject = "Set Password for Your Account";
 
