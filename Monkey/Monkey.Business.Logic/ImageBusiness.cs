@@ -17,18 +17,18 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading;
-using System.Threading.Tasks;
 using Monkey.Core.Entities;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models;
-using System.Linq;
 using Monkey.Data;
 using Puppy.AutoMapper;
 using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Monkey.Business.Logic
 {
@@ -53,7 +53,6 @@ namespace Monkey.Business.Logic
 
         public Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = new CancellationToken())
         {
-            //TODO: improvement update image without delete image
             if (model.File != null)
             {
                 _imageRepository.SaveImage(model.File, model.Caption, model.ImageDominantHexColor);
