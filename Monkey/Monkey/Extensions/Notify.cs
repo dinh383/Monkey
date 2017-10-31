@@ -19,8 +19,31 @@ namespace Monkey.Extensions
 
     public class NotifyResultViewModel
     {
+        private string _message;
+
         public string Title { get; set; }
-        public string Message { get; set; }
+
+        public string Message
+        {
+            get => _message;
+            set
+            {
+                _message = _message?.Replace(@"'", @"\'")?.Replace(@"""", @"\""");
+                _message = value;
+            }
+        }
+
         public NotifyStatus Status { get; set; }
+
+        public NotifyResultViewModel()
+        {
+        }
+
+        public NotifyResultViewModel(string title, string message, NotifyStatus status)
+        {
+            Title = title;
+            Message = message;
+            Status = status;
+        }
     }
 }
