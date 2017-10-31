@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Auth;
+using Monkey.Core;
 using Monkey.Core.Configs;
 using Monkey.Core.Constants;
 using Monkey.Data;
@@ -144,7 +145,7 @@ namespace Monkey
         public static void ApplicationStart(IApplicationBuilder app)
         {
             // Directories/Folders need to have
-            DirectoryHelper.CreateIfNotExist(PathConsts.UploadFolder);
+            DirectoryHelper.CreateIfNotExist(SystemUtils.GetWebPhysicalPath(PathConsts.UploadFolder));
 
             // Migrate Database
             app.MigrateDatabase();

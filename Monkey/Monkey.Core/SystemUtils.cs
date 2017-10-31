@@ -18,6 +18,7 @@
 #endregion License
 
 using Monkey.Core.Configs;
+using System;
 using System.IO;
 
 namespace Monkey.Core
@@ -26,12 +27,30 @@ namespace Monkey.Core
     {
         public static string GetWebPhysicalPath(string path)
         {
-            return Path.Combine(SystemConfig.MvcPath.WebRootFolderName, path);
+            if (!Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out var pathUri))
+            {
+                throw new ArgumentException($"Invalid path {path}");
+            }
+
+            if (pathUri.IsAbsoluteUri) return path;
+
+            path = Path.Combine(SystemConfig.MvcPath.WebRootFolderName, path);
+
+            return path;
         }
 
         public static string GetWebUrl(string path)
         {
-            return path.Replace(SystemConfig.MvcPath.WebRootFolderName, string.Empty).TrimStart('/').TrimStart('/').TrimStart('\\').TrimStart('\\');
+            if (!Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out var pathUri))
+            {
+                throw new ArgumentException($"Invalid path {path}");
+            }
+
+            if (pathUri.IsAbsoluteUri) return path;
+
+            path = path.Replace(SystemConfig.MvcPath.WebRootFolderName, string.Empty).TrimStart('/').TrimStart('/').TrimStart('\\').TrimStart('\\');
+
+            return path;
         }
     }
 }
