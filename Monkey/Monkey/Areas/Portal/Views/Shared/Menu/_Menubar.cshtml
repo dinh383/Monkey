@@ -1,35 +1,19 @@
-﻿<div class="site-menubar">
-    <ul class="site-menu">
-        <li class="site-menu-item">
-            <a class="animsition-link" href="@Url.AbsoluteAction("Index", "Home")">
-                <i class="site-menu-icon md-view-dashboard" aria-hidden="true"></i>
-                <span class="site-menu-title">Dashboard</span>
-            </a>
-        </li>
-        <li class="site-menu-item has-sub">
-            <a href="javascript:void(0)">
-                <i class="site-menu-icon md-apps" aria-hidden="true"></i>
-                <span class="site-menu-title">Authentication</span>
-                <span class="site-menu-arrow"></span>
-            </a>
-            <ul class="site-menu-sub">
-                <li class="site-menu-item">
-                    <a class="animsition-link" href="@Url.AbsoluteAction("Index", "User")">
-                        <span class="site-menu-title">User</span>
-                    </a>
-                </li>
-                <li class="site-menu-item">
-                    <a class="animsition-link" href="@Url.AbsoluteAction("Index", "Client")">
-                        <span class="site-menu-title">Client</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="site-menu-item">
-            <a class="animsition-link" href="@Url.AbsoluteAction("Index", "Image")">
-                <i class="site-menu-icon md-view-agenda" aria-hidden="true"></i>
-                <span class="site-menu-title">Image</span>
-            </a>
-        </li>
-    </ul>
-</div>
+﻿@using Monkey.Core.Constants
+<menu>
+    <menu-item menu-name="Dashboard"
+               menu-url="@Url.AbsoluteAction("Index", "Home")"
+               menu-permissions="@(new List<Enums.Permission> {Enums.Permission.Admin})"
+               menu-icon-class="site-menu-icon md-view-dashboard">
+    </menu-item>
+
+    <menu-item menu-name="Authentication" menu-has-sub="true" menu-icon-class="site-menu-icon md-account">
+        <sub-menu-item sub-menu-name="User"
+                       sub-menu-permissions="@(new List<Enums.Permission> {Enums.Permission.Admin})"
+                       sub-menu-url="@Url.AbsoluteAction("Index", "User")" />
+
+        <sub-menu-item sub-menu-name="Client"
+                       sub-menu-permissions="@(new List<Enums.Permission> {Enums.Permission.Admin})"
+                       sub-menu-url="@Url.AbsoluteAction("Index", "Client")" />
+    </menu-item>
+
+</menu>       
