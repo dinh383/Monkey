@@ -22,7 +22,6 @@ using Microsoft.AspNetCore.Hosting;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
@@ -30,13 +29,10 @@ using Monkey.Core;
 using Monkey.Core.Configs;
 using Monkey.Core.Constants;
 using Monkey.Data;
-using Monkey.Data.EF;
-using Monkey.Data.EF.Factory;
 using Monkey.Service;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Core.FileUtils;
 using Puppy.DependencyInjection;
-using Puppy.EF;
 
 namespace Monkey
 {
