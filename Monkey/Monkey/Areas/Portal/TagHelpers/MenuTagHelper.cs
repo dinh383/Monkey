@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace Monkey.Areas.Portal.TagHelpers
 {
     [HtmlTargetElement(MenuTagName, TagStructure = TagStructure.NormalOrSelfClosing)]
-    [HtmlTargetElement(Attributes = MenuTagName)]
     [RestrictChildren(MenuItemTagHelper.MenuItemTagName)]
     public class MenuTagHelper : TagHelper
     {
@@ -36,7 +35,6 @@ namespace Monkey.Areas.Portal.TagHelpers
     }
 
     [HtmlTargetElement(MenuItemTagName, TagStructure = TagStructure.NormalOrSelfClosing)]
-    [HtmlTargetElement(Attributes = MenuItemTagName)]
     [RestrictChildren(SubMenuItemTagHelper.SubMenuItemTagName)]
     public class MenuItemTagHelper : TagHelper
     {
@@ -108,7 +106,6 @@ namespace Monkey.Areas.Portal.TagHelpers
     }
 
     [HtmlTargetElement(SubMenuItemTagName, ParentTag = MenuItemTagHelper.MenuItemTagName, TagStructure = TagStructure.WithoutEndTag)]
-    [HtmlTargetElement(Attributes = SubMenuItemTagName, ParentTag = MenuItemTagHelper.MenuItemTagName)]
     public class SubMenuItemTagHelper : TagHelper
     {
         public const string SubMenuItemTagName = "sub-menu-item";
