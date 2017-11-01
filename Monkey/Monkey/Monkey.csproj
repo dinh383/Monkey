@@ -58,7 +58,6 @@
     <ProjectReference Include="..\..\Puppy\Puppy.DataTable\Puppy.DataTable.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Logger\Puppy.Logger.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.Hangfire\Puppy.Hangfire.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.Redis\Puppy.Redis.csproj" />
   </ItemGroup>
 
   <!-- Monkey -->
