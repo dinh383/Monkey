@@ -92,10 +92,6 @@ namespace Monkey.Auth
             return app;
         }
 
-        #region Middlewares
-
-        #endregion
-
         public static void BuildConfig(this IConfiguration configuration, string configSection = Constants.Constant.DefaultConfigSection)
         {
             var isHaveConfig = configuration.GetChildren().Any(x => x.Key == configSection);
