@@ -30,7 +30,7 @@ namespace Monkey.Data.EF.Factory
         /// <param name="services"></param>
         public static IServiceCollection AddDatabase(this IServiceCollection services)
         {
-            services.AddDbContext<Microsoft.EntityFrameworkCore.DbContext>(builder => builder.UseSqlServer());
+            services.AddDbContext<DbContext>(builder => builder.UseSqlServer());
             return services;
         }
 
@@ -46,7 +46,8 @@ namespace Monkey.Data.EF.Factory
                 optionsBuilder.MigrationsAssembly(DbContextFactory.GetMigrationAssemblyName());
 
                 // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
-                optionsBuilder.UseRowNumberForPaging();
+
+                // optionsBuilder.UseRowNumberForPaging();
             });
 
             return builder;

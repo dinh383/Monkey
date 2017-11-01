@@ -20,15 +20,21 @@
 using Microsoft.AspNetCore.Builder;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
+using System;
 
 namespace Monkey.Data.EF.Factory
 {
     [PerResolveDependency(ServiceType = typeof(IDatabaseFactory))]
     public class DatabaseFactory : IDatabaseFactory
     {
+        public IServiceProvider MigrateDatabase(IServiceProvider services)
+        {
+            return services.MigrateDatabase<IDbContext>();
+        }
+
         public IApplicationBuilder MigrateDatabase(IApplicationBuilder app)
         {
-            return app.DatabaseMigrate<IDbContext>();
+            return app.MigrateDatabase<IDbContext>();
         }
     }
 }

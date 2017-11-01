@@ -52,7 +52,8 @@ namespace Monkey.Extensions
             services.AddScoped<ApiModelValidationActionFilter>();
 
             // Mvc Services
-            services.AddScoped<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
 
             // Mvc Filter

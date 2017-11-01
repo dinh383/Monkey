@@ -19,21 +19,41 @@
 
 using System;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
+using Monkey.Core;
 using Monkey.Core.Configs;
+using Monkey.Core.Constants;
+using Monkey.Data;
+using Monkey.Data.EF;
+using Monkey.Data.EF.Factory;
+using Monkey.Service;
 using Puppy.Core.EnvironmentUtils;
+using Puppy.Core.FileUtils;
+using Puppy.DependencyInjection;
+using Puppy.EF;
 
 namespace Monkey
 {
     public class Program
     {
+        public static IWebHost BuildWebHost(string[] args)
+            => WebHost
+                .CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .Build();
+
         public static void Main(string[] args)
         {
+            var host = BuildWebHost(args);
+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             Console.Title = $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
 
             // Build System Config at first time for config Root, in Startup will build again with reload update features
@@ -43,18 +63,19 @@ namespace Monkey
 
             SystemConfigurationHelper.BuildSystemConfig(configuration);
 
-            IWebHostBuilder hostBuilder =
-                new WebHostBuilder()
-                    .UseKestrel(options =>
-                    {
-                        options.AddServerHeader = false;
-                    })
-                    .UseWebRoot(SystemConfig.MvcPath.WebRootFolderName)
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseIISIntegration()
-                    .UseStartup<Startup>();
+            // Directories/Folders need to have
+            DirectoryHelper.CreateIfNotExist(SystemUtils.GetWebPhysicalPath(PathConsts.UploadFolder));
 
-            hostBuilder.Build().Run();
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                services.MigrateDatabase();
+
+                services.Resolve<ISeedDataService>().SeedData();
+            }
+
+            host.Run();
         }
     }
 }

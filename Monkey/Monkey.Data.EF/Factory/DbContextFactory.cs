@@ -19,27 +19,20 @@
 
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Monkey.Core.Configs;
-using Puppy.Core;
 using Puppy.Core.ConfigUtils;
-using Puppy.Core.EnvironmentUtils;
 
 namespace Monkey.Data.EF.Factory
 {
-    public class DbContextFactory : IDbContextFactory<DbContext>
+    public class DbContextFactory : IDesignTimeDbContextFactory<DbContext>
     {
-        public DbContext Create(DbContextFactoryOptions options)
-        {
-            return CreateCoreContext();
-        }
-
-        public static DbContext CreateCoreContext()
+        public DbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<DbContext>();
 
-            builder.UseSqlServer();
+            builder.UseSqlServer(GetConnectionString(), optionsBuilder => optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName()));
 
             return new DbContext(builder.Options);
         }

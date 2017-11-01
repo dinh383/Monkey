@@ -26,6 +26,7 @@ using Puppy.Core.ServiceCollectionUtils;
 using Puppy.Web.Middlewares;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Monkey.Auth
 {
@@ -54,6 +55,12 @@ namespace Monkey.Auth
             // Add System.HttpContext.Current
             services.AddHttpContextAccessor();
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = AuthConfig.TokenValidationParameters;
+                });
+
             return services;
         }
 
@@ -80,12 +87,7 @@ namespace Monkey.Auth
                 _configuration.BuildConfig(_configSection);
             });
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                TokenValidationParameters = AuthConfig.TokenValidationParameters
-            });
+            app.UseAuthentication();
 
             AuthConfig.AppBuilder = app;
 
