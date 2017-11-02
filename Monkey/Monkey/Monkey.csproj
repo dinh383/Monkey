@@ -46,9 +46,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Areas\Portal\Controllers\ImageController.cs" />
-  </ItemGroup>
 
   <!-- Puppy -->
   <ItemGroup>
@@ -85,6 +82,7 @@
   <ItemGroup>
     <!-- AspNetCore -->
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
 
     <!-- C# Utitlity -->
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
