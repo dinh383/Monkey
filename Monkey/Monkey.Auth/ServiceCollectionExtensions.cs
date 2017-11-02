@@ -17,16 +17,16 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Auth.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
+using Monkey.Auth.Filters;
 using Puppy.Core.ServiceCollectionUtils;
 using Puppy.Web.Middlewares;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Monkey.Auth
 {

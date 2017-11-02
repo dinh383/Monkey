@@ -51,14 +51,6 @@ namespace Monkey
             host.Run();
         }
 
-        private static void ConsoleConfiguration()
-        {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            Console.Title =
-                $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
-        }
-
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost
                 .CreateDefaultBuilder(args)
@@ -66,6 +58,13 @@ namespace Monkey
                 .UseDefaultServiceProvider(options => options.ValidateScopes = false)
                 .Build();
 
+        private static void ConsoleConfiguration()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            Console.Title =
+                $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
+        }
 
         private static void BuildConfiguration()
         {

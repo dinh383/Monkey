@@ -1,4 +1,4 @@
 pushd Monkey.Data.EF
-dotnet ef migrations add %1 -v
-dotnet ef database update -v
+dotnet ef migrations add %1 -v --context DbContext
+dotnet ef database update -v --context DbContext
 popd

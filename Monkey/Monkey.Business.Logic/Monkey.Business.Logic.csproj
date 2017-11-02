@@ -30,7 +30,6 @@
 
   <!-- External Libraries -->
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="HangFire" Version="1.6.17" />
     <PackageReference Include="Sendgrid" Version="9.9.0" />
   </ItemGroup>
