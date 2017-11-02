@@ -4,15 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Auth;
-using Monkey.Core;
 using Monkey.Core.Configs;
-using Monkey.Core.Constants;
-using Monkey.Data;
 using Monkey.Data.EF.Factory;
 using Monkey.Extensions;
 using Monkey.Mapper;
-using Monkey.Service;
-using Puppy.Core.FileUtils;
 using Puppy.Core.TypeUtils;
 using Puppy.DataTable;
 using Puppy.DependencyInjection;
@@ -35,7 +30,7 @@ namespace Monkey
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(Puppy.Core.Constants.Configuration.AppSettingsJsonFileName, optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
@@ -135,21 +130,6 @@ namespace Monkey
 
                 // [Mvc - API] Static files configuration, routing [Mvc] Static files configuration, routing
                 .UseMvcApi();
-
-            // [Application Start] Initial functions
-            ApplicationStart(app);
-        }
-
-        public static void ApplicationStart(IApplicationBuilder app)
-        {
-            // Directories/Folders need to have
-            DirectoryHelper.CreateIfNotExist(SystemUtils.GetWebPhysicalPath(PathConsts.UploadFolder));
-
-            // Migrate Database
-            app.MigrateDatabase();
-
-            // Seed Data
-            app.Resolve<ISeedDataService>().SeedData();
         }
     }
 }

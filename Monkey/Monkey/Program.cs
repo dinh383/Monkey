@@ -23,9 +23,16 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
+using Monkey.Core;
 using Monkey.Core.Configs;
+using Monkey.Core.Constants;
+using Monkey.Data;
+using Monkey.Service;
 using Puppy.Core.EnvironmentUtils;
+using Puppy.Core.FileUtils;
+using Puppy.DependencyInjection;
 
 namespace Monkey
 {
@@ -33,15 +40,19 @@ namespace Monkey
     {
         public static void Main(string[] args)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Console.Title = $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
+            var host = BuildWebHost();
 
-            // Build System Config at first time for config Root, in Startup will build again with reload update features
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+            ConsoleConfiguration();
 
-            IConfiguration configuration = builder.Build();
+            BuildConfiguration();
 
-            SystemConfigurationHelper.BuildSystemConfig(configuration);
+            OnApplicationStart(host);
+
+            host.Run();
+        }
+
+        public static IWebHost BuildWebHost()
+        {
 
             IWebHostBuilder hostBuilder =
                 new WebHostBuilder()
@@ -54,7 +65,41 @@ namespace Monkey
                     .UseIISIntegration()
                     .UseStartup<Startup>();
 
-            hostBuilder.Build().Run();
+            return hostBuilder.Build();
         }
+
+        public static void ConsoleConfiguration()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Console.Title =
+                $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
+        }
+
+        public static void BuildConfiguration()
+        {
+            // Build System Config at first time for config Root, in Startup will build again with reload update features
+            var builder = new ConfigurationBuilder().AddJsonFile(Puppy.Core.Constants.Configuration.AppSettingsJsonFileName,
+                optional: true, reloadOnChange: false);
+
+            IConfiguration configuration = builder.Build();
+
+            SystemConfigurationHelper.BuildSystemConfig(configuration);
+        }
+
+        private static void OnApplicationStart(IWebHost host)
+        {
+            // Directories/Folders need to have
+            DirectoryHelper.CreateIfNotExist(SystemUtils.GetWebPhysicalPath(PathConsts.UploadFolder));
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                services.MigrateDatabase();
+
+                services.Resolve<ISeedDataService>().SeedData();
+            }
+        }
+
     }
 }

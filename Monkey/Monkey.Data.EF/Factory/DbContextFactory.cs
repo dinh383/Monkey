@@ -30,6 +30,7 @@ namespace Monkey.Data.EF.Factory
 {
     public class DbContextFactory : IDbContextFactory<DbContext>
     {
+
         public DbContext Create(DbContextFactoryOptions options)
         {
             return CreateCoreContext();

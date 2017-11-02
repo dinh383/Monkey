@@ -18,11 +18,20 @@
 #endregion License
 
 using Microsoft.AspNetCore.Builder;
+using System;
 
 namespace Monkey.Data
 {
     public interface IDatabaseFactory
     {
+        /// <summary>
+        ///     <para>
+        ///         Applies any pending migrations for the context to the database. Will create the
+        ///         database if it does not already exist.
+        ///     </para>
+        /// </summary>
+        IServiceProvider MigrateDatabase(IServiceProvider services);
+
         /// <summary>
         ///     <para>
         ///         Applies any pending migrations for the context to the database. Will create the

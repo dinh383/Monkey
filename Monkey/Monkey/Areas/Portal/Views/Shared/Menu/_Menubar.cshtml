@@ -16,4 +16,9 @@
                        sub-menu-url="@Url.AbsoluteAction("Index", "Client")" />
     </menu-item>
 
+    <menu-item menu-name="Image"
+               menu-url="@Url.AbsoluteAction("Index", "Image")"
+               menu-permissions="@(new List<Enums.Permission> {Enums.Permission.Admin})"
+               menu-icon-class="site-menu-icon md-image">
+    </menu-item>
 </menu>       
