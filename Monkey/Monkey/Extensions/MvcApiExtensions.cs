@@ -200,7 +200,7 @@ namespace Monkey.Extensions
                     // Rename the Anti-Forgery cookie from "__RequestVerificationToken" to "ape".
                     // This adds a little security through obscurity and also saves sending a few
                     // characters over the wire.
-                    options.CookieName = "ape";
+                    options.Cookie.Name = "ape";
 
                     // Rename the form input name from "__RequestVerificationToken" to "ape" for the
                     // same reason above e.g.
@@ -214,7 +214,7 @@ namespace Monkey.Extensions
 
                     // If you have enabled SSL/TLS. Uncomment this line to ensure that the
                     // Anti-Forgery cookie requires SSL /TLS to be sent across the wire.
-                    options.RequireSsl = false;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
                 });
 
             return services;
