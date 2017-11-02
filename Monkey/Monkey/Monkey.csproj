@@ -8,6 +8,7 @@
     <AssemblyName>Monkey</AssemblyName>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
     <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
