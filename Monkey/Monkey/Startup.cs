@@ -30,7 +30,7 @@ namespace Monkey
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(Puppy.Core.Constants.Configuration.AppSettingsJsonFileName, optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
@@ -73,8 +73,9 @@ namespace Monkey
                 // [API Document] Swagger
                 .AddApiDocument(typeof(Startup).GetAssembly(), ConfigurationRoot)
 
+                // TODO - Mini Response Have Exception in AspNetCore 2
                 // [Mini Response]
-                .AddMinResponse()
+                //.AddMinResponse()
 
                 // [MVC] Anti Forgery
                 .AddAntiforgeryToken()
@@ -119,8 +120,9 @@ namespace Monkey
                 // [API Document] Swagger
                 .UseApiDocument()
 
+                // TODO - Mini Response Have Exception in AspNetCore 2
                 // [Mini Response]
-                .UseMinResponse()
+                //.UseMinResponse()
 
                 // [Authentication] Json Web Token + Cookie
                 .UseHybridAuth()

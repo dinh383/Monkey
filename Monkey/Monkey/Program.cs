@@ -38,27 +38,47 @@ namespace Monkey
 {
     public class Program
     {
-        public static IWebHost BuildWebHost(string[] args)
-            => WebHost
-                .CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);
 
+            ConsoleConfiguration();
+
+            BuildConfiguration();
+
+            OnApplicationStart(host);
+
+            host.Run();
+        }
+
+        private static void ConsoleConfiguration()
+        {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            Console.Title = $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
+            Console.Title =
+                $"Welcome [{EnvironmentHelper.MachineName}], [{PlatformServices.Default.Application.ApplicationName}] App (v{PlatformServices.Default.Application.ApplicationVersion}) - Env [{EnvironmentHelper.Name}] | {PlatformServices.Default.Application.RuntimeFramework.FullName} | {RuntimeInformation.OSDescription}";
+        }
 
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost
+                .CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseDefaultServiceProvider(options => options.ValidateScopes = false)
+                .Build();
+
+
+        private static void BuildConfiguration()
+        {
             // Build System Config at first time for config Root, in Startup will build again with reload update features
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: false);
+            var builder = new ConfigurationBuilder().AddJsonFile(Puppy.Core.Constants.Configuration.AppSettingsJsonFileName, true, false);
 
             IConfiguration configuration = builder.Build();
 
             SystemConfigurationHelper.BuildSystemConfig(configuration);
+        }
 
+        private static void OnApplicationStart(IWebHost host)
+        {
             // Directories/Folders need to have
             DirectoryHelper.CreateIfNotExist(SystemUtils.GetWebPhysicalPath(PathConsts.UploadFolder));
 
@@ -70,8 +90,6 @@ namespace Monkey
 
                 services.Resolve<ISeedDataService>().SeedData();
             }
-
-            host.Run();
         }
     }
 }
