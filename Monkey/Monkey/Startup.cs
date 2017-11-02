@@ -73,9 +73,8 @@ namespace Monkey
                 // [API Document] Swagger
                 .AddApiDocument(typeof(Startup).GetAssembly(), ConfigurationRoot)
 
-                // TODO - Mini Response Have Exception in AspNetCore 2
                 // [Mini Response]
-                //.AddMinResponse()
+                .AddMinResponse()
 
                 // [MVC] Anti Forgery
                 .AddAntiforgeryToken()
@@ -120,9 +119,8 @@ namespace Monkey
                 // [API Document] Swagger
                 .UseApiDocument()
 
-                // TODO - Mini Response Have Exception in AspNetCore 2
                 // [Mini Response]
-                //.UseMinResponse()
+                .UseMinResponse()
 
                 // [Authentication] Json Web Token + Cookie
                 .UseHybridAuth()
