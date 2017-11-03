@@ -46,7 +46,7 @@ namespace Monkey.Data.EF.Factory
                 optionsBuilder.MigrationsAssembly(DbContextFactory.GetMigrationAssemblyName());
 
                 // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
-                optionsBuilder.UseRowNumberForPaging();
+                // optionsBuilder.UseRowNumberForPaging();
             });
 
             return builder;
