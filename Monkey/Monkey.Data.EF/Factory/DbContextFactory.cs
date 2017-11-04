@@ -22,9 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Monkey.Core.Configs;
-using Puppy.Core;
 using Puppy.Core.ConfigUtils;
-using Puppy.Core.EnvironmentUtils;
 
 namespace Monkey.Data.EF.Factory
 {
@@ -33,16 +31,24 @@ namespace Monkey.Data.EF.Factory
 
         public DbContext Create(DbContextFactoryOptions options)
         {
-            return CreateCoreContext();
+            return new DbContext(CreateCoreContext().Options);
         }
 
-        public static DbContext CreateCoreContext()
+        public static DbContextOptionsBuilder CreateCoreContext(DbContextOptionsBuilder builder = null)
         {
-            var builder = new DbContextOptionsBuilder<DbContext>();
+            builder = builder ?? new DbContextOptionsBuilder<DbContext>();
 
             builder.UseSqlServer();
 
-            return new DbContext(builder.Options);
+            builder.UseSqlServer(GetConnectionString(), optionsBuilder =>
+            {
+                optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName());
+
+                // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
+                // optionsBuilder.UseRowNumberForPaging();
+            });
+
+            return builder;
         }
 
         /// <summary>
