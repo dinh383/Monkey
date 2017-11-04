@@ -30,11 +30,22 @@ namespace Monkey.Data.EF.Factory
     {
         public DbContext CreateDbContext(string[] args)
         {
-            var builder = new DbContextOptionsBuilder<DbContext>();
+            return new DbContext(GetDbContextBuilder().Options);
+        }
 
-            builder.UseSqlServer(GetConnectionString(), optionsBuilder => optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName()));
+        public static DbContextOptionsBuilder GetDbContextBuilder(DbContextOptionsBuilder builder = null)
+        {
+            builder = builder ?? new DbContextOptionsBuilder<DbContext>();
 
-            return new DbContext(builder.Options);
+            builder.UseSqlServer(GetConnectionString(), optionsBuilder =>
+            {
+                optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName());
+
+                // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
+                // optionsBuilder.UseRowNumberForPaging();
+            });
+
+            return builder;
         }
 
         /// <summary>

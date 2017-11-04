@@ -1,5 +1,5 @@
-﻿using Monkey.Data.EF.Factory;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Monkey.Data.EF.Factory;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
 using Puppy.EF.Maps;
@@ -10,7 +10,7 @@ namespace Monkey.Data.EF
     public sealed partial class DbContext : BaseDbContext, IDbContext
     {
         /// <summary>
-        ///     Set CMD timeout is 20 minutes 
+        ///     Set CMD timeout is 20 minutes
         /// </summary>
         public readonly int CmdTimeoutInSecond = 12000;
 
@@ -19,7 +19,7 @@ namespace Monkey.Data.EF
             Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
 
-        public DbContext(DbContextOptions<DbContext> options) : base(options)
+        public DbContext(DbContextOptions options) : base(options)
         {
             Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
