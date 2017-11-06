@@ -86,7 +86,13 @@ namespace Monkey
                 .AddDataTable(ConfigurationRoot)
 
                 // [Mvc - API] Json, Xml serialize, area, response caching and filters
-                .AddMvcApi();
+                .AddMvcApi()
+
+                // [Socket] SignalR
+                .AddSignalR(config =>
+                {
+                    config.JsonSerializerSettings = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings;
+                });
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
@@ -129,7 +135,13 @@ namespace Monkey
                 .UseDataTable()
 
                 // [Mvc - API] Static files configuration, routing [Mvc] Static files configuration, routing
-                .UseMvcApi();
+                .UseMvcApi()
+
+                // [Socket] SignalR
+                .UseSignalR(routes =>
+                {
+                    routes.MapHub<Areas.Portal.Hubs.NotificationHub>(Areas.Portal.Hubs.NotificationHub.Url);
+                });
         }
     }
 }

@@ -100,6 +100,42 @@
                     direction: 'right',
                 });
         });
+    },
+
+    renderSlugAuto: function ($element, $slugElement) {
+        $element.on("keyup",
+            function () {
+                $slugElement.val($element.val().genSlug());
+            });
+    },
+
+    notificationHub: {
+        connection: null,
+        connect: function () {
+            monkey.notificationHub.connection = new signalR.HubConnection("/portal/notification");
+
+            monkey.notificationHub.connection
+                .on("notification",
+                    message => {
+                        // Handle notification on client side
+                        console.log(message);
+                    });
+
+            monkey.notificationHub.connection
+                .start()
+                .then(() => {
+                    console.log("[Socket] connected to notification hub");
+                })
+                .catch(err => {
+                    console.log(`[Socket] connection error: ${err}`);
+                });
+        },
+        sendUser: function (subject, message) {
+            monkey.notificationHub.connection.invoke("notificationUserAsync", subject, message);
+        },
+        sendRole: function (roleId, message) {
+            monkey.notificationHub.connection.invoke("notificationRoleAsync", roleId, message);
+        }
     }
 };
 
@@ -108,4 +144,55 @@ $(function () {
     monkey.initToolTip();
     monkey.initConfirmDialog();
     monkey.initSlidePanel();
+    monkey.notificationHub.connect();
 });
+
+String.prototype.preventInjection = function preventInjection() {
+    return this.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+};
+
+String.prototype.genSlug = function changeToSlug() {
+    var title, slug;
+    title = this;
+
+    slug = title.toLowerCase();
+
+    slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, "a");
+    slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, "e");
+    slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, "i");
+    slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, "o");
+    slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, "u");
+    slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, "y");
+    slug = slug.replace(/đ/gi, "d");
+
+    slug = slug.replace(/c#/gi, "c-sharp");
+
+    slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, "");
+
+    slug = slug.replace(/ /gi, "-");
+
+    slug = slug.replace(/\-\-\-\-\-/gi, "-");
+    slug = slug.replace(/\-\-\-\-/gi, "-");
+    slug = slug.replace(/\-\-\-/gi, "-");
+    slug = slug.replace(/\-\-/gi, "-");
+
+    slug = "@" + slug + "@";
+    slug = slug.replace(/\@\-|\-\@|\@/gi, "");
+
+    return slug;
+};
+
+Array.prototype.remove = function () {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
+Array.prototype.contains = function (element) {
+    return this.indexOf(element) > -1;
+};

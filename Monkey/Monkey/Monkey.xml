@@ -6,13 +6,19 @@
     <members>
         <member name="M:Monkey.Areas.Api.Controllers.TestController.DeviceInfo">
             <summary>
-                Device Info
+                Device Info 
             </summary>
             <returns></returns>
         </member>
         <member name="M:Monkey.Areas.Api.Controllers.TestController.LoggedInUser">
             <summary>
-                Logged In User
+                Logged In User 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Monkey.Areas.Api.Controllers.TestController.SendNotification(System.String)">
+            <summary>
+                Send Notification 
             </summary>
             <returns></returns>
         </member>
@@ -21,6 +27,16 @@
                 Token
             </summary>
             <returns></returns>
+        </member>
+        <member name="F:Monkey.Areas.Portal.Hubs.NotificationHub.ConnectedUsers">
+            <summary>
+                Dictionary user Subject/Global Id and ConnectionId 
+            </summary>
+        </member>
+        <member name="F:Monkey.Areas.Portal.Hubs.NotificationHub.ConnectedRoles">
+            <summary>
+                Dictionary role id and List Connection Id 
+            </summary>
         </member>
         <member name="M:Monkey.Extensions.MvcApiExtensions.AddMvcApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>

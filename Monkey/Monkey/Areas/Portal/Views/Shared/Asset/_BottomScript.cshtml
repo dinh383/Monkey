@@ -81,10 +81,6 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/material.min.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/ladda.min.js")"></script>
 
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
-
-
 <!-- Colorpicker script-->
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolor/jquery-asColor.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/asgradient/jquery-asGradient.js")"></script>
@@ -98,6 +94,39 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/dropify/dropify.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/dropify.js")"></script>
 
+<!-- Signal R -->
+<script type="text/javascript">
+    if (typeof Promise === 'undefined') {
+        document.write(
+            '<script type="text/javascript" src="@Url.AbsoluteContent("~/vendor/signalr-client/signalr-clientES5-1.0.0-alpha2-final.min.js")"><\/script>' +
+            '<script type="text/javascript" src="@Url.AbsoluteContent("~/vendor/signalr-client/signalr-msgpackprotocolES5-1.0.0-alpha2-final.min.js")"><\/script>');
+    }
+    else {
+        document.write(
+            '<script type="text/javascript" src="@Url.AbsoluteContent("~/vendor/signalr-client/signalr-client-1.0.0-alpha2-final.min.js")"><\/script>' +
+            '<script type="text/javascript" src="@Url.AbsoluteContent("~/vendor/signalr-client/signalr-msgpackprotocol-1.0.0-alpha2-final.min.js")"><\/script>');
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        var loggedInUserJson = LoggedInUser.Current == null
+            ? Html.Raw("{}")
+            : Html.Raw(
+                JsonConvert.SerializeObject(
+                    LoggedInUser.Current,
+                    Puppy.Core.Constants.StandardFormat.JsonSerializerSettings
+                    )
+                );
+    }
+
+    var httpContext = {
+        loggedInUser: @loggedInUserJson
+    };
+</script>
+
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
+<script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
 
 <script type="text/javascript">
     @{
