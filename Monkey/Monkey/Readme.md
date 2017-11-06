@@ -124,3 +124,8 @@ BackgroundJob.Enqueue<Interface>(x => x.Method));
 
 # File Upload Note
 - Please follow the [this tutorial](https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads)
+
+# SignalR
+- [SignalR client javascript](https://github.com/aspnet/SignalR/tree/dev/client-ts)
+
+- [Best Practice inject SignalR client javascript](https://github.com/aspnet/SignalR/commit/66876aa2f87053b279a2c059ad77b8e32083903b)

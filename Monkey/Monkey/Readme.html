@@ -721,7 +721,7 @@ pre {
   position: relative;
   border-color: #4078c0;
 }
-</style><title>Readme</title></head><body><article class="markdown-body"><p><a href="///E://Dropbox/Github/Monkey/Monkey/Monkey/favicon.ico" target="_blank"><img src="///E://Dropbox/Github/Monkey/Monkey/Monkey/favicon.ico" alt="Logo" style="max-width:100%;"></a></p>
+</style><title>Readme</title></head><body><article class="markdown-body"><p><a href="///C://Dropbox/Github/Monkey/Monkey/Monkey/favicon.ico" target="_blank"><img src="///C://Dropbox/Github/Monkey/Monkey/Monkey/favicon.ico" alt="Logo" style="max-width:100%;"></a></p>
 <h1>
 <a id="user-content-monkey" class="anchor" href="#monkey" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Monkey</h1>
 <blockquote>
@@ -730,7 +730,7 @@ pre {
 <ul>
 <li>Just add dependencies and use Framework, Core and Service (Contract only)</li>
 <li>Don't add all other project dependencies (reference)</li>
-<li>Follow <a href="///E://Dropbox/Github/Monkey/Puppy/Puppy.DependencyInjection/Readme.md">README</a> of <code>Puppy.DependencyInjection</code>
+<li>Follow <a href="///C://Dropbox/Github/Monkey/Puppy/Puppy.DependencyInjection/Readme.md">README</a> of <code>Puppy.DependencyInjection</code>
 </li>
 <li>Portal HTML Template by Remark: <a href="https://goo.gl/K29C9A">click to download</a>
 </li>
@@ -743,16 +743,16 @@ pre {
 </li>
 <li>
 <p>Api Docs</p>
-<p><a href="///E://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Swagger_Api_Doc.png" target="_blank"><img src="///E://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Swagger_Api_Doc.png" alt="Swagger Api Doc" style="max-width:100%;"></a></p>
+<p><a href="///C://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Swagger_Api_Doc.png" target="_blank"><img src="///C://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Swagger_Api_Doc.png" alt="Swagger Api Doc" style="max-width:100%;"></a></p>
 <ul>
 <li>We use generate doc by <a href="https://github.com/domaindrivendev/Swashbuckle.AspNetCore"><code>Swagger AspNetCore</code></a>
 </li>
-<li>Access via: [root]/developers?key=[developer access key] (Config it in <a href="///E://Dropbox/Github/Monkey/Monkey/Monkey/appsettings.json">appsettings.json</a> with KEY <code>Developers:AccessKey</code>)</li>
+<li>Access via: [root]/developers?key=[developer access key] (Config it in <a href="///C://Dropbox/Github/Monkey/Monkey/Monkey/appsettings.json">appsettings.json</a> with KEY <code>Developers:AccessKey</code>)</li>
 </ul>
 </li>
 <li>
 <p>Background Job</p>
-<p><a href="///E://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Backgroud_Job_Dashboard.png" target="_blank"><img src="///E://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Backgroud_Job_Dashboard.png" alt="Backgroud Job Dashboard" style="max-width:100%;"></a></p>
+<p><a href="///C://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Backgroud_Job_Dashboard.png" target="_blank"><img src="///C://Dropbox/Github/Monkey/Monkey/Monkey/wwwroot/readme/Backgroud_Job_Dashboard.png" alt="Backgroud Job Dashboard" style="max-width:100%;"></a></p>
 <ul>
 <li>We use <a href="https://www.hangfire.io/">Hangfire</a> with SQL Server (Can change it to Memory or Distribute Cache like Redis)</li>
 <li>Access via: [root]/developers/job?key=[developer access key]</li>
@@ -809,7 +809,7 @@ pre {
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">return</span> Ok(&lt;data&gt;);</pre></div>
 </li>
 <li>
-<p>[Fail] Response <code>Error</code>: throw <a href="///E://Dropbox/Github/Monkey/Monkey/Monkey.Core/Exceptions/MonkeyException.cs"><code>MonkeyException</code></a> with <a href="///E://Dropbox/Github/Monkey/Monkey/Monkey.Core/Exceptions/ErrorCode.cs"><code>ErrorCode</code></a> and return <a href="ViewModels/Api/ApiErrorViewModel.cs"><code>ApiErrorModel</code></a>. refer to view <a href="ViewModels/Filters/ApiExceptionFilter.cs"><code>ApiExceptionFilter</code></a></p>
+<p>[Fail] Response <code>Error</code>: throw <a href="///C://Dropbox/Github/Monkey/Monkey/Monkey.Core/Exceptions/MonkeyException.cs"><code>MonkeyException</code></a> with <a href="///C://Dropbox/Github/Monkey/Monkey/Monkey.Core/Exceptions/ErrorCode.cs"><code>ErrorCode</code></a> and return <a href="ViewModels/Api/ApiErrorViewModel.cs"><code>ApiErrorModel</code></a>. refer to view <a href="ViewModels/Filters/ApiExceptionFilter.cs"><code>ApiExceptionFilter</code></a></p>
 </li>
 </ul>
 </li>
@@ -867,6 +867,16 @@ If not follow this rule, exception occur then return no content + header error</
 <a id="user-content-file-upload-note" class="anchor" href="#file-upload-note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>File Upload Note</h1>
 <ul>
 <li>Please follow the <a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads">this tutorial</a>
+</li>
+</ul>
+<h1>
+<a id="user-content-signalr" class="anchor" href="#signalr" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SignalR</h1>
+<ul>
+<li>
+<p><a href="https://github.com/aspnet/SignalR/tree/dev/client-ts">SignalR client javascript</a></p>
+</li>
+<li>
+<p><a href="https://github.com/aspnet/SignalR/commit/66876aa2f87053b279a2c059ad77b8e32083903b">Best Practice inject SignalR client javascript</a></p>
 </li>
 </ul>
 </article></body></html>
