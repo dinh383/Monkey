@@ -51,5 +51,10 @@ namespace Monkey.Core.Constants
             [Display(Name = "Single Page App")]
             Spa = 4
         }
+
+        public enum NotificationType
+        {
+            Information
+        }
     }
 }

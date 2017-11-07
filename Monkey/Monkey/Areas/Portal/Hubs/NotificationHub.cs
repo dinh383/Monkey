@@ -2,6 +2,7 @@
 using Monkey.Auth.Filters;
 using Monkey.Core;
 using Monkey.Core.Constants;
+using Monkey.Core.Models.Notification.Portal;
 using Puppy.Core.DictionaryUtils;
 using Puppy.DependencyInjection.Attributes;
 using System;
@@ -99,7 +100,7 @@ namespace Monkey.Areas.Portal.Hubs
             return base.OnDisconnectedAsync(ex);
         }
 
-        public async Task NotificationUsersAsync(string message, params string[] subjects)
+        public async Task NotificationUsersAsync(NotificationPortalModel notification, params string[] subjects)
         {
             LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
 
@@ -137,11 +138,11 @@ namespace Monkey.Areas.Portal.Hubs
 
             foreach (var connectionId in connectionIds)
             {
-                await Clients.Client(connectionId).InvokeAsync(ClientMethodName, message).ConfigureAwait(true);
+                await Clients.Client(connectionId).InvokeAsync(ClientMethodName, notification).ConfigureAwait(true);
             }
         }
 
-        public async Task NotificationPermissionsAsync(string message, params Enums.Permission[] permissions)
+        public async Task NotificationPermissionsAsync(NotificationPortalModel notification, params Enums.Permission[] permissions)
         {
             LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
 
@@ -189,13 +190,13 @@ namespace Monkey.Areas.Portal.Hubs
 
             foreach (var connectionId in connectionIds)
             {
-                await Clients.Client(connectionId).InvokeAsync(ClientMethodName, message).ConfigureAwait(true);
+                await Clients.Client(connectionId).InvokeAsync(ClientMethodName, notification).ConfigureAwait(true);
             }
         }
 
-        public Task NotificationAllAsync(string message)
+        public Task NotificationAllAsync(NotificationPortalModel notification)
         {
-            return Clients.All.InvokeAsync(ClientMethodName, message);
+            return Clients.All.InvokeAsync(ClientMethodName, notification);
         }
     }
 }

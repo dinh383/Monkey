@@ -16,12 +16,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Areas.Api.Controllers.TestController.SendNotification(System.String)">
-            <summary>
-                Send Notification 
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:Monkey.Areas.Api.Controllers.TokenController.Token(Monkey.Core.Models.Auth.RequestTokenModel)">
             <summary>
                 Token
@@ -33,9 +27,9 @@
                 Dictionary user Subject/Global Id and ConnectionId 
             </summary>
         </member>
-        <member name="F:Monkey.Areas.Portal.Hubs.NotificationHub.ConnectedRoles">
+        <member name="F:Monkey.Areas.Portal.Hubs.NotificationHub.ConnectedPermissions">
             <summary>
-                Dictionary role id and List Connection Id 
+                Dictionary permission and List Connection Id 
             </summary>
         </member>
         <member name="M:Monkey.Extensions.MvcApiExtensions.AddMvcApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">

@@ -116,9 +116,9 @@
 
             monkey.notificationHub.connection
                 .on("notification",
-                    message => {
+                    notification => {
                         // Handle notification on client side
-                        console.log(message);
+                        console.log(notification.message);
                     });
 
             monkey.notificationHub.connection
@@ -130,16 +130,15 @@
                     console.log(`[Socket] connection error: ${err}`);
                 });
         },
-        sendUsers: function (message, subjects) {
-            monkey.notificationHub.connection.invoke("notificationUsersAsync", message, subjects);
+        sendUsers: function (notification, subjects) {
+            monkey.notificationHub.connection.invoke("notificationUsersAsync", notification, subjects);
         },
-        sendPermissions: function (message, permissions) {
-            monkey.notificationHub.connection.invoke("notificationPermissionsAsync", message, permissions);
+        sendPermissions: function (notification, permissions) {
+            monkey.notificationHub.connection.invoke("notificationPermissionsAsync", notification, permissions);
         }
     },
 
     abbreviateNumber: function (number) {
-
         // what tier? (determines SI prefix)
         var tier = Math.log10(number) / 3 | 0;
 
