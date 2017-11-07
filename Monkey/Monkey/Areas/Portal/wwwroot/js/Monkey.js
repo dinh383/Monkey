@@ -130,11 +130,11 @@
                     console.log(`[Socket] connection error: ${err}`);
                 });
         },
-        sendUser: function (subject, message) {
-            monkey.notificationHub.connection.invoke("notificationUserAsync", subject, message);
+        sendUsers: function (message, subjects) {
+            monkey.notificationHub.connection.invoke("notificationUsersAsync", message, subjects);
         },
-        sendRole: function (roleId, message) {
-            monkey.notificationHub.connection.invoke("notificationRoleAsync", roleId, message);
+        sendPermissions: function (message, permissions) {
+            monkey.notificationHub.connection.invoke("notificationPermissionsAsync", message, permissions);
         }
     },
 
