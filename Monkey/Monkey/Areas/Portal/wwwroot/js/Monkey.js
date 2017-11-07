@@ -136,6 +136,26 @@
         sendRole: function (roleId, message) {
             monkey.notificationHub.connection.invoke("notificationRoleAsync", roleId, message);
         }
+    },
+
+    abbreviateNumber: function (number) {
+
+        // what tier? (determines SI prefix)
+        var tier = Math.log10(number) / 3 | 0;
+
+        // if zero, we don't need a prefix
+        if (tier == 0) return number;
+
+        // get postfix and determine scale
+        var postFix = ["", " K", " M", " G", " T", " P", " E"][tier];
+
+        var scale = Math.pow(10, tier * 3);
+
+        // scale the number
+        var scaled = number / scale;
+
+        // format number and add postfix as suffix
+        return scaled.toFixed(1) + postFix;
     }
 };
 
