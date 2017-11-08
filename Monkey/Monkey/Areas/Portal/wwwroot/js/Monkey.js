@@ -117,6 +117,7 @@
             monkey.notificationHub.connection
                 .on("notification",
                 notification => {
+                    console.log(notification);
                     monkey.notificationHub.addItem(notification);
                 });
 
@@ -151,21 +152,34 @@
             }
         },
         updateHeight: function () {
-            var totalItem = items.length;
 
-            // set maximum items display on screen
-            totalItem = totalItem > 5 ? 5 : totalItem;
+            var listHeight = 0;
 
-            var listHeight = totalItem * 70.33; // 1 item height is 70.33
+            // Just show last 5 items
+            for (var i = 0; i < 5; i++) {
+                if ($(".notification-item").length <= i) {
+                    break;
+                }
+
+                listHeight += $($(".notification-item")[i]).height();
+            }
 
             $("#notification-list").parent().height(listHeight);
 
-            $("#notification-list").parents(".list-group").data('asScrollable').update();
+            var parentsScrollable = $("#notification-list").parents(".list-group");
+            if (parentsScrollable && parentsScrollable.data('asScrollable')) {
+                parentsScrollable.data('asScrollable').update();
+            }
+        },
+        onOpenNotification: function() {
+            setTimeout(function() {
+                monkey.notificationHub.updateHeight();
+            }, 1);
         },
         updateTotal: function () {
             var totalUnRead = 0;
 
-            $.forEach(items,
+            $.each(monkey.notificationHub.items,
                 function (data, index) {
                     if (data.isRead === false) {
                         totalUnRead++;
@@ -191,7 +205,7 @@
         },
         items: [],
         addItem: function (notification) {
-            items.push(notification);
+            monkey.notificationHub.items.push(notification);
 
             monkey.notificationHub.updateTotal();
 
@@ -254,8 +268,8 @@
             });
     },
 
-    formatDateTime: function(dateTime) {
-        moment(dateTime).format(window.constants.dateTimeFormat);
+    formatDateTime: function (dateTime) {
+        return moment(dateTime).format(window.constants.dateTimeFormat);
     }
 };
 

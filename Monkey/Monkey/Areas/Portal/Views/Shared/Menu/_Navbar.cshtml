@@ -41,7 +41,7 @@
             <!-- End Navbar Toolbar -->
             <!-- Navbar Toolbar Right -->
             <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" onclick="monkey.notificationHub.onOpenNotification()">
                     <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" title="Notifications"
                        aria-expanded="false" data-animation="scale-up" role="button">
                         <i class="icon md-notifications" aria-hidden="true"></i>
@@ -59,17 +59,7 @@
                         <div class="list-group">
                             <div data-role="container">
                                 <div data-role="content" id="notification-list">
-                                    <a class="list-group-item dropdown-item notification-item" href="javascript:void(0)" role="menuitem">
-                                        <div class="media">
-                                            <div class="pr-10">
-                                                <i class="icon md-receipt bg-red-600 white icon-circle" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading">A new order has been placed</h6>
-                                                <time class="media-meta" datetime="2017-06-12T20:50:48+08:00">5 hours ago</time>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    <!-- List Notification Item Here -->
                                 </div>
                             </div>
                         </div>

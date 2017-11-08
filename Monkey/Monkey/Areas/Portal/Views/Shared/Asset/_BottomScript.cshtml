@@ -139,14 +139,15 @@
             @Html.Raw($"monkey.notify('{notifyData.Title}', '{notifyData.Message}', '{type}');")
         }
     }
+    
     window.constants = {
         dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A'
     };
+
     (function (document, window, $) {
         'use strict';
-        var Site = window.Site;
         $(document).ready(function () {
-            Site.run();
+            window.Site.run();
         });
     })(document, window, jQuery);
 </script>
