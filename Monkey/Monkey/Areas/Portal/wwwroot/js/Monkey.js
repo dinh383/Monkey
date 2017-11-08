@@ -1,4 +1,4 @@
-﻿var monkey = {
+﻿window.monkey = {
     initToolTip: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
@@ -182,7 +182,7 @@
                                 </div>
                                 <div class="media-body">
                                     <h6 class="media-heading">${notification.message}</h6>
-                                    <time class="media-meta" datetime="${notification.createdTime}">${notification.createdTime}</time>
+                                    <time class="media-meta" datetime="${notification.createdTime}">${monkey.formatDateTime(notification.createdTime)}</time>
                                 </div>
                             </div>
                         </a>`;
@@ -252,6 +252,10 @@
                     }
                 });
             });
+    },
+
+    formatDateTime: function(dateTime) {
+        moment(dateTime).format(window.constants.dateTimeFormat);
     }
 };
 
