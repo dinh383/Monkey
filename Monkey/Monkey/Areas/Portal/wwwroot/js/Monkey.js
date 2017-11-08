@@ -116,10 +116,9 @@
 
             monkey.notificationHub.connection
                 .on("notification",
-                    notification => {
-                        // Handle notification on client side
-                        console.log(notification.message);
-                    });
+                notification => {
+                    monkey.notificationHub.addItem(notification);
+                });
 
             monkey.notificationHub.connection
                 .start()
@@ -135,6 +134,74 @@
         },
         sendPermissions: function (notification, permissions) {
             monkey.notificationHub.connection.invoke("notificationPermissionsAsync", notification, permissions);
+        },
+        setTotal: function (number) {
+            var int = parseInt(number);
+
+            if (int === NaN || int < 0) {
+                return;
+            }
+
+            $(".notification-total").html(int);
+
+            if (int <= 0) {
+                $(".notification-total").parent().css("visibility", "hidden").css("display", "none");
+            } else {
+                $(".notification-total").parent().css("visibility", "").css("display", "");
+            }
+
+        },
+        updateHeight: function () {
+            var totalItem = items.length;
+
+            // set maximum items display on screen
+            totalItem = totalItem > 5 ? 5 : totalItem;
+
+            var listHeight = totalItem * 70.33; // 1 item height is 70.33
+
+            $("#notification-list").parent().height(listHeight);
+
+            $("#notification-list").parents(".list-group").data('asScrollable').update();
+        },
+        updateTotal: function () {
+            var totalUnRead = 0;
+
+            $.forEach(items,
+                function (data, index) {
+                    if (data.isRead === false) {
+                        totalUnRead++;
+                    }
+                });
+
+            monkey.notificationHub.setTotal(totalUnRead);
+        },
+        getItemHtml: function (notification) {
+            var html = ` <a class="list-group-item dropdown-item notification-item" href="${notification.url}" role="menuitem">
+                            <div class="media">
+                                <div class="pr-10">
+                                    <i class="icon md-receipt bg-red-600 white icon-circle" aria-hidden="true"></i>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading">${notification.message}</h6>
+                                    <time class="media-meta" datetime="${notification.createdTime}">${notification.createdTime}</time>
+                                </div>
+                            </div>
+                        </a>`;
+
+            return html;
+        },
+        items: [],
+        addItem: function (notification) {
+
+            items.push(notification);
+
+            monkey.notificationHub.updateTotal();
+
+            var html = monkey.notificationHub.getItemHtml(notification);
+
+            $("#notification-list").prepend($(html));
+
+            monkey.notificationHub.updateHeight();
         }
     },
 

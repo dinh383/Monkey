@@ -19,12 +19,15 @@
 
 #endregion License
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Constants
 {
     public class Enums
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum Permission
         {
             [Display(Name = "Admin")]
@@ -40,6 +43,7 @@ namespace Monkey.Core.Constants
             Member = 10000
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum ClientType
         {
             [Display(Name = "iOS")]
@@ -52,6 +56,7 @@ namespace Monkey.Core.Constants
             Spa = 4
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public enum NotificationType
         {
             Information
