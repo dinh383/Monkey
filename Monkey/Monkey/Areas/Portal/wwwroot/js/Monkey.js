@@ -180,7 +180,7 @@
             var totalUnRead = 0;
 
             $.each(monkey.notificationHub.items,
-                function (data, index) {
+                function (index, data) {
                     if (data.isRead === false) {
                         totalUnRead++;
                     }
