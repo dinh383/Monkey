@@ -27,7 +27,10 @@ namespace Monkey.Auth.Filters
                 }
 
                 // Update Current Logged In User in both Static Global variable and HttpContext
-                LoggedInUser.Current = authenticationService.GetLoggedInUserAsync(token).Result;
+                var taskGetLoggedInUser = authenticationService.GetLoggedInUserAsync(token);
+                taskGetLoggedInUser.Wait();
+
+                LoggedInUser.Current = taskGetLoggedInUser.Result;
                 httpContext.User = TokenHelper.GetClaimsPrincipal(token);
 
                 return;
@@ -37,7 +40,10 @@ namespace Monkey.Auth.Filters
             try
             {
                 // Sign In by Cookie
-                var accessTokenModel = authenticationService.SignInCookieAsync(httpContext.Request.Cookies).Result;
+                var taskSignInCookie = authenticationService.SignInCookieAsync(httpContext.Request.Cookies);
+                taskSignInCookie.Wait();
+
+                var accessTokenModel = taskSignInCookie.Result;
 
                 if (accessTokenModel == null)
                 {
@@ -54,7 +60,10 @@ namespace Monkey.Auth.Filters
                     };
 
                     // Sign In by Request Token Model
-                    accessTokenModel = authenticationService.SignInAsync(requestTokenModel).Result;
+                    var taskSignIn = authenticationService.SignInAsync(requestTokenModel);
+                    taskSignIn.Wait();
+
+                    accessTokenModel = taskSignIn.Result;
 
                     httpContext.Response.OnStarting(state =>
                     {
