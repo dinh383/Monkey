@@ -149,7 +149,6 @@
             } else {
                 $(".notification-total").parent().css("visibility", "").css("display", "");
             }
-
         },
         updateHeight: function () {
             var totalItem = items.length;
@@ -192,7 +191,6 @@
         },
         items: [],
         addItem: function (notification) {
-
             items.push(notification);
 
             monkey.notificationHub.updateTotal();
@@ -222,6 +220,38 @@
 
         // format number and add postfix as suffix
         return scaled.toFixed(1) + postFix;
+    },
+
+    decodeHtml: function (str) {
+        return $("<div/>").html(str).text();
+    },
+
+    openLink: function (link, isNewTab) {
+        if (isNewTab && isNewTab === true) {
+            var win = window.open(link, "_blank");
+            win.focus();
+        } else {
+            window.open(link, "_self");
+        }
+    },
+
+    addListener_Keyboard_Enter: function (selectorsSource, elementDestination, action) {
+        /// <summary>
+        ///     Add listener when element source press enter make element destination fire a action
+        /// </summary>
+        /// <param name="selectorsSource" type="type">seperate "," multiple selector: ".class1,#element1"</param>
+        /// <param name="elementDestination" type="type">destination selector</param>
+        /// <param name="action" type="type">action: "click", "dbclick" and so on</param>
+
+        var elements = selectorsSource.split(",");
+        $.each(elements,
+            function (index, element) {
+                $(element).keydown(function (e) {
+                    if (e.which === 13) {
+                        $(elementDestination).trigger(action);
+                    }
+                });
+            });
     }
 };
 

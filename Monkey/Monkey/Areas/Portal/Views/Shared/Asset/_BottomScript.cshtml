@@ -125,9 +125,6 @@
     };
 </script>
 
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
-<script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
-
 <script type="text/javascript">
     @{
         var notifyData = TempData.Get<NotifyResultViewModel>(Constants.TempDataKey.Notify);
@@ -150,3 +147,6 @@
         });
     })(document, window, jQuery);
 </script>
+
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
+<script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
