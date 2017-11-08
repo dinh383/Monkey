@@ -17,14 +17,14 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Puppy.DependencyInjection;
 using System.Threading.Tasks;
 
@@ -47,7 +47,11 @@ namespace Monkey.Auth.Filters
                 }
 
                 // Update Current Logged In User in both Static Global variable and HttpContext
-                LoggedInUser.Current = authenticationService.GetLoggedInUserAsync(token).Result;
+
+                var taskGetLoggedInUser = authenticationService.GetLoggedInUserAsync(token);
+                taskGetLoggedInUser.Wait();
+
+                LoggedInUser.Current = taskGetLoggedInUser.Result;
                 context.HttpContext.User = TokenHelper.GetClaimsPrincipal(token);
 
                 return;
@@ -57,7 +61,10 @@ namespace Monkey.Auth.Filters
             try
             {
                 // Sign In by Cookie
-                var accessTokenModel = authenticationService.SignInCookieAsync(context.HttpContext.Request.Cookies).Result;
+                var taskSignInCookie = authenticationService.SignInCookieAsync(context.HttpContext.Request.Cookies);
+                taskSignInCookie.Wait();
+
+                var accessTokenModel = taskSignInCookie.Result;
 
                 if (accessTokenModel == null)
                 {
@@ -74,7 +81,10 @@ namespace Monkey.Auth.Filters
                     };
 
                     // Sign In by Request Token Model
-                    accessTokenModel = authenticationService.SignInAsync(requestTokenModel).Result;
+                    var taskSignIn = authenticationService.SignInAsync(requestTokenModel);
+                    taskSignIn.Wait();
+
+                    accessTokenModel = taskSignIn.Result;
 
                     context.HttpContext.Response.OnStarting(state =>
                     {
