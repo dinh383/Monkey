@@ -126,7 +126,14 @@
     window.httpContext = {
         loggedInUser: @loggedInUserJson
     };
+
+    window.constants = {
+        dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A'
+    };
 </script>
+
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
+<script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
 
 <script type="text/javascript">
     @{
@@ -139,10 +146,6 @@
             @Html.Raw($"monkey.notify('{notifyData.Title}', '{notifyData.Message}', '{type}');")
         }
     }
-    
-    window.constants = {
-        dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A'
-    };
 
     (function (document, window, $) {
         'use strict';
@@ -151,6 +154,3 @@
         });
     })(document, window, jQuery);
 </script>
-
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
-<script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
