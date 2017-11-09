@@ -94,6 +94,9 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/dropify/dropify.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/dropify.js")"></script>
 
+<!-- Moment / DateTime -->
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/moment/moment.min.js")"></script>
+
 <script type="text/javascript">
     @{
         var loggedInUserJson = LoggedInUser.Current == null
@@ -113,7 +116,6 @@
     window.constants = {
         dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A'
     };
-
 </script>
 
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
@@ -133,9 +135,8 @@
 
     (function (document, window, $) {
         'use strict';
-        var Site = window.Site;
         $(document).ready(function () {
-            Site.run();
+            window.Site.run();
         });
     })(document, window, jQuery);
 </script>
