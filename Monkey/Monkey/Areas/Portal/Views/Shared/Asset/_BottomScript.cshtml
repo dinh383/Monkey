@@ -81,10 +81,6 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/material.min.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/ladda.min.js")"></script>
 
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
-
-
 <!-- Colorpicker script-->
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolor/jquery-asColor.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/asgradient/jquery-asGradient.js")"></script>
@@ -98,6 +94,30 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/dropify/dropify.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/dropify.js")"></script>
 
+<script type="text/javascript">
+    @{
+        var loggedInUserJson = LoggedInUser.Current == null
+            ? Html.Raw("{}")
+            : Html.Raw(
+                JsonConvert.SerializeObject(
+                    LoggedInUser.Current,
+                    Puppy.Core.Constants.StandardFormat.JsonSerializerSettings
+                    )
+                );
+    }
+
+    window.httpContext = {
+        loggedInUser: @loggedInUserJson
+    };
+
+    window.constants = {
+        dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A'
+    };
+
+</script>
+
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
 
 <script type="text/javascript">
     @{
@@ -110,9 +130,7 @@
             @Html.Raw($"monkey.notify('{notifyData.Title}', '{notifyData.Message}', '{type}');")
         }
     }
-    var constant = {
-        dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A'
-    };
+
     (function (document, window, $) {
         'use strict';
         var Site = window.Site;
