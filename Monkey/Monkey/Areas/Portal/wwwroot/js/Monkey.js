@@ -225,7 +225,7 @@
         if (tier == 0) return number;
 
         // get postfix and determine scale
-        var postFix = ["", " K", " M", " G", " T", " P", " E"][tier];
+        var postFix = ["", "k", "m", "g", "t", "p", "e"][tier];
 
         var scale = Math.pow(10, tier * 3);
 
