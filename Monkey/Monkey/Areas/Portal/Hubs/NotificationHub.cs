@@ -26,14 +26,14 @@ namespace Monkey.Areas.Portal.Hubs
         /// <summary>
         ///     Dictionary user Subject/Global Id and ConnectionId 
         /// </summary>
-        public static ConcurrentDictionary<string, string> ConnectedUsers = new ConcurrentDictionary<string, string>();
+        protected static readonly ConcurrentDictionary<string, string> ConnectedUsers = new ConcurrentDictionary<string, string>();
 
         /// <summary>
         ///     Dictionary permission and List Connection Id 
         /// </summary>
-        public static ConcurrentDictionary<Enums.Permission, ConcurrentDictionary<string, string>> ConnectedPermissions = new ConcurrentDictionary<Enums.Permission, ConcurrentDictionary<string, string>>();
+        protected static readonly ConcurrentDictionary<Enums.Permission, ConcurrentDictionary<string, string>> ConnectedPermissions = new ConcurrentDictionary<Enums.Permission, ConcurrentDictionary<string, string>>();
 
-        public List<string> GetListConnectionIds(params string[] subjects)
+        protected List<string> GetListConnectionIds(params string[] subjects)
         {
             List<string> connectionIds = new List<string>();
 
@@ -67,7 +67,7 @@ namespace Monkey.Areas.Portal.Hubs
             return connectionIds;
         }
 
-        public List<string> GetListConnectionIds(params Enums.Permission[] permissions)
+        protected List<string> GetListConnectionIds(params Enums.Permission[] permissions)
         {
             List<string> connectionIds = new List<string>();
 
@@ -111,7 +111,7 @@ namespace Monkey.Areas.Portal.Hubs
             return connectionIds;
         }
 
-        public string GetLoggedInUserConnectionId()
+        protected string GetLoggedInUserConnectionId()
         {
             LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
 
@@ -205,7 +205,7 @@ namespace Monkey.Areas.Portal.Hubs
         /// <param name="notification"></param>
         /// <param name="subjects">    </param>
         /// <returns></returns>
-        public async Task SendNotificationAsync(NotificationPortalModel notification, params string[] subjects)
+        public async Task SendNotificationToSubjectsAsync(NotificationPortalModel notification, params string[] subjects)
         {
             List<string> connectionIds = GetListConnectionIds(subjects);
 
@@ -226,7 +226,7 @@ namespace Monkey.Areas.Portal.Hubs
         /// <param name="notification"></param>
         /// <param name="permissions"> </param>
         /// <returns></returns>
-        public async Task SendNotificationAsync(NotificationPortalModel notification, params Enums.Permission[] permissions)
+        public async Task SendNotificationToPermissionsAsync(NotificationPortalModel notification, params Enums.Permission[] permissions)
         {
             List<string> connectionIds = GetListConnectionIds(permissions);
 
@@ -246,7 +246,7 @@ namespace Monkey.Areas.Portal.Hubs
         /// </summary>
         /// <param name="notification"></param>
         /// <returns></returns>
-        public Task SendNotificationAsync(NotificationPortalModel notification)
+        public Task SendNotificationToAllAsync(NotificationPortalModel notification)
         {
             return Clients.All.InvokeAsync(AddNotificationClientMethodName, notification);
         }

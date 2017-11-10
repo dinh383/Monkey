@@ -137,10 +137,10 @@
                 });
         },
         sendUsers: function (notification, subjects) {
-            monkey.notificationHub.connection.invoke("notificationUsersAsync", notification, subjects);
+            monkey.notificationHub.connection.invoke("sendNotificationToSubjectsAsync", notification, subjects);
         },
         sendPermissions: function (notification, permissions) {
-            monkey.notificationHub.connection.invoke("notificationPermissionsAsync", notification, permissions);
+            monkey.notificationHub.connection.invoke("sendNotificationToPermissionsAsync", notification, permissions);
         },
         receiveAllNotification: function () {
             monkey.notificationHub.connection.invoke("receiveAllNotificationAsync");
