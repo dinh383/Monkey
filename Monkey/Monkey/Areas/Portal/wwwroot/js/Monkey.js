@@ -115,16 +115,22 @@
             monkey.notificationHub.connection = new signalR.HubConnection("/portal/notification");
 
             monkey.notificationHub.connection
-                .on("notification",
+                .on("addNotification",
                 notification => {
-                    console.log(notification);
                     monkey.notificationHub.addItem(notification);
+                });
+
+            monkey.notificationHub.connection
+                .on("setNotifications",
+                notifications => {
+                    monkey.notificationHub.setItems(notifications);
                 });
 
             monkey.notificationHub.connection
                 .start()
                 .then(() => {
                     console.log("[Socket] connected to notification hub");
+                    monkey.notificationHub.receiveAllNotification();
                 })
                 .catch(err => {
                     console.log(`[Socket] connection error: ${err}`);
@@ -135,6 +141,9 @@
         },
         sendPermissions: function (notification, permissions) {
             monkey.notificationHub.connection.invoke("notificationPermissionsAsync", notification, permissions);
+        },
+        receiveAllNotification: function () {
+            monkey.notificationHub.connection.invoke("receiveAllNotificationAsync");
         },
         setTotal: function (number) {
             var int = parseInt(number);
@@ -152,7 +161,6 @@
             }
         },
         updateHeight: function () {
-
             var listHeight = 0;
 
             // Just show last 5 items
@@ -171,8 +179,8 @@
                 parentsScrollable.data('asScrollable').update();
             }
         },
-        onOpenNotification: function() {
-            setTimeout(function() {
+        onOpenNotification: function () {
+            setTimeout(function () {
                 monkey.notificationHub.updateHeight();
             }, 1);
         },
@@ -204,6 +212,13 @@
             return html;
         },
         items: [],
+        setItems: function (notifications) {
+            $("#notification-list").empty();
+
+            for (var i = 0; i < notifications.length; i++) {
+                monkey.notificationHub.addItem(notifications[i]);
+            }
+        },
         addItem: function (notification) {
             monkey.notificationHub.items.push(notification);
 

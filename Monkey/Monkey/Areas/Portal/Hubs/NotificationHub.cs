@@ -18,7 +18,10 @@ namespace Monkey.Areas.Portal.Hubs
     {
         public const string Url = "portal/notification";
 
-        public const string ClientMethodName = "notification";
+        public const string AddNotificationClientMethodName = "addNotification";
+        public const string SetNotificationsClientMethodName = "setNotification";
+
+        #region Connections
 
         /// <summary>
         ///     Dictionary user Subject/Global Id and ConnectionId 
@@ -29,6 +32,98 @@ namespace Monkey.Areas.Portal.Hubs
         ///     Dictionary permission and List Connection Id 
         /// </summary>
         public static ConcurrentDictionary<Enums.Permission, ConcurrentDictionary<string, string>> ConnectedPermissions = new ConcurrentDictionary<Enums.Permission, ConcurrentDictionary<string, string>>();
+
+        public List<string> GetListConnectionIds(params string[] subjects)
+        {
+            List<string> connectionIds = new List<string>();
+
+            LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
+
+            if (LoggedInUser.Current == null)
+            {
+                return connectionIds;
+            }
+
+            subjects = subjects?.Distinct().ToArray();
+
+            if (subjects?.Any() != true)
+            {
+                return connectionIds;
+            }
+
+            foreach (var subject in subjects)
+            {
+                if (!ConnectedUsers.TryGetValue(subject, out var connectionId))
+                {
+                    continue;
+                }
+
+                if (!connectionIds.Contains(connectionId))
+                {
+                    connectionIds.Add(connectionId);
+                }
+            }
+
+            return connectionIds;
+        }
+
+        public List<string> GetListConnectionIds(params Enums.Permission[] permissions)
+        {
+            List<string> connectionIds = new List<string>();
+
+            LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
+
+            if (LoggedInUser.Current == null)
+            {
+                return connectionIds;
+            }
+
+            permissions = permissions?.Distinct().ToArray();
+
+            if (permissions?.Any() != true)
+            {
+                return connectionIds;
+            }
+
+            foreach (var permission in permissions)
+            {
+                if (!ConnectedPermissions.TryGetValue(permission, out var connectedUsers))
+                {
+                    continue;
+                }
+
+                if (connectedUsers?.Any() != true)
+                {
+                    continue;
+                }
+
+                foreach (var connectedUser in connectedUsers)
+                {
+                    var connectionId = connectedUser.Value;
+
+                    if (!connectionIds.Contains(connectionId))
+                    {
+                        connectionIds.Add(connectionId);
+                    }
+                }
+            }
+
+            return connectionIds;
+        }
+
+        public string GetLoggedInUserConnectionId()
+        {
+            LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
+
+            if (LoggedInUser.Current == null)
+            {
+                return null;
+            }
+
+            ConnectedUsers.TryGetValue(LoggedInUser.Current.Subject, out var connectionId);
+
+            return connectionId;
+        }
 
         public override Task OnConnectedAsync()
         {
@@ -100,103 +195,76 @@ namespace Monkey.Areas.Portal.Hubs
             return base.OnDisconnectedAsync(ex);
         }
 
-        public async Task NotificationUsersAsync(NotificationPortalModel notification, params string[] subjects)
+        #endregion Connections
+
+        #region Notification
+
+        /// <summary>
+        ///     Send to users have subject in <paramref name="subjects" /> 
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <param name="subjects">    </param>
+        /// <returns></returns>
+        public async Task SendNotificationAsync(NotificationPortalModel notification, params string[] subjects)
         {
-            LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
+            List<string> connectionIds = GetListConnectionIds(subjects);
 
-            if (LoggedInUser.Current == null)
-            {
-                return;
-            }
-
-            subjects = subjects?.Distinct().ToArray();
-
-            if (subjects?.Any() != true)
-            {
-                return;
-            }
-
-            List<string> connectionIds = new List<string>();
-
-            foreach (var subject in subjects)
-            {
-                if (!ConnectedUsers.TryGetValue(subject, out var connectionId))
-                {
-                    continue;
-                }
-
-                if (!connectionIds.Contains(connectionId))
-                {
-                    connectionIds.Add(connectionId);
-                }
-            }
-
-            if (connectionIds.Any() != true)
+            if (connectionIds?.Any() != true)
             {
                 return;
             }
 
             foreach (var connectionId in connectionIds)
             {
-                await Clients.Client(connectionId).InvokeAsync(ClientMethodName, notification).ConfigureAwait(true);
+                await Clients.Client(connectionId).InvokeAsync(AddNotificationClientMethodName, notification).ConfigureAwait(true);
             }
         }
 
-        public async Task NotificationPermissionsAsync(NotificationPortalModel notification, params Enums.Permission[] permissions)
+        /// <summary>
+        ///     Send to users have any permission in <paramref name="permissions" /> 
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <param name="permissions"> </param>
+        /// <returns></returns>
+        public async Task SendNotificationAsync(NotificationPortalModel notification, params Enums.Permission[] permissions)
         {
-            LoggedInUserBinder.BindLoggedInUser(Context.Connection.GetHttpContext());
+            List<string> connectionIds = GetListConnectionIds(permissions);
 
-            if (LoggedInUser.Current == null)
-            {
-                return;
-            }
-
-            permissions = permissions?.Distinct().ToArray();
-
-            if (permissions?.Any() != true)
-            {
-                return;
-            }
-
-            List<string> connectionIds = new List<string>();
-
-            foreach (var permission in permissions)
-            {
-                if (!ConnectedPermissions.TryGetValue(permission, out var connectedUsers))
-                {
-                    continue;
-                }
-
-                if (connectedUsers?.Any() != true)
-                {
-                    continue;
-                }
-
-                foreach (var connectedUser in connectedUsers)
-                {
-                    var connectionId = connectedUser.Value;
-
-                    if (!connectionIds.Contains(connectionId))
-                    {
-                        connectionIds.Add(connectionId);
-                    }
-                }
-            }
-
-            if (connectionIds.Any() != true)
+            if (connectionIds?.Any() != true)
             {
                 return;
             }
 
             foreach (var connectionId in connectionIds)
             {
-                await Clients.Client(connectionId).InvokeAsync(ClientMethodName, notification).ConfigureAwait(true);
+                await Clients.Client(connectionId).InvokeAsync(AddNotificationClientMethodName, notification).ConfigureAwait(true);
             }
         }
 
-        public Task NotificationAllAsync(NotificationPortalModel notification)
+        /// <summary>
+        ///     Send to All 
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <returns></returns>
+        public Task SendNotificationAsync(NotificationPortalModel notification)
         {
-            return Clients.All.InvokeAsync(ClientMethodName, notification);
+            return Clients.All.InvokeAsync(AddNotificationClientMethodName, notification);
         }
+
+        /// <summary>
+        ///     Receive all notification of current logged in user 
+        /// </summary>
+        /// <returns></returns>
+        public Task ReceiveAllNotificationAsync()
+        {
+            var connectionId = GetLoggedInUserConnectionId();
+
+            // TODO - Get list un-read notifications
+            List<NotificationPortalModel> notifications = new List<NotificationPortalModel>();
+
+            return Clients.Client(connectionId).InvokeAsync(SetNotificationsClientMethodName, notifications);
+        }
+
+        #endregion Notification
     }
 }
