@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "outputFileName": "Areas/Portal/wwwroot/css/skins/monkey.min.css",
     "inputFiles": [
@@ -111,6 +111,12 @@
     "outputFileName": "Areas/Portal/wwwroot/vendor/bootstrap-sweetalert/sweetalert.min.css",
     "inputFiles": [
       "Areas/Portal/wwwroot/vendor/bootstrap-sweetalert/sweetalert.css"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/fonts/Roboto/Roboto.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/fonts/Roboto/Roboto.css"
     ]
   }
 ]
