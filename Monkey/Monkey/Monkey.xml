@@ -4,7 +4,7 @@
         <name>Monkey</name>
     </assembly>
     <members>
-        <member name="M:Monkey.Areas.Api.Controllers.TestController.DeviceInfo(Monkey.Data.User.IUserRepository)">
+        <member name="M:Monkey.Areas.Api.Controllers.TestController.DeviceInfo">
             <summary>
                 Device Info 
             </summary>

@@ -259,6 +259,11 @@ namespace Monkey.Areas.Portal.Hubs
         {
             var connectionId = GetLoggedInUserConnectionId();
 
+            if (string.IsNullOrWhiteSpace(connectionId))
+            {
+                return Task.CompletedTask;
+            }
+
             // TODO - Get list un-read notifications
             List<NotificationPortalModel> notifications = new List<NotificationPortalModel>();
 
