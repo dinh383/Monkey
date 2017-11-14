@@ -71,7 +71,7 @@ namespace Monkey.Auth.Filters
 
                         TokenHelper.SetAccessTokenInCookie(onResponseHttpContext.Response.Cookies, accessTokenModel);
 
-                        return Task.FromResult(0);
+                        return Task.CompletedTask;
                     }, httpContext);
                 }
             }
