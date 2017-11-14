@@ -22,12 +22,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="F:Monkey.Areas.Portal.Hubs.NotificationHub.ConnectedUsers">
+        <member name="F:Monkey.Areas.Portal.Hubs.HubBase.ConnectedUsers">
             <summary>
                 Dictionary user Subject/Global Id and ConnectionId 
             </summary>
         </member>
-        <member name="F:Monkey.Areas.Portal.Hubs.NotificationHub.ConnectedPermissions">
+        <member name="F:Monkey.Areas.Portal.Hubs.HubBase.ConnectedPermissions">
             <summary>
                 Dictionary permission and List Connection Id 
             </summary>
