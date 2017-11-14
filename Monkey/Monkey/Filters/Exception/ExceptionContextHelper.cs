@@ -1,5 +1,6 @@
-﻿using Monkey.Core.Exceptions;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Monkey.Core.Exceptions;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Logger;
 using System;
@@ -22,6 +23,7 @@ namespace Monkey.Filters.Exception
                 logId = Log.Error(context);
 
                 context.Exception = null;
+
                 errorModel = new ErrorModel(exception.Code, exception.Message, exception.AdditionalData);
 
                 if (exception.AdditionalData?.Any() == true)
@@ -29,7 +31,15 @@ namespace Monkey.Filters.Exception
                     errorModel.AdditionalData = exception.AdditionalData;
                 }
 
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                // Map Error Code < 500 to Response Header Code
+                if ((int)exception.Code < 500)
+                {
+                    context.HttpContext.Response.StatusCode = (int)exception.Code;
+                }
+                else
+                {
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                }
             }
             else if (context.Exception is UnauthorizedAccessException)
             {
@@ -37,7 +47,7 @@ namespace Monkey.Filters.Exception
                 logId = Log.Error(context);
 
                 errorModel = new ErrorModel(ErrorCode.Unauthorized, "Unauthorized Access");
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
             }
             else
             {
@@ -62,8 +72,9 @@ namespace Monkey.Filters.Exception
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 
-            // Update ID of error model as log id
+            // Update ID of error portalModel as log id
             errorModel.Id = logId;
+
             return errorModel;
         }
     }

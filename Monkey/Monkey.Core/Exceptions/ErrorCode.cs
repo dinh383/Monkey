@@ -28,6 +28,7 @@ namespace Monkey.Core.Exceptions
     public enum ErrorCode
     {
         // Global
+
         [Description("Bad Request")]
         [Display(GroupName = "Global")]
         BadRequest = 400,
@@ -43,6 +44,8 @@ namespace Monkey.Core.Exceptions
         [Description("Awesome, You break the system :o. You know what they say, you get what you pay for... The features do not write themselves, you know. Now, just god and you know what happen.")]
         [Display(GroupName = "Global")]
         Unknown = 500,
+
+        // Access Token
 
         [Display(GroupName = "Token")]
         [Description("Invalid refresh token")]
@@ -60,6 +63,8 @@ namespace Monkey.Core.Exceptions
         [Description("Access token is expired")]
         AccessTokenExpired = 604,
 
+        // Client
+
         [Display(GroupName = "Client")]
         [Description("Invalid client, wrong client id or client secret")]
         InvalidClient = 700,
@@ -75,6 +80,8 @@ namespace Monkey.Core.Exceptions
         [Display(GroupName = "Client")]
         [Description("Client name is already exist, please try another")]
         ClientNameNotUnique = 703,
+
+        // User
 
         [Display(GroupName = "User")]
         [Description("User does not exist")]
