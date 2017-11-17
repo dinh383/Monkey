@@ -21,7 +21,7 @@ namespace Monkey.Auth.Filters
             {
                 string token = TokenHelper.GetValidAndNotExpireAccessToken(httpContext.Request.Headers);
 
-                if (string.IsNullOrWhiteSpace(token))
+                if (string.IsNullOrWhiteSpace(token) || LoggedInUser.Current.AccessTokenType == Constants.Constant.AuthenticationTokenType)
                 {
                     return;
                 }

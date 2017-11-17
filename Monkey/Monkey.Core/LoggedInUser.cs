@@ -21,6 +21,7 @@ using Monkey.Core.Models.Auth;
 using Puppy.Core.DictionaryUtils;
 using Puppy.Core.ObjectUtils;
 using Puppy.Core.TypeUtils;
+using Puppy.Web.Constants;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -51,6 +52,11 @@ namespace Monkey.Core
                 {
                     HttpContext.Current.Items = new Dictionary<object, object>();
                 }
+
+                value.AccessToken = HttpContext.Current.Request.Headers[HeaderKey.Authorization].ToString()?.Split(' ')
+                    .LastOrDefault();
+
+                value.AccessTokenType = HttpContext.Current.Request.Headers[HeaderKey.Authorization].ToString()?.Split(' ').FirstOrDefault();
 
                 HttpContext.Current.Items.AddOrUpdate(HttpContextItemKey, value);
             }

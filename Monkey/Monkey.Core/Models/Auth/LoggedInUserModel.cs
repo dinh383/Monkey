@@ -20,6 +20,7 @@
 using Monkey.Core.Constants;
 using Monkey.Core.Models.User;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Monkey.Core.Models.Auth
 {
@@ -32,5 +33,41 @@ namespace Monkey.Core.Models.Auth
         public string LastName { get; set; }
 
         public List<Enums.Permission> ListPermission { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public string AccessTokenType { get; set; }
+
+        /// <summary>
+        ///     Check current logged in user have any permission in <see cref="permissions" /> 
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        public bool IsHavePermissions(params Enums.Permission[] permissions)
+        {
+            if (permissions?.Any() != true)
+            {
+                return true;
+            }
+
+            return ListPermission?.Any(permissions.Contains) == true;
+        }
+
+        /// <summary>
+        ///     Check current logged in user have any permission in <see cref="permissions" /> 
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        public bool IsHavePermissions(IEnumerable<Enums.Permission> permissions)
+        {
+            var listPermission = permissions?.ToList();
+
+            if (listPermission?.Any() != true)
+            {
+                return true;
+            }
+
+            return ListPermission?.Any(listPermission.Contains) == true;
+        }
     }
 }

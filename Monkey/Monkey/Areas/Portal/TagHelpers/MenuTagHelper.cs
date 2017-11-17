@@ -57,7 +57,7 @@ namespace Monkey.Areas.Portal.TagHelpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (Permissions?.Any() == true && !LoggedInUser.Current.ListPermission.Any(x => Permissions.Contains(x)))
+            if (Permissions?.Any() == true && !LoggedInUser.Current.IsHavePermissions(Permissions))
             {
                 return;
             }
@@ -121,7 +121,7 @@ namespace Monkey.Areas.Portal.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (Permissions?.Any() == true && !LoggedInUser.Current.ListPermission.Any(x => Permissions.Contains(x)))
+            if (Permissions?.Any() == true && !LoggedInUser.Current.IsHavePermissions(Permissions))
             {
                 return;
             }
