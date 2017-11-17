@@ -43,14 +43,34 @@ namespace Monkey.Core.Models.Auth
         /// </summary>
         /// <param name="permissions"></param>
         /// <returns></returns>
-        public bool IsHavePermissions(params Enums.Permission[] permissions)
+        public bool IsHaveAnyPermissions(params Enums.Permission[] permissions)
         {
             if (permissions?.Any() != true)
             {
                 return true;
             }
 
-            return ListPermission?.Any(permissions.Contains) == true;
+            if (ListPermission?.Any() != true)
+            {
+                return false;
+            }
+
+            return permissions.Any(ListPermission.Contains);
+        }
+
+        /// <summary>
+        ///     Check current logged in user have all permission in <see cref="permissions" /> 
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        public bool IsHaveAllPermissions(params Enums.Permission[] permissions)
+        {
+            if (permissions?.Any() != true)
+            {
+                return true;
+            }
+
+            return ListPermission?.Any() == true && permissions.All(ListPermission.Contains);
         }
 
         /// <summary>
@@ -58,7 +78,7 @@ namespace Monkey.Core.Models.Auth
         /// </summary>
         /// <param name="permissions"></param>
         /// <returns></returns>
-        public bool IsHavePermissions(IEnumerable<Enums.Permission> permissions)
+        public bool IsHaveAnyPermissions(IEnumerable<Enums.Permission> permissions)
         {
             var listPermission = permissions?.ToList();
 
@@ -67,7 +87,24 @@ namespace Monkey.Core.Models.Auth
                 return true;
             }
 
-            return ListPermission?.Any(listPermission.Contains) == true;
+            return ListPermission?.Any() == true && listPermission.Any(ListPermission.Contains);
+        }
+
+        /// <summary>
+        ///     Check current logged in user have all permission in <see cref="permissions" /> 
+        /// </summary>
+        /// <param name="permissions"></param>
+        /// <returns></returns>
+        public bool IsHaveAllPermissions(IEnumerable<Enums.Permission> permissions)
+        {
+            var listPermission = permissions?.ToList();
+
+            if (listPermission?.Any() != true)
+            {
+                return true;
+            }
+
+            return ListPermission?.Any() == true && listPermission.All(ListPermission.Contains);
         }
     }
 }
