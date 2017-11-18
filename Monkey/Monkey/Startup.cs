@@ -85,6 +85,9 @@ namespace Monkey
                 // [DataTable]
                 .AddDataTable(ConfigurationRoot)
 
+                // [Http Client] Flurl, see more: https://github.com/tmenier/Flurl
+                .AddFlurl()
+
                 // [Mvc - API] Json, Xml serialize, area, response caching and filters
                 .AddMvcApi()
 
