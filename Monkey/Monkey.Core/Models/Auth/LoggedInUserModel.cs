@@ -50,12 +50,7 @@ namespace Monkey.Core.Models.Auth
                 return true;
             }
 
-            if (ListPermission?.Any() != true)
-            {
-                return false;
-            }
-
-            return permissions.Any(ListPermission.Contains);
+            return ListPermission?.Any() == true && permissions.Any(ListPermission.Contains);
         }
 
         /// <summary>
