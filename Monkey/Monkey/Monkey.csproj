@@ -81,11 +81,15 @@
   <ItemGroup>
     <!-- AspNetCore -->
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+
+    <!-- Signal R -->
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-alpha2-final" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-alpha2-final" />
 
-    <!-- C# Utitlity -->
+    <!-- Json -->
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+
+    <!-- C# Utitlity -->
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
   </ItemGroup>
 </Project>
