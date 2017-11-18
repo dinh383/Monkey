@@ -34,8 +34,10 @@ namespace Monkey.Business
 
         Task<ImageModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DataTableResponseDataModel<ImageModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+
         void CheckExist(params int[] ids);
+
         Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

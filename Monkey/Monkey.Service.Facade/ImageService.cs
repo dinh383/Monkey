@@ -53,7 +53,7 @@ namespace Monkey.Service.Facade
 	        return _imageBusiness.GetAsync(id, cancellationToken);
         }
 
-	    public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
+	    public Task<DataTableResponseDataModel<ImageModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
 	    {
 	        return _imageBusiness.GetDataTableAsync(model, cancellationToken);
 	    }

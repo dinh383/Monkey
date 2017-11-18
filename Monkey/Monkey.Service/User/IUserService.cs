@@ -27,7 +27,7 @@ namespace Monkey.Service.User
 {
     public interface IUserService
     {
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
 
         Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default(CancellationToken));
 

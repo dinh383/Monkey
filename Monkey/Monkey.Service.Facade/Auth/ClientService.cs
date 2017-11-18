@@ -57,7 +57,7 @@ namespace Monkey.Service.Facade.Auth
             return _clientBusiness.GetAsync(id, cancellationToken);
         }
 
-        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<DataTableResponseDataModel<ClientModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _clientBusiness.GetDataTableAsync(model, cancellationToken);
         }

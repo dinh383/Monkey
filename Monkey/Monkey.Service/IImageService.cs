@@ -35,7 +35,8 @@ namespace Monkey.Service
 
         Task<ImageModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DataTableResponseDataModel<ImageModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+
         Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

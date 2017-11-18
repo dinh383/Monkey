@@ -83,7 +83,7 @@ namespace Monkey.Business.Logic.Auth
             return Task.FromResult(model);
         }
 
-        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<DataTableResponseDataModel<ClientModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             var listData = _clientRepository.Get().QueryTo<ClientModel>();
 

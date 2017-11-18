@@ -33,7 +33,7 @@ namespace Monkey.Business.Auth
 
         Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DataTableResponseDataModel<ClientModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
 

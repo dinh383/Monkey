@@ -70,7 +70,7 @@ namespace Monkey.Business.User
 
         Task<UserModel> GetBySubjectAsync(string subject, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
 
         Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default(CancellationToken));
 

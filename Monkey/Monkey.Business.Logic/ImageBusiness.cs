@@ -74,7 +74,7 @@ namespace Monkey.Business.Logic
             return Task.FromResult(model);
         }
 
-        public Task<DataTableResponseDataModel> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
+        public Task<DataTableResponseDataModel<ImageModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
         {
             var listData = _imageRepository.Get().QueryTo<ImageModel>();
 
