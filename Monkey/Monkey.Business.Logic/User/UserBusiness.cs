@@ -68,7 +68,7 @@ namespace Monkey.Business.Logic.User
 
             if (totalInDb != ids.Length)
             {
-                throw new MonkeyException(ErrorCode.UserNotExist);
+                throw new MonkeyException(ErrorCode.NotFound);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Monkey.Business.Logic.User
 
             if (totalInDb != subjects.Length)
             {
-                throw new MonkeyException(ErrorCode.UserNotExist);
+                throw new MonkeyException(ErrorCode.NotFound);
             }
         }
 
@@ -117,7 +117,7 @@ namespace Monkey.Business.Logic.User
 
             if (!isExist)
             {
-                throw new MonkeyException(ErrorCode.UserNameNotExist);
+                throw new MonkeyException(ErrorCode.NotFound);
             }
         }
 
@@ -177,7 +177,7 @@ namespace Monkey.Business.Logic.User
 
             if (!isExist)
             {
-                throw new MonkeyException(ErrorCode.UserEmailNotExist);
+                throw new MonkeyException(ErrorCode.NotFound);
             }
         }
 
@@ -187,7 +187,7 @@ namespace Monkey.Business.Logic.User
 
             if (!isExist)
             {
-                throw new MonkeyException(ErrorCode.UserPhoneNotExist);
+                throw new MonkeyException(ErrorCode.NotFound);
             }
         }
 

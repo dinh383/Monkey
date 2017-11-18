@@ -41,6 +41,10 @@ namespace Monkey.Core.Exceptions
         [Description("Forbidden, this feature for 18+ :))")]
         Unauthorized = 403,
 
+        [Display(GroupName = "Global")]
+        [Description("Not Found, the resource does not exist")]
+        NotFound = 404,
+
         [Description("Awesome, You break the system :o. You know what they say, you get what you pay for... The features do not write themselves, you know. Now, just god and you know what happen.")]
         [Display(GroupName = "Global")]
         Unknown = 500,
@@ -57,11 +61,11 @@ namespace Monkey.Core.Exceptions
 
         [Display(GroupName = "Token")]
         [Description("Invalid access token")]
-        InvalidAccessToken = 603,
+        InvalidAccessToken = 602,
 
         [Display(GroupName = "Token")]
         [Description("Access token is expired")]
-        AccessTokenExpired = 604,
+        AccessTokenExpired = 603,
 
         // Client
 
@@ -74,77 +78,57 @@ namespace Monkey.Core.Exceptions
         ClientIsBanned = 701,
 
         [Display(GroupName = "Client")]
-        [Description("Client is not found")]
-        ClientNotFound = 702,
-
-        [Display(GroupName = "Client")]
         [Description("Client name is already exist, please try another")]
         ClientNameNotUnique = 703,
 
         // User
 
         [Display(GroupName = "User")]
-        [Description("User does not exist")]
-        UserNotExist = 1000,
-
-        [Display(GroupName = "User")]
         [Description("User is in-active")]
-        UserInActive = 1001,
+        UserInActive = 1000,
 
         [Display(GroupName = "User")]
         [Description("User Name is already exist")]
-        UserNameNotUnique = 1002,
+        UserNameNotUnique = 1001,
 
         [Display(GroupName = "User")]
         [Description("User password is wrong")]
-        UserPasswordWrong = 1003,
+        UserPasswordWrong = 1002,
 
         [Display(GroupName = "User")]
         [Description("User is banned")]
-        UserBanned = 1004,
+        UserBanned = 1003,
 
         [Display(GroupName = "User")]
         [Description("Email is already exist")]
-        UserEmailNotUnique = 1005,
-
-        [Display(GroupName = "User")]
-        [Description("User name is not exist")]
-        UserNameNotExist = 1006,
+        UserEmailNotUnique = 1004,
 
         [Display(GroupName = "User")]
         [Description("User can't self update")]
-        UserSelfUpdate = 1007,
+        UserSelfUpdate = 1005,
 
         [Display(GroupName = "User")]
         [Description("User can't self remove")]
-        UserSelfRemove = 1008,
+        UserSelfRemove = 1006,
 
         [Display(GroupName = "User")]
         [Description("Can't remove this user")]
-        UserCannotRemove = 1009,
+        UserCannotRemove = 1007,
 
         [Display(GroupName = "User")]
         [Description("Can't update this user")]
-        UserCannotUpdate = 1010,
+        UserCannotUpdate = 1008,
 
         [Display(GroupName = "User")]
         [Description("Phone is already exist, please try another")]
-        UserPhoneNotUnique = 1011,
-
-        [Display(GroupName = "User")]
-        [Description("Email does not exist, please try another")]
-        UserEmailNotExist = 1012,
-
-        [Display(GroupName = "User")]
-        [Description("Phone does not exist, please try another")]
-        UserPhoneNotExist = 1013,
+        UserPhoneNotUnique = 1009,
 
         [Display(GroupName = "User")]
         [Description("Confirm email token expired or invalid")]
-        UserConfirmEmailTokenExpireOrInvalid = 1014,
+        UserConfirmEmailTokenExpireOrInvalid = 1010,
 
         [Display(GroupName = "User")]
         [Description("Set password token expired or invalid")]
-        UserSetPasswordTokenExpireOrInvalid = 1015,
+        UserSetPasswordTokenExpireOrInvalid = 1011,
     }
 }

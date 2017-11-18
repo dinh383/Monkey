@@ -77,7 +77,7 @@ namespace Monkey.Auth.Filters
             }
             catch (MonkeyException ex)
             {
-                if (ex.Code == ErrorCode.UserNotExist)
+                if (ex.Code == ErrorCode.NotFound)
                 {
                     return;
                 }

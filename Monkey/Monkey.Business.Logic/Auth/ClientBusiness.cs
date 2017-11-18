@@ -116,7 +116,7 @@ namespace Monkey.Business.Logic.Auth
             int totalInDb = _clientRepository.Get(x => ids.Contains(x.Id)).Count();
             if (totalInDb != ids.Length)
             {
-                throw new MonkeyException(ErrorCode.ClientNotFound);
+                throw new MonkeyException(ErrorCode.NotFound);
             }
         }
 

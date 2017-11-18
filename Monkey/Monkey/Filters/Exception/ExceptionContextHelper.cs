@@ -31,8 +31,8 @@ namespace Monkey.Filters.Exception
                     errorModel.AdditionalData = exception.AdditionalData;
                 }
 
-                // Map Error Code < 500 to Response Header Code
-                if ((int)exception.Code < 500)
+                // Map Error Code < 600 to Response Header Code
+                if ((int)exception.Code < 600)
                 {
                     context.HttpContext.Response.StatusCode = (int)exception.Code;
                 }

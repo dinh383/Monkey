@@ -89,7 +89,7 @@ namespace Monkey.Business.Logic
             int totalInDb = _imageRepository.Get(x => ids.Contains(x.Id)).Count();
             if (totalInDb != ids.Length)
             {
-                throw new MonkeyException(ErrorCode.ClientNotFound);
+                throw new MonkeyException(ErrorCode.NotFound);
             }
         }
 

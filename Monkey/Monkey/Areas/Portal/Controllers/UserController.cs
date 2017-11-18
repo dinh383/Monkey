@@ -223,7 +223,7 @@ namespace Monkey.Areas.Portal.Controllers
             }
             catch (MonkeyException monkeyException)
             {
-                if (monkeyException.Code == ErrorCode.UserEmailNotExist)
+                if (monkeyException.Code == ErrorCode.NotFound)
                 {
                     return Json(false);
                 }

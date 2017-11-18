@@ -111,7 +111,7 @@ namespace Monkey.Areas.Portal.Controllers
                     return View("Index", model);
                 }
 
-                if (ex.Code == ErrorCode.UserNameNotExist)
+                if (ex.Code == ErrorCode.NotFound)
                 {
                     this.SetNotify("Sign-in Fail", "Your account is not exist", NotifyStatus.Error);
                     return View("Index", model);
