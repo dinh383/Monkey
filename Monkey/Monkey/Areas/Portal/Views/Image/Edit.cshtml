@@ -22,14 +22,14 @@
                             <input asp-for="Caption" class="form-control" />
                             <span asp-validation-for="Caption"></span>
                         </div>
-                       
+
                         <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">File input</label>
                         <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="File" data-default-file="@Url.AbsoluteContent(Model.Url)" class="form-control" type="file">
                         <span asp-validation-for="File"></span>
 
                         <div hidden="hidden" class="form-group form-material" data-plugin="formMaterial">
                             <img style="width: 100%;" id="imageDemo" src="@Url.AbsoluteContent(Model.Url)">
-                        </div>      
+                        </div>
                         <div class="example" data-plugin="formMaterial">
                             <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Image Dominant Color</label>
                             <input id="imageDominantHexColor" asp-for="ImageDominantHexColor" class="form-control" value="@Model.ImageDominantHexColor" data-plugin="asColorPicker"

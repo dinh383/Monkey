@@ -25,7 +25,7 @@ namespace Monkey.Data.EF.Factory
     public static class DatabaseExtensions
     {
         /// <summary>
-        ///     [Database] Use Entity Framework
+        ///     [Database] Use Entity Framework 
         /// </summary>
         /// <param name="services"></param>
         public static IServiceCollection AddDatabase(this IServiceCollection services)
@@ -35,7 +35,7 @@ namespace Monkey.Data.EF.Factory
         }
 
         /// <summary>
-        ///     [Database] Use SQL Server with Migration and Use row no for paging
+        ///     [Database] Use SQL Server with Migration and Use row no for paging 
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>

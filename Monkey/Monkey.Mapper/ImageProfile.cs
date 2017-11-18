@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.IO;
 using AutoMapper;
 using Monkey.Core.Entities;
 using Monkey.Core.Models;

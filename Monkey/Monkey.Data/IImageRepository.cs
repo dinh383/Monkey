@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using Microsoft.AspNetCore.Http;
 using Monkey.Core.Entities;
 using Monkey.Core.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace Monkey.Data
 {
@@ -28,8 +28,8 @@ namespace Monkey.Data
         /// <summary>
         ///     Save image file to physical and database as well 
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="caption"></param>
+        /// <param name="file">                 </param>
+        /// <param name="caption">              </param>
         /// <param name="imageDominantHexColor"></param>
         /// <returns></returns>
         ImageModel SaveImage(IFormFile file, string caption = "", string imageDominantHexColor = null);

@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models;
 using FluentValidation;
+using Monkey.Core.Models;
 
 namespace Monkey.Core.Validators
 {

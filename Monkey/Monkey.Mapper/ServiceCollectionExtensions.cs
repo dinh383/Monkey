@@ -19,8 +19,8 @@
 
 #endregion License
 
-using Monkey.Mapper.Profiles;
 using Microsoft.Extensions.DependencyInjection;
+using Monkey.Mapper.Profiles;
 using Puppy.AutoMapper;
 
 namespace Monkey.Mapper

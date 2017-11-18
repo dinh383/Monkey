@@ -17,9 +17,9 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using FluentValidation.Attributes;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Validators.Auth;
-using FluentValidation.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

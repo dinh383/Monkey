@@ -1,10 +1,10 @@
-﻿using Monkey.Auth.Attributes;
-using Monkey.Auth.Filters.Attributes;
-using Monkey.Core.Constants;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Monkey.Auth.Attributes;
+using Monkey.Auth.Filters.Attributes;
+using Monkey.Core.Constants;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;

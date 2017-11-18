@@ -17,51 +17,52 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System.Threading;
-using Puppy.DependencyInjection.Attributes;
 using Monkey.Business;
-using System.Threading.Tasks;
 using Monkey.Core.Models;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
+using Puppy.DependencyInjection.Attributes;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Monkey.Service.Facade
 {
     [PerRequestDependency(ServiceType = typeof(IImageService))]
-    public class ImageService: IImageService
-	{
+    public class ImageService : IImageService
+    {
         private readonly IImageBusiness _imageBusiness;
+
         public ImageService(IImageBusiness imageBusiness)
         {
             _imageBusiness = imageBusiness;
         }
 
-	    public Task<int> CreateAsync(AddImageModel model, CancellationToken cancellationToken = new CancellationToken())
-	    {
-	        return _imageBusiness.CreateAsync(model, cancellationToken);
+        public Task<int> CreateAsync(AddImageModel model, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return _imageBusiness.CreateAsync(model, cancellationToken);
         }
 
-	    public Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = new CancellationToken())
-	    {
-	        _imageBusiness.CheckExist(model.Id);
-	        return _imageBusiness.UpdateAsync(model, cancellationToken);
+        public Task UpdateAsync(UpdateImageModel model, CancellationToken cancellationToken = new CancellationToken())
+        {
+            _imageBusiness.CheckExist(model.Id);
+            return _imageBusiness.UpdateAsync(model, cancellationToken);
         }
 
-	    public Task<ImageModel> GetAsync(int id, CancellationToken cancellationToken = new CancellationToken())
-	    {
-	        _imageBusiness.CheckExist(id);
-	        return _imageBusiness.GetAsync(id, cancellationToken);
+        public Task<ImageModel> GetAsync(int id, CancellationToken cancellationToken = new CancellationToken())
+        {
+            _imageBusiness.CheckExist(id);
+            return _imageBusiness.GetAsync(id, cancellationToken);
         }
 
-	    public Task<DataTableResponseDataModel<ImageModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
-	    {
-	        return _imageBusiness.GetDataTableAsync(model, cancellationToken);
-	    }
-
-	    public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
-	    {
-	        _imageBusiness.CheckExist(id);
-	        return _imageBusiness.RemoveAsync(id, cancellationToken);
+        public Task<DataTableResponseDataModel<ImageModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return _imageBusiness.GetDataTableAsync(model, cancellationToken);
         }
-	}
+
+        public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _imageBusiness.CheckExist(id);
+            return _imageBusiness.RemoveAsync(id, cancellationToken);
+        }
+    }
 }

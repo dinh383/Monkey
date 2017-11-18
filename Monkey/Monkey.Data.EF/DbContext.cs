@@ -10,7 +10,7 @@ namespace Monkey.Data.EF
     public sealed partial class DbContext : BaseDbContext, IDbContext
     {
         /// <summary>
-        ///     Set CMD timeout is 20 minutes
+        ///     Set CMD timeout is 20 minutes 
         /// </summary>
         public readonly int CmdTimeoutInSecond = 12000;
 

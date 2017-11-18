@@ -18,10 +18,10 @@
                             <input asp-for="Caption" class="form-control" />
                             <span asp-validation-for="Caption"></span>
                         </div>
-                        
+
                         <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">Image</label>
                         <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="File" data-default-file class="form-control" type="file">
-                        <span asp-validation-for="File"></span> 
+                        <span asp-validation-for="File"></span>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
                             <img hidden="hidden" id="imageDemo">
@@ -62,7 +62,7 @@
 
         $(document).ready(function () {
             $('.the-element').on('asColorPicker::change', function (e) {
-                // on value change 
+                // on value change
             });
 
             $("#uploadImage").on("change",

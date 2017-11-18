@@ -17,10 +17,10 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Puppy.DataTable.Attributes;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models
 {
@@ -73,7 +73,7 @@ namespace Monkey.Core.Models
         public string ImageDominantHexColor { get; set; }
     }
 
-    public class UpdateImageModel: AddImageModel
+    public class UpdateImageModel : AddImageModel
     {
         public int Id { get; set; }
         public string Url { get; set; }

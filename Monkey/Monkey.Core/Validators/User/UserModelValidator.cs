@@ -1,5 +1,5 @@
-﻿using Monkey.Core.Models.User;
-using FluentValidation;
+﻿using FluentValidation;
+using Monkey.Core.Models.User;
 
 namespace Monkey.Core.Validators.User
 {

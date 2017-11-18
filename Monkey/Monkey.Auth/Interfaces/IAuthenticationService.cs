@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Models.Auth;
 using Microsoft.AspNetCore.Http;
+using Monkey.Core.Models.Auth;
 using System.Threading;
 using System.Threading.Tasks;
 
