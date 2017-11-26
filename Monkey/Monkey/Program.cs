@@ -17,11 +17,8 @@
 
 #endregion License
 
-using System;
-using Microsoft.AspNetCore.Hosting;
-using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
@@ -33,6 +30,9 @@ using Monkey.Service;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.Core.FileUtils;
 using Puppy.DependencyInjection;
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Monkey
 {
