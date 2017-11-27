@@ -87,7 +87,11 @@ namespace Monkey
 
                 services.MigrateDatabase();
 
-                services.Resolve<ISeedDataService>().SeedData();
+                IInitialService initialService = services.Resolve<IInitialService>();
+
+                initialService.InitialData();
+
+                initialService.ReBuildCache();
             }
         }
     }

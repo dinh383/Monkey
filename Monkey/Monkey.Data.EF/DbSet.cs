@@ -28,9 +28,7 @@ namespace Monkey.Data.EF
 {
     public sealed partial class DbContext
     {
-        public DbSet<UserEntity> Users { get; set; }
-
-        public DbSet<ProfileEntity> Profiles { get; set; }
+        #region Auth
 
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
 
@@ -40,6 +38,18 @@ namespace Monkey.Data.EF
 
         public DbSet<PermissionEntity> Permissions { get; set; }
 
+        #endregion
+
+        #region User
+
+        public DbSet<UserEntity> Users { get; set; }
+
+        public DbSet<ProfileEntity> Profiles { get; set; }
+
+        #endregion
+
         public DbSet<ImageEntity> Images { get; set; }
+
+        public DbSet<ConfigurationEntity> Configurations { get; set; }
     }
 }

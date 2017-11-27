@@ -6,18 +6,19 @@
 //     <Author> Top </Author>
 //     <Project> Monkey → Service Facade </Project>
 //     <File>
-//         <Name> SeedDataService.cs </Name>
+//         <Name> InitialService.cs </Name>
 //         <Created> 14/09/17 11:21:24 AM </Created>
 //         <Key> ffec5eb8-f942-4a6d-b157-55b7e11dec23 </Key>
 //     </File>
 //     <Summary>
-//         SeedDataService.cs
+//         InitialService.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
 using EnumsNET;
+using Monkey.Business;
 using Monkey.Business.Auth;
 using Monkey.Business.User;
 using Puppy.DependencyInjection.Attributes;
@@ -27,25 +28,36 @@ using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Service.Facade
 {
-    [PerRequestDependency(ServiceType = typeof(ISeedDataService))]
-    public class SeedDataService : ISeedDataService
+    [PerRequestDependency(ServiceType = typeof(IInitialService))]
+    public class InitialService : IInitialService
     {
         private readonly IRoleBusiness _roleBusiness;
         private readonly IUserBusiness _userBusiness;
         private readonly IAuthenticationBusiness _authenticationBusiness;
+        private readonly IInitialBusiness _initialBusiness;
         private int _roleAdminId = 1;
 
-        public SeedDataService(IRoleBusiness roleBusiness, IUserBusiness userBusiness, IAuthenticationBusiness authenticationBusiness)
+        public InitialService(
+            IRoleBusiness roleBusiness,
+            IUserBusiness userBusiness,
+            IAuthenticationBusiness authenticationBusiness,
+            IInitialBusiness initialBusiness)
         {
             _roleBusiness = roleBusiness;
             _userBusiness = userBusiness;
             _authenticationBusiness = authenticationBusiness;
+            _initialBusiness = initialBusiness;
         }
 
-        public void SeedData()
+        public void InitialData()
         {
             InitialRoleAsync().Wait();
             InitialUserAsync().Wait();
+        }
+
+        public void ReBuildCache()
+        {
+            _initialBusiness.ReBuildConfigurationCache();
         }
 
         public async Task InitialRoleAsync()

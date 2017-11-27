@@ -29,7 +29,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Puppy\Puppy.EF\Puppy.EF.csproj" />
     <ProjectReference Include="..\..\Puppy\Puppy.DependencyInjection\Puppy.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\Puppy\Puppy.Elastic\Puppy.Elastic.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Logger\Puppy.Logger.csproj" />
+    <ProjectReference Include="..\..\Puppy\Puppy.Redis\Puppy.Redis.csproj" />
   </ItemGroup>
 
   <!-- Monkey -->

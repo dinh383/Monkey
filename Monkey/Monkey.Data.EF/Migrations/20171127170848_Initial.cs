@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
+using System.Collections.Generic;
 
 namespace Monkey.Data.EF.Migrations
 {
-    public partial class ReInitialV3 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,7 +36,7 @@ namespace Monkey.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Configuration",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -45,15 +46,17 @@ namespace Monkey.Data.EF.Migrations
                     DeletedBy = table.Column<int>(nullable: true),
                     DeletedTime = table.Column<DateTimeOffset>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    GlobalId = table.Column<string>(maxLength: 68, nullable: false),
+                    GlobalId = table.Column<string>(nullable: true),
+                    Group = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: true),
                     LastUpdatedBy = table.Column<int>(nullable: true),
                     LastUpdatedTime = table.Column<DateTimeOffset>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    NameNorm = table.Column<string>(nullable: true)
+                    Type = table.Column<int>(nullable: false),
+                    Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.Id);
+                    table.PrimaryKey("PK_Configuration", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,6 +65,7 @@ namespace Monkey.Data.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Caption = table.Column<string>(nullable: true),
                     ContentLength = table.Column<double>(nullable: false),
                     CreatedBy = table.Column<int>(nullable: true),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
@@ -81,6 +85,28 @@ namespace Monkey.Data.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Image", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedBy = table.Column<int>(nullable: true),
+                    CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    DeletedBy = table.Column<int>(nullable: true),
+                    DeletedTime = table.Column<DateTimeOffset>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    GlobalId = table.Column<string>(maxLength: 68, nullable: false),
+                    LastUpdatedBy = table.Column<int>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTimeOffset>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    NameNorm = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,6 +181,43 @@ namespace Monkey.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Profile",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false),
+                    AvatarId = table.Column<int>(nullable: true),
+                    CreatedBy = table.Column<int>(nullable: true),
+                    CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    DeletedBy = table.Column<int>(nullable: true),
+                    DeletedTime = table.Column<DateTimeOffset>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    FirstNameNorm = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
+                    FullNameNorm = table.Column<string>(nullable: true),
+                    GlobalId = table.Column<string>(maxLength: 68, nullable: false),
+                    LastName = table.Column<string>(nullable: true),
+                    LastNameNorm = table.Column<string>(nullable: true),
+                    LastUpdatedBy = table.Column<int>(nullable: true),
+                    LastUpdatedTime = table.Column<DateTimeOffset>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profile_Image_AvatarId",
+                        column: x => x.AvatarId,
+                        principalTable: "Image",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Profile_User_Id",
+                        column: x => x.Id,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RefreshToken",
                 columns: table => new
                 {
@@ -215,43 +278,6 @@ namespace Monkey.Data.EF.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Profile",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false),
-                    AvatarId = table.Column<int>(nullable: true),
-                    CreatedBy = table.Column<int>(nullable: true),
-                    CreatedTime = table.Column<DateTimeOffset>(nullable: false),
-                    DeletedBy = table.Column<int>(nullable: true),
-                    DeletedTime = table.Column<DateTimeOffset>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    FirstNameNorm = table.Column<string>(nullable: true),
-                    FullName = table.Column<string>(nullable: true),
-                    FullNameNorm = table.Column<string>(nullable: true),
-                    GlobalId = table.Column<string>(maxLength: 68, nullable: false),
-                    LastName = table.Column<string>(nullable: true),
-                    LastNameNorm = table.Column<string>(nullable: true),
-                    LastUpdatedBy = table.Column<int>(nullable: true),
-                    LastUpdatedTime = table.Column<DateTimeOffset>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Profile", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Profile_Image_AvatarId",
-                        column: x => x.AvatarId,
-                        principalTable: "Image",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Profile_User_Id",
-                        column: x => x.Id,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Client_DeletedTime",
                 table: "Client",
@@ -278,6 +304,21 @@ namespace Monkey.Data.EF.Migrations
                 column: "Secret");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Image_DeletedTime",
+                table: "Image",
+                column: "DeletedTime");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Image_GlobalId",
+                table: "Image",
+                column: "GlobalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Image_Id",
+                table: "Image",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Permission_DeletedTime",
                 table: "Permission",
                 column: "DeletedTime");
@@ -296,6 +337,27 @@ namespace Monkey.Data.EF.Migrations
                 name: "IX_Permission_RoleId",
                 table: "Permission",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profile_AvatarId",
+                table: "Profile",
+                column: "AvatarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profile_DeletedTime",
+                table: "Profile",
+                column: "DeletedTime");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profile_GlobalId",
+                table: "Profile",
+                column: "GlobalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profile_Id",
+                table: "Profile",
+                column: "Id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_ClientId",
@@ -343,42 +405,6 @@ namespace Monkey.Data.EF.Migrations
                 column: "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Image_DeletedTime",
-                table: "Image",
-                column: "DeletedTime");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_GlobalId",
-                table: "Image",
-                column: "GlobalId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Image_Id",
-                table: "Image",
-                column: "Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Profile_AvatarId",
-                table: "Profile",
-                column: "AvatarId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Profile_DeletedTime",
-                table: "Profile",
-                column: "DeletedTime");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Profile_GlobalId",
-                table: "Profile",
-                column: "GlobalId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Profile_Id",
-                table: "Profile",
-                column: "Id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_DeletedTime",
                 table: "User",
                 column: "DeletedTime");
@@ -422,19 +448,22 @@ namespace Monkey.Data.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Permission");
+                name: "Configuration");
 
             migrationBuilder.DropTable(
-                name: "RefreshToken");
+                name: "Permission");
 
             migrationBuilder.DropTable(
                 name: "Profile");
 
             migrationBuilder.DropTable(
-                name: "Client");
+                name: "RefreshToken");
 
             migrationBuilder.DropTable(
                 name: "Image");
+
+            migrationBuilder.DropTable(
+                name: "Client");
 
             migrationBuilder.DropTable(
                 name: "User");
