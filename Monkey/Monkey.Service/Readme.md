@@ -4,4 +4,4 @@
 
 - This project is **Business Flow** of System.
 - This project contain **Service Interface only**.
-- Model use from [`Monkey.Model`](../Monkey.Model/readme.md)
+- Model use from [`Monkey.Core`](../Monkey.Core/readme.md)
