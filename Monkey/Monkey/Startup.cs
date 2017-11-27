@@ -13,6 +13,7 @@ using Puppy.DataTable;
 using Puppy.DependencyInjection;
 using Puppy.Hangfire;
 using Puppy.Logger;
+using Puppy.Redis;
 using Puppy.Swagger;
 using Puppy.Web.Middlewares;
 using Puppy.Web.Middlewares.Cros;
@@ -66,6 +67,7 @@ namespace Monkey
 
                 // [Caching]
                 .AddMemoryCache()
+                .AddRedisCache(ConfigurationRoot)
 
                 // [Database]
                 .AddDatabase()

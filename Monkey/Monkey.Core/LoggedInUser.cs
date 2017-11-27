@@ -53,6 +53,15 @@ namespace Monkey.Core
                     HttpContext.Current.Items = new Dictionary<object, object>();
                 }
 
+                if (value == null)
+                {
+                    if (HttpContext.Current.Items?.ContainsKey(HttpContextItemKey) == true)
+                    {
+                        HttpContext.Current.Items.Remove(HttpContextItemKey);
+                    }
+                    return;
+                }
+
                 value.AccessToken = HttpContext.Current.Request.Headers[HeaderKey.Authorization].ToString()?.Split(' ')
                     .LastOrDefault();
 
