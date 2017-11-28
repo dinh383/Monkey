@@ -40,9 +40,11 @@ namespace Monkey.Data.EF.Repositories
 {
     public class EntityRepository<TEntity> : EntityRepository<TEntity, int> where TEntity : Entity, new()
     {
-        internal EntityRepository(IBaseDbContext dbContext) : base(dbContext)
+        protected EntityRepository(IBaseDbContext dbContext) : base(dbContext)
         {
         }
+
+        #region Save Change
 
         public override int SaveChanges()
         {
@@ -52,7 +54,7 @@ namespace Monkey.Data.EF.Repositories
 
             int result = DbContext.SaveChanges();
 
-            LogActivity(listEntryAdded, listEntryModified, listEntryDeleted);
+            SaveLogActivityJob(listEntryAdded, listEntryModified, listEntryDeleted);
 
             return result;
         }
@@ -65,7 +67,7 @@ namespace Monkey.Data.EF.Repositories
 
             int result = DbContext.SaveChanges(acceptAllChangesOnSuccess);
 
-            LogActivity(listEntryAdded, listEntryModified, listEntryDeleted);
+            SaveLogActivityJob(listEntryAdded, listEntryModified, listEntryDeleted);
 
             return result;
         }
@@ -78,7 +80,7 @@ namespace Monkey.Data.EF.Repositories
 
             var result = await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(true);
 
-            LogActivity(listEntryAdded, listEntryModified, listEntryDeleted);
+            SaveLogActivityJob(listEntryAdded, listEntryModified, listEntryDeleted);
 
             return result;
         }
@@ -91,7 +93,7 @@ namespace Monkey.Data.EF.Repositories
 
             var result = await DbContext.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken).ConfigureAwait(true);
 
-            LogActivity(listEntryAdded, listEntryModified, listEntryDeleted);
+            SaveLogActivityJob(listEntryAdded, listEntryModified, listEntryDeleted);
 
             return result;
         }
@@ -140,9 +142,11 @@ namespace Monkey.Data.EF.Repositories
             }
         }
 
-        #region Log Activity
+        #endregion
 
-        public void LogActivity(List<EntityEntry> listEntryAdded, List<EntityEntry> listEntryModified, List<EntityEntry> listEntryDeleted)
+        #region Save Log Activity
+
+        protected void SaveLogActivityJob(List<EntityEntry> listEntryAdded, List<EntityEntry> listEntryModified, List<EntityEntry> listEntryDeleted)
         {
             if (listEntryAdded?.Any() != true && listEntryModified?.Any() != true && listEntryDeleted?.Any() != true)
             {
@@ -229,25 +233,7 @@ namespace Monkey.Data.EF.Repositories
             }
         }
 
-        private void SplitEntityEntry(out List<EntityEntry> listEntryAdded, out List<EntityEntry> listEntryModified, out List<EntityEntry> listEntryDeleted)
-        {
-            var listState = new List<EntityState>
-            {
-                EntityState.Added,
-                EntityState.Modified,
-                EntityState.Deleted
-            };
-
-            var listEntry = DbContext.ChangeTracker.Entries()
-                .Where(x => x.Entity is TEntity && listState.Contains(x.State))
-                .ToList();
-
-            listEntryAdded = listEntry.Where(x => x.State == EntityState.Added).ToList();
-            listEntryModified = listEntry.Where(x => x.State == EntityState.Modified).ToList();
-            listEntryDeleted = listEntry.Where(x => x.State == EntityState.Deleted).ToList();
-        }
-
-        private static ActivityLogEntity GetNewActivityLogEntity(EntityEntry entry)
+        protected static ActivityLogEntity GetNewActivityLogEntity(EntityEntry entry)
         {
             var entity = (TEntity)entry.Entity;
 
