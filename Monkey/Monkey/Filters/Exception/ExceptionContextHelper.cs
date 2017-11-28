@@ -48,7 +48,7 @@ namespace Monkey.Filters.Exception
                 // Log with Logger
                 logId = Log.Error(context);
 
-                errorModel = new ErrorModel(ErrorCode.Unauthorized, "Unauthorized Access");
+                errorModel = new ErrorModel(ErrorCode.UnAuthorized, "UnAuthorized Access");
                 context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
             }
             else

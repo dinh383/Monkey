@@ -39,7 +39,7 @@ namespace Monkey.Core.Exceptions
 
         [Display(GroupName = "Global")]
         [Description("Forbidden")]
-        Unauthorized = 403,
+        UnAuthorized = 403,
 
         [Display(GroupName = "Global")]
         [Description("Not Found, the resource does not exist")]

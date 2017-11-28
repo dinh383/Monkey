@@ -4,6 +4,19 @@
         <name>Monkey</name>
     </assembly>
     <members>
+        <member name="M:Monkey.Areas.Api.Controllers.LogController.GetActivityLog(Monkey.Core.Models.PagedCollectionParametersModel)">
+            <summary>
+                View Data Change Log 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Monkey.Areas.Api.Controllers.LogController.GetExceptionLog(Monkey.Core.Models.PagedCollectionParametersModel)">
+            <summary>
+                View Exception Log 
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:Monkey.Areas.Api.Controllers.TestController.DeviceInfo">
             <summary>
                 Device Info 
