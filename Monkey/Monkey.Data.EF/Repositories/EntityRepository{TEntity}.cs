@@ -26,6 +26,7 @@ using Monkey.Core;
 using Monkey.Core.Entities.Log;
 using Newtonsoft.Json;
 using Puppy.Core.DateTimeUtils;
+using Puppy.Core.ObjectUtils;
 using Puppy.EF;
 using Puppy.EF.Interfaces;
 using Puppy.EF.Repositories;
@@ -171,7 +172,7 @@ namespace Monkey.Data.EF.Repositories
 
                     dataLog.LogType = DataLogType.Added;
 
-                    dataLog.Data = entity;
+                    dataLog.Data = entity.PreventReferenceLoop();
 
                     dataLog.CreatedTime = entity.CreatedTime;
 
@@ -200,7 +201,7 @@ namespace Monkey.Data.EF.Repositories
 
                     dataLog.LogType = entity.DeletedTime == null ? DataLogType.Modified : DataLogType.SoftDeleted;
 
-                    dataLog.Data = entity;
+                    dataLog.Data = entity.PreventReferenceLoop();
 
                     if (dataLog.LogType == DataLogType.Modified)
                     {
