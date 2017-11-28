@@ -33,7 +33,7 @@ namespace Monkey.Data.EF.Factory
             return new DbContext(GetDbContextBuilder().Options);
         }
 
-        public static DbContextOptionsBuilder GetDbContextBuilder(DbContextOptionsBuilder builder = null)
+        public static DbContextOptionsBuilder<DbContext> GetDbContextBuilder(DbContextOptionsBuilder<DbContext> builder = null)
         {
             builder = builder ?? new DbContextOptionsBuilder<DbContext>();
 
@@ -42,7 +42,7 @@ namespace Monkey.Data.EF.Factory
                 optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName());
 
                 // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
-                // optionsBuilder.UseRowNumberForPaging();
+                //optionsBuilder.UseRowNumberForPaging();
             });
 
             return builder;

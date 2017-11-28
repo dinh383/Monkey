@@ -31,6 +31,7 @@ namespace Monkey.Data.EF.Factory
         public static IServiceCollection AddDatabase(this IServiceCollection services)
         {
             services.AddDbContext<DbContext>(builder => builder.UseSqlServer());
+
             return services;
         }
 
@@ -41,7 +42,9 @@ namespace Monkey.Data.EF.Factory
         /// <returns></returns>
         public static DbContextOptionsBuilder UseSqlServer(this DbContextOptionsBuilder builder)
         {
-            DbContextFactory.GetDbContextBuilder(builder);
+            var dbContextOptionsBuilder = (DbContextOptionsBuilder<DbContext>)builder;
+
+            DbContextFactory.GetDbContextBuilder(dbContextOptionsBuilder);
 
             return builder;
         }

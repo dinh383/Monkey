@@ -19,7 +19,7 @@ namespace Monkey.Data.EF
             Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
 
-        public DbContext(DbContextOptions options) : base(options)
+        public DbContext(DbContextOptions<DbContext> options) : base(options)
         {
             Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
