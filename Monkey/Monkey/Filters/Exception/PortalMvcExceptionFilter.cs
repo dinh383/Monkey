@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Monkey.Extensions;
-using Puppy.Core.EnvironmentUtils;
 using Puppy.Logger;
 using Puppy.Web;
 using Puppy.Web.HttpUtils;
@@ -21,11 +20,11 @@ namespace Monkey.Filters.Exception
 
         public override void OnException(ExceptionContext context)
         {
+            var errorModel = ExceptionContextHelper.GetErrorModel(context);
+
             // Ajax Case
             if (context.HttpContext.Request.IsAjaxRequest())
             {
-                var errorModel = ExceptionContextHelper.GetErrorModel(context);
-
                 context.Result = new JsonResult(errorModel, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
 
                 context.ExceptionHandled = true;
@@ -61,9 +60,7 @@ namespace Monkey.Filters.Exception
                 new NotifyResultViewModel
                 {
                     Title = "Something Went Wrong",
-                    Message = EnvironmentHelper.IsDevelopment()
-                    ? context.Exception.Message?.Replace("'", "\'")
-                    : "Oh no! You broke the system. The features do not write themselves, you know what I say, you get what you pay for....",
+                    Message = errorModel.Message,
                     Status = NotifyStatus.Error
                 });
 

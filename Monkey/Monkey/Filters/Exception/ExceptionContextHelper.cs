@@ -14,7 +14,9 @@ namespace Monkey.Filters.Exception
         public static ErrorModel GetErrorModel(ExceptionContext context)
         {
             ErrorModel errorModel;
+
             MonkeyException exception = context.Exception as MonkeyException;
+
             string logId;
 
             if (exception != null)
@@ -56,7 +58,7 @@ namespace Monkey.Filters.Exception
 
                 var message = EnvironmentHelper.IsDevelopment()
                     ? context.Exception.Message
-                    : "Oh no! You broke the system. The features do not write themselves, you know what I say, you get what you pay for....";
+                    : "Oops! Something went wrong, please try again later";
 
                 errorModel = new ErrorModel(ErrorCode.Unknown, message);
 

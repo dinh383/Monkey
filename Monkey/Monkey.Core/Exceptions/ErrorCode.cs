@@ -38,14 +38,14 @@ namespace Monkey.Core.Exceptions
         UnAuthenticated = 401,
 
         [Display(GroupName = "Global")]
-        [Description("Forbidden, this feature for 18+ :))")]
+        [Description("Forbidden")]
         Unauthorized = 403,
 
         [Display(GroupName = "Global")]
         [Description("Not Found, the resource does not exist")]
         NotFound = 404,
 
-        [Description("Awesome, You break the system :o. You know what they say, you get what you pay for... The features do not write themselves, you know. Now, just god and you know what happen.")]
+        [Description("Oops! Something went wrong, please try again later")]
         [Display(GroupName = "Global")]
         Unknown = 500,
 

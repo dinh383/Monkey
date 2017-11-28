@@ -229,7 +229,7 @@ namespace Monkey.Data.EF.Repositories
             foreach (var activityLog in activityLogs)
             {
                 var activityLogAsJson = JsonConvert.SerializeObject(activityLog, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
-                Puppy.Logger.Log.Warning(activityLogAsJson);
+                Puppy.Logger.Log.Warning(activityLogAsJson, "DatabaseChange");
             }
         }
 
