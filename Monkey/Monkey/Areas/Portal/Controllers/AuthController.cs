@@ -85,10 +85,10 @@ namespace Monkey.Areas.Portal.Controllers
             try
             {
                 // Sign In and get access token
-                AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(requestToken, this.GetRequestCancellationToken()).ConfigureAwait(true);
+                AccessTokenModel accessTokenModel = await _authenticationService.SignInAsync(HttpContext, requestToken, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 // Sign In to Cookie, for web only
-                await _authenticationService.SignInCookieAsync(Response.Cookies, accessTokenModel, this.GetRequestCancellationToken()).ConfigureAwait(true);
+                await _authenticationService.SignInCookieAsync(HttpContext, accessTokenModel, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
                 if (string.IsNullOrWhiteSpace(model.RedirectUrl))
                 {
@@ -131,7 +131,7 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public async Task<IActionResult> SignOut()
         {
-            await _authenticationService.SignOutCookieAsync(Response.Cookies, this.GetRequestCancellationToken()).ConfigureAwait(true);
+            await _authenticationService.SignOutCookieAsync(HttpContext, this.GetRequestCancellationToken()).ConfigureAwait(true);
 
             return RedirectToAction("Index", "Auth");
         }

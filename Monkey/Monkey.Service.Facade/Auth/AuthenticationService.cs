@@ -33,7 +33,6 @@ using Puppy.DependencyInjection.Attributes;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using HttpContext = System.Web.HttpContext;
 
 namespace Monkey.Service.Facade.Auth
 {
@@ -53,7 +52,7 @@ namespace Monkey.Service.Facade.Auth
             _emailBusiness = emailBusiness;
         }
 
-        public async Task<AccessTokenModel> SignInAsync(RequestTokenModel model, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AccessTokenModel> SignInAsync(HttpContext httpContext, RequestTokenModel model, CancellationToken cancellationToken = default(CancellationToken))
         {
             int? clientId = null;
 
@@ -80,7 +79,7 @@ namespace Monkey.Service.Facade.Auth
                 // Generate access token
                 accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, AuthConfig.AccessTokenExpireIn, refreshToken);
 
-                HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
+                httpContext.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
             }
             else if (model.GrantType == GrantType.RefreshToken)
             {
@@ -91,24 +90,24 @@ namespace Monkey.Service.Facade.Auth
                 // Generate access token
                 accessTokenModel = TokenHelper.GenerateAccessToken(model.ClientId, LoggedInUser.Current.Subject, AuthConfig.AccessTokenExpireIn, model.RefreshToken);
 
-                HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
+                httpContext.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
             }
 
             return accessTokenModel;
         }
 
-        public async Task SignInCookieAsync(IResponseCookies cookies, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task SignInCookieAsync(HttpContext httpContext, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default(CancellationToken))
         {
-            TokenHelper.SetAccessTokenInCookie(cookies, accessTokenModel);
+            TokenHelper.SetAccessTokenInCookie(httpContext.Response.Cookies, accessTokenModel);
 
             LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken, cancellationToken).ConfigureAwait(true);
 
-            HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
+            httpContext.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
         }
 
-        public async Task<AccessTokenModel> SignInCookieAsync(IRequestCookieCollection cookies, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<AccessTokenModel> SignInCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var accessTokenModel = TokenHelper.GetAccessTokenInCookie(cookies);
+            var accessTokenModel = TokenHelper.GetAccessTokenInCookie(httpContext.Request.Cookies);
 
             if (accessTokenModel == null)
             {
@@ -124,20 +123,20 @@ namespace Monkey.Service.Facade.Auth
 
             LoggedInUser.Current = await GetLoggedInUserAsync(accessTokenModel.AccessToken, cancellationToken).ConfigureAwait(true);
 
-            HttpContext.Current.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
+            httpContext.User = TokenHelper.GetClaimsPrincipal(accessTokenModel.AccessToken);
 
             return accessTokenModel;
         }
 
-        public Task SignOutCookieAsync(IResponseCookies cookies, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SignOutCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            TokenHelper.RemoveAccessTokenInCookie(cookies);
+            TokenHelper.RemoveAccessTokenInCookie(httpContext.Response.Cookies);
 
             LoggedInUser.Current = null;
 
-            if (HttpContext.Current != null && HttpContext.Current.User != null)
+            if (httpContext.User != null)
             {
-                HttpContext.Current.User = null;
+                httpContext.User = null;
             }
 
             return Task.CompletedTask;

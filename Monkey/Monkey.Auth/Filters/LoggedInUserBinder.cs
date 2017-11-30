@@ -3,9 +3,9 @@ using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core;
 using Monkey.Core.Constants.Auth;
-using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection;
+using System;
 using System.Threading.Tasks;
 
 namespace Monkey.Auth.Filters
@@ -14,33 +14,33 @@ namespace Monkey.Auth.Filters
     {
         public static void BindLoggedInUser(HttpContext httpContext)
         {
-            IAuthenticationService authenticationService = AuthConfig.AppBuilder.Resolve<IAuthenticationService>();
-
-            // Access Token found in Header.
-            if (TokenHelper.IsHaveAccessTokenInHeader(httpContext.Request))
+            try
             {
-                string token = TokenHelper.GetValidAndNotExpireAccessToken(httpContext.Request.Headers);
+                IAuthenticationService authenticationService = AuthConfig.AppBuilder.Resolve<IAuthenticationService>();
 
-                if (string.IsNullOrWhiteSpace(token) || LoggedInUser.Current.AccessTokenType == Constants.Constant.AuthenticationTokenType)
+                // Access Token found in Header.
+                if (TokenHelper.IsHaveAccessTokenInHeader(httpContext.Request))
                 {
+                    string token = TokenHelper.GetValidAndNotExpireAccessToken(httpContext.Request.Headers);
+
+                    if (string.IsNullOrWhiteSpace(token) || LoggedInUser.Current.AccessTokenType == Constants.Constant.AuthenticationTokenType)
+                    {
+                        return;
+                    }
+
+                    // Update Current Logged In User in both Static Global variable and HttpContext
+                    var taskGetLoggedInUser = authenticationService.GetLoggedInUserAsync(token);
+                    taskGetLoggedInUser.Wait();
+
+                    LoggedInUser.Current = taskGetLoggedInUser.Result;
+                    httpContext.User = TokenHelper.GetClaimsPrincipal(token);
+
                     return;
                 }
 
-                // Update Current Logged In User in both Static Global variable and HttpContext
-                var taskGetLoggedInUser = authenticationService.GetLoggedInUserAsync(token);
-                taskGetLoggedInUser.Wait();
-
-                LoggedInUser.Current = taskGetLoggedInUser.Result;
-                httpContext.User = TokenHelper.GetClaimsPrincipal(token);
-
-                return;
-            }
-
-            // Cookie case
-            try
-            {
                 // Sign In by Cookie
-                var taskSignInCookie = authenticationService.SignInCookieAsync(httpContext.Request.Cookies);
+                var taskSignInCookie = authenticationService.SignInCookieAsync(httpContext);
+
                 taskSignInCookie.Wait();
 
                 var accessTokenModel = taskSignInCookie.Result;
@@ -60,7 +60,8 @@ namespace Monkey.Auth.Filters
                     };
 
                     // Sign In by Request Token Model
-                    var taskSignIn = authenticationService.SignInAsync(requestTokenModel);
+                    var taskSignIn = authenticationService.SignInAsync(httpContext, requestTokenModel);
+
                     taskSignIn.Wait();
 
                     accessTokenModel = taskSignIn.Result;
@@ -75,14 +76,19 @@ namespace Monkey.Auth.Filters
                     }, httpContext);
                 }
             }
-            catch (MonkeyException ex)
+            catch (Exception)
             {
-                if (ex.Code == ErrorCode.NotFound)
-                {
-                    return;
-                }
+                // Remove current user
+                LoggedInUser.Current = null;
+                httpContext.User = null;
 
-                throw;
+                // Remove Cookie
+                httpContext.Response.OnStarting(state =>
+                {
+                    var onResponseHttpContext = (HttpContext)state;
+                    TokenHelper.RemoveAccessTokenInCookie(onResponseHttpContext.Response.Cookies);
+                    return Task.CompletedTask;
+                }, httpContext);
             }
         }
     }

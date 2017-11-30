@@ -28,7 +28,7 @@ namespace Monkey.Areas.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AccessTokenModel))]
         public async Task<IActionResult> Token([FromBody]  RequestTokenModel model)
         {
-            var accessToken = await _authenticationService.SignInAsync(model).ConfigureAwait(false);
+            var accessToken = await _authenticationService.SignInAsync(HttpContext, model).ConfigureAwait(false);
             return Ok(accessToken);
         }
     }

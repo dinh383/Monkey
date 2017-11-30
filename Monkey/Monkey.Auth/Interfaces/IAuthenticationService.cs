@@ -30,37 +30,38 @@ namespace Monkey.Auth.Interfaces
         ///     Get access token and get <see cref="LoggedInUserModel" /> data for
         ///     LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
         /// </summary>
+        /// <param name="httpContext"></param>
         /// <param name="model">            </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<AccessTokenModel> SignInAsync(RequestTokenModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AccessTokenModel> SignInAsync(HttpContext httpContext, RequestTokenModel model, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         ///     Set Cookie in Response and Get <see cref="LoggedInUserModel" /> data for
         ///     LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
         /// </summary>
-        /// <param name="cookies">          </param>
+        /// <param name="httpContext">          </param>
         /// <param name="accessTokenModel"> </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task SignInCookieAsync(IResponseCookies cookies, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default(CancellationToken));
+        Task SignInCookieAsync(HttpContext httpContext, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         ///     Get valid (not check expire) access token and get <see cref="LoggedInUserModel" />
         ///     data for LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
         /// </summary>
-        /// <param name="cookies">          </param>
+        /// <param name="httpContext">          </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<AccessTokenModel> SignInCookieAsync(IRequestCookieCollection cookies, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AccessTokenModel> SignInCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         ///     Remove Cookie value and Set null for LoggedInUser.Current, null for HttpContext.User 
         /// </summary>
-        /// <param name="cookies">          </param>
+        /// <param name="httpContext">          </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task SignOutCookieAsync(IResponseCookies cookies, CancellationToken cancellationToken = default(CancellationToken));
+        Task SignOutCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         ///     Get <see cref="LoggedInUserModel" /> from valid access token 
