@@ -43,6 +43,11 @@
                     window.location.href = "/Portal";
                 } else {
                     try {
+                        // Check request already abort => return
+                        if (xhr.status === 0) {
+                            return;
+                        }
+
                         var data = JSON.parse(xhr.responseText);
                         if (data.code) {
                             monkey.notify("Error", data.message, "error");
