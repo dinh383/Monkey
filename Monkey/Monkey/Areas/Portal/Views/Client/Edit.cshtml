@@ -120,7 +120,7 @@
             $.ajax({
                 url: url,
                 success: function(data) {
-                    monkey.notify("Success", "Generate new secret for the Client", "success");
+                    Monkey.notify("Success", "Generate new secret for the Client", "success");
                     $("#Secret").val(data.secret);
                 }
             });

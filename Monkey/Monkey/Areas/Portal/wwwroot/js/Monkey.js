@@ -1,4 +1,4 @@
-﻿window.monkey = {
+﻿window.Monkey = {
     initToolTip: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
@@ -50,12 +50,12 @@
 
                         var data = JSON.parse(xhr.responseText);
                         if (data.code) {
-                            monkey.notify("Error", data.message, "error");
+                            Monkey.notify("Error", data.message, "error");
                         } else {
-                            monkey.notify("Error", "System error, please try again or contact administrator!", "error");
+                            Monkey.notify("Error", "System error, please try again or contact administrator!", "error");
                         }
                     } catch (e) {
-                        monkey.notify("Error", "System error, please try again or contact administrator!", "error");
+                        Monkey.notify("Error", "System error, please try again or contact administrator!", "error");
                     }
                 }
             }
@@ -117,38 +117,38 @@
     notificationHub: {
         connection: null,
         connect: function () {
-            monkey.notificationHub.connection = new signalR.HubConnection("/portal/notification");
+            Monkey.notificationHub.connection = new signalR.HubConnection("/portal/notification");
 
-            monkey.notificationHub.connection
+            Monkey.notificationHub.connection
                 .on("addNotification",
                 notification => {
-                    monkey.notificationHub.addItem(notification);
+                    Monkey.notificationHub.addItem(notification);
                 });
 
-            monkey.notificationHub.connection
+            Monkey.notificationHub.connection
                 .on("setNotifications",
                 notifications => {
-                    monkey.notificationHub.setItems(notifications);
+                    Monkey.notificationHub.setItems(notifications);
                 });
 
-            monkey.notificationHub.connection
+            Monkey.notificationHub.connection
                 .start()
                 .then(() => {
                     console.log("[Socket] connected to notification hub");
-                    monkey.notificationHub.receiveAllNotification();
+                    Monkey.notificationHub.receiveAllNotification();
                 })
                 .catch(err => {
                     console.log(`[Socket] connection error: ${err}`);
                 });
         },
         sendUsers: function (notification, subjects) {
-            monkey.notificationHub.connection.invoke("sendNotificationToSubjectsAsync", notification, subjects);
+            Monkey.notificationHub.connection.invoke("sendNotificationToSubjectsAsync", notification, subjects);
         },
         sendPermissions: function (notification, permissions) {
-            monkey.notificationHub.connection.invoke("sendNotificationToPermissionsAsync", notification, permissions);
+            Monkey.notificationHub.connection.invoke("sendNotificationToPermissionsAsync", notification, permissions);
         },
         receiveAllNotification: function () {
-            monkey.notificationHub.connection.invoke("receiveAllNotificationAsync");
+            Monkey.notificationHub.connection.invoke("receiveAllNotificationAsync");
         },
         setTotal: function (number) {
             var int = parseInt(number);
@@ -186,20 +186,20 @@
         },
         onOpenNotification: function () {
             setTimeout(function () {
-                monkey.notificationHub.updateHeight();
+                Monkey.notificationHub.updateHeight();
             }, 1);
         },
         updateTotal: function () {
             var totalUnRead = 0;
 
-            $.each(monkey.notificationHub.items,
+            $.each(Monkey.notificationHub.items,
                 function (index, data) {
                     if (data.isRead === false) {
                         totalUnRead++;
                     }
                 });
 
-            monkey.notificationHub.setTotal(totalUnRead);
+            Monkey.notificationHub.setTotal(totalUnRead);
         },
         getItemHtml: function (notification) {
             var html = ` <a class="list-group-item dropdown-item notification-item" href="${notification.url}" role="menuitem">
@@ -209,7 +209,7 @@
                                 </div>
                                 <div class="media-body">
                                     <h6 class="media-heading">${notification.message}</h6>
-                                    <time class="media-meta" datetime="${notification.createdTime}">${monkey.formatDateTime(notification.createdTime)}</time>
+                                    <time class="media-meta" datetime="${notification.createdTime}">${Monkey.formatDateTime(notification.createdTime)}</time>
                                 </div>
                             </div>
                         </a>`;
@@ -221,19 +221,19 @@
             $("#notification-list").empty();
 
             for (var i = 0; i < notifications.length; i++) {
-                monkey.notificationHub.addItem(notifications[i]);
+                Monkey.notificationHub.addItem(notifications[i]);
             }
         },
         addItem: function (notification) {
-            monkey.notificationHub.items.push(notification);
+            Monkey.notificationHub.items.push(notification);
 
-            monkey.notificationHub.updateTotal();
+            Monkey.notificationHub.updateTotal();
 
-            var html = monkey.notificationHub.getItemHtml(notification);
+            var html = Monkey.notificationHub.getItemHtml(notification);
 
             $("#notification-list").prepend($(html));
 
-            monkey.notificationHub.updateHeight();
+            Monkey.notificationHub.updateHeight();
         }
     },
 
@@ -294,11 +294,11 @@
 };
 
 $(function () {
-    monkey.setupAjax();
-    monkey.initToolTip();
-    monkey.initConfirmDialog();
-    monkey.initSlidePanel();
-    monkey.notificationHub.connect();
+    Monkey.setupAjax();
+    Monkey.initToolTip();
+    Monkey.initConfirmDialog();
+    Monkey.initSlidePanel();
+    Monkey.notificationHub.connect();
 });
 
 String.prototype.preventInjection = function preventInjection() {
