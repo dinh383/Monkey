@@ -1,8 +1,8 @@
 [
   {
-    "outputFileName": "Areas/Portal/wwwroot/css/skins/monkey.min.css",
+    "outputFileName": "Areas/Portal/wwwroot/css/skins/Monkey.min.css",
     "inputFiles": [
-      "Areas/Portal/wwwroot/css/skins/monkey.css"
+      "Areas/Portal/wwwroot/css/skins/Monkey.css"
     ]
   },
   {
@@ -12,21 +12,15 @@
     ]
   },
   {
-    "outputFileName": "Areas/Portal/wwwroot/css/monkey.min.css",
-    "inputFiles": [
-      "Areas/Portal/wwwroot/css/monkey.css"
-    ]
-  },
-  {
     "outputFileName": "Areas/Portal/wwwroot/js/config/jquery-validation.min.js",
     "inputFiles": [
       "Areas/Portal/wwwroot/js/config/jquery-validation.js"
     ]
   },
   {
-    "outputFileName": "Areas/Portal/wwwroot/css/skins/monkey-skin.min.css",
+    "outputFileName": "Areas/Portal/wwwroot/css/skins/Monkey-skin.min.css",
     "inputFiles": [
-      "Areas/Portal/wwwroot/css/skins/monkey-skin.css"
+      "Areas/Portal/wwwroot/css/skins/Monkey-skin.css"
     ]
   },
   {
@@ -81,12 +75,6 @@
     "outputFileName": "Areas/Portal/wwwroot/js/MonkeyUtils.min.js",
     "inputFiles": [
       "Areas/Portal/wwwroot/js/MonkeyUtils.js"
-    ]
-  },
-  {
-    "outputFileName": "Areas/Portal/wwwroot/js/Monkey.min.js",
-    "inputFiles": [
-      "Areas/Portal/wwwroot/js/Monkey.js"
     ]
   },
   {
