@@ -29,9 +29,9 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Areas.Api.Controllers.TokenController.Token(Monkey.Core.Models.Auth.RequestTokenModel)">
+        <member name="M:Monkey.Areas.Api.Controllers.UserController.Token(Monkey.Core.Models.Auth.RequestTokenModel)">
             <summary>
-                Token 
+                Access Token 
             </summary>
             <returns></returns>
         </member>

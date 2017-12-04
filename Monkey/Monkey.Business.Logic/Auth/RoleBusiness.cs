@@ -95,7 +95,7 @@ namespace Monkey.Business.Logic.Auth
             // Check cancellation token
             cancellationToken.ThrowIfCancellationRequested();
 
-            var listRoleModel = query.OrderByDescending(x => x.NameNorm).Skip(model.Skip).Take(model.Take).QueryTo<RoleModel>();
+            var listRoleModel = query.OrderByDescending(x => x.NameNorm).Skip(model.Skip).Take(model.Take).QueryTo<RoleModel>().ToList();
 
             var result = new PagedCollectionResultModel<RoleModel>
             {

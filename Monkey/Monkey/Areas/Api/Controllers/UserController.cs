@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Monkey.Auth.Interfaces;
 using Monkey.Core.Models.Auth;
@@ -8,23 +9,25 @@ using System.Threading.Tasks;
 namespace Monkey.Areas.Api.Controllers
 {
     [Route(EndPoint)]
-    public class TokenController : ApiController
+    public class UserController : ApiController
     {
-        private const string EndPoint = AreaName + "/token";
+        private const string EndPoint = AreaName + "/user";
+        private const string AccessTokenEndPoint = "access-token";
 
         private readonly IAuthenticationService _authenticationService;
 
-        public TokenController(IAuthenticationService authenticationService)
+        public UserController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
 
         /// <summary>
-        ///     Token 
+        ///     Access Token 
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("")]
+        [Route(AccessTokenEndPoint)]
+        [AllowAnonymous]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AccessTokenModel))]
         public async Task<IActionResult> Token([FromBody]  RequestTokenModel model)
         {
