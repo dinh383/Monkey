@@ -6,7 +6,7 @@ namespace Monkey.Areas.Portal.Controllers
     public class HomeController : MvcController
     {
         public const string Endpoint = AreaName;
-        public const string DashboardEndpoint = "";
+        public const string DashboardEndpoint = "dashboard";
 
         [Route(DashboardEndpoint)]
         [HttpGet]
