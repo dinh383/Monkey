@@ -90,7 +90,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
 
     <!-- Http Client -->
-    <PackageReference Include="Flurl.Http" Version="2.0.1" />
+    <PackageReference Include="Flurl.Http" Version="2.1.0" />
 
     <!-- C# Utitlity -->
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
