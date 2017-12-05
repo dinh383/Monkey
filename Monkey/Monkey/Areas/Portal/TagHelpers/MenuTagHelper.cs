@@ -65,7 +65,7 @@ namespace Monkey.Areas.Portal.TagHelpers
 
             output.TagMode = TagMode.StartTagAndEndTag;
 
-            bool isActive = System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(MenuUrl) == true;
+            bool isActive = !string.IsNullOrWhiteSpace(MenuUrl) && System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(MenuUrl) == true;
 
             output.TagName = "li";
             output.Attributes.Add("class", $"site-menu-item {(IsHasSubItem ? "has-sub" : string.Empty)} {(isActive ? "active" : string.Empty)}");
@@ -133,7 +133,7 @@ namespace Monkey.Areas.Portal.TagHelpers
 
             output.TagName = "li";
 
-            bool isActive = System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(SubMenuUrl) == true;
+            bool isActive = !string.IsNullOrWhiteSpace(SubMenuUrl) && System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(SubMenuUrl) == true;
 
             output.Attributes.Add("class", $"site-menu-item {(isActive ? "active" : string.Empty)}");
 
