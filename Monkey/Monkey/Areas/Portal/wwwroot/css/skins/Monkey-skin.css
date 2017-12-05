@@ -9870,3 +9870,7 @@ fieldset[disabled] .form-material .form-control {
 .site-menubar {
     z-index: 1400
 }
+
+.disabled {
+    cursor: not-allowed !important;
+}
