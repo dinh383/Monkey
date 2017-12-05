@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Monkey.Core;
@@ -64,8 +65,10 @@ namespace Monkey.Areas.Portal.TagHelpers
 
             output.TagMode = TagMode.StartTagAndEndTag;
 
+            bool isActive = System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(MenuUrl) == true;
+
             output.TagName = "li";
-            output.Attributes.Add("class", $"site-menu-item {(IsHasSubItem ? "has-sub" : string.Empty)}");
+            output.Attributes.Add("class", $"site-menu-item {(IsHasSubItem ? "has-sub" : string.Empty)} {(isActive ? "active" : string.Empty)}");
 
             var anchor = new TagBuilder("a");
             anchor.Attributes.AddOrUpdate("href", $"{(IsHasSubItem ? "javascript:void(0);" : MenuUrl)}");
@@ -130,7 +133,9 @@ namespace Monkey.Areas.Portal.TagHelpers
 
             output.TagName = "li";
 
-            output.Attributes.Add("class", "site-menu-item");
+            bool isActive = System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(SubMenuUrl) == true;
+
+            output.Attributes.Add("class", $"site-menu-item {(isActive ? "active" : string.Empty)}");
 
             var anchor = new TagBuilder("a");
             anchor.AddCssClass("animsition-link");
