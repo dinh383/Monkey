@@ -117,7 +117,7 @@ namespace Monkey.Areas.Portal.TagHelpers
         [HtmlAttributeName("sub-menu-url")]
         public string SubMenuUrl { get; set; }
 
-        [HtmlAttributeName("menu-permissions")]
+        [HtmlAttributeName("sub-menu-permissions")]
         public IEnumerable<Enums.Permission> Permissions { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
