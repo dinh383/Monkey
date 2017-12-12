@@ -8,23 +8,33 @@
             var $this = $(this);
 
             swal({
-                title: $this.data("confirm-title"),
-                text: $this.data("confirm-message"),
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-pink",
-                confirmButtonText: 'Yes',
-                cancelButtonText: "No",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
+                    title: $this.data("confirm-title"),
+                    text: $this.data("confirm-message"),
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-pink",
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: "No",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
                 function (isConfirm) {
                     if (isConfirm) {
                         var action = $this.data("confirm-yes-callback");
                         eval(action);
-                        swal($this.data("confirm-yes-title") || "Deleted!", $this.data("confirm-yes-message") || "Delete Successful", "success");
+                        swal({
+                            title: $this.data("confirm-yes-title") || "Deleted!",
+                            text: $this.data("confirm-yes-message") || "Delete Successful",
+                            type: "success",
+                            timer: 2000
+                        });
                     } else {
-                        swal($this.data("confirm-no-title") || "Cancelled", $this.data("confirm-no-message"), "error");
+                        swal({
+                            title: $this.data("confirm-no-title") || "Canceled",
+                            text: $this.data("confirm-no-message"),
+                            type: "error",
+                            timer: 2000
+                        });
                     }
                 });
         });
@@ -290,6 +300,52 @@
 
     formatDateTime: function (dateTime) {
         return moment(dateTime).format(window.constants.dateTimeFormat);
+    },
+
+    rgbToHex: function (r, g, b) {
+        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    },
+
+    initAutoBindColorDominant: function () {
+        $('[data-bind-type="color-dominant"]').change(function () {
+            var $this = $(this);
+
+            var colorSelector = $this.data("bind-to");
+
+            Monkey.bindColorDominant(this, $(colorSelector));
+        });
+    },
+
+    autoBindColorDominant: function (fileSelector, colorSelector) {
+        $(fileSelector).change(
+            function () {
+                Monkey.bindColorDominant(this, $(colorSelector));
+            });
+    },
+
+    bindColorDominant: function ($fileElement, $colorElement) {
+        var fileReader = new FileReader();
+
+        fileReader.onload = function (fileLoadedEvent) {
+
+            var img = new Image();
+
+            img.onload = function () {
+
+                var colorThief = new ColorThief();
+
+                var color = colorThief.getColor(img);
+
+                var hexColor = Monkey.rgbToHex(color[0], color[1], color[2]);
+
+                $colorElement.asColorPicker('val', hexColor);
+            };
+
+            var base64 = fileLoadedEvent.target.result;
+
+            img.src = base64;
+        }
+        fileReader.readAsDataURL($fileElement.files[0]);
     }
 };
 
@@ -299,6 +355,7 @@ $(function () {
     Monkey.initConfirmDialog();
     Monkey.initSlidePanel();
     Monkey.notificationHub.connect();
+    Monkey.initAutoBindColorDominant();
 });
 
 String.prototype.preventInjection = function preventInjection() {

@@ -19,18 +19,19 @@
                             <span asp-validation-for="Caption"></span>
                         </div>
 
-                        <label asp-for="File" class="form-control-label" for="@nameof(Model.File)">Image</label>
-                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="File" data-default-file class="form-control" type="file">
-                        <span asp-validation-for="File"></span>
-
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            <img hidden="hidden" id="imageDemo">
+                            <label asp-for="File" class="form-control-label" for="@nameof(Model.File)"></label>
+                            <input data-plugin="dropify" data-height="200" asp-for="File" data-bind-type="color-dominant" data-bind-to="#@nameof(Model.ImageDominantHexColor)" data-default-file class="form-control" type="file">
+                            <span asp-validation-for="File"></span>
                         </div>
-                        <div class="example">
-                            <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)">Color</label>
-                            <input id="imageDominantHexColor" asp-for="ImageDominantHexColor" class="form-control" data-plugin="asColorPicker" data-mode="complex" type="text" />
+
+                        <div class="form-group form-material">
+                            <label asp-for="ImageDominantHexColor" class="form-control-label" for="@nameof(Model.ImageDominantHexColor)"></label>
+                            <br />
+                            <input asp-for="ImageDominantHexColor" class="form-control" data-plugin="asColorPicker" data-mode="complex" type="text" />
                             <span asp-validation-for="ImageDominantHexColor"></span>
                         </div>
+
                         <div class="row">
                             <div class="col-md-6 form-material">
                                 <a class="btn btn-default ladda-button btn-block" data-style="slide-right" data-plugin="ladda" href="@Url.AbsoluteAction("Index", "Image")">
@@ -53,39 +54,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts{
-    <script>
-        function rgbToHex(r, g, b) {
-            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-        }
-
-        $(document).ready(function () {
-            $('.the-element').on('asColorPicker::change', function (e) {
-                // on value change
-            });
-
-            $("#uploadImage").on("change",
-                function () {
-                    readUrl(this);
-                });
-
-            function readUrl(input) {
-                var fileReader = new FileReader();
-                fileReader.onload = function (fileLoadedEvent) {
-                    var base64 = fileLoadedEvent.target.result;
-                    $("#imageDemo").attr("src", base64);
-
-                    var image = document.querySelector('#imageDemo');
-                    image.onload = function () {
-                        var colorThief = new ColorThief();
-                        var color = colorThief.getColor(image);
-                        var hexColor = rgbToHex(color[0], color[1], color[2]);
-                        $("#imageDominantHexColor").asColorPicker('val', hexColor);
-                    };
-                }
-                fileReader.readAsDataURL(input.files[0]);
-            }
-        });
-    </script>
-}

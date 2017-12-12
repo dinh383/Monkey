@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "outputFileName": "Areas/Portal/wwwroot/css/skins/Monkey.min.css",
     "inputFiles": [
@@ -105,6 +105,18 @@
     "outputFileName": "Areas/Portal/wwwroot/fonts/Roboto/Roboto.min.css",
     "inputFiles": [
       "Areas/Portal/wwwroot/fonts/Roboto/Roboto.css"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/css/Monkey.min.css",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/css/Monkey.css"
+    ]
+  },
+  {
+    "outputFileName": "Areas/Portal/wwwroot/js/Monkey.min.js",
+    "inputFiles": [
+      "Areas/Portal/wwwroot/js/Monkey.js"
     ]
   }
 ]

@@ -74,10 +74,10 @@ namespace Monkey
 
                 // [API Document] Swagger
                 .AddApiDocument(typeof(Startup).GetAssembly(), ConfigurationRoot)
-
+#if !DEBUG
                 // [Mini Response]
                 .AddMinResponse()
-
+#endif
                 // [MVC] Anti Forgery
                 .AddAntiforgeryToken()
 
@@ -129,9 +129,11 @@ namespace Monkey
 
                 // [API Document] Swagger
                 .UseApiDocument()
+#if !DEBUG
 
                 // [Mini Response]
                 .UseMinResponse()
+#endif
 
                 // [Authentication] Json Web Token + Cookie
                 .UseHybridAuth()

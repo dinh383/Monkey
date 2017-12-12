@@ -76,3 +76,13 @@
     -ms-border-radius: 30px;
     border-radius: 30px;
 }
+
+
+.no-padding {
+    padding: 0 !important;
+}
+
+
+.dropify-wrapper {
+    border: none !important
+}
