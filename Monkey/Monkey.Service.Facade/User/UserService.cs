@@ -28,7 +28,6 @@ using Monkey.Service.User;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,29 +50,43 @@ namespace Monkey.Service.Facade.User
             _authenticationBusiness = authenticationBusiness;
         }
 
-        public Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
+        #region User - Get
+
+        public Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default)
         {
             return _userBusiness.GetDataTableAsync(model, cancellationToken);
         }
 
-        public async Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            _userBusiness.CheckUniqueEmail(model.Email);
-
-            var createUserResult = await _userBusiness.CreateUserByEmailAsync(model.Email, model.RoleId, null, cancellationToken).ConfigureAwait(true);
-
-            string activeToken = _authenticationBusiness.GenerateTokenConfirmEmail(createUserResult.Subject, model.Email, out TimeSpan expireIn);
-
-            _emailBusiness.SendActiveAccount(activeToken, model.Email, expireIn);
-        }
-
-        public Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default)
         {
             _userBusiness.CheckExistsById(id);
             return _userBusiness.GetAsync(id, cancellationToken);
         }
 
-        public Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default(CancellationToken))
+        #endregion
+
+        #region User - Create
+
+        public async Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default)
+        {
+            _userBusiness.CheckUniqueUserName(model.UserName);
+
+            _userBusiness.CheckUniqueEmail(model.Email);
+
+            _userBusiness.CheckUniquePhone(model.Phone);
+
+            var createUserResult = await _userBusiness.CreateAsync(model, cancellationToken).ConfigureAwait(true);
+
+            string activeToken = _authenticationBusiness.GenerateTokenConfirmEmail(createUserResult.Subject, model.Email, out var expireIn);
+
+            _emailBusiness.SendActiveAccount(activeToken, model.Email, expireIn);
+        }
+
+        #endregion
+
+        #region User - Update
+
+        public Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default)
         {
             _userBusiness.CheckExistsById(model.Id);
 
@@ -82,8 +95,9 @@ namespace Monkey.Service.Facade.User
                 throw new MonkeyException(ErrorCode.UserSelfUpdate);
             }
 
-            // Can't update last user have permission
-            var listCannotUpdateUserId = _userBusiness.ListUserIdByPermissions(Enums.Permission.Admin);
+            // Can't update last user have admin permission
+            var listCannotUpdateUserId = _userBusiness.GetListLookupByPermissions(Enums.Permission.Admin).Select(x => x.Id).ToList();
+
             if (listCannotUpdateUserId.Count == 1 && listCannotUpdateUserId.FirstOrDefault() == model.Id)
             {
                 throw new MonkeyException(ErrorCode.UserCannotUpdate);
@@ -91,20 +105,26 @@ namespace Monkey.Service.Facade.User
 
             _userBusiness.CheckUniqueUserName(model.UserName, model.Id);
 
-            if (!string.IsNullOrWhiteSpace(model.Email))
-            {
-                _userBusiness.CheckUniqueEmail(model.Email, model.Id);
-            }
+            _userBusiness.CheckUniqueEmail(model.Email, model.Id);
 
-            if (!string.IsNullOrWhiteSpace(model.Phone))
-            {
-                _userBusiness.CheckUniquePhone(model.Phone, model.Id);
-            }
+            _userBusiness.CheckUniquePhone(model.Phone, model.Id);
 
             return _userBusiness.UpdateAsync(model, cancellationToken);
         }
 
-        public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default)
+        {
+            await _userBusiness.UpdateProfileAsync(model, cancellationToken).ConfigureAwait(true);
+
+            // Update Logged In User
+            LoggedInUser.Current = await _authenticationBusiness.GetLoggedInUserBySubjectAsync(LoggedInUser.Current.Subject, cancellationToken).ConfigureAwait(true);
+        }
+
+        #endregion
+
+        #region User - Remove
+
+        public Task RemoveAsync(int id, CancellationToken cancellationToken = default)
         {
             _userBusiness.CheckExistsById(id);
 
@@ -114,8 +134,9 @@ namespace Monkey.Service.Facade.User
                 throw new MonkeyException(ErrorCode.UserSelfRemove);
             }
 
-            // Can't remove last user have permission
-            var listCannotRemoveUserId = _userBusiness.ListUserIdByPermissions(Enums.Permission.Admin);
+            // Can't remove last user have admin permission
+            var listCannotRemoveUserId = _userBusiness.GetListLookupByPermissions(Enums.Permission.Admin).Select(x => x.Id).ToList();
+
             if (listCannotRemoveUserId.Count == 1 && listCannotRemoveUserId.FirstOrDefault() == id)
             {
                 throw new MonkeyException(ErrorCode.UserCannotRemove);
@@ -123,6 +144,10 @@ namespace Monkey.Service.Facade.User
 
             return _userBusiness.RemoveAsync(id, cancellationToken);
         }
+
+        #endregion
+
+        #region User - Validation
 
         public void CheckUniqueUserName(string userName, int? excludeId)
         {
@@ -144,12 +169,6 @@ namespace Monkey.Service.Facade.User
             _userBusiness.CheckExistByEmail(email);
         }
 
-        public async Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await _userBusiness.UpdateProfileAsync(model, cancellationToken).ConfigureAwait(true);
-
-            // Update Logged In User
-            LoggedInUser.Current = await _authenticationBusiness.GetLoggedInUserBySubjectAsync(LoggedInUser.Current.Subject, cancellationToken).ConfigureAwait(true);
-        }
+        #endregion
     }
 }

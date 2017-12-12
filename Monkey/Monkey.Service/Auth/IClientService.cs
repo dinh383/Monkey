@@ -27,18 +27,38 @@ namespace Monkey.Service.Auth
 {
     public interface IClientService : IBaseService
     {
-        Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #region Get
 
-        Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DataTableResponseDataModel<ClientModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default);
 
-        Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+        Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default);
 
-        Task<DataTableResponseDataModel<ClientModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
 
-        Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+        #region Create
+
+        Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Update
+
+        Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default);
+
+        Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Remove
+
+        Task RemoveAsync(int id, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Validation
 
         void CheckUniqueName(string name, int? excludeId);
 
-        Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
     }
 }

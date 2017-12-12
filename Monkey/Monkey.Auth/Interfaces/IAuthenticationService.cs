@@ -26,42 +26,7 @@ namespace Monkey.Auth.Interfaces
 {
     public interface IAuthenticationService
     {
-        /// <summary>
-        ///     Get access token and get <see cref="LoggedInUserModel" /> data for
-        ///     LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
-        /// </summary>
-        /// <param name="httpContext"></param>
-        /// <param name="model">            </param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<AccessTokenModel> SignInAsync(HttpContext httpContext, RequestTokenModel model, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        ///     Set Cookie in Response and Get <see cref="LoggedInUserModel" /> data for
-        ///     LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
-        /// </summary>
-        /// <param name="httpContext">          </param>
-        /// <param name="accessTokenModel"> </param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task SignInCookieAsync(HttpContext httpContext, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        ///     Get valid (not check expire) access token and get <see cref="LoggedInUserModel" />
-        ///     data for LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
-        /// </summary>
-        /// <param name="httpContext">          </param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task<AccessTokenModel> SignInCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        ///     Remove Cookie value and Set null for LoggedInUser.Current, null for HttpContext.User 
-        /// </summary>
-        /// <param name="httpContext">          </param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        Task SignOutCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default(CancellationToken));
+        #region Get
 
         /// <summary>
         ///     Get <see cref="LoggedInUserModel" /> from valid access token 
@@ -69,7 +34,53 @@ namespace Monkey.Auth.Interfaces
         /// <param name="accessToken">      </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<LoggedInUserModel> GetLoggedInUserAsync(string accessToken, CancellationToken cancellationToken = default(CancellationToken));
+        Task<LoggedInUserModel> GetLoggedInUserAsync(string accessToken, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Sign In and Sign Out
+
+        /// <summary>
+        ///     Get access token and get <see cref="LoggedInUserModel" /> data for
+        ///     LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
+        /// </summary>
+        /// <param name="httpContext">      </param>
+        /// <param name="model">            </param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<AccessTokenModel> SignInAsync(HttpContext httpContext, RequestTokenModel model, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Set Cookie in Response and Get <see cref="LoggedInUserModel" /> data for
+        ///     LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
+        /// </summary>
+        /// <param name="httpContext">      </param>
+        /// <param name="accessTokenModel"> </param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SignInCookieAsync(HttpContext httpContext, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Get valid (not check expire) access token and get
+        ///     <see cref="LoggedInUserModel" /> data for LoggedInUser.Current, ClaimsPrincipal
+        ///     for HttpContext.User
+        /// </summary>
+        /// <param name="httpContext">      </param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<AccessTokenModel> SignInCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Remove Cookie value and Set null for LoggedInUser.Current, null for HttpContext.User 
+        /// </summary>
+        /// <param name="httpContext">      </param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task SignOutCookieAsync(HttpContext httpContext, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Refresh Token
 
         /// <summary>
         ///     Expire all refresh token by valid access token, this method make user need Sign In again
@@ -77,25 +88,39 @@ namespace Monkey.Auth.Interfaces
         /// <param name="accessToken">      </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task ExpireAllRefreshTokenAsync(string accessToken, CancellationToken cancellationToken = default(CancellationToken));
+        Task ExpireAllRefreshTokenAsync(string accessToken, CancellationToken cancellationToken = default);
 
-        Task SendConfirmEmailOrSetPasswordAsync(string email, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
 
-        Task ConfirmEmailAsync(SetPasswordModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #region Get Password
 
-        bool IsExpireOrInvalidConfirmEmailToken(string token, CancellationToken cancellationToken = default(CancellationToken));
+        Task SendConfirmEmailOrSetPasswordAsync(string email, CancellationToken cancellationToken = default);
 
-        Task SetPasswordAsync(SetPasswordModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
 
-        bool IsExpireOrInvalidSetPasswordToken(string token, CancellationToken cancellationToken = default(CancellationToken));
+        #region Set Password
+
+        Task ConfirmEmailAsync(SetPasswordModel model, CancellationToken cancellationToken = default);
+
+        Task SetPasswordAsync(SetPasswordModel model, CancellationToken cancellationToken = default);
+
+        Task ChangePasswordAsync(ChangePasswordModel model, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Validation
+
+        bool IsExpireOrInvalidConfirmEmailToken(string token, CancellationToken cancellationToken = default);
+
+        bool IsExpireOrInvalidSetPasswordToken(string token, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Check current password of logged in user 
         /// </summary>
         /// <param name="currentPassword">  </param>
         /// <param name="cancellationToken"></param>
-        void CheckCurrentPassword(string currentPassword, CancellationToken cancellationToken = default(CancellationToken));
+        void CheckCurrentPassword(string currentPassword, CancellationToken cancellationToken = default);
 
-        Task ChangePasswordAsync(ChangePasswordModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
     }
 }

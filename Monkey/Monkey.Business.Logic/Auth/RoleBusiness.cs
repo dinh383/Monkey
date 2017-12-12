@@ -44,42 +44,15 @@ namespace Monkey.Business.Logic.Auth
             _roleRepository = roleRepository;
         }
 
-        public void CheckUniqueName(string name, int? excludeId = null)
+        #region Get
+
+        public Task<RoleModel> GetAsync(int id, CancellationToken cancellationToken = default)
         {
-            var nameNorm = StringHelper.Normalize(name);
-
-            var isExist = _roleRepository.Get(x => x.NameNorm == nameNorm).Any();
-
-            if (isExist)
-            {
-                throw new MonkeyException(ErrorCode.UserNameNotUnique);
-            }
+            var roleModel = _roleRepository.Get(x => x.Id == id).QueryTo<RoleModel>().FirstOrDefault();
+            return Task.FromResult(roleModel);
         }
 
-        public Task<int> CreateAsync(string name, string description, CancellationToken cancellationToken = default(CancellationToken), params Enums.Permission[] permissions)
-        {
-            var roleEntity = new RoleEntity
-            {
-                Name = name,
-                NameNorm = StringHelper.Normalize(name),
-                Description = description,
-                Permissions = permissions?.Select(x => new PermissionEntity
-                {
-                    Permission = x
-                }).ToList()
-            };
-
-            _roleRepository.Add(roleEntity);
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _roleRepository.SaveChanges();
-
-            return Task.FromResult(roleEntity.Id);
-        }
-
-        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default)
         {
             var query = _roleRepository.Get();
 
@@ -109,10 +82,56 @@ namespace Monkey.Business.Logic.Auth
             return Task.FromResult(result);
         }
 
-        public Task<RoleModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<int> GetMemberRoleIdAsync()
         {
-            var roleModel = _roleRepository.Get(x => x.Id == id).QueryTo<RoleModel>().FirstOrDefault();
-            return Task.FromResult(roleModel);
+            int id = _roleRepository.Get(x => x.Permissions.Any(y => y.Permission == Enums.Permission.Member)).Select(x => x.Id).FirstOrDefault();
+
+            return Task.FromResult(id);
         }
+
+        #endregion
+
+        #region Create
+
+        public Task<int> CreateAsync(string name, string description, CancellationToken cancellationToken = default, params Enums.Permission[] permissions)
+        {
+            var roleEntity = new RoleEntity
+            {
+                Name = name,
+                NameNorm = StringHelper.Normalize(name),
+                Description = description,
+                Permissions = permissions?.Select(x => new PermissionEntity
+                {
+                    Permission = x
+                }).ToList()
+            };
+
+            _roleRepository.Add(roleEntity);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _roleRepository.SaveChanges();
+
+            return Task.FromResult(roleEntity.Id);
+        }
+
+        #endregion
+
+        #region Validation
+
+        public void CheckUniqueName(string name, int? excludeId = null)
+        {
+            var nameNorm = StringHelper.Normalize(name);
+
+            var isExist = _roleRepository.Get(x => x.NameNorm == nameNorm).Any();
+
+            if (isExist)
+            {
+                throw new MonkeyException(ErrorCode.UserNameNotUnique);
+            }
+        }
+
+        #endregion
     }
 }

@@ -52,7 +52,42 @@ namespace Monkey.Business.Logic.Auth
             _refreshTokenRepository = refreshTokenRepository;
         }
 
-        #region SignIn
+        #region Get
+
+        public Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject, CancellationToken cancellationToken = default)
+        {
+            var loggedInUser = _userRepository.Get(x => x.GlobalId == subject).QueryTo<LoggedInUserModel>().Single();
+
+            return Task.FromResult(loggedInUser);
+        }
+
+        public Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default)
+        {
+            var refreshTokenEntity = _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken).Select(x => new RefreshTokenEntity
+            {
+                Id = x.Id,
+                TotalUsage = x.TotalUsage,
+                UserId = x.UserId
+            }).Single();
+
+            var loggedInUser = _userRepository.Get(x => x.Id == refreshTokenEntity.UserId).QueryTo<LoggedInUserModel>().Single();
+
+            // Increase total usage
+            refreshTokenEntity.TotalUsage++;
+
+            _refreshTokenRepository.Update(refreshTokenEntity, x => x.TotalUsage);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _refreshTokenRepository.SaveChanges();
+
+            return Task.FromResult(loggedInUser);
+        }
+
+        #endregion
+
+        #region Sign In
 
         public void CheckValidSignIn(string userName, string password)
         {
@@ -92,7 +127,7 @@ namespace Monkey.Business.Logic.Auth
 
             var user = _userRepository.Get(x => x.UserNameNorm == userName).Single();
 
-            // Get logged in user
+            // GetElastic logged in user
             var loggedInUserModel = user.MapTo<LoggedInUserModel>();
 
             // Generate and save refresh token
@@ -156,54 +191,9 @@ namespace Monkey.Business.Logic.Auth
 
         #endregion
 
-        #region Get Logged In User
-
-        public Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var loggedInUser = _userRepository.Get(x => x.GlobalId == subject).QueryTo<LoggedInUserModel>().Single();
-
-            return Task.FromResult(loggedInUser);
-        }
-
-        public Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var refreshTokenEntity = _refreshTokenRepository.Get(x => x.RefreshToken == refreshToken).Select(x => new RefreshTokenEntity
-            {
-                Id = x.Id,
-                TotalUsage = x.TotalUsage,
-                UserId = x.UserId
-            }).Single();
-
-            var loggedInUser = _userRepository.Get(x => x.Id == refreshTokenEntity.UserId).QueryTo<LoggedInUserModel>().Single();
-
-            // Increase total usage
-            refreshTokenEntity.TotalUsage++;
-
-            _refreshTokenRepository.Update(refreshTokenEntity, x => x.TotalUsage);
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _refreshTokenRepository.SaveChanges();
-
-            return Task.FromResult(loggedInUser);
-        }
-
-        #endregion
-
         #region Refresh Token
 
-        public void CheckValidRefreshToken(string refreshToken, int? clientId)
-        {
-            var dateTimeUtcNow = DateTimeOffset.UtcNow;
-
-            var isValidRefreshToken = _refreshTokenRepository.Get().Any(x => x.RefreshToken == refreshToken && x.ClientId == clientId && (x.ExpireOn == null || dateTimeUtcNow < x.ExpireOn));
-
-            if (!isValidRefreshToken)
-                throw new MonkeyException(ErrorCode.InvalidRefreshToken);
-        }
-
-        public Task ExpireAllRefreshTokenAsync(string subject, CancellationToken cancellationToken = default(CancellationToken))
+        public Task ExpireAllRefreshTokenAsync(string subject, CancellationToken cancellationToken = default)
         {
             var listRefreshToken =
                 _refreshTokenRepository.Get(x => x.User.GlobalId == subject)
@@ -213,11 +203,11 @@ namespace Monkey.Business.Logic.Auth
                             Id = x.Id
                         }).ToList();
 
-            var dateTimeUtcNow = DateTimeOffset.UtcNow.AddSeconds(-1);
+            var systemTimePast = DateTimeOffset.UtcNow.AddSeconds(-1);
 
             foreach (var refreshTokenEntity in listRefreshToken)
             {
-                refreshTokenEntity.ExpireOn = dateTimeUtcNow;
+                refreshTokenEntity.ExpireOn = systemTimePast;
                 _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
             }
 
@@ -231,171 +221,13 @@ namespace Monkey.Business.Logic.Auth
 
         #endregion
 
-        #region Confirm Email
-
-        public string GenerateTokenConfirmEmail(string userSubject, string email, out TimeSpan expireIn)
-        {
-            expireIn = TimeSpan.FromDays(1);
-
-            var expireOn = DateTime.UtcNow.Add(expireIn);
-
-            EmailTokenModel emailTokenModel = new EmailTokenModel
-            {
-                Email = email,
-                Subject = userSubject
-            };
-
-            string token = TokenHelper.GenerateToken(expireOn, nameof(Monkey), new Dictionary<string, string>
-            {
-                {nameof(emailTokenModel.Subject), emailTokenModel.Subject},
-                {nameof(emailTokenModel.Email), emailTokenModel.Email}
-            });
-
-            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Email == email).Select(x => x.Id).Single();
-
-            _userRepository.Update(new UserEntity
-            {
-                Id = userId,
-                ConfirmEmailToken = token,
-                ConfirmEmailTokenExpireOn = expireOn
-            }, x => x.ConfirmEmailToken, x => x.ConfirmEmailTokenExpireOn);
-
-            _userRepository.SaveChanges();
-
-            return token;
-        }
-
-        public Task ConfirmEmailAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var utcNow = DateTimeOffset.UtcNow;
-
-            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
-
-            userEntity.EmailConfirmedTime = utcNow;
-            userEntity.ActiveTime = utcNow;
-            userEntity.UserName = newUserName;
-            userEntity.UserNameNorm = StringHelper.Normalize(newUserName);
-            userEntity.PasswordHash = PasswordHelper.HashPassword(newPassword, utcNow);
-            userEntity.PasswordLastUpdatedTime = utcNow;
-
-            _userRepository.Update(userEntity,
-                x => x.UserName,
-                x => x.UserNameNorm,
-                x => x.ActiveTime,
-                x => x.PhoneConfirmedTime,
-                x => x.PasswordHash,
-                x => x.PasswordLastUpdatedTime);
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _userRepository.SaveChanges();
-
-            return Task.CompletedTask;
-        }
-
-        public void ExpireTokenConfirmEmail(string token)
-        {
-            var userId = _userRepository.Get(x => x.ConfirmEmailToken == token).Select(x => x.Id).FirstOrDefault();
-
-            if (userId == default(int))
-            {
-                return;
-            }
-
-            _userRepository.Update(new UserEntity
-            {
-                Id = userId,
-                ConfirmEmailTokenExpireOn = DateTimeOffset.UtcNow
-            }, x => x.ConfirmEmailTokenExpireOn);
-
-            _userRepository.SaveChanges();
-        }
-
-        public bool IsExpireOrInvalidConfirmEmailToken(string token)
-        {
-            var checkTime = DateTimeOffset.UtcNow;
-            var isValid = _userRepository.Get(x => x.ConfirmEmailToken == token && x.ConfirmEmailTokenExpireOn >= checkTime).Any();
-            return !isValid;
-        }
-
-        #endregion
-
-        #region Confirm Phone
-
-        public string GenerateTokenConfirmPhone(string userSubject, string phone, out TimeSpan expireIn)
-        {
-            expireIn = TimeSpan.FromMinutes(10);
-
-            var expireOn = DateTimeOffset.UtcNow.Add(expireIn);
-
-            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Phone == phone).Select(x => x.Id).Single();
-
-            string token = StringHelper.GetRandomString(4, StringHelper.NumberChars);
-
-            _userRepository.Update(new UserEntity
-            {
-                Id = userId,
-                ConfirmPhoneToken = token,
-                ConfirmPhoneTokenExpireOn = expireOn
-            }, x => x.ConfirmPhoneToken, x => x.ConfirmPhoneTokenExpireOn);
-
-            _userRepository.SaveChanges();
-
-            return token;
-        }
-
-        public Task ConfirmPhoneAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var utcNow = DateTimeOffset.UtcNow;
-
-            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
-
-            userEntity.PhoneConfirmedTime = utcNow;
-            userEntity.ActiveTime = utcNow;
-            userEntity.UserName = newUserName;
-            userEntity.UserNameNorm = StringHelper.Normalize(newUserName);
-            userEntity.PasswordHash = PasswordHelper.HashPassword(newPassword, utcNow);
-            userEntity.PasswordLastUpdatedTime = utcNow;
-
-            _userRepository.Update(userEntity,
-                x => x.UserName,
-                x => x.UserNameNorm,
-                x => x.ActiveTime,
-                x => x.PhoneConfirmedTime,
-                x => x.PasswordHash,
-                x => x.PasswordLastUpdatedTime);
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _userRepository.SaveChanges();
-
-            return Task.CompletedTask;
-        }
-
-        public void ExpireTokenConfirmPhone(string token)
-        {
-            var userId = _userRepository.Get(x => x.ConfirmPhoneToken == token).Select(x => x.Id).Single();
-
-            _userRepository.Update(new UserEntity
-            {
-                Id = userId,
-                ConfirmPhoneTokenExpireOn = DateTimeOffset.UtcNow
-            }, x => x.ConfirmPhoneTokenExpireOn);
-
-            _userRepository.SaveChanges();
-        }
-
-        #endregion
-
-        #region Set Password
+        #region Get Password
 
         public string GenerateTokenSetPassword(string userSubject, string email, out TimeSpan expireIn)
         {
             expireIn = TimeSpan.FromDays(1);
 
-            var expireOn = DateTime.UtcNow.Add(expireIn);
+            var expireOn = DateTimeOffset.UtcNow.Add(expireIn).DateTime;
 
             EmailTokenModel emailTokenModel = new EmailTokenModel
             {
@@ -423,21 +255,58 @@ namespace Monkey.Business.Logic.Auth
             return token;
         }
 
-        public Task SetPasswordAsync(string subject, string password, CancellationToken cancellationToken = default(CancellationToken))
+        public string GenerateTokenConfirmEmail(string userSubject, string email, out TimeSpan expireIn)
         {
-            var utcNow = DateTimeOffset.UtcNow;
-            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
+            expireIn = TimeSpan.FromDays(1);
 
-            userEntity.PasswordHash = PasswordHelper.HashPassword(password, utcNow);
-            userEntity.PasswordLastUpdatedTime = utcNow;
-            _userRepository.Update(userEntity, x => x.PasswordHash, x => x.PasswordLastUpdatedTime);
+            var expireOn = DateTimeOffset.UtcNow.Add(expireIn).DateTime;
 
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
+            EmailTokenModel emailTokenModel = new EmailTokenModel
+            {
+                Email = email,
+                Subject = userSubject
+            };
+
+            string token = TokenHelper.GenerateToken(expireOn, nameof(Monkey), new Dictionary<string, string>
+            {
+                {nameof(emailTokenModel.Subject), emailTokenModel.Subject},
+                {nameof(emailTokenModel.Email), emailTokenModel.Email}
+            });
+
+            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Email == email).Select(x => x.Id).Single();
+
+            _userRepository.Update(new UserEntity
+            {
+                Id = userId,
+                ConfirmEmailToken = token,
+                ConfirmEmailTokenExpireOn = expireOn
+            }, x => x.ConfirmEmailToken, x => x.ConfirmEmailTokenExpireOn);
 
             _userRepository.SaveChanges();
 
-            return Task.CompletedTask;
+            return token;
+        }
+
+        public string GenerateTokenConfirmPhone(string userSubject, string phone, out TimeSpan expireIn)
+        {
+            expireIn = TimeSpan.FromMinutes(10);
+
+            var expireOn = DateTimeOffset.UtcNow.Add(expireIn);
+
+            var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Phone == phone).Select(x => x.Id).Single();
+
+            string token = StringHelper.GetRandomString(4, StringHelper.NumberChars);
+
+            _userRepository.Update(new UserEntity
+            {
+                Id = userId,
+                ConfirmPhoneToken = token,
+                ConfirmPhoneTokenExpireOn = expireOn
+            }, x => x.ConfirmPhoneToken, x => x.ConfirmPhoneTokenExpireOn);
+
+            _userRepository.SaveChanges();
+
+            return token;
         }
 
         public void ExpireTokenSetPassword(string token)
@@ -456,6 +325,148 @@ namespace Monkey.Business.Logic.Auth
             }, x => x.SetPasswordTokenExpireOn);
 
             _userRepository.SaveChanges();
+        }
+
+        public void ExpireTokenConfirmEmail(string token)
+        {
+            var userId = _userRepository.Get(x => x.ConfirmEmailToken == token).Select(x => x.Id).FirstOrDefault();
+
+            if (userId == default(int))
+            {
+                return;
+            }
+
+            _userRepository.Update(new UserEntity
+            {
+                Id = userId,
+                ConfirmEmailTokenExpireOn = DateTimeOffset.UtcNow
+            }, x => x.ConfirmEmailTokenExpireOn);
+
+            _userRepository.SaveChanges();
+        }
+
+        public void ExpireTokenConfirmPhone(string token)
+        {
+            var userId = _userRepository.Get(x => x.ConfirmPhoneToken == token).Select(x => x.Id).Single();
+
+            _userRepository.Update(new UserEntity
+            {
+                Id = userId,
+                ConfirmPhoneTokenExpireOn = DateTimeOffset.UtcNow
+            }, x => x.ConfirmPhoneTokenExpireOn);
+
+            _userRepository.SaveChanges();
+        }
+
+        #endregion
+
+        #region Set Password
+
+        public Task SetPasswordAsync(string subject, string password, CancellationToken cancellationToken = default)
+        {
+            var systemTimeNow = DateTimeOffset.UtcNow;
+            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
+
+            userEntity.PasswordHash = PasswordHelper.HashPassword(password, systemTimeNow);
+            userEntity.PasswordLastUpdatedTime = systemTimeNow;
+            _userRepository.Update(userEntity, x => x.PasswordHash, x => x.PasswordLastUpdatedTime);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
+        public Task ConfirmEmailAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default)
+        {
+            var systemTimeNow = DateTimeOffset.UtcNow;
+
+            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
+
+            userEntity.EmailConfirmedTime = systemTimeNow;
+            userEntity.ActiveTime = systemTimeNow;
+
+            userEntity.UserName = newUserName;
+            userEntity.UserNameNorm = StringHelper.Normalize(newUserName);
+
+            userEntity.PasswordHash = PasswordHelper.HashPassword(newPassword, systemTimeNow);
+            userEntity.PasswordLastUpdatedTime = systemTimeNow;
+
+            _userRepository.Update(userEntity,
+                x => x.UserName,
+                x => x.UserNameNorm,
+                x => x.EmailConfirmedTime,
+                x => x.ActiveTime,
+                x => x.PasswordHash,
+                x => x.PasswordLastUpdatedTime);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
+        public Task ConfirmPhoneAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default)
+        {
+            var systemTimeNow = DateTimeOffset.UtcNow;
+
+            var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
+
+            userEntity.PhoneConfirmedTime = systemTimeNow;
+            userEntity.ActiveTime = systemTimeNow;
+
+            userEntity.UserName = newUserName;
+            userEntity.UserNameNorm = StringHelper.Normalize(newUserName);
+
+            userEntity.PasswordHash = PasswordHelper.HashPassword(newPassword, systemTimeNow);
+            userEntity.PasswordLastUpdatedTime = systemTimeNow;
+
+            _userRepository.Update(userEntity,
+                x => x.UserName,
+                x => x.UserNameNorm,
+                x => x.PhoneConfirmedTime,
+                x => x.ActiveTime,
+                x => x.PasswordHash,
+                x => x.PasswordLastUpdatedTime);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Validation
+
+        public bool IsExpireOrInvalidSetPasswordToken(string token)
+        {
+            var checkTime = DateTimeOffset.UtcNow;
+            var isValid = _userRepository.Get(x => x.SetPasswordToken == token && x.SetPasswordTokenExpireOn >= checkTime).Any();
+            return !isValid;
+        }
+
+        public bool IsExpireOrInvalidConfirmEmailToken(string token)
+        {
+            var checkTime = DateTimeOffset.UtcNow;
+            var isValid = _userRepository.Get(x => x.ConfirmEmailToken == token && x.ConfirmEmailTokenExpireOn >= checkTime).Any();
+            return !isValid;
+        }
+
+        public void CheckValidRefreshToken(string refreshToken, int? clientId)
+        {
+            var systemTimeNow = DateTimeOffset.UtcNow;
+
+            var isValidRefreshToken = _refreshTokenRepository.Get().Any(x => x.RefreshToken == refreshToken && x.ClientId == clientId && (x.ExpireOn == null || systemTimeNow < x.ExpireOn));
+
+            if (!isValidRefreshToken)
+                throw new MonkeyException(ErrorCode.InvalidRefreshToken);
         }
 
         public void CheckCurrentPassword(string currentPassword)
@@ -478,13 +489,6 @@ namespace Monkey.Business.Logic.Auth
             {
                 throw new MonkeyException(ErrorCode.UserPasswordWrong);
             }
-        }
-
-        public bool IsExpireOrInvalidSetPasswordToken(string token)
-        {
-            var checkTime = DateTimeOffset.UtcNow;
-            var isValid = _userRepository.Get(x => x.SetPasswordToken == token && x.SetPasswordTokenExpireOn >= checkTime).Any();
-            return !isValid;
         }
 
         #endregion

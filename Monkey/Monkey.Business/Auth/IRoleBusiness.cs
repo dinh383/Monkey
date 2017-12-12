@@ -28,12 +28,26 @@ namespace Monkey.Business.Auth
 {
     public interface IRoleBusiness : IBaseBusiness
     {
+        #region Get
+
+        Task<RoleModel> GetAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default);
+
+        Task<int> GetMemberRoleIdAsync();
+
+        #endregion
+
+        #region Create
+
+        Task<int> CreateAsync(string name, string description, CancellationToken cancellationToken = default, params Enums.Permission[] permissions);
+
+        #endregion
+
+        #region Validation
+
         void CheckUniqueName(string name, int? excludeId = null);
 
-        Task<int> CreateAsync(string name, string description, CancellationToken cancellationToken = default(CancellationToken), params Enums.Permission[] permissions);
-
-        Task<PagedCollectionResultModel<RoleModel>> GetListRoleAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<RoleModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
     }
 }

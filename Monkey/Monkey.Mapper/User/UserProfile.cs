@@ -32,15 +32,30 @@ namespace Monkey.Mapper.User
     {
         public UserProfile()
         {
-            CreateMap<SignInModel, RequestTokenModel>().IgnoreAllNonExisting()
+            CreateMap<SignInModel, RequestTokenModel>()
+                .IgnoreAllNonExisting()
                 .ForMember(d => d.GrantType, o => o.UseValue(GrantType.Password));
 
-            CreateMap<UserCreateModel, UserEntity>().IgnoreAllNonExisting();
+            CreateMap<UserCreateModel, UserEntity>().IgnoreAllNonExisting()
+                .ForMember(d => d.EmailNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Email)))
+                .ForMember(d => d.UserNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.UserName)))
+                ;
 
-            CreateMap<UserUpdateModel, UserEntity>().IgnoreAllNonExisting()
+            CreateMap<UserCreateModel, ProfileEntity>()
+                .IgnoreAllNonExisting()
+                .ForMember(d => d.FullNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.FullName)));
+
+            CreateMap<UserUpdateModel, UserEntity>()
+                .IgnoreAllNonExisting()
+                .ForMember(d => d.EmailNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Email)))
                 .ForMember(d => d.UserNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.UserName)));
 
-            CreateMap<UserEntity, UserModel>().IgnoreAllNonExisting()
+            CreateMap<UserUpdateModel, ProfileEntity>()
+                .IgnoreAllNonExisting()
+                .ForMember(d => d.FullNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.FullName)));
+
+            CreateMap<UserEntity, UserModel>()
+                .IgnoreAllNonExisting()
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
                 .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
@@ -48,24 +63,32 @@ namespace Monkey.Mapper.User
                 .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Url))
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty));
 
-            CreateMap<UserEntity, LoggedInUserModel>().IgnoreAllNonExisting()
+            CreateMap<UserEntity, LoggedInUserModel>()
+                .IgnoreAllNonExisting()
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
                 .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null))
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
                 .ForMember(d => d.AvatarId, o => o.MapFrom(s => s.Profile.AvatarId))
                 .ForMember(d => d.AvatarUrl, o => o.MapFrom(s => s.Profile.Avatar.Url))
                 .ForMember(d => d.RoleName, o => o.MapFrom(s => s.Role != null ? s.Role.Name : string.Empty))
+
                 // More information than UserModel
-                .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Profile.FirstName))
-                .ForMember(d => d.LastName, o => o.MapFrom(s => s.Profile.LastName))
+                .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
                 .ForMember(d => d.ListPermission, o => o.MapFrom(s => s.Role.Permissions.Select(y => y.Permission)));
 
-            CreateMap<UserModel, UserUpdateModel>().IgnoreAllNonExisting();
+            CreateMap<UserModel, UserUpdateModel>()
+                .IgnoreAllNonExisting();
 
-            CreateMap<UserEntity, CreateUserResultModel>().IgnoreAllNonExisting()
+            CreateMap<UserEntity, CreateUserResultModel>()
+                .IgnoreAllNonExisting()
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId));
 
-            CreateMap<LoggedInUserModel, UpdateProfileModel>().IgnoreAllNonExisting();
+            CreateMap<LoggedInUserModel, UpdateProfileModel>()
+                .IgnoreAllNonExisting();
+
+            CreateMap<UserEntity, UserLookupModel>()
+                .IgnoreAllNonExisting()
+                .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName));
         }
     }
 }

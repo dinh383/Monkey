@@ -21,6 +21,7 @@ using EnumsNET;
 using Monkey.Business;
 using Monkey.Business.Auth;
 using Monkey.Business.User;
+using Monkey.Core.Models.User;
 using Puppy.DependencyInjection.Attributes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -95,7 +96,14 @@ namespace Monkey.Service.Facade
                 _userBusiness.CheckUniqueUserName(userName);
                 _userBusiness.CheckUniqueEmail(email);
 
-                var createUserResult = await _userBusiness.CreateUserByEmailAsync(email, _roleAdminId, fullName).ConfigureAwait(true);
+                var createUserResult = await _userBusiness.CreateAsync(new UserCreateModel
+                {
+                    Email = email,
+                    UserName = userName,
+                    FullName = fullName,
+                    RoleId = _roleAdminId
+                }).ConfigureAwait(true);
+
                 await _authenticationBusiness.ConfirmEmailAsync(createUserResult.Subject, userName, password).ConfigureAwait(true);
             }
             catch

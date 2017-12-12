@@ -27,15 +27,35 @@ namespace Monkey.Service.User
 {
     public interface IUserService
     {
-        Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #region User - Get
 
-        Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default(CancellationToken));
+        Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default);
 
-        Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+        Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default);
 
-        Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
 
-        Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
+        #region User - Create
+
+        Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region User - Update
+
+        Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default);
+
+        Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region User - Remove
+
+        Task RemoveAsync(int id, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region User - Validation
 
         void CheckUniqueUserName(string userName, int? excludeId);
 
@@ -45,6 +65,6 @@ namespace Monkey.Service.User
 
         void CheckExistEmail(string email);
 
-        Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
     }
 }

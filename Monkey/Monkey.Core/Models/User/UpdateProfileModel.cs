@@ -27,11 +27,8 @@ namespace Monkey.Core.Models.User
     [Validator(typeof(UpdateProfileModelValidator))]
     public class UpdateProfileModel
     {
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
 
         [Display(Name = "Avatar Url")]
         public string AvatarUrl { get; set; }

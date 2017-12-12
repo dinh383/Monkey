@@ -38,45 +38,65 @@ namespace Monkey.Service.Facade.Auth
             _clientBusiness = clientBusiness;
         }
 
-        public Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default(CancellationToken))
+        #region Get
+
+        public Task<DataTableResponseDataModel<ClientModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default)
+        {
+            return _clientBusiness.GetDataTableAsync(model, cancellationToken);
+        }
+
+        public Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default)
+        {
+            _clientBusiness.CheckExist(id);
+            return _clientBusiness.GetAsync(id, cancellationToken);
+        }
+
+        #endregion
+
+        #region Create
+
+        public Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default)
         {
             _clientBusiness.CheckUniqueName(model.Name);
             return _clientBusiness.CreateAsync(model, cancellationToken);
         }
 
-        public Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default(CancellationToken))
+        #endregion
+
+        #region Update
+
+        public Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default)
         {
             _clientBusiness.CheckExist(model.Id);
             _clientBusiness.CheckUniqueName(model.Name, model.Id);
             return _clientBusiness.UpdateAsync(model, cancellationToken);
         }
 
-        public Task<ClientModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            _clientBusiness.CheckExist(id);
-            return _clientBusiness.GetAsync(id, cancellationToken);
-        }
-
-        public Task<DataTableResponseDataModel<ClientModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return _clientBusiness.GetDataTableAsync(model, cancellationToken);
-        }
-
-        public Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default)
         {
             _clientBusiness.CheckExist(id);
             return _clientBusiness.GenerateSecretAsync(id, cancellationToken);
         }
+
+        #endregion
+
+        #region Remove
+
+        public Task RemoveAsync(int id, CancellationToken cancellationToken = default)
+        {
+            _clientBusiness.CheckExist(id);
+            return _clientBusiness.RemoveAsync(id, cancellationToken);
+        }
+
+        #endregion
+
+        #region Validation
 
         public void CheckUniqueName(string name, int? excludeId)
         {
             _clientBusiness.CheckUniqueName(name, excludeId);
         }
 
-        public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            _clientBusiness.CheckExist(id);
-            return _clientBusiness.RemoveAsync(id, cancellationToken);
-        }
+        #endregion
     }
 }

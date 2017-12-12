@@ -30,10 +30,23 @@ namespace Monkey.Core.Models.User
     [Validator(typeof(UserModelValidator.UserCreateModelValidator))]
     public class UserCreateModel
     {
-        [DataTable(Order = 3)]
+        [DataTable(Order = 3, SortDirection = SortDirection.Ascending, DisplayName = "Full Name")]
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
+
+        [DataTable(Order = 4)]
         [DataType(DataType.EmailAddress)]
         [Remote("CheckUniqueEmail", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The email of User already exist, please try another.")]
         public string Email { get; set; }
+
+        [DataTable(Order = 5)]
+        [Remote("CheckUniquePhone", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The phone of User already exist, please try another.")]
+        public string Phone { get; set; }
+
+        [DataTable(IsVisible = false, Order = 6, DisplayName = "User Name")]
+        [Remote("CheckUniqueUserName", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The user name of User already exist, please try another.")]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
 
         [DataTable(IsVisible = false, DisplayName = "Role Id")]
         [Display(Name = "Role")]
@@ -43,20 +56,11 @@ namespace Monkey.Core.Models.User
     [Validator(typeof(UserModelValidator.UserUpdateModelValidator))]
     public class UserUpdateModel : UserCreateModel
     {
-        [DataTable(IsVisible = false, Order = 1)]
+        [DataTable(IsVisible = false, Order = 0)]
         public int Id { get; set; }
 
-        [DataTable(IsVisible = false, Order = 1)]
+        [DataTable(IsVisible = false, Order = 0)]
         public string Subject { get; set; }
-
-        [DataTable(Order = 4)]
-        [Remote("CheckUniquePhone", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The phone of User already exist, please try another.")]
-        public string Phone { get; set; }
-
-        [DataTable(IsVisible = false, Order = 5, DisplayName = "User Name")]
-        [Remote("CheckUniqueUserName", "User", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The user name of User already exist, please try another.")]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
 
         [Display(Name = "Ban")]
         [DataTableIgnore]
@@ -69,31 +73,27 @@ namespace Monkey.Core.Models.User
 
     public class UserModel : UserUpdateModel
     {
-        [DataTable(Order = 2, SortDirection = SortDirection.Ascending, DisplayName = "Full Name")]
-        [Display(Name = "Full Name")]
-        public string FullName { get; set; }
-
         [DataTableIgnore]
         public int? AvatarId { get; set; }
 
-        [DataTable(Order = 3, DisplayName = "Avatar")]
+        [DataTable(Order = 1, DisplayName = "Avatar")]
         [Display(Name = "Avatar")]
         public string AvatarUrl { get; set; }
 
-        [Display(Name = "Banned Time")]
+        [DataTable(Order = 7, DisplayName = "Role")]
+        public string RoleName { get; set; }
+
+        [Display(Order = 8, Name = "Banned Time")]
         [DataTable(DisplayName = "Banned Time")]
         public DateTimeOffset? BannedTime { get; set; }
 
-        [DataTable(Order = 6, DisplayName = "Role")]
-        public string RoleName { get; set; }
+        [DataTable(Order = 9, DisplayName = "Active Time")]
+        public DateTimeOffset? ActiveTime { get; set; }
 
         [DataTable(IsVisible = false, DisplayName = "Phone Confirmed Time")]
         public DateTimeOffset? PhoneConfirmedTime { get; set; }
 
         [DataTable(IsVisible = false, DisplayName = "Email Confirmed Time")]
         public DateTimeOffset? EmailConfirmedTime { get; set; }
-
-        [DataTable(DisplayName = "Active Time")]
-        public DateTimeOffset? ActiveTime { get; set; }
     }
 }

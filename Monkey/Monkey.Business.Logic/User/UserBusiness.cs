@@ -22,6 +22,7 @@ using Monkey.Core;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Entities.User;
 using Monkey.Core.Exceptions;
+using Monkey.Core.Models;
 using Monkey.Core.Models.User;
 using Monkey.Data;
 using Monkey.Data.Auth;
@@ -32,12 +33,12 @@ using Puppy.DataTable;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
 using Puppy.DependencyInjection.Attributes;
+using Puppy.Web.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Enums = Monkey.Core.Constants.Enums;
 
 namespace Monkey.Business.Logic.User
 {
@@ -59,6 +60,257 @@ namespace Monkey.Business.Logic.User
             _profileRepository = profileRepository;
             _imageRepository = imageRepository;
         }
+
+        #region Get
+
+        public Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default)
+        {
+            var listData = _userRepository.Get().QueryTo<UserModel>();
+
+            var result = listData.GetDataTableResponse(model);
+
+            return Task.FromResult(result);
+        }
+
+        public Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var userModel = _userRepository.Get(x => x.Id == id).QueryTo<UserModel>().FirstOrDefault();
+            return Task.FromResult(userModel);
+        }
+
+        public Task<UserModel> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            string emailNorm = StringHelper.Normalize(email);
+            var userModel = _userRepository.Get(x => x.EmailNorm == emailNorm).QueryTo<UserModel>().FirstOrDefault();
+            return Task.FromResult(userModel);
+        }
+
+        public Task<UserModel> GetByPhoneAsync(string phone, CancellationToken cancellationToken = default)
+        {
+            var userModel = _userRepository.Get(x => x.Phone == phone).QueryTo<UserModel>().FirstOrDefault();
+            return Task.FromResult(userModel);
+        }
+
+        public Task<UserModel> GetBySubjectAsync(string subject, CancellationToken cancellationToken = default)
+        {
+            var userModel = _userRepository.Get(x => x.GlobalId == subject).QueryTo<UserModel>().FirstOrDefault();
+            return Task.FromResult(userModel);
+        }
+
+        public List<UserLookupModel> GetListLookupByPermissions(params Core.Constants.Enums.Permission[] permissions)
+        {
+            var query = _userRepository.Get();
+
+            if (permissions?.Any() == true)
+            {
+                query = query.Where(x => x.Role.Permissions.All(y => permissions.Contains(y.Permission)));
+            }
+
+            List<UserLookupModel> listUserLookup = query
+                .QueryTo<UserLookupModel>()
+                .ToList();
+
+            return listUserLookup;
+        }
+
+        public Task<PagedCollectionResultModel<UserLookupModel>> GetListLookupByPermissionsAsync(PagedCollectionParametersModel model, CancellationToken cancellationToken = default, params Core.Constants.Enums.Permission[] permissions)
+        {
+            var query = _userRepository.Get();
+
+            if (!string.IsNullOrWhiteSpace(model.Terms))
+            {
+                var termsNorm = StringHelper.Normalize(model.Terms);
+
+                query = query.Where(x => x.EmailNorm.Contains(termsNorm) || x.Phone.Contains(termsNorm));
+            }
+
+            if (permissions?.Any() == true)
+            {
+                query = query.Where(x => x.Role.Permissions.All(y => permissions.Contains(y.Permission)));
+            }
+
+            var total = query.LongCount();
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var listRoleModel = query.OrderByDescending(x => x.EmailNorm).Skip(model.Skip).Take(model.Take).QueryTo<UserLookupModel>().ToList();
+
+            var result = new PagedCollectionResultModel<UserLookupModel>
+            {
+                Terms = model.Terms,
+                Take = model.Take,
+                Skip = model.Skip,
+                Items = listRoleModel,
+                Total = total
+            };
+
+            return Task.FromResult(result);
+        }
+
+        #endregion
+
+        #region Create
+
+        public Task<CreateUserResultModel> CreateAsync(UserCreateModel model, CancellationToken cancellationToken = default)
+        {
+            var userEntity = model.MapTo<UserEntity>();
+
+            userEntity.Profile = model.MapTo<ProfileEntity>();
+
+            _userRepository.Add(userEntity);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _userRepository.SaveChanges();
+
+            var result = userEntity.MapTo<CreateUserResultModel>();
+
+            return Task.FromResult(result);
+        }
+
+        public async Task<CreateUserResultModel> CreateOrGetAsync(UserCreateModel model, CancellationToken cancellationToken = default)
+        {
+            var userNameNorm = StringHelper.Normalize(model.UserName);
+
+            var emailNorm = StringHelper.Normalize(model.Email);
+
+            CreateUserResultModel result =
+                _userRepository
+                    .Get(x => x.Phone == model.Phone || x.EmailNorm == emailNorm || x.UserNameNorm == userNameNorm)
+                    .QueryTo<CreateUserResultModel>().FirstOrDefault()
+                ?? await CreateAsync(model, cancellationToken).ConfigureAwait(true);
+
+            return result;
+        }
+
+        #endregion
+
+        #region Update
+
+        public Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default)
+        {
+            var userEntity = model.MapTo<UserEntity>();
+
+            userEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
+
+            userEntity.BannedRemark = model.IsBanned ? null : userEntity.BannedRemark;
+
+            _userRepository.Update(userEntity,
+                x => x.UserName,
+                x => x.UserNameNorm,
+                x => x.Email,
+                x => x.EmailNorm,
+                x => x.Phone,
+                x => x.RoleId,
+                x => x.BannedTime,
+                x => x.BannedRemark);
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _userRepository.SaveChanges();
+
+            // Update Profile
+
+            var profileEntity = model.MapTo<ProfileEntity>();
+
+            _profileRepository.Update(profileEntity,
+                x => x.FullName,
+                x => x.FullNameNorm);
+
+            _profileRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
+        public Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default)
+        {
+            // Save new avatar
+            var avatarImageModel = _imageRepository.SaveImage(model.AvatarFile);
+
+            // Update information and avatar to profile
+            var profile = new ProfileEntity
+            {
+                Id = LoggedInUser.Current.Id,
+                FullName = model.FullName,
+                FullNameNorm = StringHelper.Normalize(model.FullName),
+                AvatarId = avatarImageModel?.Id
+            };
+
+            if (profile.AvatarId != null)
+            {
+                _profileRepository.Update(profile,
+                    x => x.FullName,
+                    x => x.FullNameNorm,
+                    x => x.AvatarId);
+            }
+            else
+            {
+                _profileRepository.Update(profile,
+                    x => x.FullName,
+                    x => x.FullNameNorm);
+            }
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _profileRepository.SaveChanges();
+
+            // Remove old avatar
+            if (LoggedInUser.Current.AvatarId.HasValue && avatarImageModel != null)
+            {
+                _imageRepository.RemoveImage(LoggedInUser.Current.AvatarId.Value);
+            }
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Remove
+
+        public Task RemoveAsync(int id, CancellationToken cancellationToken = default)
+        {
+            // Soft delete user
+            _userRepository.Delete(new UserEntity
+            {
+                Id = id
+            });
+
+            // Expire all their refresh token
+            var listRefreshToken = _refreshTokenRepository
+                .Get(x => x.UserId == id)
+                .Select(x =>
+                    new RefreshTokenEntity
+                    {
+                        Id = x.Id
+                    })
+                .ToList();
+
+            var systemTimePast = DateTimeOffset.UtcNow.AddSeconds(-1);
+
+            foreach (var refreshTokenEntity in listRefreshToken)
+            {
+                refreshTokenEntity.ExpireOn = systemTimePast;
+
+                _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
+            }
+
+            // Check cancellation token
+            cancellationToken.ThrowIfCancellationRequested();
+
+            _refreshTokenRepository.SaveChanges();
+
+            _userRepository.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Validation
 
         public void CheckExistsById(params int[] ids)
         {
@@ -191,253 +443,6 @@ namespace Monkey.Business.Logic.User
             }
         }
 
-        public List<int> ListUserIdByPermissions(params Enums.Permission[] permissions)
-        {
-            List<int> listAdminUserId = _userRepository
-                .Get(x => x.Role.Permissions.All(y => permissions.Contains(y.Permission)))
-                .Select(x => x.Id)
-                .ToList();
-
-            return listAdminUserId;
-        }
-
-        public Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var userEntity = new UserEntity
-            {
-                Email = email,
-                EmailNorm = StringHelper.Normalize(email),
-                UserName = email,
-                RoleId = roleId,
-                Profile = new ProfileEntity()
-            };
-
-            if (!string.IsNullOrWhiteSpace(fullName))
-            {
-                userEntity.Profile.FullName = fullName;
-                userEntity.Profile.FullNameNorm = StringHelper.Normalize(userEntity.Profile.FullName);
-
-                var fullNameParts = fullName.Split(' ');
-                userEntity.Profile.LastName = fullNameParts.Length > 1 ? fullNameParts.FirstOrDefault() : string.Empty;
-
-                userEntity.Profile.LastNameNorm = StringHelper.Normalize(userEntity.Profile.LastName);
-
-                userEntity.Profile.FirstName = fullName.Replace(userEntity.Profile.LastName, string.Empty);
-
-                userEntity.Profile.FirstNameNorm = StringHelper.Normalize(userEntity.Profile.FirstName);
-            }
-
-            _userRepository.Add(userEntity);
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _userRepository.SaveChanges();
-
-            var result = userEntity.MapTo<CreateUserResultModel>();
-
-            return Task.FromResult(result);
-        }
-
-        public async Task<CreateUserResultModel> CreateOrGetUserByEmailAsync(string email, int? roleId, string fullName,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var emailNorm = StringHelper.Normalize(email);
-
-            CreateUserResultModel result =
-                _userRepository.Get(x => x.Email == emailNorm).QueryTo<CreateUserResultModel>().FirstOrDefault()
-                ?? await CreateUserByPhoneAsync(email, roleId, fullName, cancellationToken).ConfigureAwait(true);
-
-            return result;
-        }
-
-        public Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var userEntity = new UserEntity
-            {
-                Phone = phone,
-                UserName = phone,
-                RoleId = roleId,
-                Profile = new ProfileEntity()
-            };
-
-            if (!string.IsNullOrWhiteSpace(fullName))
-            {
-                userEntity.Profile.FullName = fullName;
-                userEntity.Profile.FullNameNorm = StringHelper.Normalize(userEntity.Profile.FullName);
-
-                var fullNameParts = fullName.Split(' ');
-                userEntity.Profile.LastName = fullNameParts.Length > 1 ? fullNameParts.FirstOrDefault() : string.Empty;
-
-                userEntity.Profile.LastNameNorm = StringHelper.Normalize(userEntity.Profile.LastName);
-
-                userEntity.Profile.FirstName = fullName.Replace(userEntity.Profile.LastName, string.Empty);
-
-                userEntity.Profile.FirstNameNorm = StringHelper.Normalize(userEntity.Profile.FirstName);
-            }
-
-            _userRepository.Add(userEntity);
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _userRepository.SaveChanges();
-
-            var result = userEntity.MapTo<CreateUserResultModel>();
-
-            return Task.FromResult(result);
-        }
-
-        public async Task<CreateUserResultModel> CreateOrGetUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            CreateUserResultModel result =
-                _userRepository.Get(x => x.Phone == phone).QueryTo<CreateUserResultModel>().FirstOrDefault()
-                ?? await CreateUserByPhoneAsync(phone, roleId, fullName, cancellationToken).ConfigureAwait(true);
-
-            return result;
-        }
-
-        public Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            // Soft delete user
-            _userRepository.Delete(new UserEntity
-            {
-                Id = id
-            });
-
-            _refreshTokenRepository.SaveChanges();
-
-            // Expire all their refresh token
-            var listRefreshToken = _refreshTokenRepository
-                .Get(x => x.UserId == id)
-                .Select(x =>
-                    new RefreshTokenEntity
-                    {
-                        Id = x.Id
-                    })
-                .ToList();
-
-            var dateTimeUtcNow = DateTimeOffset.UtcNow.AddSeconds(-1);
-
-            foreach (var refreshTokenEntity in listRefreshToken)
-            {
-                refreshTokenEntity.ExpireOn = dateTimeUtcNow;
-                _refreshTokenRepository.Update(refreshTokenEntity, x => x.RefreshToken, x => x.ExpireOn);
-            }
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _userRepository.SaveChanges();
-
-            return Task.CompletedTask;
-        }
-
-        public Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var userModel = _userRepository.Get(x => x.Id == id).QueryTo<UserModel>().FirstOrDefault();
-            return Task.FromResult(userModel);
-        }
-
-        public Task<UserModel> GetByEmailAsync(string email, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            string emailNorm = StringHelper.Normalize(email);
-            var userModel = _userRepository.Get(x => x.EmailNorm == emailNorm).QueryTo<UserModel>().FirstOrDefault();
-            return Task.FromResult(userModel);
-        }
-
-        public Task<UserModel> GetByPhoneAsync(string phone, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var userModel = _userRepository.Get(x => x.Phone == phone).QueryTo<UserModel>().FirstOrDefault();
-            return Task.FromResult(userModel);
-        }
-
-        public Task<UserModel> GetBySubjectAsync(string subject, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var userModel = _userRepository.Get(x => x.GlobalId == subject).QueryTo<UserModel>().FirstOrDefault();
-            return Task.FromResult(userModel);
-        }
-
-        public Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var listData = _userRepository.Get().QueryTo<UserModel>();
-
-            var result = listData.GetDataTableResponse(model);
-
-            return Task.FromResult(result);
-        }
-
-        public Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var userEntity = model.MapTo<UserEntity>();
-
-            userEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
-
-            userEntity.BannedRemark = model.IsBanned ? null : userEntity.BannedRemark;
-
-            _userRepository.Update(userEntity, x => x.RoleId, x => x.BannedTime, x => x.BannedRemark);
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _userRepository.SaveChanges();
-
-            return Task.CompletedTask;
-        }
-
-        public Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            // Save new avatar
-            var avatarImageModel = _imageRepository.SaveImage(model.AvatarFile);
-
-            // Update information and avatar to profile
-            var profile = new ProfileEntity
-            {
-                Id = LoggedInUser.Current.Id,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                AvatarId = avatarImageModel?.Id
-            };
-
-            profile.FirstNameNorm = StringHelper.Normalize(profile.FirstName);
-            profile.LastNameNorm = StringHelper.Normalize(profile.LastName);
-            profile.FullName = string.Join(" ", profile.FirstName, profile.LastName);
-            profile.FullNameNorm = StringHelper.Normalize(profile.FullName);
-
-            if (profile.AvatarId != null)
-            {
-                _profileRepository.Update(profile,
-                    x => x.LastName,
-                    x => x.LastNameNorm,
-                    x => x.FirstName,
-                    x => x.FirstNameNorm,
-                    x => x.FullName,
-                    x => x.FullNameNorm,
-                    x => x.AvatarId);
-            }
-            else
-            {
-                _profileRepository.Update(profile,
-                    x => x.LastName,
-                    x => x.LastNameNorm,
-                    x => x.FirstName,
-                    x => x.FirstNameNorm,
-                    x => x.FullName,
-                    x => x.FullNameNorm);
-            }
-
-            // Check cancellation token
-            cancellationToken.ThrowIfCancellationRequested();
-
-            _profileRepository.SaveChanges();
-
-            // Remove old avatar
-            if (LoggedInUser.Current.AvatarId.HasValue && avatarImageModel != null)
-            {
-                _imageRepository.RemoveImage(LoggedInUser.Current.AvatarId.Value);
-            }
-
-            return Task.CompletedTask;
-        }
+        #endregion
     }
 }

@@ -17,18 +17,64 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Monkey.Core.Constants;
+using System.Collections.Generic;
 using Monkey.Core.Models.User;
 using Puppy.DataTable.Models.Request;
 using Puppy.DataTable.Models.Response;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Monkey.Core.Constants;
+using Monkey.Core.Models;
+using Puppy.Web.Models.Api;
 
 namespace Monkey.Business.User
 {
     public interface IUserBusiness : IBaseBusiness
     {
+        #region Get
+
+        Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default);
+
+        Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<UserModel> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+
+        Task<UserModel> GetByPhoneAsync(string phone, CancellationToken cancellationToken = default);
+
+        Task<UserModel> GetBySubjectAsync(string subject, CancellationToken cancellationToken = default);
+
+        List<UserLookupModel> GetListLookupByPermissions(params Enums.Permission[] permissions);
+
+        Task<PagedCollectionResultModel<UserLookupModel>> GetListLookupByPermissionsAsync(
+            PagedCollectionParametersModel model, CancellationToken cancellationToken = default,
+            params Enums.Permission[] permissions);
+
+        #endregion
+
+        #region Create
+
+        Task<CreateUserResultModel> CreateAsync(UserCreateModel model, CancellationToken cancellationToken = default);
+
+        Task<CreateUserResultModel> CreateOrGetAsync(UserCreateModel model, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Update
+
+        Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default);
+
+        Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Remove
+
+        Task RemoveAsync(int id, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Validation
+
         void CheckExistsById(params int[] ids);
 
         void CheckExistsBySubject(params string[] subjects);
@@ -45,35 +91,6 @@ namespace Monkey.Business.User
 
         void CheckExistByPhone(string phone);
 
-        /// <summary>
-        ///     Get list user id have all params permissions 
-        /// </summary>
-        /// <param name="permissions"></param>
-        /// <returns></returns>
-        List<int> ListUserIdByPermissions(params Enums.Permission[] permissions);
-
-        Task<CreateUserResultModel> CreateUserByEmailAsync(string email, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<CreateUserResultModel> CreateOrGetUserByEmailAsync(string email, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<CreateUserResultModel> CreateUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<CreateUserResultModel> CreateOrGetUserByPhoneAsync(string phone, int? roleId, string fullName, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task RemoveAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<UserModel> GetAsync(int id, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<UserModel> GetByEmailAsync(string email, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<UserModel> GetByPhoneAsync(string phone, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<UserModel> GetBySubjectAsync(string subject, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<DataTableResponseDataModel<UserModel>> GetDataTableAsync(DataTableParamModel model, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default(CancellationToken));
+        #endregion
     }
 }

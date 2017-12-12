@@ -13,7 +13,7 @@ using System;
 namespace Monkey.Data.EF.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20171127170848_Initial")]
+    [Migration("20171212171759_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

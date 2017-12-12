@@ -6,27 +6,29 @@
 //     <Author> Top </Author>
 //     <Project> Monkey </Project>
 //     <File>
-//         <Name> UpdateProfileModelValidator.cs </Name>
-//         <Created> 10/10/17 8:51:21 PM </Created>
-//         <Key> 208787c6-4279-4e33-9d51-90fb13f7ddb4 </Key>
+//         <Name> UserLookupModel.cs </Name>
+//         <Created> 10/12/2017 2:47:32 PM </Created>
+//         <Key> 47ad6282-d0c9-49a4-b1d9-bc7d454221e4 </Key>
 //     </File>
 //     <Summary>
-//         UpdateProfileModelValidator.cs
+//         UserLookupModel.cs
 //     </Summary>
 // <License>
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using FluentValidation;
-using Monkey.Core.Models.User;
-
-namespace Monkey.Core.Validators.User
+namespace Monkey.Core.Models.User
 {
-    public class UpdateProfileModelValidator : AbstractValidator<UpdateProfileModel>
+    public class UserLookupModel
     {
-        public UpdateProfileModelValidator()
-        {
-            RuleFor(x => x.FullName).Length(0, 200);
-        }
+        public int Id { get; set; }
+
+        public string UserName { get; set; }
+
+        public string Email { get; set; }
+
+        public string Phone { get; set; }
+
+        public string FullName { get; set; }
     }
 }

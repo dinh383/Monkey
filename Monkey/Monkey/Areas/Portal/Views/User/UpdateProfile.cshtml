@@ -13,20 +13,16 @@
                 <div class="panel-body">
                     <form asp-controller="User" asp-action="SubmitUpdateProfile" method="post" enctype="multipart/form-data" asp-antiforgery="true" role="form">
 
-                        <label asp-for="AvatarFile" class="form-control-label" for="@nameof(Model.AvatarFile)">Avatar</label>
-                        <input data-plugin="dropify" data-height="200" id="uploadImage" asp-for="AvatarFile" data-default-file="@Url.AbsoluteContent(Model.AvatarUrl)" class="form-control" type="file">
-                        <span asp-validation-for="AvatarFile"></span>
-
-                        <div class="form-group form-material" data-plugin="formMaterial">
-                            <label asp-for="FirstName" class="form-control-label" for="@nameof(Model.FirstName)"></label>
-                            <input asp-for="FirstName" class="form-control" type="text" />
-                            <span asp-validation-for="FirstName"></span>
+                        <div class="form-group form-material">
+                            <label asp-for="AvatarFile" class="form-control-label" for="@nameof(Model.AvatarFile)"></label>
+                            <input data-plugin="dropify" data-height="300" asp-for="AvatarFile" data-default-file="@Url.AbsoluteContent(Model.AvatarUrl)" class="form-control" type="file">
+                            <span asp-validation-for="AvatarFile"></span>
                         </div>
 
                         <div class="form-group form-material" data-plugin="formMaterial">
-                            <label asp-for="LastName" class="form-control-label" for="@nameof(Model.LastName)"></label>
-                            <input asp-for="LastName" class="form-control" type="text" />
-                            <span asp-validation-for="LastName"></span>
+                            <label asp-for="FullName" class="form-control-label" for="@nameof(Model.FullName)"></label>
+                            <input asp-for="FullName" class="form-control" type="text" />
+                            <span asp-validation-for="FullName"></span>
                         </div>
 
                         <div class="row">

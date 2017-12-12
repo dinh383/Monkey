@@ -26,7 +26,15 @@ namespace Monkey.Business.Auth
 {
     public interface IAuthenticationBusiness : IBaseBusiness
     {
-        #region SignIn
+        #region Get
+
+        Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject, CancellationToken cancellationToken = default);
+
+        Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
+
+        #endregion
+
+        #region Sign In
 
         /// <summary>
         ///     Check user name and password is correct, not banned and already active 
@@ -40,14 +48,6 @@ namespace Monkey.Business.Auth
 
         #endregion
 
-        #region Get Logged In User
-
-        Task<LoggedInUserModel> GetLoggedInUserBySubjectAsync(string subject, CancellationToken cancellationToken = default(CancellationToken));
-
-        Task<LoggedInUserModel> GetLoggedInUserByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default(CancellationToken));
-
-        #endregion
-
         #region Refresh Token
 
         /// <summary>
@@ -57,22 +57,29 @@ namespace Monkey.Business.Auth
         /// <param name="subject">          </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task ExpireAllRefreshTokenAsync(string subject, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        ///     Check refresh token is exist and not expire 
-        /// </summary>
-        /// <param name="clientId">    </param>
-        /// <param name="refreshToken"></param>
-        void CheckValidRefreshToken(string refreshToken, int? clientId);
+        Task ExpireAllRefreshTokenAsync(string subject, CancellationToken cancellationToken = default);
 
         #endregion
 
-        #region Confirm Email
+        #region Get Password
+
+        string GenerateTokenSetPassword(string userSubject, string email, out TimeSpan expireIn);
 
         string GenerateTokenConfirmEmail(string userSubject, string email, out TimeSpan expireIn);
 
-        bool IsExpireOrInvalidSetPasswordToken(string token);
+        string GenerateTokenConfirmPhone(string userSubject, string phone, out TimeSpan expireIn);
+
+        void ExpireTokenSetPassword(string token);
+
+        void ExpireTokenConfirmEmail(string token);
+
+        void ExpireTokenConfirmPhone(string token);
+
+        #endregion
+
+        #region Set Password
+
+        Task SetPasswordAsync(string subject, string password, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Active user via email, setup new username and password 
@@ -82,34 +89,27 @@ namespace Monkey.Business.Auth
         /// <param name="newPassword">      </param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task ConfirmEmailAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default(CancellationToken));
+        Task ConfirmEmailAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default);
 
-        void ExpireTokenConfirmEmail(string token);
-
-        #endregion
-
-        #region Confirm Phone
-
-        string GenerateTokenConfirmPhone(string userSubject, string phone, out TimeSpan expireIn);
-
-        Task ConfirmPhoneAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default(CancellationToken));
-
-        void ExpireTokenConfirmPhone(string token);
+        Task ConfirmPhoneAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default);
 
         #endregion
 
-        #region Set Password
+        #region Validation
+
+        bool IsExpireOrInvalidSetPasswordToken(string token);
 
         bool IsExpireOrInvalidConfirmEmailToken(string token);
 
-        string GenerateTokenSetPassword(string userSubject, string email, out TimeSpan expireIn);
-
-        Task SetPasswordAsync(string subject, string password, CancellationToken cancellationToken = default(CancellationToken));
-
-        void ExpireTokenSetPassword(string token);
-
-        #endregion
+        /// <summary>
+        ///     Check refresh token is exist and not expire 
+        /// </summary>
+        /// <param name="clientId">    </param>
+        /// <param name="refreshToken"></param>
+        void CheckValidRefreshToken(string refreshToken, int? clientId);
 
         void CheckCurrentPassword(string currentPassword);
+
+        #endregion
     }
 }
