@@ -108,6 +108,7 @@ namespace Monkey.Extensions
             if (!EnvironmentHelper.IsDevelopment())
             {
                 app.UseResponseCaching();
+                app.UseStatusCodePagesWithRedirects("/?code={0}");
             }
             else
             {
