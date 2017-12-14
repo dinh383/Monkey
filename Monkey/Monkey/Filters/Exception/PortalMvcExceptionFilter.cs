@@ -46,12 +46,15 @@ namespace Monkey.Filters.Exception
             else
             {
                 Log.Fatal(context);
-
-                // Redirect to Oops page
+#if DEBUG
+                // Keep base Exception
+                base.OnException(context);
+                return;
+#else
+// Redirect to Oops page
                 context.Result = new RedirectToActionResult("Index", "Auth", new { area = "Portal" }, false);
+#endif
             }
-
-            context.ExceptionHandled = true;
 
             // Notify
             var tempData = _tempDataDictionaryFactory.GetTempData(context.HttpContext);
@@ -59,10 +62,12 @@ namespace Monkey.Filters.Exception
             tempData.Set(Constants.TempDataKey.Notify,
                 new NotifyResultViewModel
                 {
-                    Title = "Something Went Wrong",
+                    Title = "Oops !",
                     Message = errorModel.Message,
                     Status = NotifyStatus.Error
                 });
+
+            context.ExceptionHandled = true;
 
             // Keep base Exception
             base.OnException(context);
