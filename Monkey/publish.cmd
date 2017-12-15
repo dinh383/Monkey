@@ -1,1 +1,1 @@
-dotnet publish --output "..\..\Publish"
+dotnet publish --output "..\..\Publish" --configuration Release

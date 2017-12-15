@@ -10,7 +10,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
-    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
   </PropertyGroup>
 
   <PropertyGroup>

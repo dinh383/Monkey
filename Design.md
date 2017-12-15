@@ -14,6 +14,9 @@
 ```
 
 ```css
+menu item
+    rgba(rgba(47, 36, 66, .9)
+
 ::selection {
     color: #f7f7f7;
     background: #f46c93;
