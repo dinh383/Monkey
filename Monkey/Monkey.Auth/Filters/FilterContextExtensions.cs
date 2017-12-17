@@ -22,15 +22,19 @@ namespace Monkey.Auth.Filters
         {
             if (!(context.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)) return true;
 
-            // If allow anonymous => the user/request is authorized
-            if (IsActionAllowAnonymous(controllerActionDescriptor)) return true;
+            // If allow anonymous => the user/request is authenticated
+            if (IsActionAllowAnonymous(controllerActionDescriptor))
+            {
+                return true;
+            }
 
             // Check is user pass authentication
             return IsUserAuthenticated(context.HttpContext);
         }
 
         /// <summary>
-        ///     Check user is authorization. Please call <see cref="IsAuthenticated" /> before call this method.
+        ///     Check user is authorization. Please call <see cref="IsAuthenticated" /> to check
+        ///     authenticated before call this method.
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
