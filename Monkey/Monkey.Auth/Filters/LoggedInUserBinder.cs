@@ -7,6 +7,7 @@ using Monkey.Core.Models.Auth;
 using Puppy.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using Monkey.Core.Exceptions;
 
 namespace Monkey.Auth.Filters
 {
@@ -76,19 +77,35 @@ namespace Monkey.Auth.Filters
                     }, httpContext);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Remove current user
-                LoggedInUser.Current = null;
-                httpContext.User = null;
-
-                // Remove Cookie
-                httpContext.Response.OnStarting(state =>
+                if (ex is MonkeyException || ex.InnerException is MonkeyException)
                 {
-                    var onResponseHttpContext = (HttpContext)state;
-                    TokenHelper.RemoveAccessTokenInCookie(onResponseHttpContext.Response.Cookies);
-                    return Task.CompletedTask;
-                }, httpContext);
+                    // Remove current user
+                    LoggedInUser.Current = null;
+
+                    if (httpContext != null)
+                    {
+                        httpContext.User = null;
+
+                        try
+                        {
+                            // Remove Cookie
+                            httpContext.Response.OnStarting(state =>
+                            {
+                                var onResponseHttpContext = (HttpContext)state;
+
+                                TokenHelper.RemoveAccessTokenInCookie(onResponseHttpContext.Response.Cookies);
+
+                                return Task.CompletedTask;
+                            }, httpContext);
+                        }
+                        catch
+                        {
+                            // Ignore
+                        }
+                    }
+                }
             }
         }
     }
