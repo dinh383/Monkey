@@ -72,9 +72,9 @@ namespace Monkey.Extensions
             services
                 .AddMvc(options =>
                 {
-                    options.RespectBrowserAcceptHeader = true; // false by default
-                    options.Filters.Add(new ProducesAttribute(ContentType.Xml));
+                    options.RespectBrowserAcceptHeader = false; // false by default
                     options.Filters.Add(new ProducesAttribute(ContentType.Json));
+                    options.Filters.Add(new ProducesAttribute(ContentType.Xml));
                 })
                 .AddXmlDataContractSerializerFormatters()
                 .AddJsonOptions(options =>
