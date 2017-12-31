@@ -95,8 +95,8 @@ namespace Monkey.Auth.Helpers
                 Subject = claims,
                 SigningCredentials = AuthConfig.SigningCredentials,
                 Expires = expireOn,
-                IssuedAt = systemTimeNow,
-                NotBefore = systemTimeNow,
+                IssuedAt = systemTimeNow.DateTime,
+                NotBefore = systemTimeNow.DateTime,
                 Issuer = issuer
             });
 

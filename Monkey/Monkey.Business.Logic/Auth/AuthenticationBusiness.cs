@@ -203,7 +203,7 @@ namespace Monkey.Business.Logic.Auth
                             Id = x.Id
                         }).ToList();
 
-            var systemTimePast = DateTimeOffset.UtcNow.AddSeconds(-1);
+            var systemTimePast = SystemUtils.SystemTimeNow.AddSeconds(-1);
 
             foreach (var refreshTokenEntity in listRefreshToken)
             {
@@ -227,7 +227,7 @@ namespace Monkey.Business.Logic.Auth
         {
             expireIn = TimeSpan.FromDays(1);
 
-            var expireOn = DateTimeOffset.UtcNow.Add(expireIn).DateTime;
+            var expireOn = SystemUtils.SystemTimeNow.Add(expireIn).DateTime;
 
             EmailTokenModel emailTokenModel = new EmailTokenModel
             {
@@ -259,7 +259,7 @@ namespace Monkey.Business.Logic.Auth
         {
             expireIn = TimeSpan.FromDays(1);
 
-            var expireOn = DateTimeOffset.UtcNow.Add(expireIn).DateTime;
+            var expireOn = SystemUtils.SystemTimeNow.Add(expireIn).DateTime;
 
             EmailTokenModel emailTokenModel = new EmailTokenModel
             {
@@ -291,7 +291,7 @@ namespace Monkey.Business.Logic.Auth
         {
             expireIn = TimeSpan.FromMinutes(10);
 
-            var expireOn = DateTimeOffset.UtcNow.Add(expireIn);
+            var expireOn = SystemUtils.SystemTimeNow.Add(expireIn).DateTime;
 
             var userId = _userRepository.Get(x => x.GlobalId == userSubject && x.Phone == phone).Select(x => x.Id).Single();
 
@@ -313,7 +313,7 @@ namespace Monkey.Business.Logic.Auth
         {
             var userId = _userRepository.Get(x => x.SetPasswordToken == token).Select(x => x.Id).FirstOrDefault();
 
-            if (userId == default(int))
+            if (userId == default)
             {
                 return;
             }
@@ -321,7 +321,7 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.Update(new UserEntity
             {
                 Id = userId,
-                SetPasswordTokenExpireOn = DateTimeOffset.UtcNow
+                SetPasswordTokenExpireOn = SystemUtils.SystemTimeNow
             }, x => x.SetPasswordTokenExpireOn);
 
             _userRepository.SaveChanges();
@@ -331,7 +331,7 @@ namespace Monkey.Business.Logic.Auth
         {
             var userId = _userRepository.Get(x => x.ConfirmEmailToken == token).Select(x => x.Id).FirstOrDefault();
 
-            if (userId == default(int))
+            if (userId == default)
             {
                 return;
             }
@@ -339,7 +339,7 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.Update(new UserEntity
             {
                 Id = userId,
-                ConfirmEmailTokenExpireOn = DateTimeOffset.UtcNow
+                ConfirmEmailTokenExpireOn = SystemUtils.SystemTimeNow
             }, x => x.ConfirmEmailTokenExpireOn);
 
             _userRepository.SaveChanges();
@@ -352,7 +352,7 @@ namespace Monkey.Business.Logic.Auth
             _userRepository.Update(new UserEntity
             {
                 Id = userId,
-                ConfirmPhoneTokenExpireOn = DateTimeOffset.UtcNow
+                ConfirmPhoneTokenExpireOn = SystemUtils.SystemTimeNow
             }, x => x.ConfirmPhoneTokenExpireOn);
 
             _userRepository.SaveChanges();
@@ -364,7 +364,8 @@ namespace Monkey.Business.Logic.Auth
 
         public Task SetPasswordAsync(string subject, string password, CancellationToken cancellationToken = default)
         {
-            var systemTimeNow = DateTimeOffset.UtcNow;
+            var systemTimeNow = SystemUtils.SystemTimeNow;
+
             var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
 
             userEntity.PasswordHash = PasswordHelper.HashPassword(password, systemTimeNow);
@@ -381,7 +382,7 @@ namespace Monkey.Business.Logic.Auth
 
         public Task ConfirmEmailAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default)
         {
-            var systemTimeNow = DateTimeOffset.UtcNow;
+            var systemTimeNow = SystemUtils.SystemTimeNow;
 
             var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
 
@@ -412,7 +413,7 @@ namespace Monkey.Business.Logic.Auth
 
         public Task ConfirmPhoneAsync(string subject, string newUserName, string newPassword, CancellationToken cancellationToken = default)
         {
-            var systemTimeNow = DateTimeOffset.UtcNow;
+            var systemTimeNow = SystemUtils.SystemTimeNow;
 
             var userEntity = _userRepository.Get(x => x.GlobalId == subject).Single();
 
@@ -447,21 +448,21 @@ namespace Monkey.Business.Logic.Auth
 
         public bool IsExpireOrInvalidSetPasswordToken(string token)
         {
-            var checkTime = DateTimeOffset.UtcNow;
+            var checkTime = SystemUtils.SystemTimeNow;
             var isValid = _userRepository.Get(x => x.SetPasswordToken == token && x.SetPasswordTokenExpireOn >= checkTime).Any();
             return !isValid;
         }
 
         public bool IsExpireOrInvalidConfirmEmailToken(string token)
         {
-            var checkTime = DateTimeOffset.UtcNow;
+            var checkTime = SystemUtils.SystemTimeNow;
             var isValid = _userRepository.Get(x => x.ConfirmEmailToken == token && x.ConfirmEmailTokenExpireOn >= checkTime).Any();
             return !isValid;
         }
 
         public void CheckValidRefreshToken(string refreshToken, int? clientId)
         {
-            var systemTimeNow = DateTimeOffset.UtcNow;
+            var systemTimeNow = SystemUtils.SystemTimeNow;
 
             var isValidRefreshToken = _refreshTokenRepository.Get().Any(x => x.RefreshToken == refreshToken && x.ClientId == clientId && (x.ExpireOn == null || systemTimeNow < x.ExpireOn));
 

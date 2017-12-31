@@ -193,7 +193,7 @@ namespace Monkey.Business.Logic.User
         {
             var userEntity = model.MapTo<UserEntity>();
 
-            userEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
+            userEntity.BannedTime = model.IsBanned ? SystemUtils.SystemTimeNow : (DateTimeOffset?)null;
 
             userEntity.BannedRemark = model.IsBanned ? null : userEntity.BannedRemark;
 
@@ -289,7 +289,7 @@ namespace Monkey.Business.Logic.User
                     })
                 .ToList();
 
-            var systemTimePast = DateTimeOffset.UtcNow.AddSeconds(-1);
+            var systemTimePast = SystemUtils.SystemTimeNow.AddSeconds(-1);
 
             foreach (var refreshTokenEntity in listRefreshToken)
             {

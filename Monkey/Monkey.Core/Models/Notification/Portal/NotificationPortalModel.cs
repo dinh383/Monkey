@@ -15,7 +15,7 @@ namespace Monkey.Core.Models.Notification.Portal
 
         public string Message { get; set; }
 
-        public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset CreatedTime { get; set; } = SystemUtils.SystemTimeNow;
 
         public string Url { get; set; }
 

@@ -30,23 +30,7 @@ namespace Monkey.Core
 
         public static readonly TimeZoneInfo SystemTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(SystemConfig.SystemTimeZone);
 
-        public static DateTime SystemTimeNow => DateTimeOffset.UtcNow.UtcToSystemTime();
-
-        /// <summary>
-        ///     Null or less than system now will use system now value 
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
-        public static DateTimeOffset GetAtLeastSystemTimeNow(DateTime? dateTime)
-        {
-            var systemNow = SystemTimeNow;
-
-            dateTime = dateTime ?? SystemTimeNow;
-
-            var dateTimeAtLeastSystemNow = dateTime < systemNow ? systemNow : dateTime.Value;
-
-            return dateTimeAtLeastSystemNow;
-        }
+        public static DateTimeOffset SystemTimeNow => DateTimeOffset.UtcNow.UtcToSystemTime();
 
         /// <summary>
         ///     Null or less than system now will use system now value 

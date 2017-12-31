@@ -32,6 +32,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Monkey.Core;
 
 namespace Monkey.Business.Logic.Auth
 {
@@ -94,7 +95,7 @@ namespace Monkey.Business.Logic.Auth
         {
             var clientEntity = model.MapTo<ClientEntity>();
 
-            clientEntity.BannedTime = model.IsBanned ? DateTimeOffset.UtcNow : (DateTimeOffset?)null;
+            clientEntity.BannedTime = model.IsBanned ? SystemUtils.SystemTimeNow : (DateTimeOffset?)null;
 
             clientEntity.BannedRemark = model.IsBanned ? null : clientEntity.BannedRemark;
 

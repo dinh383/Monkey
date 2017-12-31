@@ -33,7 +33,7 @@ namespace Monkey.Core.Models.Log
 
         public string GlobalId { get; set; } = Guid.NewGuid().ToString("N");
 
-        public DateTimeOffset CreatedTime { get; set; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset CreatedTime { get; set; } = SystemUtils.SystemTimeNow;
 
         public int? CreatedBy { get; set; }
 
