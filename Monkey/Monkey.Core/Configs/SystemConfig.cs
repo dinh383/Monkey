@@ -37,6 +37,11 @@ namespace Monkey.Core.Configs
         public static MvcPathConfigModel MvcPath { get; set; } = new MvcPathConfigModel();
 
         /// <summary>
+        ///     Config use datetime with TimeZone. Default is "UTC", See more: https://msdn.microsoft.com/en-us/library/gg154758.aspx 
+        /// </summary>
+        public static string SystemTimeZone { get; set; } = "UTC";
+
+        /// <summary>
         ///     [Auto Reload] 
         /// </summary>
         public static PagedCollectionParametersConfigModel PagedCollectionParameters { get; set; } = new PagedCollectionParametersConfigModel();

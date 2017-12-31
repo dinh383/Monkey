@@ -17,9 +17,14 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System;
+
 namespace Monkey.Core.Entities
 {
     public class Entity : Puppy.EF.Entity
     {
+        public override DateTimeOffset CreatedTime { get; set; } = SystemUtils.SystemTimeNow;
+
+        public override DateTimeOffset LastUpdatedTime { get; set; } = SystemUtils.SystemTimeNow;
     }
 }

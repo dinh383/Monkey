@@ -18,13 +18,66 @@
 #endregion License
 
 using Monkey.Core.Configs;
+using Puppy.Core.DateTimeUtils;
 using System;
 using System.IO;
 
 namespace Monkey.Core
 {
-    public class SystemUtils
+    public static class SystemUtils
     {
+        #region Date Time
+
+        public static readonly TimeZoneInfo SystemTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(SystemConfig.SystemTimeZone);
+
+        public static DateTime SystemTimeNow => DateTimeOffset.UtcNow.UtcToSystemTime();
+
+        /// <summary>
+        ///     Null or less than system now will use system now value 
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static DateTimeOffset GetAtLeastSystemTimeNow(DateTime? dateTime)
+        {
+            var systemNow = SystemTimeNow;
+
+            dateTime = dateTime ?? SystemTimeNow;
+
+            var dateTimeAtLeastSystemNow = dateTime < systemNow ? systemNow : dateTime.Value;
+
+            return dateTimeAtLeastSystemNow;
+        }
+
+        /// <summary>
+        ///     Null or less than system now will use system now value 
+        /// </summary>
+        /// <param name="dateTimeOffset"></param>
+        /// <returns></returns>
+        public static DateTimeOffset GetAtLeastSystemTimeNow(DateTimeOffset? dateTimeOffset)
+        {
+            var systemNow = SystemTimeNow;
+
+            dateTimeOffset = dateTimeOffset ?? SystemTimeNow;
+
+            var dateTimeAtLeastSystemNow = dateTimeOffset < systemNow ? systemNow : dateTimeOffset.Value;
+
+            return dateTimeAtLeastSystemNow;
+        }
+
+        public static DateTime UtcToSystemTime(this DateTimeOffset dateTimeOffsetUtc)
+        {
+            return dateTimeOffsetUtc.UtcDateTime.GetDateTimeFromUtc(SystemTimeZoneInfo);
+        }
+
+        public static DateTime UtcToSystemTime(this DateTime dateTimeUtc)
+        {
+            return dateTimeUtc.GetDateTimeFromUtc(SystemTimeZoneInfo);
+        }
+
+        #endregion
+
+        #region Path
+
         public static string GetWebPhysicalPath(string path)
         {
             if (!Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out var pathUri))
@@ -52,5 +105,7 @@ namespace Monkey.Core
 
             return path;
         }
+
+        #endregion
     }
 }

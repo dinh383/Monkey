@@ -31,7 +31,6 @@ using Puppy.EF;
 using Puppy.EF.Interfaces;
 using Puppy.EF.Repositories;
 using Puppy.Web.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -111,21 +110,20 @@ namespace Monkey.Data.EF.Repositories
                 .Where(x => x.Entity is TEntity && listState.Contains(x.State))
                 .Select(x => x).ToList();
 
-            var dateTimeNow = DateTimeOffset.UtcNow;
+            var dateTimeNow = SystemUtils.SystemTimeNow;
 
             foreach (var entry in listEntryAddUpdate)
             {
-                var entity = entry.Entity as TEntity;
-
-                if (entity == null)
+                if (!(entry.Entity is TEntity entity))
+                {
                     continue;
+                }
 
                 if (entry.State == EntityState.Added)
                 {
                     entity.DeletedTime = null;
-                    entity.LastUpdatedTime = null;
-                    entity.CreatedTime = DateTimeHelper.ReplaceNullOrDefault(entity.CreatedTime, dateTimeNow);
-                    entity.CreatedBy = entity.CreatedBy ?? LoggedInUser.Current?.Id;
+                    entity.LastUpdatedTime = entity.CreatedTime = DateTimeHelper.ReplaceNullOrDefault(entity.CreatedTime, dateTimeNow);
+                    entity.LastUpdatedBy = entity.CreatedBy = entity.CreatedBy ?? LoggedInUser.Current?.Id;
                 }
                 else
                 {
@@ -156,7 +154,7 @@ namespace Monkey.Data.EF.Repositories
 
             List<DataLogEntity> listDataLog = new List<DataLogEntity>();
 
-            var dateTimeNow = DateTimeOffset.UtcNow;
+            var dateTimeNow = SystemUtils.SystemTimeNow;
 
             // Get data log for added entity direct from entry
 
@@ -164,9 +162,10 @@ namespace Monkey.Data.EF.Repositories
             {
                 foreach (var entryAdded in listEntryAdded)
                 {
-                    var entity = entryAdded.Entity as TEntity;
-
-                    if (entity == null) continue;
+                    if (!(entryAdded.Entity is TEntity entity))
+                    {
+                        continue;
+                    }
 
                     var dataLog = NewDataLog(entryAdded);
 
@@ -205,13 +204,13 @@ namespace Monkey.Data.EF.Repositories
 
                     if (dataLog.LogType == DataLogType.Modified)
                     {
-                        dataLog.LastUpdatedTime = entity.LastUpdatedTime ?? dateTimeNow;
+                        dataLog.LastUpdatedTime = entity.LastUpdatedTime;
 
                         dataLog.LastUpdatedBy = entity.LastUpdatedBy;
                     }
                     else
                     {
-                        dataLog.DeletedTime = entity.DeletedTime ?? entity.LastUpdatedTime ?? dateTimeNow;
+                        dataLog.DeletedTime = entity.DeletedTime ?? entity.LastUpdatedTime;
 
                         dataLog.DeletedBy = entity.DeletedBy ?? entity.LastUpdatedBy;
                     }

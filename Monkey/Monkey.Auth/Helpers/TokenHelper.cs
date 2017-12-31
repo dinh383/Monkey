@@ -19,6 +19,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
+using Monkey.Core;
 using Monkey.Core.Models.Auth;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
@@ -53,14 +54,14 @@ namespace Monkey.Auth.Helpers
         {
             clientId = clientId?.Trim() ?? string.Empty;
 
-            var dateTimeUtcNow = DateTimeOffset.UtcNow;
+            var systemTimeNow = SystemUtils.SystemTimeNow;
 
-            double authTime = dateTimeUtcNow.GetEpochTime();
+            double authTime = systemTimeNow.GetEpochTime();
 
             var accessToken = new AccessTokenModel
             {
                 ExpireIn = expiresSpan.TotalSeconds,
-                ExpireOn = dateTimeUtcNow.AddSeconds(expiresSpan.TotalSeconds),
+                ExpireOn = systemTimeNow.AddSeconds(expiresSpan.TotalSeconds),
                 RefreshToken = refreshToken,
                 TokenType = Constants.Constant.AuthenticationTokenType
             };
@@ -72,7 +73,7 @@ namespace Monkey.Auth.Helpers
                 {JwtRegisteredClaimNames.AuthTime, authTime.ToString(CultureInfo.InvariantCulture)}
             };
 
-            accessToken.AccessToken = GenerateToken(accessToken.ExpireOn?.UtcDateTime, issuer, dictionary);
+            accessToken.AccessToken = GenerateToken(accessToken.ExpireOn?.UtcDateTime.UtcToSystemTime(), issuer, dictionary);
 
             return accessToken;
         }
@@ -81,7 +82,7 @@ namespace Monkey.Auth.Helpers
         {
             var handler = new JwtSecurityTokenHandler();
 
-            var utcTimeNow = DateTime.UtcNow;
+            var systemTimeNow = SystemUtils.SystemTimeNow;
 
             ClaimsIdentity claims = new ClaimsIdentity();
             foreach (var key in data.Keys)
@@ -94,8 +95,8 @@ namespace Monkey.Auth.Helpers
                 Subject = claims,
                 SigningCredentials = AuthConfig.SigningCredentials,
                 Expires = expireOn,
-                IssuedAt = utcTimeNow,
-                NotBefore = utcTimeNow,
+                IssuedAt = systemTimeNow,
+                NotBefore = systemTimeNow,
                 Issuer = issuer
             });
 
@@ -145,7 +146,7 @@ namespace Monkey.Auth.Helpers
                 ExpireOn = GetAccessTokenExpireOn(accessToken)
             };
 
-            accessTokenModel.ExpireIn = accessTokenModel.ExpireOn?.Subtract(DateTimeOffset.UtcNow).TotalSeconds ?? -1;
+            accessTokenModel.ExpireIn = accessTokenModel.ExpireOn?.Subtract(SystemUtils.SystemTimeNow).TotalSeconds ?? -1;
 
             return accessTokenModel;
         }
@@ -212,7 +213,7 @@ namespace Monkey.Auth.Helpers
             }
 
             DateTimeOffset? expireOn = GetAccessTokenExpireOn(token);
-            return expireOn != null && expireOn <= DateTimeOffset.UtcNow;
+            return expireOn != null && expireOn <= SystemUtils.SystemTimeNow;
         }
 
         public static bool IsExpireOrInvalidToken(string token)
@@ -292,12 +293,12 @@ namespace Monkey.Auth.Helpers
         {
             if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(key))
             {
-                return default(T);
+                return default;
             }
 
             if (!TryReadTokenPayload(token, out var tokenPayload))
             {
-                return default(T);
+                return default;
             }
 
             tokenPayload.TryGetValue(key, out var data);
