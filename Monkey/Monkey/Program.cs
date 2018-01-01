@@ -40,11 +40,11 @@ namespace Monkey
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
-
             ConsoleConfiguration();
 
             BuildConfiguration();
+
+            var host = BuildWebHost(args);
 
             OnApplicationStart(host);
 
@@ -78,6 +78,8 @@ namespace Monkey
 
         private static void OnApplicationStart(IWebHost host)
         {
+            SystemConfig.SystemVersion = SystemUtils.SystemTimeNow;
+
             // Directories/Folders need to have
             DirectoryHelper.CreateIfNotExist(SystemUtils.GetWebPhysicalPath(PathConsts.UploadFolder));
 

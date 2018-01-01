@@ -18,6 +18,7 @@
 #endregion License
 
 using Monkey.Core.Configs.Models;
+using System;
 
 namespace Monkey.Core.Configs
 {
@@ -26,6 +27,8 @@ namespace Monkey.Core.Configs
     /// </summary>
     public static class SystemConfig
     {
+        public static DateTimeOffset SystemVersion { get; set; }
+
         /// <summary>
         ///     Production, Staging will read from key Environment Name, else by MachineName 
         /// </summary>

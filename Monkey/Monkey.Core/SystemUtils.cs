@@ -28,7 +28,7 @@ namespace Monkey.Core
     {
         #region Date Time
 
-        public static readonly TimeZoneInfo SystemTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(SystemConfig.SystemTimeZone);
+        public static TimeZoneInfo SystemTimeZoneInfo;
 
         public static DateTimeOffset SystemTimeNow => DateTimeOffset.UtcNow.UtcToSystemTime();
 

@@ -26,6 +26,7 @@ using Microsoft.Extensions.Primitives;
 using Monkey.Core.Configs.Models;
 using Puppy.Core.ConfigUtils;
 using Puppy.DependencyInjection;
+using System;
 
 namespace Monkey.Core.Configs
 {
@@ -70,7 +71,11 @@ namespace Monkey.Core.Configs
         {
             SystemConfig.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
             SystemConfig.MvcPath = configuration.GetSection<MvcPathConfigModel>(nameof(SystemConfig.MvcPath)) ?? new MvcPathConfigModel();
-            SystemConfig.SystemTimeZone = configuration.GetValue<string>(nameof(SystemConfig.SystemTimeZone));
+
+            // Time Zone
+            SystemConfig.SystemTimeZone = configuration.GetValue(nameof(SystemConfig.SystemTimeZone), SystemConfig.SystemTimeZone);
+            SystemUtils.SystemTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(SystemConfig.SystemTimeZone);
+
             SystemConfig.PagedCollectionParameters = configuration.GetSection<PagedCollectionParametersConfigModel>(nameof(SystemConfig.PagedCollectionParameters)) ?? new PagedCollectionParametersConfigModel();
             SystemConfig.SendGrid = configuration.GetSection<SendGridConfigModel>(nameof(SystemConfig.SendGrid)) ?? new SendGridConfigModel();
         }
