@@ -37,13 +37,13 @@ namespace Monkey.Service.User
 
         #region User - Create
 
-        Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default);
+        Task CreateByEmailAsync(CreateUserModel model, CancellationToken cancellationToken = default);
 
         #endregion
 
         #region User - Update
 
-        Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default);
+        Task UpdateAsync(UpdateUserModel model, CancellationToken cancellationToken = default);
 
         Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default);
 

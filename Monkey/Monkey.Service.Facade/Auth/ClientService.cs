@@ -55,7 +55,7 @@ namespace Monkey.Service.Facade.Auth
 
         #region Create
 
-        public Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default)
+        public Task<int> CreateAsync(CreateClientModel model, CancellationToken cancellationToken = default)
         {
             _clientBusiness.CheckUniqueName(model.Name);
             return _clientBusiness.CreateAsync(model, cancellationToken);
@@ -65,7 +65,7 @@ namespace Monkey.Service.Facade.Auth
 
         #region Update
 
-        public Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default)
+        public Task UpdateAsync(UpdateClientModel model, CancellationToken cancellationToken = default)
         {
             _clientBusiness.CheckExist(model.Id);
             _clientBusiness.CheckUniqueName(model.Name, model.Id);

@@ -29,17 +29,17 @@ namespace Monkey.Mapper.Auth
     {
         public ClientProfile()
         {
-            CreateMap<ClientCreateModel, ClientEntity>().IgnoreAllNonExisting()
+            CreateMap<CreateClientModel, ClientEntity>().IgnoreAllNonExisting()
                 .ForMember(d => d.NameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Name)));
 
-            CreateMap<ClientUpdateModel, ClientEntity>().IgnoreAllNonExisting()
+            CreateMap<UpdateClientModel, ClientEntity>().IgnoreAllNonExisting()
                 .ForMember(d => d.NameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Name)));
 
             CreateMap<ClientEntity, ClientModel>().IgnoreAllNonExisting()
                 .ForMember(d => d.Subject, o => o.MapFrom(s => s.GlobalId))
                 .ForMember(d => d.IsBanned, o => o.MapFrom(s => s.BannedTime != null));
 
-            CreateMap<ClientModel, ClientUpdateModel>().IgnoreAllNonExisting();
+            CreateMap<ClientModel, UpdateClientModel>().IgnoreAllNonExisting();
         }
     }
 }

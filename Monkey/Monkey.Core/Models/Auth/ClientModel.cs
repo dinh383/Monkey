@@ -28,8 +28,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.Auth
 {
-    [Validator(typeof(ClientModelValidator.ClientCreateModelValidator))]
-    public class ClientCreateModel
+    [Validator(typeof(ClientModelValidator.CreateClientModelValidator))]
+    public class CreateClientModel
     {
         [DataTable(Order = 2, SortDirection = SortDirection.Ascending)]
         [Remote("CheckUniqueName", "Client", HttpMethod = "POST", AdditionalFields = "Id", ErrorMessage = "The name of client already exist, please try another.")]
@@ -46,8 +46,8 @@ namespace Monkey.Core.Models.Auth
         public Enums.ClientType Type { get; set; }
     }
 
-    [Validator(typeof(ClientModelValidator.ClientUpdateModelValidator))]
-    public class ClientUpdateModel : ClientCreateModel
+    [Validator(typeof(ClientModelValidator.UpdateClientModelValidator))]
+    public class UpdateClientModel : CreateClientModel
     {
         [DataTable(IsVisible = false, Order = 1)]
         public int Id { get; set; }
@@ -67,7 +67,7 @@ namespace Monkey.Core.Models.Auth
         public string BannedRemark { get; set; }
     }
 
-    public class ClientModel : ClientUpdateModel
+    public class ClientModel : UpdateClientModel
     {
         [Display(Name = "Banned Time")]
         [DataTable(DisplayName = "Banned Time", Order = 5)]

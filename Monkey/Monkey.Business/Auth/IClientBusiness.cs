@@ -39,13 +39,13 @@ namespace Monkey.Business.Auth
 
         #region Create
 
-        Task<int> CreateAsync(ClientCreateModel model, CancellationToken cancellationToken = default);
+        Task<int> CreateAsync(CreateClientModel model, CancellationToken cancellationToken = default);
 
         #endregion
 
         #region Update
 
-        Task UpdateAsync(ClientUpdateModel model, CancellationToken cancellationToken = default);
+        Task UpdateAsync(UpdateClientModel model, CancellationToken cancellationToken = default);
 
         Task<string> GenerateSecretAsync(int id, CancellationToken cancellationToken = default);
 

@@ -74,14 +74,14 @@ namespace Monkey.Areas.Portal.Controllers
         public IActionResult Add()
         {
             ViewBag.RoleSelectList = GetRoleSelectList();
-            return View(new UserCreateModel());
+            return View(new CreateUserModel());
         }
 
         [Route(AddEndpoint)]
         [Auth(Enums.Permission.Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitAdd([FromForm]UserCreateModel model)
+        public async Task<IActionResult> SubmitAdd([FromForm]CreateUserModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace Monkey.Areas.Portal.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var userModel = await _userService.GetAsync(id, this.GetRequestCancellationToken()).ConfigureAwait(true);
-            var userUpdateModel = userModel.MapTo<UserUpdateModel>();
+            var userUpdateModel = userModel.MapTo<UpdateUserModel>();
             ViewBag.RoleSelectList = GetRoleSelectList();
             return View(userUpdateModel);
         }
@@ -113,7 +113,7 @@ namespace Monkey.Areas.Portal.Controllers
         [Route(SubmitEditEndpoint)]
         [Auth(Enums.Permission.Admin)]
         [HttpPost]
-        public async Task<IActionResult> SubmitEdit([FromForm]UserUpdateModel model)
+        public async Task<IActionResult> SubmitEdit([FromForm]UpdateUserModel model)
         {
             if (!ModelState.IsValid)
             {

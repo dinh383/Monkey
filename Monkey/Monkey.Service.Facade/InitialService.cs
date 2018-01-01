@@ -96,7 +96,7 @@ namespace Monkey.Service.Facade
                 _userBusiness.CheckUniqueUserName(userName);
                 _userBusiness.CheckUniqueEmail(email);
 
-                var createUserResult = await _userBusiness.CreateAsync(new UserCreateModel
+                var createUserResult = await _userBusiness.CreateAsync(new CreateUserModel
                 {
                     Email = email,
                     UserName = userName,

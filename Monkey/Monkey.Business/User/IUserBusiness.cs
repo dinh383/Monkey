@@ -53,15 +53,15 @@ namespace Monkey.Business.User
 
         #region Create
 
-        Task<CreateUserResultModel> CreateAsync(UserCreateModel model, CancellationToken cancellationToken = default);
+        Task<CreateUserResultModel> CreateAsync(CreateUserModel model, CancellationToken cancellationToken = default);
 
-        Task<CreateUserResultModel> CreateOrGetAsync(UserCreateModel model, CancellationToken cancellationToken = default);
+        Task<CreateUserResultModel> CreateOrGetAsync(CreateUserModel model, CancellationToken cancellationToken = default);
 
         #endregion
 
         #region Update
 
-        Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default);
+        Task UpdateAsync(UpdateUserModel model, CancellationToken cancellationToken = default);
 
         Task UpdateProfileAsync(UpdateProfileModel model, CancellationToken cancellationToken = default);
 

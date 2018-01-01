@@ -36,21 +36,21 @@ namespace Monkey.Mapper.User
                 .IgnoreAllNonExisting()
                 .ForMember(d => d.GrantType, o => o.UseValue(GrantType.Password));
 
-            CreateMap<UserCreateModel, UserEntity>().IgnoreAllNonExisting()
+            CreateMap<CreateUserModel, UserEntity>().IgnoreAllNonExisting()
                 .ForMember(d => d.EmailNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Email)))
                 .ForMember(d => d.UserNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.UserName)))
                 ;
 
-            CreateMap<UserCreateModel, ProfileEntity>()
+            CreateMap<CreateUserModel, ProfileEntity>()
                 .IgnoreAllNonExisting()
                 .ForMember(d => d.FullNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.FullName)));
 
-            CreateMap<UserUpdateModel, UserEntity>()
+            CreateMap<UpdateUserModel, UserEntity>()
                 .IgnoreAllNonExisting()
                 .ForMember(d => d.EmailNorm, o => o.MapFrom(s => StringHelper.Normalize(s.Email)))
                 .ForMember(d => d.UserNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.UserName)));
 
-            CreateMap<UserUpdateModel, ProfileEntity>()
+            CreateMap<UpdateUserModel, ProfileEntity>()
                 .IgnoreAllNonExisting()
                 .ForMember(d => d.FullNameNorm, o => o.MapFrom(s => StringHelper.Normalize(s.FullName)));
 
@@ -76,7 +76,7 @@ namespace Monkey.Mapper.User
                 .ForMember(d => d.FullName, o => o.MapFrom(s => s.Profile.FullName))
                 .ForMember(d => d.ListPermission, o => o.MapFrom(s => s.Role.Permissions.Select(y => y.Permission)));
 
-            CreateMap<UserModel, UserUpdateModel>()
+            CreateMap<UserModel, UpdateUserModel>()
                 .IgnoreAllNonExisting();
 
             CreateMap<UserEntity, CreateUserResultModel>()

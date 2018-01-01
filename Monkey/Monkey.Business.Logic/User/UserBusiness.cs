@@ -152,7 +152,7 @@ namespace Monkey.Business.Logic.User
 
         #region Create
 
-        public Task<CreateUserResultModel> CreateAsync(UserCreateModel model, CancellationToken cancellationToken = default)
+        public Task<CreateUserResultModel> CreateAsync(CreateUserModel model, CancellationToken cancellationToken = default)
         {
             var userEntity = model.MapTo<UserEntity>();
 
@@ -170,7 +170,7 @@ namespace Monkey.Business.Logic.User
             return Task.FromResult(result);
         }
 
-        public async Task<CreateUserResultModel> CreateOrGetAsync(UserCreateModel model, CancellationToken cancellationToken = default)
+        public async Task<CreateUserResultModel> CreateOrGetAsync(CreateUserModel model, CancellationToken cancellationToken = default)
         {
             var userNameNorm = StringHelper.Normalize(model.UserName);
 
@@ -189,7 +189,7 @@ namespace Monkey.Business.Logic.User
 
         #region Update
 
-        public Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default)
+        public Task UpdateAsync(UpdateUserModel model, CancellationToken cancellationToken = default)
         {
             var userEntity = model.MapTo<UserEntity>();
 

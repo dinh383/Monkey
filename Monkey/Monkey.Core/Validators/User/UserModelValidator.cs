@@ -5,9 +5,9 @@ namespace Monkey.Core.Validators.User
 {
     public class UserModelValidator
     {
-        public class UserCreateModelValidator : AbstractValidator<UserCreateModel>
+        public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
         {
-            public UserCreateModelValidator()
+            public CreateUserModelValidator()
             {
                 RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(500);
 
@@ -17,9 +17,9 @@ namespace Monkey.Core.Validators.User
             }
         }
 
-        public class UserUpdateModelValidator : AbstractValidator<UserUpdateModel>
+        public class UpdateUserModelValidator : AbstractValidator<UpdateUserModel>
         {
-            public UserUpdateModelValidator()
+            public UpdateUserModelValidator()
             {
                 RuleFor(x => x.Id).NotEmpty();
 

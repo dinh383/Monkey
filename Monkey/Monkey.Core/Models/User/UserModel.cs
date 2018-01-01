@@ -27,8 +27,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Monkey.Core.Models.User
 {
-    [Validator(typeof(UserModelValidator.UserCreateModelValidator))]
-    public class UserCreateModel
+    [Validator(typeof(UserModelValidator.CreateUserModelValidator))]
+    public class CreateUserModel
     {
         [DataTable(Order = 3, SortDirection = SortDirection.Ascending, DisplayName = "Full Name")]
         [Display(Name = "Full Name")]
@@ -53,8 +53,8 @@ namespace Monkey.Core.Models.User
         public int? RoleId { get; set; }
     }
 
-    [Validator(typeof(UserModelValidator.UserUpdateModelValidator))]
-    public class UserUpdateModel : UserCreateModel
+    [Validator(typeof(UserModelValidator.UpdateUserModelValidator))]
+    public class UpdateUserModel : CreateUserModel
     {
         [DataTable(IsVisible = false, Order = 0)]
         public int Id { get; set; }
@@ -71,7 +71,7 @@ namespace Monkey.Core.Models.User
         public string BannedRemark { get; set; }
     }
 
-    public class UserModel : UserUpdateModel
+    public class UserModel : UpdateUserModel
     {
         [DataTableIgnore]
         public int? AvatarId { get; set; }

@@ -67,7 +67,7 @@ namespace Monkey.Service.Facade.User
 
         #region User - Create
 
-        public async Task CreateByEmailAsync(UserCreateModel model, CancellationToken cancellationToken = default)
+        public async Task CreateByEmailAsync(CreateUserModel model, CancellationToken cancellationToken = default)
         {
             _userBusiness.CheckUniqueUserName(model.UserName);
 
@@ -86,7 +86,7 @@ namespace Monkey.Service.Facade.User
 
         #region User - Update
 
-        public Task UpdateAsync(UserUpdateModel model, CancellationToken cancellationToken = default)
+        public Task UpdateAsync(UpdateUserModel model, CancellationToken cancellationToken = default)
         {
             _userBusiness.CheckExistsById(model.Id);
 

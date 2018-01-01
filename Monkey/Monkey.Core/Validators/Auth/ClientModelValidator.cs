@@ -24,9 +24,9 @@ namespace Monkey.Core.Validators.Auth
 {
     public class ClientModelValidator
     {
-        public class ClientCreateModelValidator : AbstractValidator<ClientCreateModel>
+        public class CreateClientModelValidator : AbstractValidator<CreateClientModel>
         {
-            public ClientCreateModelValidator()
+            public CreateClientModelValidator()
             {
                 RuleFor(x => x.Name).NotEmpty().MaximumLength(50);
 
@@ -36,9 +36,9 @@ namespace Monkey.Core.Validators.Auth
             }
         }
 
-        public class ClientUpdateModelValidator : AbstractValidator<ClientUpdateModel>
+        public class UpdateClientModelValidator : AbstractValidator<UpdateClientModel>
         {
-            public ClientUpdateModelValidator()
+            public UpdateClientModelValidator()
             {
                 RuleFor(x => x.Id).NotEmpty();
 

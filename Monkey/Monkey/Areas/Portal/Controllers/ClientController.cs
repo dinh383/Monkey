@@ -59,13 +59,13 @@ namespace Monkey.Areas.Portal.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new ClientCreateModel());
+            return View(new CreateClientModel());
         }
 
         [Route(AddEndpoint)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitAdd([FromForm]ClientCreateModel model)
+        public async Task<IActionResult> SubmitAdd([FromForm]CreateClientModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -87,13 +87,13 @@ namespace Monkey.Areas.Portal.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var clientModel = await _clientService.GetAsync(id).ConfigureAwait(true);
-            var clientUpdateModel = clientModel.MapTo<ClientUpdateModel>();
+            var clientUpdateModel = clientModel.MapTo<UpdateClientModel>();
             return View(clientUpdateModel);
         }
 
         [Route(SubmitEditEndpoint)]
         [HttpPost]
-        public async Task<IActionResult> SubmitEdit([FromForm]ClientUpdateModel model)
+        public async Task<IActionResult> SubmitEdit([FromForm]UpdateClientModel model)
         {
             if (!ModelState.IsValid)
             {
