@@ -1,5 +1,6 @@
 ﻿@using EnumsNET
 @using Monkey.Extensions
+@using Puppy.Core.EnvironmentUtils
 
 <!-- Core -->
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/babel-external-helpers/babel-external-helpers.js")"></script>
@@ -133,7 +134,15 @@
 </script>
 
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Site.min.js")"></script>
-<script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
+
+@if (EnvironmentHelper.IsDevelopment())
+{
+    <script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.js")"></script>
+}
+else
+{
+    <script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
+}
 
 <script type="text/javascript">
     @{
