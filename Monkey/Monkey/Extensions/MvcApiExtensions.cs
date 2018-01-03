@@ -36,6 +36,7 @@ using Puppy.Web.Render;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Monkey.Extensions
 {
@@ -113,6 +114,39 @@ namespace Monkey.Extensions
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Status Code Handle
+            app.UseStatusCodePages(context =>
+            {
+                string requestPath = context.HttpContext.Request.Path;
+
+                string apiAreaRootPath = $"/{Areas.Api.Controllers.ApiController.AreaName}";
+
+                string portalAreaRootPath = $"/{Areas.Portal.Controllers.MvcController.AreaName}";
+
+                if (requestPath.StartsWith(apiAreaRootPath))
+                {
+                    // Api Area
+
+                    // Don't handle
+                }
+                else if (requestPath.StartsWith(portalAreaRootPath))
+                {
+                    // Portal Area
+
+                    // Redirect to error page
+                    context.HttpContext.Response.Redirect("/");
+                }
+                else
+                {
+                    // Root
+
+                    // Redirect to error page
+                    context.HttpContext.Response.Redirect("/");
+                }
+
+                return Task.CompletedTask;
+            });
 
             // Root Path and GZip
             app.UseStaticFiles(new StaticFileOptions
