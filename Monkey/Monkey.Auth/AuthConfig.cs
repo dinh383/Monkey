@@ -19,6 +19,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.IdentityModel.Tokens;
+using Monkey.Core;
 using Puppy.Core.StringUtils;
 using System;
 using System.Text;
@@ -59,7 +60,7 @@ namespace Monkey.Auth
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateActor = false,
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = SystemUtils.SystemTimeZoneInfo.BaseUtcOffset
         };
     }
 }
