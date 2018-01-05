@@ -83,7 +83,7 @@ namespace Monkey.Auth
 
             ChangeToken.OnChange(_configuration.GetReloadToken, () =>
             {
-                // Re-Build the config for DataTable
+                // Re-Build the config
                 _configuration.BuildConfig(_configSection);
             });
 

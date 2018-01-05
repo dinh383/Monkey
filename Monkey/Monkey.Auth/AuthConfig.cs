@@ -55,7 +55,7 @@ namespace Monkey.Auth
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = SecurityKey,
-            ValidateLifetime = false,
+            ValidateLifetime = true,
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateActor = false,
