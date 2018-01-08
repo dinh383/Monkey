@@ -29,9 +29,9 @@ namespace Monkey.Areas.Portal.TagHelpers
     [HtmlTargetElement("style")]
     public class SecurityTagHelper : TagHelper
     {
-        private const string SecurityModeAttributeName = "asp-security-mode";
+        private const string SecurityModeAttributeName = "security-mode";
 
-        private const string PermissionsAttributeName = "asp-permissions";
+        private const string PermissionsAttributeName = "security-permissions";
 
         [HtmlAttributeName(SecurityModeAttributeName)]
         public SecurityMode Mode { set; get; }
