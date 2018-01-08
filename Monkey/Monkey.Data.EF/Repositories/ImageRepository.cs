@@ -29,6 +29,7 @@ using Puppy.DependencyInjection.Attributes;
 using System;
 using System.IO;
 using System.Linq;
+using System.Web;
 
 namespace Monkey.Data.EF.Repositories
 {
@@ -56,10 +57,16 @@ namespace Monkey.Data.EF.Repositories
 
                 // Url and Save Path
                 var fileName = $"{Path.GetFileNameWithoutExtension(file.FileName)}-{imageEntity.GlobalId}{Path.GetExtension(file.FileName)}";
+
+                // Remove invalid URL character
+                fileName = HttpUtility.UrlDecode(fileName);
+
                 fileName = fileName.Replace(" ", "-").ToLowerInvariant();
+
                 fileName = FileHelper.MakeValidFileName(fileName);
 
                 imageEntity.Url = Path.Combine(PathConsts.UploadFolder, fileName);
+
                 var savePath = SystemUtils.GetWebPhysicalPath(imageEntity.Url);
 
                 // Save to Physical
@@ -67,18 +74,22 @@ namespace Monkey.Data.EF.Repositories
 
                 // Update Image Entity by FileModel
                 fileModel.MapTo(imageEntity);
+
                 imageEntity.Url = SystemUtils.GetWebUrl(fileModel.Location);
 
                 imageEntity.Caption = caption;
+
                 if (!string.IsNullOrWhiteSpace(imageDominantHexColor))
                 {
                     imageEntity.ImageDominantHexColor = imageDominantHexColor;
                 }
 
                 Add(imageEntity);
+
                 SaveChanges();
 
                 var imageModel = imageEntity.MapTo<ImageModel>();
+
                 return imageModel;
             }
         }
