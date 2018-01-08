@@ -21,9 +21,11 @@ namespace Monkey.Areas.Portal.TagHelpers
             output.TagMode = TagMode.StartTagAndEndTag;
 
             output.TagName = "div";
+
             output.Attributes.Add("class", "site-menubar");
 
             var ul = new TagBuilder("ul");
+
             ul.AddCssClass("site-menu");
 
             var childContent = await output.GetChildContentAsync().ConfigureAwait(true);
@@ -66,19 +68,25 @@ namespace Monkey.Areas.Portal.TagHelpers
             bool isActive = !string.IsNullOrWhiteSpace(MenuUrl) && System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(MenuUrl) == true;
 
             output.TagName = "li";
+
             output.Attributes.Add("class", $"site-menu-item {(IsHasSubItem ? "has-sub" : string.Empty)} {(isActive ? "active" : string.Empty)}");
 
             var anchor = new TagBuilder("a");
+
             anchor.Attributes.AddOrUpdate("href", $"{(IsHasSubItem ? "javascript:void(0);" : MenuUrl)}");
 
             var icon = new TagBuilder("i");
+
             icon.AddCssClass(MenuIconClass);
+
             icon.Attributes.AddOrUpdate("aria-hidden", "true");
 
             anchor.InnerHtml.AppendHtml(icon);
 
             var spanTitle = new TagBuilder("span");
+
             spanTitle.AddCssClass("site-menu-title");
+
             spanTitle.InnerHtml.Append(MenuName);
 
             anchor.InnerHtml.AppendHtml(spanTitle);
@@ -86,7 +94,9 @@ namespace Monkey.Areas.Portal.TagHelpers
             if (IsHasSubItem)
             {
                 var spanArrow = new TagBuilder("span");
+
                 spanArrow.AddCssClass("site-menu-arrow");
+
                 anchor.InnerHtml.AppendHtml(spanArrow);
             }
 
@@ -136,12 +146,17 @@ namespace Monkey.Areas.Portal.TagHelpers
             output.Attributes.Add("class", $"site-menu-item {(isActive ? "active" : string.Empty)}");
 
             var anchor = new TagBuilder("a");
+
             anchor.AddCssClass("animsition-link");
+
             anchor.Attributes.AddOrUpdate("href", SubMenuUrl);
 
             var spanTitle = new TagBuilder("span");
+
             spanTitle.AddCssClass("site-menu-title");
+
             spanTitle.InnerHtml.Append(SubMenuName);
+
             anchor.InnerHtml.AppendHtml(spanTitle);
 
             output.Content.SetHtmlContent(anchor);
