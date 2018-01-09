@@ -4,6 +4,26 @@
 @using Constants = Monkey.Constants
 @{
     ViewData[Constants.ViewDataKey.Title] = "Monkey | Portal - Image";
+
+    var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (ImageController controller) => controller.GetDataTable(null));
+    model.IsUseColumnFilter = true;
+    model.DrawCallbackFunctionName = "drawCallBack";
+
+    // Color Render
+    var colorCol = model.Columns.FirstOrDefault(x => x.Name == nameof(ImageModel.ImageDominantHexColor));
+    if (colorCol != null)
+    {
+        colorCol.MRenderFunction = "renderColor";
+    }
+
+    model.Columns.Add(new ColumnModel("Action", typeof(string))
+    {
+        DisplayName = "Action",
+        IsSearchable = false,
+        IsSortable = false,
+        MRenderFunction = "actionRender",
+    });
+    model.GlobalJsVariableName = "oTable";
 }
 
 @Html.AntiForgeryToken()
@@ -24,28 +44,6 @@
 <div class="page-content">
     <div class="panel">
         <div class="panel-body">
-            @{
-                var model = Html.DataTableModel(Guid.NewGuid().ToString("N"), (ImageController controller) => controller.GetDataTable(null));
-                model.IsUseColumnFilter = true;
-                model.DrawCallbackFunctionName = "drawCallBack";
-
-                // Color Render
-                var colorCol = model.Columns.FirstOrDefault(x => x.Name == nameof(ImageModel.ImageDominantHexColor));
-                if (colorCol != null)
-                {
-                    colorCol.MRenderFunction = "renderColor";
-                }
-
-                model.Columns.Add(new ColumnModel("Action", typeof(string))
-                {
-                    DisplayName = "Action",
-                    IsSearchable = false,
-                    IsSortable = false,
-                    MRenderFunction = "actionRender",
-                });
-                model.GlobalJsVariableName = "oTable";
-            }
-
             @await Html.PartialAsync("/Areas/Portal/Views/Shared/DataTable/_DataTableHtml.cshtml", model).ConfigureAwait(true)
         </div>
     </div>

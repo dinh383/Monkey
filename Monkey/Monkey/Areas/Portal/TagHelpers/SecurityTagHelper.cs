@@ -19,7 +19,7 @@ namespace Monkey.Areas.Portal.TagHelpers
     [HtmlTargetElement("textarea")]
     [HtmlTargetElement("select")]
     [HtmlTargetElement("button")]
-    //[HtmlTargetElement("div")]
+    [HtmlTargetElement("div")]
     [HtmlTargetElement("span")]
     [HtmlTargetElement("label")]
     [HtmlTargetElement("li")]
