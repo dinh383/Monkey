@@ -12,7 +12,11 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/jquery-validation/jquery.unobtrusive-ajax.min.js")"></script>
 
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/tether/tether.min.js")"></script>
+
+<!-- Bootstrap -->
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/bootstrap/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/bootstrap/bootstrap-v3.min.js")"></script>
+
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/animsition/animsition.min.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/mousewheel/jquery.mousewheel.min.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/asscrollbar/jquery-asScrollbar.min.js")"></script>
@@ -82,21 +86,39 @@
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/material.min.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/ladda.min.js")"></script>
 
-<!-- Colorpicker script-->
+<!-- Dropzone -->
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/dropify/dropify.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/dropify.js")"></script>
+
+<!-- Color Thief -->
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/color-thief.js")"></script>
+
+<!-- Select, Token, Tag Input, Checkbox -->
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/select2/select2.full.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/bootstrap-tokenfield/bootstrap-tokenfield.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/bootstrap-tagsinput/bootstrap-tagsinput.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/bootstrap-select/bootstrap-select.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/icheck/icheck.min.js")"></script>
+
+<!-- Color Picker -->
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolor/jquery-asColor.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/asgradient/jquery-asGradient.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/ascolorpicker/jquery-asColorPicker.js")"></script>
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/ascolorpicker.js")"></script>
 
-<!-- Color Thief -->
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/color-thief.js")"></script>
-
-<!-- Dropzone -->
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/dropify/dropify.js")"></script>
-<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/dropify.js")"></script>
-
 <!-- Moment / DateTime -->
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/moment/moment.min.js")"></script>
+
+<!-- DateTime picker -->
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js")"></script>
+
+<!-- Gmap -->
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/gmaps/gmaps.min.js")"></script>
+<script type="text/javascript" src="@Url.AbsoluteContent("~/portal/js/Plugin/gmaps.js")"></script>
+
+<!-- JQuery Mask -->
+<script type="text/javascript" src="@Url.AbsoluteContent("~/vendor/jquery-mask/jquery.mask.min.js")"></script>
 
 <!-- Signal R -->
 <script type="text/javascript">
@@ -116,20 +138,11 @@
     @{
         var loggedInUserJson = LoggedInUser.Current == null
             ? Html.Raw("{}")
-            : Html.Raw(
-                JsonConvert.SerializeObject(
-                    LoggedInUser.Current,
-                    Puppy.Core.Constants.StandardFormat.JsonSerializerSettings
-                    )
-                );
+            : Html.Raw(JsonConvert.SerializeObject(LoggedInUser.Current, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings));
     }
 
     window.httpContext = {
         loggedInUser: @loggedInUserJson
-    };
-
-    window.constants = {
-        dateTimeFormat: 'DD/MM/YYYY hh:mm:ss A'
     };
 </script>
 

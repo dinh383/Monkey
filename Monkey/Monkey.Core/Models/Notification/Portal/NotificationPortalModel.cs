@@ -1,17 +1,19 @@
 ﻿using Monkey.Core.Constants;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace Monkey.Core.Models.Notification.Portal
 {
     public class NotificationPortalModel
     {
+        public string GroupId { get; set; }
+
         public int Id { get; set; }
 
-        public bool IsRead { get; set; }
+        public bool IsRead => ReadTime != null;
 
-        public Enums.NotificationType Type { get; set; }
+        public DateTimeOffset? ReadTime { get; set; }
+
+        public Enums.NotificationType Type { get; set; } = Enums.NotificationType.Information;
 
         public string Message { get; set; }
 
@@ -19,7 +21,6 @@ namespace Monkey.Core.Models.Notification.Portal
 
         public string Url { get; set; }
 
-        [JsonExtensionData]
-        public Dictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
+        public string Data { get; set; }
     }
 }

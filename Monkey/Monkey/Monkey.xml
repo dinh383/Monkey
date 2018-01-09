@@ -45,34 +45,17 @@
                 Dictionary permission and List Connection Id 
             </summary>
         </member>
-        <member name="M:Monkey.Areas.Portal.Hubs.NotificationHub.SendNotificationToSubjectsAsync(Monkey.Core.Models.Notification.Portal.NotificationPortalModel,System.String[])">
-            <summary>
-                Send to users have subject in <paramref name="subjects" /> 
-            </summary>
-            <param name="notification"></param>
-            <param name="subjects">    </param>
-            <returns></returns>
-        </member>
-        <member name="M:Monkey.Areas.Portal.Hubs.NotificationHub.SendNotificationToPermissionsAsync(Monkey.Core.Models.Notification.Portal.NotificationPortalModel,Monkey.Core.Constants.Enums.Permission[])">
-            <summary>
-                Send to users have any permission in <paramref name="permissions" /> 
-            </summary>
-            <param name="notification"></param>
-            <param name="permissions"> </param>
-            <returns></returns>
-        </member>
-        <member name="M:Monkey.Areas.Portal.Hubs.NotificationHub.SendNotificationToAllAsync(Monkey.Core.Models.Notification.Portal.NotificationPortalModel)">
-            <summary>
-                Send to All 
-            </summary>
-            <param name="notification"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Monkey.Areas.Portal.Hubs.NotificationHub.ReceiveAllNotificationAsync">
+        <member name="M:Monkey.Areas.Portal.Hubs.NotificationHub.GetAllAsync">
             <summary>
                 Receive all notification of current logged in user 
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Monkey.Areas.Portal.Hubs.NotificationHub.SetUrl(Monkey.Core.Models.Notification.Portal.NotificationPortalModel)">
+            <summary>
+                Set URL for notification base on Type 
+            </summary>
+            <param name="notification"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcApiExtensions.AddMvcApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>

@@ -1,4 +1,11 @@
 ﻿window.Monkey = {
+    isDebug: true,
+
+    constant: {
+        momentDateTimeFormat: 'DD/MM/YYYY hh:mm:ss A',
+        momentDateFormat: 'DD/MM/YYYY'
+    },
+
     initToolTip: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
@@ -8,16 +15,16 @@
             var $this = $(this);
 
             swal({
-                    title: $this.data("confirm-title"),
-                    text: $this.data("confirm-message"),
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-pink",
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: "No",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
+                title: $this.data("confirm-title"),
+                text: $this.data("confirm-message"),
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-pink",
+                confirmButtonText: 'Yes',
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
                 function (isConfirm) {
                     if (isConfirm) {
                         var action = $this.data("confirm-yes-callback");
@@ -42,7 +49,7 @@
 
     setupAjax: function () {
         $.ajaxSetup({
-            headers: { 'X-XSRF-TOKEN': $('[name=ape]').val() },
+            headers: { 'X-XSRF-TOKEN': $("[name=ape]").val() },
             type: "POST",
             cache: false,
             error: function (xhr, textStatus, errorThrown) {
@@ -106,37 +113,40 @@
             $.slidePanel.show({
                 url: $this.data("url"),
                 settings: {
-                    method: 'GET',
+                    method: "GET",
                     cache: false
                 }
             },
                 // Option
                 {
-                    direction: 'right',
+                    direction: 'right'
                 });
         });
     },
 
-    renderSlugAuto: function ($element, $slugElement) {
-        $element.on("keyup",
-            function () {
-                $slugElement.val($element.val().genSlug());
-            });
+    initAutoRenderSlug: function () {
+        $('[data-bind-type="slug"]').on("keyup blur", function () {
+            var $this = $(this);
+
+            var $slugElement = $($this.data("bind-to"));
+
+            $slugElement.val($this.val().genSlug());
+        });
     },
 
     notificationHub: {
         connection: null,
         connect: function () {
-            Monkey.notificationHub.connection = new signalR.HubConnection("/portal/notification");
+            Monkey.notificationHub.connection = new signalR.HubConnection("/portal/notification-hub");
 
             Monkey.notificationHub.connection
-                .on("addNotification",
-                notification => {
-                    Monkey.notificationHub.addItem(notification);
+                .on("refreshNotification",
+                () => {
+                    Monkey.notificationHub.refreshNotification();
                 });
 
             Monkey.notificationHub.connection
-                .on("setNotifications",
+                .on("setNotification",
                 notifications => {
                     Monkey.notificationHub.setItems(notifications);
                 });
@@ -144,21 +154,22 @@
             Monkey.notificationHub.connection
                 .start()
                 .then(() => {
-                    console.log("[Socket] connected to notification hub");
-                    Monkey.notificationHub.receiveAllNotification();
+                    if (Monkey.isDebug === true) {
+                        console.log("[Socket] connected to notification hub");
+                    }
+                    Monkey.notificationHub.refreshNotification();
                 })
                 .catch(err => {
-                    console.log(`[Socket] connection error: ${err}`);
+                    if (Monkey.isDebug === true) {
+                        console.log(`[Socket] connection error: ${err}`);
+                    }
                 });
         },
-        sendUsers: function (notification, subjects) {
-            Monkey.notificationHub.connection.invoke("sendNotificationToSubjectsAsync", notification, subjects);
-        },
-        sendPermissions: function (notification, permissions) {
-            Monkey.notificationHub.connection.invoke("sendNotificationToPermissionsAsync", notification, permissions);
-        },
-        receiveAllNotification: function () {
-            Monkey.notificationHub.connection.invoke("receiveAllNotificationAsync");
+        refreshNotification: function () {
+            Monkey.notificationHub.connection.invoke("GetAllAsync");
+            if (Monkey.isDebug === true) {
+                console.log("refresh notification");
+            }
         },
         setTotal: function (number) {
             var int = parseInt(number);
@@ -233,6 +244,8 @@
             for (var i = 0; i < notifications.length; i++) {
                 Monkey.notificationHub.addItem(notifications[i]);
             }
+
+            Monkey.notificationHub.updateHeight();
         },
         addItem: function (notification) {
             Monkey.notificationHub.items.push(notification);
@@ -299,7 +312,11 @@
     },
 
     formatDateTime: function (dateTime) {
-        return moment(dateTime).format(window.constants.dateTimeFormat);
+        return moment(dateTime).format(window.Monkey.constant.momentDateTimeFormat);
+    },
+
+    formatDate: function (dateTime) {
+        return moment(dateTime).format(window.Monkey.constant.momentDateFormat);
     },
 
     rgbToHex: function (r, g, b) {
@@ -327,11 +344,9 @@
         var fileReader = new FileReader();
 
         fileReader.onload = function (fileLoadedEvent) {
-
             var img = new Image();
 
             img.onload = function () {
-
                 var colorThief = new ColorThief();
 
                 var color = colorThief.getColor(img);
@@ -346,16 +361,137 @@
             img.src = base64;
         }
         fileReader.readAsDataURL($fileElement.files[0]);
+    },
+
+    renderGoogleMap: function (divMapSelector, $address, $lat, $lng) {
+        var map = new window.GMaps({
+            div: divMapSelector,
+            lat: $lat.val(),
+            lng: $lng.val()
+        });
+
+        var marker;
+
+        var infoWindow = new google.maps.InfoWindow({});
+
+        window.GMaps.geocode({
+            address: $address.val().trim(),
+
+            callback: function (results, status) {
+                if (status === 'OK') {
+                    var data = results[0];
+
+                    infoWindow.setContent(data.formatted_address);
+                    $address.val(data.formatted_address);
+
+                    var location = data.geometry.location;
+
+                    $lat.val(location.lat());
+
+                    $lng.val(location.lng());
+
+                    map.setCenter(location.lat(), location.lng());
+
+                    var markerOptions = {
+                        lat: location.lat(),
+                        lng: location.lng(),
+                        draggable: true,
+                        animation: google.maps.Animation.DROP
+                    };
+
+                    marker = map.addMarker(markerOptions);
+
+                    google.maps.event.addListener(marker,
+                        'dragend',
+                        function (event) {
+                            $lat.val(event.latLng.lat());
+
+                            $lng.val(event.latLng.lng());
+
+                            window.GMaps.geocode({
+                                latLng: marker.getPosition(),
+
+                                callback: function (results) {
+                                    data = results[0];
+                                    infoWindow.setContent(data.formatted_address);
+                                    infoWindow.open(map, marker);
+                                    $address.val(data.formatted_address);
+                                }
+                            });
+                        });
+
+                    infoWindow.open(map, marker);
+                } else {
+                    $address.val("");
+
+                    $lat.val("");
+
+                    $lng.val("");
+                }
+            }
+        });
+    },
+
+    // Remove dropify image (preview image) and mark is remove previous for the selector
+    clearDropify: function (dropifySelector, isRemovePreviousSelector, previewUrlSelector, callback) {
+        debugger;
+
+        var dropifyEvent = $(dropifySelector).dropify();
+
+        var dropifyData = dropifyEvent.data('dropify');
+
+        dropifyData.resetPreview();
+
+        dropifyData.clearElement();
+
+        if (previewUrlSelector && previewUrlSelector.length > 0) {
+            $(previewUrlSelector).val("");
+        }
+
+        var colorSelector = $(dropifySelector).data("bind-to");
+
+        if (colorSelector && colorSelector.length > 0) {
+            $(colorSelector).val("");
+        }
+
+        if (isRemovePreviousSelector) {
+            $(isRemovePreviousSelector).val(true);
+        }
+
+        if (callback && typeof callback === "function") {
+            callback();
+        }
+    },
+
+    initAutoDecimalFormat: function () {
+        var $amounts = $('[data-plugin="decimal-format"]');
+
+        $.each($amounts, function (i, ele) {
+            $(ele).mask("#,##0.00", { reverse: true });
+        });
+    },
+
+    initDateTimePicker: function () {
+        var $dateTimePickers = $('[data-plugin="datetime-picker"]');
+
+        $.each($dateTimePickers, function (i, ele) {
+            $(ele).datetimepicker({
+                format: window.Monkey.constant.momentDateTimeFormat
+            });
+        });
     }
 };
 
-$(function () {
+$(document).ready(function () {
     Monkey.setupAjax();
     Monkey.initToolTip();
     Monkey.initConfirmDialog();
     Monkey.initSlidePanel();
     Monkey.notificationHub.connect();
+    Monkey.initAutoRenderSlug();
     Monkey.initAutoBindColorDominant();
+    Monkey.initAutoDecimalFormat();
+    Monkey.initDateTimePicker();
 });
 
 String.prototype.preventInjection = function preventInjection() {

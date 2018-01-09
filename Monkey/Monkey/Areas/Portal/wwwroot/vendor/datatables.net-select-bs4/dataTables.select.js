@@ -467,7 +467,7 @@ function info ( api )
 		) ) );
 	};
 
-	// Internal knmonkeyedge of DataTables to loop over all information elements
+	// Internal kneatupedge of DataTables to loop over all information elements
 	$.each( ctx.aanFeatures.i, function ( i, el ) {
 		el = $(el);
 

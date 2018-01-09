@@ -240,7 +240,7 @@
 
       function(support) {
       /**
-       * Borrowed from Monkey carousel
+       * Borrowed from EatUp carousel
        **/
       'use strict';
 

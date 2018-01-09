@@ -46,7 +46,7 @@ namespace Monkey.Core.Configs
 
         public static string SystemDateFormat { get; set; } = "dd/MM/yyyy";
 
-        public static string SystemDateTimeFormat { get; set; } = "dd/MM/yyyy HH:mm:ss";
+        public static string SystemDateTimeFormat { get; set; } = "dd/MM/yyyy hh:mm:ss tt";
 
         /// <summary>
         ///     [Auto Reload] 
