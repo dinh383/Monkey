@@ -20,6 +20,7 @@
 using Monkey.Core.Configs;
 using Puppy.Core.DateTimeUtils;
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace Monkey.Core
@@ -56,6 +57,28 @@ namespace Monkey.Core
         public static DateTime UtcToSystemTime(this DateTime dateTimeUtc)
         {
             return dateTimeUtc.GetDateTimeFromUtc(SystemTimeZoneInfo);
+        }
+
+        public static DateTimeOffset? ToSystemDateTime(this string dateTimeString)
+        {
+            DateTimeOffset result;
+
+            if (DateTime.TryParseExact(dateTimeString, SystemConfig.SystemDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
+            {
+                result = dateTime;
+            }
+            else if (DateTime.TryParseExact(dateTimeString, SystemConfig.SystemDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+            {
+                result = date;
+            }
+            else
+            {
+                return null;
+            }
+
+            result = result.WithTimeZone(SystemConfig.SystemTimeZone);
+
+            return result;
         }
 
         #endregion

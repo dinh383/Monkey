@@ -44,6 +44,10 @@ namespace Monkey.Core.Configs
         /// </summary>
         public static string SystemTimeZone { get; set; } = "UTC";
 
+        public static string SystemDateFormat { get; set; } = "dd/MM/yyyy";
+
+        public static string SystemDateTimeFormat { get; set; } = "dd/MM/yyyy HH:mm:ss";
+
         /// <summary>
         ///     [Auto Reload] 
         /// </summary>
@@ -53,5 +57,10 @@ namespace Monkey.Core.Configs
         ///     [Auto Reload] 
         /// </summary>
         public static SendGridConfigModel SendGrid { get; set; } = new SendGridConfigModel();
+
+        /// <summary>
+        ///     [Auto Reload] 
+        /// </summary>
+        public static string SystemDomainUrl { get; set; }
     }
 }

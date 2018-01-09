@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Auth;
+using Monkey.Binders;
 using Monkey.Core.Configs;
 using Monkey.Data.EF.Factory;
 using Monkey.Extensions;
@@ -86,6 +87,8 @@ namespace Monkey
 
                 // [DataTable]
                 .AddDataTable(ConfigurationRoot)
+
+                .AddDateTimeOffsetBinder()
 
                 // [Http Client] Flurl, see more: https://github.com/tmenier/Flurl
                 .AddFlurl()

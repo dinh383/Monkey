@@ -69,6 +69,7 @@ namespace Monkey.Core.Configs
     {
         public static void BuildSystemConfig(IConfiguration configuration)
         {
+            // Connection String
             SystemConfig.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
             SystemConfig.MvcPath = configuration.GetSection<MvcPathConfigModel>(nameof(SystemConfig.MvcPath)) ?? new MvcPathConfigModel();
 
@@ -76,8 +77,10 @@ namespace Monkey.Core.Configs
             SystemConfig.SystemTimeZone = configuration.GetValue(nameof(SystemConfig.SystemTimeZone), SystemConfig.SystemTimeZone);
             SystemUtils.SystemTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(SystemConfig.SystemTimeZone);
 
+            // Others
             SystemConfig.PagedCollectionParameters = configuration.GetSection<PagedCollectionParametersConfigModel>(nameof(SystemConfig.PagedCollectionParameters)) ?? new PagedCollectionParametersConfigModel();
             SystemConfig.SendGrid = configuration.GetSection<SendGridConfigModel>(nameof(SystemConfig.SendGrid)) ?? new SendGridConfigModel();
+            SystemConfig.SystemDomainUrl = configuration.GetValueByMachineAndEnv<string>(nameof(SystemConfig.SystemDomainUrl));
         }
     }
 }
