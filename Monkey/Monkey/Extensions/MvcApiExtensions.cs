@@ -23,14 +23,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Net.Http.Headers;
+using Monkey.Binders;
 using Monkey.Core.Configs;
 using Monkey.Core.Validators;
 using Monkey.Filters.Exception;
 using Monkey.Filters.ModelValidation;
 using Puppy.Core.EnvironmentUtils;
+using Puppy.DataTable;
 using Puppy.Web.Constants;
 using Puppy.Web.Render;
 using System.IO;
@@ -45,32 +48,46 @@ namespace Monkey.Extensions
         /// <summary>
         ///     [Mvc - API] Json, Xml serialize, area, response caching and filters 
         /// </summary>
-        /// <param name="services"></param>
-        public static IServiceCollection AddMvcApi(this IServiceCollection services)
+        /// <param name="services">         </param>
+        /// <param name="configurationRoot"></param>
+        public static IServiceCollection AddMvcApi(this IServiceCollection services, IConfigurationRoot configurationRoot)
         {
-            // Api Filter
-            services.AddScoped<ApiExceptionFilter>();
-            services.AddScoped<ApiModelValidationActionFilter>();
-
-            // Mvc Services
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IViewRenderService, ViewRenderService>();
-
-            // Mvc Filter
-            services.AddScoped<PortalMvcExceptionFilter>();
-            services.AddScoped<AjaxModelValidationActionFilter>();
-
-            // Enable Session to use TempData
-            services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
-
             if (!EnvironmentHelper.IsDevelopment())
             {
                 services.AddResponseCaching();
             }
 
-            // Setup Mvc
             services
+                // Api Filter
+                .AddScoped<ApiExceptionFilter>()
+                .AddScoped<ApiModelValidationActionFilter>()
+
+                // Mvc Services
+                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
+                .AddScoped<IViewRenderService, ViewRenderService>()
+
+                // Mvc Filter
+                .AddScoped<PortalMvcExceptionFilter>()
+                .AddScoped<AjaxModelValidationActionFilter>()
+
+                // Enable Session to use TempData
+                .AddSingleton<ITempDataProvider, CookieTempDataProvider>()
+
+                // [MVC] Anti Forgery
+                .AddAntiforgeryToken()
+
+                // [Mini Response]
+#if !DEBUG
+                .AddMinResponse()
+#endif
+                // [DataTable]
+                .AddDataTable(configurationRoot)
+
+                // [Binders]
+                .AddDateTimeOffsetBinder()
+
+                // Setup Mvc
                 .AddMvc(options =>
                 {
                     options.RespectBrowserAcceptHeader = false; // false by default
@@ -82,9 +99,10 @@ namespace Monkey.Extensions
                 {
                     options.SerializerSettings.ReferenceLoopHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ReferenceLoopHandling;
                     options.SerializerSettings.NullValueHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.NullValueHandling;
-                    options.SerializerSettings.DateTimeZoneHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.DateTimeZoneHandling;
                     options.SerializerSettings.Formatting = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.Formatting;
                     options.SerializerSettings.ContractResolver = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.ContractResolver;
+                    options.SerializerSettings.DateTimeZoneHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.DateTimeZoneHandling;
+                    options.SerializerSettings.DateFormatString = SystemConfig.SystemDateTimeFormat;
                 })
                 // [Validator] Model Validator, Must after "AddMvc"
                 .AddModelValidator();
@@ -106,60 +124,59 @@ namespace Monkey.Extensions
         /// <param name="app"></param>
         public static IApplicationBuilder UseMvcApi(this IApplicationBuilder app)
         {
-            if (!EnvironmentHelper.IsDevelopment())
-            {
-                app.UseResponseCaching();
-            }
-            else
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app
+                // [Mini Response]
+#if !DEBUG
+                .UseMinResponse()
+#endif
+                // [DataTable]
+                .UseDataTable()
 
-            // Status Code Handle
-            app.UseStatusCodePages(context =>
-            {
-                string requestPath = context.HttpContext.Request.Path;
-
-                string apiAreaRootPath = $"/{Areas.Api.Controllers.ApiController.AreaName}";
-
-                string portalAreaRootPath = $"/{Areas.Portal.Controllers.MvcController.AreaName}";
-
-                if (requestPath.StartsWith(apiAreaRootPath))
+                // Status Code Handle
+                .UseStatusCodePages(context =>
                 {
-                    // Api Area
+                    string requestPath = context.HttpContext.Request.Path;
 
-                    // Don't handle
-                }
-                else if (requestPath.StartsWith(portalAreaRootPath))
-                {
-                    // Portal Area
+                    string apiAreaRootPath = $"/{Areas.Api.Controllers.ApiController.AreaName}";
 
-                    // Redirect to error page
-                    context.HttpContext.Response.Redirect("/");
-                }
-                else
-                {
-                    // Root
+                    string portalAreaRootPath = $"/{Areas.Portal.Controllers.MvcController.AreaName}";
 
-                    // Redirect to error page
-                    context.HttpContext.Response.Redirect("/");
-                }
-
-                return Task.CompletedTask;
-            });
-
-            // Root Path and GZip
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                OnPrepareResponse = (context) =>
-                {
-                    var headers = context.Context.Response.GetTypedHeaders();
-                    headers.CacheControl = new CacheControlHeaderValue
+                    if (requestPath.StartsWith(apiAreaRootPath))
                     {
-                        MaxAge = SystemConfig.MvcPath.MaxAgeResponseHeader
-                    };
-                }
-            });
+                        // Api Area
+
+                        // Don't handle
+                    }
+                    else if (requestPath.StartsWith(portalAreaRootPath))
+                    {
+                        // Portal Area
+
+                        // Redirect to error page
+                        context.HttpContext.Response.Redirect("/");
+                    }
+                    else
+                    {
+                        // Root
+
+                        // Redirect to error page
+                        context.HttpContext.Response.Redirect("/");
+                    }
+
+                    return Task.CompletedTask;
+                })
+
+                // Root Path and GZip
+                .UseStaticFiles(new StaticFileOptions
+                {
+                    OnPrepareResponse = (context) =>
+                    {
+                        var headers = context.Context.Response.GetTypedHeaders();
+                        headers.CacheControl = new CacheControlHeaderValue
+                        {
+                            MaxAge = SystemConfig.MvcPath.MaxAgeResponseHeader
+                        };
+                    }
+                });
 
             // Path and GZip for Statics Content
             string currentDirectory = Directory.GetCurrentDirectory();

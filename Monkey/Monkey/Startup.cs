@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monkey.Auth;
-using Monkey.Binders;
 using Monkey.Core.Configs;
 using Monkey.Data.EF.Factory;
 using Monkey.Extensions;
@@ -75,26 +74,15 @@ namespace Monkey
 
                 // [API Document] Swagger
                 .AddApiDocument(typeof(Startup).GetAssembly(), ConfigurationRoot)
-#if !DEBUG
-                // [Mini Response]
-                .AddMinResponse()
-#endif
-                // [MVC] Anti Forgery
-                .AddAntiforgeryToken()
 
                 // [Authentication] Json Web Toke + Cookie
                 .AddHybridAuth(ConfigurationRoot)
-
-                // [DataTable]
-                .AddDataTable(ConfigurationRoot)
-
-                .AddDateTimeOffsetBinder()
 
                 // [Http Client] Flurl, see more: https://github.com/tmenier/Flurl
                 .AddFlurl()
 
                 // [Mvc - API] Json, Xml serialize, area, response caching and filters
-                .AddMvcApi()
+                .AddMvcApi(ConfigurationRoot)
 
                 // [Socket] SignalR
                 .AddSignalR(config =>
@@ -132,17 +120,9 @@ namespace Monkey
 
                 // [API Document] Swagger
                 .UseApiDocument()
-#if !DEBUG
-
-                // [Mini Response]
-                .UseMinResponse()
-#endif
 
                 // [Authentication] Json Web Token + Cookie
                 .UseHybridAuth()
-
-                // [DataTable]
-                .UseDataTable()
 
                 // [Mvc - API] Static files configuration, routing [Mvc] Static files configuration, routing
                 .UseMvcApi()

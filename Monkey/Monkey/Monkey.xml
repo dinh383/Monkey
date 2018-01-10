@@ -57,11 +57,12 @@
             </summary>
             <param name="notification"></param>
         </member>
-        <member name="M:Monkey.Extensions.MvcApiExtensions.AddMvcApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Monkey.Extensions.MvcApiExtensions.AddMvcApi(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationRoot)">
             <summary>
                 [Mvc - API] Json, Xml serialize, area, response caching and filters 
             </summary>
-            <param name="services"></param>
+            <param name="services">         </param>
+            <param name="configurationRoot"></param>
         </member>
         <member name="M:Monkey.Extensions.MvcApiExtensions.UseMvcApi(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
