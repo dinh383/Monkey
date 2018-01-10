@@ -79,7 +79,7 @@ namespace Monkey.Extensions
 
                 // [Mini Response]
 #if !DEBUG
-                .AddMinResponse()
+                .Puppy.Web.Middlewares.AddMinResponse()
 #endif
                 // [DataTable]
                 .AddDataTable(configurationRoot)
@@ -127,7 +127,7 @@ namespace Monkey.Extensions
             app
                 // [Mini Response]
 #if !DEBUG
-                .UseMinResponse()
+                .Puppy.Web.Middlewares.UseMinResponse()
 #endif
                 // [DataTable]
                 .UseDataTable()
