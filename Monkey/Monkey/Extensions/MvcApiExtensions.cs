@@ -35,6 +35,7 @@ using Monkey.Filters.ModelValidation;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.DataTable;
 using Puppy.Web.Constants;
+using Puppy.Web.Middlewares;
 using Puppy.Web.Render;
 using System.IO;
 using System.Linq;
@@ -54,7 +55,11 @@ namespace Monkey.Extensions
         {
             if (!EnvironmentHelper.IsDevelopment())
             {
-                services.AddResponseCaching();
+                services
+                    .AddResponseCaching()
+
+                    // [Mini Response]
+                    .AddMinResponse();
             }
 
             services
@@ -77,10 +82,6 @@ namespace Monkey.Extensions
                 // [MVC] Anti Forgery
                 .AddAntiforgeryToken()
 
-                // [Mini Response]
-#if !DEBUG
-                .Puppy.Web.Middlewares.AddMinResponse()
-#endif
                 // [DataTable]
                 .AddDataTable(configurationRoot)
 
@@ -124,11 +125,20 @@ namespace Monkey.Extensions
         /// <param name="app"></param>
         public static IApplicationBuilder UseMvcApi(this IApplicationBuilder app)
         {
+            if (!EnvironmentHelper.IsDevelopment())
+            {
+                app
+                    .UseResponseCaching()
+
+                    // [Mini Response]
+                    .UseMinResponse();
+            }
+            else
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
             app
-                // [Mini Response]
-#if !DEBUG
-                .Puppy.Web.Middlewares.UseMinResponse()
-#endif
                 // [DataTable]
                 .UseDataTable()
 
