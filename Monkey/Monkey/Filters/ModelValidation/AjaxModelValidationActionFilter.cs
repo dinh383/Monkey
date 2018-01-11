@@ -9,6 +9,10 @@ using System.Net;
 
 namespace Monkey.Filters.ModelValidation
 {
+    /// <summary>
+    ///     If use jQuery Microsoft.jQuery.Unobtrusive.Validation for Front-end, Don't use this
+    ///     filter to validate ModelState from Ajax
+    /// </summary>
     public class AjaxModelValidationActionFilter : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
