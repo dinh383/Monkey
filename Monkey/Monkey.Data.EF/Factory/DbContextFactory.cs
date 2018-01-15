@@ -20,6 +20,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Monkey.Core.Configs;
 using Puppy.Core.ConfigUtils;
@@ -30,22 +31,28 @@ namespace Monkey.Data.EF.Factory
     {
         public DbContext CreateDbContext(string[] args)
         {
-            return new DbContext(GetDbContextBuilder().Options);
+            var builder = new DbContextOptionsBuilder<DbContext>();
+
+            builder.UseSqlServer(GetConnectionString(), ConfigOptionBuilder);
+
+            return new DbContext(builder.Options);
         }
 
-        public static DbContextOptionsBuilder<DbContext> GetDbContextBuilder(DbContextOptionsBuilder<DbContext> builder = null)
+        public static DbContextOptionsBuilder GetDbContextBuilder(DbContextOptionsBuilder builder = null)
         {
-            builder = builder ?? new DbContextOptionsBuilder<DbContext>();
+            builder = builder ?? new DbContextOptionsBuilder();
 
-            builder.UseSqlServer(GetConnectionString(), optionsBuilder =>
-            {
-                optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName());
-
-                // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
-                //optionsBuilder.UseRowNumberForPaging();
-            });
+            builder.UseSqlServer(GetConnectionString(), ConfigOptionBuilder);
 
             return builder;
+        }
+
+        public static void ConfigOptionBuilder(SqlServerDbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.MigrationsAssembly(GetMigrationAssemblyName());
+
+            // Enable use Row No for Paging is needed unless you are on MSSQL 2012 or higher
+            optionsBuilder.UseRowNumberForPaging(useRowNumberForPaging: false);
         }
 
         /// <summary>

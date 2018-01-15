@@ -42,9 +42,7 @@ namespace Monkey.Data.EF.Factory
         /// <returns></returns>
         public static DbContextOptionsBuilder UseSqlServer(this DbContextOptionsBuilder builder)
         {
-            var dbContextOptionsBuilder = (DbContextOptionsBuilder<DbContext>)builder;
-
-            DbContextFactory.GetDbContextBuilder(dbContextOptionsBuilder);
+            DbContextFactory.GetDbContextBuilder(builder);
 
             return builder;
         }
