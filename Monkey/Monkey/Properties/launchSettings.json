@@ -13,7 +13,8 @@
       "launchUrl": "http://localhost:7777",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_preventHostingStartup": "True"
       }
     },
     "Development": {
@@ -21,7 +22,8 @@
       "launchBrowser": true,
       "launchUrl": "http://localhost:7777",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_preventHostingStartup": "True"
       },
       "applicationUrl": "http://localhost:7777/"
     },
@@ -30,7 +32,8 @@
       "launchBrowser": true,
       "launchUrl": "http://localhost:7778",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Staging"
+        "ASPNETCORE_ENVIRONMENT": "Staging",
+        "ASPNETCORE_preventHostingStartup": "True"
       },
       "applicationUrl": "http://localhost:7778/"
     },
@@ -39,7 +42,8 @@
       "launchBrowser": true,
       "launchUrl": "http://localhost:7779",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "ASPNETCORE_preventHostingStartup": "True"
       },
       "applicationUrl": "http://localhost:7779/"
     }

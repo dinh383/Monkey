@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,6 +93,10 @@ namespace Monkey
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
+            // Disable Application Insight
+            var telemetryConfiguration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+            telemetryConfiguration.DisableTelemetry = true;
+
             // [Important] The order of middleware very important for request and response handle!
             // Don't mad it !!!
 
