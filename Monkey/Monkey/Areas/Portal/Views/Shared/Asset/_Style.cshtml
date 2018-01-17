@@ -7,7 +7,7 @@
 
 <!-- Site stylesheets -->
 <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/site.min.css")">
-<link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/Monkey.min.css")">
+<link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent($"~/portal/css/Monkey.min.css?v={SystemConfig.SystemVersion.ToUnixTimeSeconds()}")">
 
 <!-- Skin -->
 <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent($"~/portal/css/skins/Monkey-skin.min.css?v={SystemConfig.SystemVersion.ToUnixTimeSeconds()}")" />

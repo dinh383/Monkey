@@ -151,7 +151,7 @@
 
 @if (EnvironmentHelper.IsDevelopment())
 {
-    <script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.js")"></script>
+    <script type="text/ecmascript" src="@Url.AbsoluteContent($"~/portal/js/Monkey.js?v={SystemConfig.SystemVersion.ToUnixTimeSeconds()}")"></script>
 }
 else
 {
