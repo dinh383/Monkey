@@ -1,4 +1,6 @@
-﻿<!-- Bootstrap -->
+﻿@using Monkey.Core.Configs
+
+<!-- Bootstrap -->
 <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/vendor/bootstrap/bootstrap-v3.min.css")">
 <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/bootstrap.min.css")">
 <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/bootstrap-extend.min.css")">
@@ -8,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/Monkey.min.css")">
 
 <!-- Skin -->
-<link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/css/skins/Monkey-skin.min.css")" />
+<link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent($"~/portal/css/skins/Monkey-skin.min.css?v={SystemConfig.SystemVersion.ToUnixTimeSeconds()}")" />
 
 <!-- Necessary plugin stylesheets -->
 <link rel="stylesheet" type="text/css" href="@Url.AbsoluteContent("~/portal/vendor/animsition/animsition.min.css")">

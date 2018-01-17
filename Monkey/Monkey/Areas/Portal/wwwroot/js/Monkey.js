@@ -432,6 +432,38 @@
         });
     },
 
+    initDropify: function () {
+        var $dropifys = $('[data-plugin="dropify"]');
+
+        $.each($dropifys, function (i, ele) {
+            var dropifyEvent = $(ele).dropify();
+
+            var dropifyData = dropifyEvent.data('dropify');
+
+            dropifyData.destroy();
+
+            dropifyData.settings.messages = {
+                'default': $(ele).data("message-default") || 'Drag and drop a file here or click',
+                'replace': $(ele).data("message-error") || 'Drag and drop or click to replace',
+                'remove': $(ele).data("message-remove") || 'Remove',
+                'error': $(ele).data("message-replace") || 'Ooops, something wrong happended.'
+            }
+
+            dropifyData.settings.tpl = {
+                wrap: '<div class="dropify-wrapper"></div>',
+                loader: '<div class="dropify-loader"></div>',
+                message: '<div class="dropify-message"><span class="file-icon" /> <p>' + dropifyData.settings.messages.default + '</p></div>',
+                preview: '<div class="dropify-preview"><span class="dropify-render"></span><div class="dropify-infos"><div class="dropify-infos-inner"><p class="dropify-infos-message">' + dropifyData.settings.messages.replace + '</p></div></div></div>',
+                filename: '<p class="dropify-filename"><span class="dropify-filename-inner"></span></p>',
+                clearButton: '<button type="button" class="dropify-clear">' + dropifyData.settings.messages.remove + '</button>',
+                errorLine: '<p class="dropify-error">' + dropifyData.settings.messages.error + '</p>',
+                errorsContainer: '<div class="dropify-errors-container"><ul></ul></div>'
+            }
+
+            dropifyData.init();
+        });
+    },
+
     // Remove dropify image (preview image) and mark is remove previous for the selector
     clearDropify: function (dropifySelector, isRemovePreviousSelector, previewUrlSelector, callback) {
         debugger;
@@ -479,6 +511,76 @@
                 format: window.Monkey.constant.momentDateTimeFormat
             });
         });
+    },
+
+    initTimePicker: function () {
+        var $dateTimePickers = $('[data-plugin="time-picker"]');
+
+        $.each($dateTimePickers, function (i, ele) {
+            $(ele).datetimepicker({
+                format: window.EatUp.constant.momentTimeFormat
+            });
+        });
+    },
+
+    dataTableAmountRender: function (data, type, row) {
+        return Monkey.abbreviateNumber(data);
+    },
+
+    dataTableImageRender: function (data, type, row) {
+        if (data && data.trim().length > 0) {
+            return "<img class='menu-img' src=" + data + " />";
+        }
+        return "";
+    },
+
+    dataTableDrawCallBack: function (oSettings) {
+        Monkey.initToolTip();
+        Monkey.initConfirmDialog();
+    },
+
+    dataTableResponsiveCallBack: function (e, datatable, columns) {
+        var count = columns.reduce(function (a, b) {
+            return b === false ? a + 1 : a;
+        }, 0);
+
+        var $table = $("#" + e.currentTarget.id);
+
+        var totalHeaderRow = $table.find("thead").find("tr");
+
+        var lastHeaderRow = totalHeaderRow[totalHeaderRow.length - 1];
+
+        if (count > 0) {
+            $(lastHeaderRow).addClass("hidden");
+        } else {
+            $(lastHeaderRow).removeClass("hidden");
+        }
+    },
+
+    resetFormValidation: function (formSelector) {
+        formSelector = formSelector || $("form")[0];
+
+        event.preventDefault();
+
+        var $form = $(formSelector);
+
+        $form.validate().resetForm();
+
+        $form.valid();
+    },
+
+    initAutoResetFormValidation: function () {
+        var $resetFormValidations = $('[data-reset-form-validation="true"]');
+
+        $.each($resetFormValidations, function (i, ele) {
+            $(ele).on('keyup blur', function () {
+                var $form = $($(ele).closest("form")[0]);
+
+                var formSelector = $form.attr('id') || $form.attr('class');
+
+                Monkey.resetFormValidation(formSelector);
+            });
+        });
     }
 };
 
@@ -492,6 +594,9 @@ $(document).ready(function () {
     Monkey.initAutoBindColorDominant();
     Monkey.initAutoDecimalFormat();
     Monkey.initDateTimePicker();
+    Monkey.initTimePicker();
+    Monkey.initDropify();
+    Monkey.initAutoResetFormValidation();
 });
 
 String.prototype.preventInjection = function preventInjection() {

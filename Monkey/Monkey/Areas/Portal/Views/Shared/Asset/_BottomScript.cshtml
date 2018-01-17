@@ -1,6 +1,7 @@
 ﻿@using EnumsNET
 @using Monkey.Extensions
 @using Puppy.Core.EnvironmentUtils
+@using Monkey.Core.Configs
 
 <!-- Core -->
 <script type="text/javascript" src="@Url.AbsoluteContent("~/portal/vendor/babel-external-helpers/babel-external-helpers.js")"></script>
@@ -154,7 +155,7 @@
 }
 else
 {
-    <script type="text/ecmascript" src="@Url.AbsoluteContent("~/portal/js/Monkey.min.js")"></script>
+    <script type="text/ecmascript" src="@Url.AbsoluteContent($"~/portal/js/Monkey.min.js?v={SystemConfig.SystemVersion.ToUnixTimeSeconds()}")"></script>
 }
 
 <script type="text/javascript">
