@@ -162,7 +162,7 @@ namespace Monkey.Extensions
                         // Portal Area
 
                         // Redirect to error page
-                        context.HttpContext.Response.Redirect("/");
+                        context.HttpContext.Response.Redirect($"{portalAreaRootPath}/{Areas.Portal.Controllers.HomeController.OopsEndpoint}/{context.HttpContext.Response.StatusCode}");
                     }
                     else
                     {
