@@ -129,6 +129,7 @@ namespace Monkey.Business.Logic.Auth
 
             // GetElastic logged in user
             var loggedInUserModel = user.MapTo<LoggedInUserModel>();
+            loggedInUserModel.ClientId = clientId;
 
             // Generate and save refresh token
             refreshToken = GenerateRefreshToken(loggedInUserModel.Id, loggedInUserModel.ClientId);
