@@ -25,7 +25,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Monkey.Core.Configs.Models;
 using Puppy.Core.ConfigUtils;
-using Puppy.DependencyInjection;
 using System;
 
 namespace Monkey.Core.Configs
@@ -53,7 +52,7 @@ namespace Monkey.Core.Configs
             // of Injection I assumption configuration is singleton and use Statics class to do it.
             // Keep Simple everything Possible.
 
-            IConfigurationRoot configurationRoot = app.Resolve<IConfigurationRoot>();
+            IConfigurationRoot configurationRoot = app.ApplicationServices.GetService<IConfigurationRoot>();
 
             ChangeToken.OnChange(configurationRoot.GetReloadToken, () =>
             {

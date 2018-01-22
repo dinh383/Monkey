@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Monkey.Auth.Helpers;
 using Monkey.Auth.Interfaces;
 using Monkey.Core;
 using Monkey.Core.Constants.Auth;
 using Monkey.Core.Models.Auth;
-using Puppy.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -16,7 +16,7 @@ namespace Monkey.Auth.Filters
         {
             try
             {
-                IAuthenticationService authenticationService = AuthConfig.AppBuilder.Resolve<IAuthenticationService>();
+                IAuthenticationService authenticationService = AuthConfig.AppBuilder.ApplicationServices.GetService<IAuthenticationService>();
 
                 // Access Token found in Header.
                 if (TokenHelper.IsHaveAccessTokenInHeader(httpContext.Request))
