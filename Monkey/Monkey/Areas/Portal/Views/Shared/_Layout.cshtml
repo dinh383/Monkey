@@ -12,7 +12,7 @@
     }
     @await RenderSectionAsync("Styles", required: false).ConfigureAwait(true)
 </head>
-<body class="animsition site-navbar-small">
+<body class="animsition site-navbar-small site-menubar-keep site-menubar-fold">
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -21,9 +21,9 @@
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_Menubar.cshtml").ConfigureAwait(true);
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_GirdMenu.cshtml").ConfigureAwait(true);
     }
-<div class="page">
-    @RenderBody()
-</div>
+    <div class="page">
+        @RenderBody()
+    </div>
     @{
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Menu/_Footer.cshtml").ConfigureAwait(true);
         await Html.RenderPartialAsync("~/Areas/Portal/Views/Shared/Asset/_BottomScript.cshtml").ConfigureAwait(true);

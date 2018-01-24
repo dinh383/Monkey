@@ -581,6 +581,38 @@
                 Monkey.resetFormValidation(formSelector);
             });
         });
+    },
+
+    GenerateGuid: function () {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g,
+            c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    },
+
+    initialMenubar: function () {
+        if (typeof (Storage) !== "undefined") {
+
+            $("#toggleMenubar").on("click", function () {
+                var isCollapsed = $("body").hasClass("site-menubar-fold");
+
+                if (isCollapsed === true) {
+                    localStorage.setItem("menu-bar-class", "site-menubar-unfold");
+                } else {
+                    localStorage.setItem("menu-bar-class", "site-menubar-fold");
+                }
+            });
+
+            if (localStorage.getItem("menu-bar-class")) {
+                $("body").removeClass("site-menubar-fold");
+
+                $("body").removeClass("site-menubar-unfold");
+
+                $("body").addClass(localStorage.getItem("menu-bar-class"));
+            }
+        } else {
+            // Do Nothing
+        }
     }
 };
 
@@ -597,6 +629,7 @@ $(document).ready(function () {
     Monkey.initTimePicker();
     Monkey.initDropify();
     Monkey.initAutoResetFormValidation();
+    Monkey.initialMenubar();
 });
 
 String.prototype.preventInjection = function preventInjection() {
