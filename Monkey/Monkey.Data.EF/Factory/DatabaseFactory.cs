@@ -18,6 +18,7 @@
 #endregion License
 
 using Microsoft.AspNetCore.Builder;
+using Monkey.Core.Configs;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
 using System;
@@ -29,12 +30,26 @@ namespace Monkey.Data.EF.Factory
     {
         public IServiceProvider MigrateDatabase(IServiceProvider services)
         {
-            return services.MigrateDatabase<IDbContext>();
+            services.MigrateDatabase<IDbContext>();
+
+            if (SystemConfig.IsUseLogDatabase)
+            {
+                services.MigrateDatabase<LogDbContext>();
+            }
+
+            return services;
         }
 
         public IApplicationBuilder MigrateDatabase(IApplicationBuilder app)
         {
-            return app.MigrateDatabase<IDbContext>();
+            app.MigrateDatabase<IDbContext>();
+
+            if (SystemConfig.IsUseLogDatabase)
+            {
+                app.MigrateDatabase<LogDbContext>();
+            }
+
+            return app;
         }
     }
 }

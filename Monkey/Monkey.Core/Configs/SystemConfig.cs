@@ -35,6 +35,13 @@ namespace Monkey.Core.Configs
         public static string DatabaseConnectionString { get; set; }
 
         /// <summary>
+        ///     Production, Staging will read from key Environment Name, else by MachineName 
+        /// </summary>
+        public static string LogDatabaseConnectionString { get; set; }
+
+        public static bool IsUseLogDatabase { get; set; }
+
+        /// <summary>
         ///     Folder Name of wwwroot, Areas and Areas name and request path Config 
         /// </summary>
         public static MvcPathConfigModel MvcPath { get; set; } = new MvcPathConfigModel();
@@ -58,9 +65,6 @@ namespace Monkey.Core.Configs
         /// </summary>
         public static SendGridConfigModel SendGrid { get; set; } = new SendGridConfigModel();
 
-        /// <summary>
-        ///     [Auto Reload] 
-        /// </summary>
         public static string SystemDomainUrl { get; set; }
     }
 }

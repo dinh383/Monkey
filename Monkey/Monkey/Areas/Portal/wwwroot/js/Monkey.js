@@ -518,7 +518,7 @@
 
         $.each($dateTimePickers, function (i, ele) {
             $(ele).datetimepicker({
-                format: window.EatUp.constant.momentTimeFormat
+                format: window.Monkey.constant.momentTimeFormat
             });
         });
     },

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Monkey.Core.Entities.DataLog;
 using Monkey.Data.EF.Factory;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
@@ -6,20 +7,22 @@ using Puppy.EF.Maps;
 
 namespace Monkey.Data.EF
 {
-    [PerResolveDependency(ServiceType = typeof(IDbContext))]
-    public sealed partial class DbContext : BaseDbContext, IDbContext
+    [PerResolveDependency(ServiceType = typeof(ILogDbContext))]
+    public sealed class LogDbContext : BaseDbContext, ILogDbContext
     {
         /// <summary>
         ///     Set CMD timeout is 20 minutes 
         /// </summary>
         public readonly int CmdTimeoutInSecond = 12000;
 
-        public DbContext()
+        public DbSet<DataLogEntity> DataLogs { get; set; }
+
+        public LogDbContext()
         {
             Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
 
-        public DbContext(DbContextOptions<DbContext> options) : base(options)
+        public LogDbContext(DbContextOptions<LogDbContext> options) : base(options)
         {
             Database.SetCommandTimeout(CmdTimeoutInSecond);
         }
@@ -28,7 +31,7 @@ namespace Monkey.Data.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                DbContextFactory.GetDbContextBuilder(optionsBuilder);
+                LogDbContextFactory.GetLogDbContextBuilder(optionsBuilder);
             }
         }
 
@@ -38,8 +41,7 @@ namespace Monkey.Data.EF
 
             // [Important] Keep Under Base For Override And Make End Result
 
-            // Scan and apply Config/Mapping for Tables/Entities (from folder "Map")
-            builder.AddConfigFromAssembly<DbContext>(DbContextFactory.GetMigrationAssembly());
+            builder.AddConfigFromAssembly<LogDbContext>(DbContextFactory.GetMigrationAssembly());
 
             // Set Delete Behavior as Restrict in Relationship
             builder.DisableCascadingDelete();

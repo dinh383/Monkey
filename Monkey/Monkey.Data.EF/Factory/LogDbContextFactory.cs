@@ -5,12 +5,12 @@
 //     <Author> Top Nguyen (http://topnguyen.net) </Author>
 //     <Project> Monkey.Data.EF.Factory </Project>
 //     <File> 
-//         <Name> DbContextFactory.cs </Name>
+//         <Name> LogDbContextFactory.cs </Name>
 //         <Created> 28 03 2017 05:50:31 PM </Created>
 //         <Key> 0679F181-B40B-49BF-A6A6-1AFA54A83376 </Key>
 //     </File>
 //     <Summary>
-//         DbContextFactory
+//         LogDbContextFactory
 //     </Summary>
 // </Auto-generated>
 //------------------------------------------------------------------------------------------------
@@ -27,18 +27,18 @@ using Puppy.Core.ConfigUtils;
 
 namespace Monkey.Data.EF.Factory
 {
-    public class DbContextFactory : IDesignTimeDbContextFactory<DbContext>
+    public class LogDbContextFactory : IDesignTimeDbContextFactory<LogDbContext>
     {
-        public DbContext CreateDbContext(string[] args)
+        public LogDbContext CreateDbContext(string[] args)
         {
-            var builder = new DbContextOptionsBuilder<DbContext>();
+            var builder = new DbContextOptionsBuilder<LogDbContext>();
 
             builder.UseSqlServer(GetConnectionString(), ConfigOptionBuilder);
 
-            return new DbContext(builder.Options);
+            return new LogDbContext(builder.Options);
         }
 
-        public static DbContextOptionsBuilder GetDbContextBuilder(DbContextOptionsBuilder builder = null)
+        public static DbContextOptionsBuilder GetLogDbContextBuilder(DbContextOptionsBuilder builder = null)
         {
             builder = builder ?? new DbContextOptionsBuilder();
 
@@ -61,13 +61,13 @@ namespace Monkey.Data.EF.Factory
         /// <returns></returns>
         public static string GetConnectionString()
         {
-            if (!string.IsNullOrWhiteSpace(SystemConfig.DatabaseConnectionString))
+            if (!string.IsNullOrWhiteSpace(SystemConfig.LogDatabaseConnectionString))
             {
-                return SystemConfig.DatabaseConnectionString;
+                return SystemConfig.LogDatabaseConnectionString;
             }
 
             IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile(Puppy.Core.Constants.Configuration.AppSettingsJsonFileName, false, true).Build();
-            var connectionString = config.GetValueByMachineAndEnv<string>(Puppy.Core.Constants.Configuration.ConnectionStringsConfigSection);
+            var connectionString = config.GetValueByMachineAndEnv<string>("LogConnectionStrings");
             return connectionString;
         }
 

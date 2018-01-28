@@ -4,15 +4,9 @@
         <name>Monkey</name>
     </assembly>
     <members>
-        <member name="M:Monkey.Areas.Api.Controllers.LogController.GetActivityLog(Monkey.Core.Models.PagedCollectionParametersModel)">
+        <member name="M:Monkey.Areas.Api.Controllers.LogController.Get(Monkey.Core.Models.PagedCollectionParametersModel)">
             <summary>
-                View Data Change Log 
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Monkey.Areas.Api.Controllers.LogController.GetExceptionLog(Monkey.Core.Models.PagedCollectionParametersModel)">
-            <summary>
-                View Exception Log 
+                View Logs 
             </summary>
             <param name="model"></param>
             <returns></returns>

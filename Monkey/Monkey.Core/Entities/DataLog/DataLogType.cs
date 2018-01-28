@@ -1,4 +1,4 @@
-﻿namespace Monkey.Core.Entities.Log
+﻿namespace Monkey.Core.Entities.DataLog
 {
     public enum DataLogType
     {

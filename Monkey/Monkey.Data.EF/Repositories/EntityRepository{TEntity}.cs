@@ -23,10 +23,11 @@ using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Monkey.Core;
-using Monkey.Core.Entities.Log;
-using Newtonsoft.Json;
+using Monkey.Core.Configs;
+using Monkey.Core.Entities.DataLog;
 using Puppy.Core.DateTimeUtils;
 using Puppy.Core.ObjectUtils;
+using Puppy.DependencyInjection;
 using Puppy.EF;
 using Puppy.EF.Interfaces;
 using Puppy.EF.Repositories;
@@ -54,7 +55,10 @@ namespace Monkey.Data.EF.Repositories
 
             int result = DbContext.SaveChanges();
 
-            SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            if (SystemConfig.IsUseLogDatabase)
+            {
+                SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            }
 
             return result;
         }
@@ -67,7 +71,10 @@ namespace Monkey.Data.EF.Repositories
 
             int result = DbContext.SaveChanges(acceptAllChangesOnSuccess);
 
-            SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            if (SystemConfig.IsUseLogDatabase)
+            {
+                SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            }
 
             return result;
         }
@@ -80,7 +87,10 @@ namespace Monkey.Data.EF.Repositories
 
             var result = await DbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(true);
 
-            SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            if (SystemConfig.IsUseLogDatabase)
+            {
+                SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            }
 
             return result;
         }
@@ -93,7 +103,10 @@ namespace Monkey.Data.EF.Repositories
 
             var result = await DbContext.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken).ConfigureAwait(true);
 
-            SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            if (SystemConfig.IsUseLogDatabase)
+            {
+                SaveDataLogJob(listEntryAdded, listEntryModified, listEntryDeleted);
+            }
 
             return result;
         }
@@ -169,13 +182,15 @@ namespace Monkey.Data.EF.Repositories
 
                     var dataLog = NewDataLog(entryAdded);
 
+                    dataLog.DataJson = entity.PreventReferenceLoop().ToJsonString();
+                    dataLog.DataCreatedTime = entity.CreatedTime;
+                    dataLog.DataCreatedBy = entity.CreatedBy;
+
                     dataLog.LogType = DataLogType.Added;
 
-                    dataLog.Data = entity.PreventReferenceLoop();
-
-                    dataLog.CreatedTime = entity.CreatedTime;
-
-                    dataLog.CreatedBy = entity.CreatedBy;
+                    // Standardize Data Log
+                    dataLog.LogCreatedTime = dateTimeNow;
+                    dataLog.LogCreatedBy = LoggedInUser.Current?.Id;
 
                     listDataLog.Add(dataLog);
                 }
@@ -186,34 +201,32 @@ namespace Monkey.Data.EF.Repositories
             {
                 var listModifiedDataLog = listEntryModified.Select(NewDataLog).ToList();
 
-                var listModifiedEntityId = listModifiedDataLog.Select(x => x.Id).ToList();
+                var listModifiedEntityId = listModifiedDataLog.Select(x => x.DataId).ToList();
 
                 var listEntityAddedModified = Get(x => listModifiedEntityId.Contains(x.Id), true).ToList();
 
                 foreach (var dataLog in listModifiedDataLog)
                 {
-                    var entity = listEntityAddedModified.Single(x => x.Id == dataLog.Id);
+                    var entity = listEntityAddedModified.Single(x => x.Id == dataLog.DataId);
 
-                    dataLog.Id = entity.Id;
+                    dataLog.DataId = entity.Id;
+                    dataLog.DataGlobalId = entity.GlobalId;
+                    dataLog.DataJson = entity.PreventReferenceLoop().ToJsonString();
 
-                    dataLog.GlobalId = entity.GlobalId;
+                    dataLog.DataCreatedTime = entity.CreatedTime;
+                    dataLog.DataCreatedBy = entity.CreatedBy;
+
+                    dataLog.DataLastUpdatedTime = entity.LastUpdatedTime;
+                    dataLog.DataLastUpdatedBy = entity.LastUpdatedBy;
+
+                    dataLog.DataDeletedTime = entity.DeletedTime;
+                    dataLog.DataDeletedBy = entity.DeletedBy;
 
                     dataLog.LogType = entity.DeletedTime == null ? DataLogType.Modified : DataLogType.SoftDeleted;
 
-                    dataLog.Data = entity.PreventReferenceLoop();
-
-                    if (dataLog.LogType == DataLogType.Modified)
-                    {
-                        dataLog.LastUpdatedTime = entity.LastUpdatedTime;
-
-                        dataLog.LastUpdatedBy = entity.LastUpdatedBy;
-                    }
-                    else
-                    {
-                        dataLog.DeletedTime = entity.DeletedTime ?? entity.LastUpdatedTime;
-
-                        dataLog.DeletedBy = entity.DeletedBy ?? entity.LastUpdatedBy;
-                    }
+                    // Standardize Data Log
+                    dataLog.LogCreatedTime = dateTimeNow;
+                    dataLog.LogCreatedBy = LoggedInUser.Current?.Id;
 
                     listDataLog.Add(dataLog);
                 }
@@ -224,29 +237,23 @@ namespace Monkey.Data.EF.Repositories
             {
                 var dataLog = NewDataLog(entryDeleted);
 
+                dataLog.DataJson = null;
+
+                dataLog.DataDeletedTime = dataLog.DataDeletedTime ?? dateTimeNow;  // Keep source DeletedTime/now due to database data row gone.
+
+                dataLog.DataDeletedBy = dataLog.DataDeletedBy;  // Keep source DeletedBy due to database data row gone.
+
                 dataLog.LogType = DataLogType.PhysicalDeleted;
 
-                dataLog.Data = null;
-
-                dataLog.DeletedTime = dataLog.DeletedTime ?? dateTimeNow;  // Keep source DeletedTime/now due to database data row gone.
-
-                dataLog.DeletedBy = dataLog.DeletedBy;  // Keep source DeletedBy due to database data row gone.
+                // Standardize Data Log
+                dataLog.LogCreatedTime = dateTimeNow;
+                dataLog.LogCreatedBy = LoggedInUser.Current?.Id;
 
                 listDataLog.Add(dataLog);
             }
 
             // 3. Call Background Job to Save log activities
             BackgroundJob.Enqueue(() => SaveDataLog(listDataLog.ToArray()));
-        }
-
-        public void SaveDataLog(params DataLogEntity[] dataLogs)
-        {
-            foreach (var activityLog in dataLogs)
-            {
-                var activityLogAsJson = JsonConvert.SerializeObject(activityLog, Puppy.Core.Constants.StandardFormat.JsonSerializerSettings);
-
-                Puppy.Logger.Log.Warning(activityLogAsJson, "DataChange");
-            }
         }
 
         protected static DataLogEntity NewDataLog(EntityEntry entry)
@@ -262,26 +269,37 @@ namespace Monkey.Data.EF.Repositories
 
             DataLogEntity dataLog = new DataLogEntity
             {
-                HttpContextInfo = httpContextInfoModel,
+                LogHttpContextInfoJson = httpContextInfoModel?.ToString(),
 
-                Group = entry.Context.Model.FindEntityType(typeof(TEntity)).SqlServer().TableName,
-
-                Data = null,
-
-                Id = entity.Id,
-
-                GlobalId = entity.GlobalId,
-
-                CreatedTime = entity.CreatedTime,
-                CreatedBy = entity.CreatedBy,
-
-                LastUpdatedTime = entity.LastUpdatedTime,
-                LastUpdatedBy = entity.LastUpdatedBy,
-
-                DeletedTime = entity.DeletedTime,
-                DeletedBy = entity.DeletedBy
+                DataGroup = entry.Context.Model.FindEntityType(typeof(TEntity)).SqlServer().TableName,
+                DataJson = null,
+                DataId = entity.Id,
+                DataGlobalId = entity.GlobalId,
+                DataCreatedTime = entity.CreatedTime,
+                DataCreatedBy = entity.CreatedBy,
+                DataLastUpdatedTime = entity.LastUpdatedTime,
+                DataLastUpdatedBy = entity.LastUpdatedBy,
+                DataDeletedTime = entity.DeletedTime,
+                DataDeletedBy = entity.DeletedBy
             };
             return dataLog;
+        }
+
+        public void SaveDataLog(params DataLogEntity[] dataLogs)
+        {
+            if (!SystemConfig.IsUseLogDatabase)
+            {
+                return;
+            }
+
+            ILogDbContext logDbContext = Resolver.Resolve<ILogDbContext>();
+
+            foreach (var dataLog in dataLogs)
+            {
+                logDbContext.Add(dataLog);
+            }
+
+            logDbContext.SaveChanges();
         }
 
         #endregion

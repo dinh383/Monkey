@@ -248,7 +248,7 @@
 
     (function(support) {
       /**
-       * Borrowed from EatUp carousel
+       * Borrowed from Monkey carousel
        **/
       'use strict';
 

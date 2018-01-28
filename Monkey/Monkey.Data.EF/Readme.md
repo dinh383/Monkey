@@ -1,7 +1,7 @@
 ﻿![Logo](favicon.ico)
-# Eatup.Data.EF
+# Monkey.Data.EF
 > Project Created by [**Top Nguyen**](http://topnguyen.net)
-- This project is implementation of [`Eatup.Data`](../Eatup.Data/readme.md)
+- This project is implementation of [`Monkey.Data`](../Monkey.Data/readme.md)
 - Use [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/index)
   > EF Core is re-build, re-design version of Entity Framework. So, some function will not have and extra more feature in Core.
 

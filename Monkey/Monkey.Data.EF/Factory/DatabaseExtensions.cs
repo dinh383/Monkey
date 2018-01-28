@@ -17,8 +17,8 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Monkey.Core.Configs;
 
 namespace Monkey.Data.EF.Factory
 {
@@ -30,21 +30,14 @@ namespace Monkey.Data.EF.Factory
         /// <param name="services"></param>
         public static IServiceCollection AddDatabase(this IServiceCollection services)
         {
-            services.AddDbContext<DbContext>(builder => builder.UseSqlServer());
+            services.AddDbContext<DbContext>(builder => DbContextFactory.GetDbContextBuilder(builder));
+
+            if (SystemConfig.IsUseLogDatabase)
+            {
+                services.AddDbContext<LogDbContext>(builder => LogDbContextFactory.GetLogDbContextBuilder(builder));
+            }
 
             return services;
-        }
-
-        /// <summary>
-        ///     [Database] Use SQL Server with Migration and Use row no for paging 
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public static DbContextOptionsBuilder UseSqlServer(this DbContextOptionsBuilder builder)
-        {
-            DbContextFactory.GetDbContextBuilder(builder);
-
-            return builder;
         }
     }
 }

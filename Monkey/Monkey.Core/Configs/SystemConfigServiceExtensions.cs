@@ -26,6 +26,10 @@ using Microsoft.Extensions.Primitives;
 using Monkey.Core.Configs.Models;
 using Puppy.Core.ConfigUtils;
 using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Puppy.Core.StringUtils;
+using Puppy.Web.HttpUtils;
 
 namespace Monkey.Core.Configs
 {
@@ -69,7 +73,11 @@ namespace Monkey.Core.Configs
         public static void BuildSystemConfig(IConfiguration configuration)
         {
             // Connection String
+            // Connection String
             SystemConfig.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
+            SystemConfig.LogDatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("LogConnectionStrings");
+            SystemConfig.IsUseLogDatabase = configuration.GetValueByMachineAndEnv<bool>(nameof(SystemConfig.IsUseLogDatabase));
+
             SystemConfig.MvcPath = configuration.GetSection<MvcPathConfigModel>(nameof(SystemConfig.MvcPath)) ?? new MvcPathConfigModel();
 
             // Time Zone
@@ -79,7 +87,26 @@ namespace Monkey.Core.Configs
             // Others
             SystemConfig.PagedCollectionParameters = configuration.GetSection<PagedCollectionParametersConfigModel>(nameof(SystemConfig.PagedCollectionParameters)) ?? new PagedCollectionParametersConfigModel();
             SystemConfig.SendGrid = configuration.GetSection<SendGridConfigModel>(nameof(SystemConfig.SendGrid)) ?? new SendGridConfigModel();
-            SystemConfig.SystemDomainUrl = configuration.GetValueByMachineAndEnv<string>(nameof(SystemConfig.SystemDomainUrl));
+        }
+    }
+
+    public class SystemDomainMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public SystemDomainMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public Task Invoke(HttpContext context)
+        {
+            SystemConfig.SystemDomainUrl = context.Request.GetDomain();
+
+            // Make sure System Domain Url not end by /
+            SystemConfig.SystemDomainUrl = SystemConfig.SystemDomainUrl?.CleanUrlPath();
+
+            return _next(context);
         }
     }
 }
