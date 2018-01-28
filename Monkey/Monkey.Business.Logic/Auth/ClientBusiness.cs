@@ -18,6 +18,7 @@
 #endregion License
 
 using Monkey.Business.Auth;
+using Monkey.Core;
 using Monkey.Core.Entities.Auth;
 using Monkey.Core.Exceptions;
 using Monkey.Core.Models.Auth;
@@ -32,7 +33,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Monkey.Core;
 
 namespace Monkey.Business.Logic.Auth
 {

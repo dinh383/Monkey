@@ -19,17 +19,17 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Monkey.Core.Configs.Models;
 using Puppy.Core.ConfigUtils;
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Puppy.Core.StringUtils;
 using Puppy.Web.HttpUtils;
+using System;
+using System.Threading.Tasks;
 
 namespace Monkey.Core.Configs
 {
@@ -64,6 +64,8 @@ namespace Monkey.Core.Configs
                 SystemConfigurationHelper.BuildSystemConfig(configurationRoot);
             });
 
+            app.UseMiddleware<SystemDomainMiddleware>();
+
             return app;
         }
     }
@@ -72,8 +74,7 @@ namespace Monkey.Core.Configs
     {
         public static void BuildSystemConfig(IConfiguration configuration)
         {
-            // Connection String
-            // Connection String
+            // Connection String Connection String
             SystemConfig.DatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("ConnectionStrings");
             SystemConfig.LogDatabaseConnectionString = configuration.GetValueByMachineAndEnv<string>("LogConnectionStrings");
             SystemConfig.IsUseLogDatabase = configuration.GetValueByMachineAndEnv<bool>(nameof(SystemConfig.IsUseLogDatabase));

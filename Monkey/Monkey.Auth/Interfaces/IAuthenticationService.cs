@@ -61,9 +61,8 @@ namespace Monkey.Auth.Interfaces
         Task SignInCookieAsync(HttpContext httpContext, AccessTokenModel accessTokenModel, CancellationToken cancellationToken = default);
 
         /// <summary>
-        ///     Get valid (not check expire) access token and get
-        ///     <see cref="LoggedInUserModel" /> data for LoggedInUser.Current, ClaimsPrincipal
-        ///     for HttpContext.User
+        ///     Get valid (not check expire) access token and get <see cref="LoggedInUserModel" />
+        ///     data for LoggedInUser.Current, ClaimsPrincipal for HttpContext.User
         /// </summary>
         /// <param name="httpContext">      </param>
         /// <param name="cancellationToken"></param>
