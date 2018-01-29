@@ -2,7 +2,7 @@
 using Monkey.Data.EF.Factory;
 using Puppy.DependencyInjection.Attributes;
 using Puppy.EF;
-using Puppy.EF.Maps;
+using Puppy.EF.Extensions;
 
 namespace Monkey.Data.EF
 {

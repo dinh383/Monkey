@@ -19,7 +19,7 @@
 
 namespace Monkey.Core.Entities
 {
-    public class Entity : Puppy.EF.Entity
+    public class Entity : Puppy.EF.Entities.Entity
     {
         public Entity()
         {

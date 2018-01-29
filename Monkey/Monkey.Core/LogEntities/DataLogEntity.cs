@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Monkey.Core.Entities.DataLog
+namespace Monkey.Core.LogEntities
 {
     public class DataLogEntity
     {

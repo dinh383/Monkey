@@ -19,7 +19,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Monkey.Core.Entities.DataLog;
+using Monkey.Core.LogEntities;
 using Puppy.EF.Maps;
 
 namespace Monkey.Data.EF.LogMap
