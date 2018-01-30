@@ -19,6 +19,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -26,9 +27,11 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Monkey.Binders;
 using Monkey.Core.Configs;
+using Monkey.Core.Localization;
 using Monkey.Core.Validators;
 using Monkey.Filters.Exception;
 using Monkey.Filters.ModelValidation;
@@ -37,6 +40,8 @@ using Puppy.DataTable;
 using Puppy.Web.Constants;
 using Puppy.Web.Middlewares;
 using Puppy.Web.Render;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -83,10 +88,30 @@ namespace Monkey.Extensions
                 .AddAntiforgeryToken()
 
                 // [DataTable]
-                .AddDataTable(configurationRoot)
+                .AddDataTable(configurationRoot, typeof(SharedResources))
 
                 // [Binders]
                 .AddDateTimeOffsetBinder()
+
+                // [Localizer]
+                .AddLocalization()
+                .Configure<RequestLocalizationOptions>(options =>
+                {
+                    options.DefaultRequestCulture = new RequestCulture(Core.Constants.Culture.Vietnamese);
+                    options.SupportedCultures = options.SupportedUICultures = new List<CultureInfo>
+                    {
+                        new CultureInfo(Core.Constants.Culture.Vietnamese),
+                        new CultureInfo(Core.Constants.Culture.English)
+                    };
+                })
+
+                // Area
+                .Configure<RazorViewEngineOptions>(options =>
+                {
+                    options.AreaViewLocationFormats.Clear();
+                    options.AreaViewLocationFormats.Add("/" + SystemConfig.MvcPath.AreasRootFolderName + "/{2}/Views/{1}/{0}.cshtml");
+                    options.AreaViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
+                })
 
                 // Setup Mvc
                 .AddMvc(options =>
@@ -105,16 +130,16 @@ namespace Monkey.Extensions
                     options.SerializerSettings.DateTimeZoneHandling = Puppy.Core.Constants.StandardFormat.JsonSerializerSettings.DateTimeZoneHandling;
                     options.SerializerSettings.DateFormatString = SystemConfig.SystemDateTimeFormat;
                 })
-                // [Validator] Model Validator, Must after "AddMvc"
-                .AddModelValidator();
 
-            // Setup Areas
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.AreaViewLocationFormats.Clear();
-                options.AreaViewLocationFormats.Add("/" + SystemConfig.MvcPath.AreasRootFolderName + "/{2}/Views/{1}/{0}.cshtml");
-                options.AreaViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
-            });
+                // [Validator] Model Validator, Must after "AddMvc"
+                .AddModelValidator()
+
+                // [Localizer]
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResources));
+                });
 
             return services;
         }
@@ -237,6 +262,19 @@ namespace Monkey.Extensions
                     });
                 }
             }
+
+            // [Localizer]
+            var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
+
+            // ADD Cookie
+            var cookieProvider = localizationOptions.RequestCultureProviders.OfType<CookieRequestCultureProvider>().First();
+            cookieProvider.CookieName = Core.Constants.Culture.CookieName;
+
+            // REMOVE Accept-Language
+            var acceptLanguageHeaderProvider = localizationOptions.RequestCultureProviders.OfType<AcceptLanguageHeaderRequestCultureProvider>().First();
+            localizationOptions.RequestCultureProviders.Remove(acceptLanguageHeaderProvider);
+
+            app.UseRequestLocalization(localizationOptions);
 
             // Config Global Route
             app.UseMvc(routes =>
