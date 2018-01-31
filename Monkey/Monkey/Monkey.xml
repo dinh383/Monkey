@@ -45,12 +45,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Monkey.Areas.Portal.Hubs.NotificationHub.SetUrl(Monkey.Core.Models.Notification.Portal.NotificationPortalModel)">
-            <summary>
-                Set URL for notification base on Type 
-            </summary>
-            <param name="notification"></param>
-        </member>
         <member name="M:Monkey.Extensions.MvcApiExtensions.AddMvcApi(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationRoot)">
             <summary>
                 [Mvc - API] Json, Xml serialize, area, response caching and filters 

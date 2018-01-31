@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Monkey.Core.Models.Notification.Portal;
 using Monkey.Service.User;
 using Puppy.DependencyInjection.Attributes;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace Monkey.Areas.Portal.Hubs
     {
         private readonly IUserService _userService;
 
-        public const string Url = "portal/notification-hub";
+        public const string Url = "hub/portal/notification";
         public const string RequestRefreshClientMethodName = "refreshNotification";
         public const string SetNotificationsClientMethodName = "setNotification";
 
@@ -50,23 +49,11 @@ namespace Monkey.Areas.Portal.Hubs
                 return;
             }
 
-            List<NotificationPortalModel> notifications = new List<NotificationPortalModel>();  // TODO Implement Later
+            object pagedCollectionNotifications = null;
 
-            foreach (var notification in notifications)
-            {
-                SetUrl(notification);
-            }
+            //var pagedCollectionNotifications = await _userService.GetNotificationsAsync(new PagedCollectionParametersModel { Skip = 0, Take = 10 }, true).ConfigureAwait(true);
 
-            await Clients.Client(connectionId).InvokeAsync(SetNotificationsClientMethodName, notifications).ConfigureAwait(true);
-        }
-
-        /// <summary>
-        ///     Set URL for notification base on Type 
-        /// </summary>
-        /// <param name="notification"></param>
-        private static void SetUrl(NotificationPortalModel notification)
-        {
-            // TODO Implement Later
+            await Clients.Client(connectionId).InvokeAsync(SetNotificationsClientMethodName, pagedCollectionNotifications).ConfigureAwait(true);
         }
     }
 }

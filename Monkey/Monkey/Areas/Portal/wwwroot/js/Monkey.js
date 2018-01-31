@@ -1,4 +1,6 @@
-﻿window.Monkey = {
+﻿'use strict';
+
+window.Monkey = {
     isDebug: true,
 
     constant: {
@@ -67,12 +69,12 @@
 
                         var data = JSON.parse(xhr.responseText);
                         if (data.code) {
-                            Monkey.notify("Error", data.message, "error");
+                            window.Monkey.notify("Error", data.message, "error");
                         } else {
-                            Monkey.notify("Error", "System error, please try again or contact administrator!", "error");
+                            window.Monkey.notify("Error", "System error, please try again or contact administrator!", "error");
                         }
                     } catch (e) {
-                        Monkey.notify("Error", "System error, please try again or contact administrator!", "error");
+                        window.Monkey.notify("Error", "System error, please try again or contact administrator!", "error");
                     }
                 }
             }
@@ -137,36 +139,35 @@
     notificationHub: {
         connection: null,
         connect: function () {
-            Monkey.notificationHub.connection = new signalR.HubConnection("/portal/notification-hub");
+            window.Monkey.notificationHub.connection = new signalR.HubConnection("/hub/portal/notification");
 
-            Monkey.notificationHub.connection
-                .on("refreshNotification",
-                () => {
-                    Monkey.notificationHub.refreshNotification();
-                });
+            window.Monkey.notificationHub.connection.on("refreshNotification", function () {
+                window.Monkey.notificationHub.refreshNotification();
+                return;
+            });
 
-            Monkey.notificationHub.connection
-                .on("setNotification",
-                notifications => {
-                    Monkey.notificationHub.setItems(notifications);
-                });
+            window.Monkey.notificationHub.connection.on("setNotification", function (notification) {
+                window.Monkey.notificationHub.setItems(notification);
+                return;
+            });
 
-            Monkey.notificationHub.connection
+            window.Monkey.notificationHub.connection
                 .start()
-                .then(() => {
+                .then(function () {
                     if (Monkey.isDebug === true) {
                         console.log("[Socket] connected to notification hub");
                     }
-                    Monkey.notificationHub.refreshNotification();
-                })
-                .catch(err => {
+                    window.Monkey.notificationHub.refreshNotification();
+                    return;
+                }).catch(function () {
                     if (Monkey.isDebug === true) {
-                        console.log(`[Socket] connection error: ${err}`);
+                        console.log('[Socket] connection error:' + err);
                     }
+                    return;
                 });
         },
         refreshNotification: function () {
-            Monkey.notificationHub.connection.invoke("GetAllAsync");
+            window.Monkey.notificationHub.connection.invoke("GetAllAsync");
             if (Monkey.isDebug === true) {
                 console.log("refresh notification");
             }
@@ -207,56 +208,75 @@
         },
         onOpenNotification: function () {
             setTimeout(function () {
-                Monkey.notificationHub.updateHeight();
-            }, 1);
-        },
-        updateTotal: function () {
-            var totalUnRead = 0;
+                window.Monkey.notificationHub.updateHeight();
 
-            $.each(Monkey.notificationHub.items,
-                function (index, data) {
-                    if (data.isRead === false) {
-                        totalUnRead++;
-                    }
-                });
-
-            Monkey.notificationHub.setTotal(totalUnRead);
+                window.Monkey.notificationHub.maskAllAsRead();
+            }, 10);
         },
-        getItemHtml: function (notification) {
-            var html = ` <a class="list-group-item dropdown-item notification-item" href="${notification.url}" role="menuitem">
-                            <div class="media">
-                                <div class="pr-10">
-                                    <i class="icon md-receipt bg-red-600 white icon-circle" aria-hidden="true"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">${notification.message}</h6>
-                                    <time class="media-meta" datetime="${notification.createdTime}">${Monkey.formatDateTime(notification.createdTime)}</time>
-                                </div>
-                            </div>
-                        </a>`;
+        getItemHtml: function (itemData) {
+            if (!itemData) {
+                return "";
+            }
+
+            var iconColorClass;
+
+            if (itemData.type === "Success") {
+                iconColorClass = "bg-green-600";
+            }
+            else if (itemData.type === "Warning") {
+                iconColorClass = "bg-orange-600";
+            } else if (itemData.type === "Error") {
+                iconColorClass = "bg-red-600";
+            }
+            else if (itemData.type === "Critical") {
+                iconColorClass = "bg-purple-600";
+            } else {
+                iconColorClass = "bg-blue-600";
+            }
+
+            var html =
+                '<a class="list-group-item dropdown-item notification-item" href="' + itemData.url + '" role="menuitem">'
+                + '<div class="media">'
+                + '    <div class="pr-10">'
+                + '        <i class="icon md-receipt ' + iconColorClass + ' white icon-circle verical-icon-center" aria-hidden="true"></i>'
+                + '    </div>'
+                + '    <div class="media-body">'
+                + '       <h6 class="media-heading notification-title">' + itemData.message + '</h6>'
+                + '      <time class="media-meta" datetime="${itemData.createdTime}">' + window.Monkey.formatDateTime(itemData.createdTime) + '</time>'
+                + '    </div>'
+                + '</div>'
+                + '</a>';
 
             return html;
         },
-        items: [],
-        setItems: function (notifications) {
+        data: {},
+        setItems: function (notification) {
+            window.Monkey.notificationHub.data = notification;
+
             $("#notification-list").empty();
 
-            for (var i = 0; i < notifications.length; i++) {
-                Monkey.notificationHub.addItem(notifications[i]);
+            for (var i = 0; i < notification.items.length; i++) {
+                var html = window.Monkey.notificationHub.getItemHtml(notification.items[i]);
+
+                $("#notification-list").append($(html));
             }
 
-            Monkey.notificationHub.updateHeight();
+            window.Monkey.notificationHub.setTotal(notification.TotalUnRead);
+
+            window.Monkey.notificationHub.updateHeight();
         },
-        addItem: function (notification) {
-            Monkey.notificationHub.items.push(notification);
+        maskAllAsRead: function () {
+            var endpoint = window.Endpoint.notification.maskAllAsReadEndpoint;
+            $.ajax({
+                url: endpoint,
+                method: "PUT",
+                contentType: "text/plain",
+                success: function () {
+                    window.Monkey.notificationHub.setTotal(0);
+                }
+            });
 
-            Monkey.notificationHub.updateTotal();
-
-            var html = Monkey.notificationHub.getItemHtml(notification);
-
-            $("#notification-list").prepend($(html));
-
-            Monkey.notificationHub.updateHeight();
+            console.log(endpoint);
         }
     },
 
@@ -329,14 +349,14 @@
 
             var colorSelector = $this.data("bind-to");
 
-            Monkey.bindColorDominant(this, $(colorSelector));
+            window.Monkey.bindColorDominant(this, $(colorSelector));
         });
     },
 
     autoBindColorDominant: function (fileSelector, colorSelector) {
         $(fileSelector).change(
             function () {
-                Monkey.bindColorDominant(this, $(colorSelector));
+                window.Monkey.bindColorDominant(this, $(colorSelector));
             });
     },
 
@@ -351,7 +371,7 @@
 
                 var color = colorThief.getColor(img);
 
-                var hexColor = Monkey.rgbToHex(color[0], color[1], color[2]);
+                var hexColor = window.Monkey.rgbToHex(color[0], color[1], color[2]);
 
                 $colorElement.asColorPicker('val', hexColor);
             };
@@ -524,7 +544,7 @@
     },
 
     dataTableAmountRender: function (data, type, row) {
-        return Monkey.abbreviateNumber(data);
+        return window.Monkey.abbreviateNumber(data);
     },
 
     dataTableImageRender: function (data, type, row) {
@@ -535,8 +555,8 @@
     },
 
     dataTableDrawCallBack: function (oSettings) {
-        Monkey.initToolTip();
-        Monkey.initConfirmDialog();
+        window.Monkey.initToolTip();
+        window.Monkey.initConfirmDialog();
     },
 
     dataTableResponsiveCallBack: function (e, datatable, columns) {
@@ -578,21 +598,21 @@
 
                 var formSelector = $form.attr('id') || $form.attr('class');
 
-                Monkey.resetFormValidation(formSelector);
+                window.Monkey.resetFormValidation(formSelector);
             });
         });
     },
 
     GenerateGuid: function () {
-        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g,
-            c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
+        return window.Monkey.s4() + window.Monkey.s4() + '-' + window.Monkey.s4() + '-' + window.Monkey.s4() + '-' + window.Monkey.s4() + '-' + window.Monkey.s4() + window.Monkey.s4() + window.Monkey.s4();
+    },
+
+    s4: function () {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
     },
 
     initialMenubar: function () {
         if (typeof (Storage) !== "undefined") {
-
             $("#toggleMenubar").on("click", function () {
                 var isCollapsed = $("body").hasClass("site-menubar-fold");
 
@@ -617,19 +637,19 @@
 };
 
 $(document).ready(function () {
-    Monkey.setupAjax();
-    Monkey.initToolTip();
-    Monkey.initConfirmDialog();
-    Monkey.initSlidePanel();
-    Monkey.notificationHub.connect();
-    Monkey.initAutoRenderSlug();
-    Monkey.initAutoBindColorDominant();
-    Monkey.initAutoDecimalFormat();
-    Monkey.initDateTimePicker();
-    Monkey.initTimePicker();
-    Monkey.initDropify();
-    Monkey.initAutoResetFormValidation();
-    Monkey.initialMenubar();
+    window.Monkey.setupAjax();
+    window.Monkey.initToolTip();
+    window.Monkey.initConfirmDialog();
+    window.Monkey.initSlidePanel();
+    window.Monkey.notificationHub.connect();
+    window.Monkey.initAutoRenderSlug();
+    window.Monkey.initAutoBindColorDominant();
+    window.Monkey.initAutoDecimalFormat();
+    window.Monkey.initDateTimePicker();
+    window.Monkey.initTimePicker();
+    window.Monkey.initDropify();
+    window.Monkey.initAutoResetFormValidation();
+    window.Monkey.initialMenubar();
 });
 
 String.prototype.preventInjection = function preventInjection() {

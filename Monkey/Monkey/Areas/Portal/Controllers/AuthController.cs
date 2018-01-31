@@ -174,7 +174,7 @@ namespace Monkey.Areas.Portal.Controllers
         [AllowAnonymous]
         public IActionResult ConfirmEmail(string token)
         {
-            bool isExpireOrInvalidToken = TokenHelper.IsExpireOrInvalidToken(token);
+            bool isExpireOrInvalidToken = _authenticationService.IsExpireOrInvalidConfirmEmailToken(token);
 
             if (isExpireOrInvalidToken)
             {
@@ -228,7 +228,7 @@ namespace Monkey.Areas.Portal.Controllers
         [AllowAnonymous]
         public IActionResult SetPassword(string token)
         {
-            bool isExpireOrInvalidToken = TokenHelper.IsExpireOrInvalidToken(token);
+            bool isExpireOrInvalidToken = _authenticationService.IsExpireOrInvalidSetPasswordToken(token);
 
             if (isExpireOrInvalidToken)
             {
