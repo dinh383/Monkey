@@ -154,13 +154,13 @@ window.Monkey = {
             window.Monkey.notificationHub.connection
                 .start()
                 .then(function () {
-                    if (Monkey.isDebug === true) {
+                    if (window.Monkey.isDebug === true) {
                         console.log("[Socket] connected to notification hub");
                     }
                     window.Monkey.notificationHub.refreshNotification();
                     return;
-                }).catch(function () {
-                    if (Monkey.isDebug === true) {
+                }).catch(function (err) {
+                    if (window.Monkey.isDebug === true) {
                         console.log('[Socket] connection error:' + err);
                     }
                     return;
@@ -168,14 +168,14 @@ window.Monkey = {
         },
         refreshNotification: function () {
             window.Monkey.notificationHub.connection.invoke("GetAllAsync");
-            if (Monkey.isDebug === true) {
+            if (window.Monkey.isDebug === true) {
                 console.log("refresh notification");
             }
         },
         setTotal: function (number) {
             var int = parseInt(number);
 
-            if (int === NaN || int < 0) {
+            if (isNaN(int) || int < 0) {
                 return;
             }
 
@@ -254,6 +254,10 @@ window.Monkey = {
             window.Monkey.notificationHub.data = notification;
 
             $("#notification-list").empty();
+
+            if (!notification || !notification.items) {
+                return;
+            }
 
             for (var i = 0; i < notification.items.length; i++) {
                 var html = window.Monkey.notificationHub.getItemHtml(notification.items[i]);

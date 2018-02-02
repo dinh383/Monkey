@@ -1,5 +1,4 @@
-﻿
-/* DataTable - Start */
+﻿/* DataTable - Start */
 .page-content th > .form-control {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -27,7 +26,7 @@
     }
 
     .dataTables_filter {
-        text-align: center!important
+        text-align: center !important
     }
 
     .dt-buttons {
@@ -55,7 +54,7 @@
     }
 
     .pagination {
-        justify-content: center!important;
+        justify-content: center !important;
     }
 }
 
@@ -76,7 +75,6 @@
     -ms-border-radius: 30px;
     border-radius: 30px;
 }
-
 
 .no-padding {
     padding: 0 !important;
@@ -99,9 +97,9 @@
     list-style-type: none;
 }
 
-.dropify-errors-container ul li {
-    color: #f44336;
-}
+    .dropify-errors-container ul li {
+        color: #f44336;
+    }
 
 .fileExtension-error {
     color: #f44336;
@@ -114,4 +112,31 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, table
 
 .site-menubar {
     height: 100%;
+}
+
+.verical-icon-center {
+    margin-top: 50%;
+}
+
+.notification-title {
+    color: #424242;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+}
+
+.text-decoration-none {
+    text-decoration: none !important;
+}
+
+.site-menu-sub {
+    height: 100%;
+}
+
+.site-menu-title {
+    max-width: 190px;
+}
+
+[aria-live=polite] {
+    z-index: 1400 !important;
 }

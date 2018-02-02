@@ -19,12 +19,6 @@
   </PropertyGroup>
 
   <!-- Copy Output folder -->
-  <!--<CopyToOutputDirectory>Always/PreserveNewest</CopyToOutputDirectory>-->
-  <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 
   <!-- Puppy -->
   <ItemGroup>

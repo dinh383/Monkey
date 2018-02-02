@@ -23,16 +23,10 @@
   </PropertyGroup>
 
   <!-- Copy Output folder -->
-  <!--<CopyToOutputDirectory>Always/PreserveNewest</CopyToOutputDirectory>-->
   <ItemGroup>
-    <!-- Documentation XML -->
-    <Content Include="Monkey.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
     <!-- Root -->
-    <Content Include="appsettings.json;web.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="appsettings.json;web.config;Monkey.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 
     <!-- Root Content -->
