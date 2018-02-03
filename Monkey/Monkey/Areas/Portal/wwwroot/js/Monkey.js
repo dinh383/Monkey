@@ -51,7 +51,8 @@ window.Monkey = {
 
     setupAjax: function () {
         $.ajaxSetup({
-            headers: { 'X-XSRF-TOKEN': $("[name=ape]").val() },
+            // Remove due to not use anti foreign token
+            //headers: { 'X-XSRF-TOKEN': $('[name=ape]').val() },
             type: "POST",
             cache: false,
             error: function (xhr, textStatus, errorThrown) {
@@ -59,7 +60,8 @@ window.Monkey = {
                 if (xhr.status === 401 || xhr.status === 403) {
                     window.location.href = "/Portal/Auth";
                 } else if (xhr.status === 404) {
-                    window.location.href = "/Portal";
+                    // Remove for case auto redirect
+                    //window.location.href = "/Portal/Dashboard";
                 } else {
                     try {
                         // Check request already abort => return
