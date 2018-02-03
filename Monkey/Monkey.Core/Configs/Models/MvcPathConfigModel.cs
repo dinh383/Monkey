@@ -112,8 +112,6 @@ namespace Monkey.Core.Configs.Models
             {
                 var rootHttpRequestPath = staticContentConfig.HttpRequestPath.Trim('\\', '/');
 
-                listStaticFoldersRelativeUrl.Add(rootHttpRequestPath);
-
                 var rootAreaRelativePath =
                     !string.IsNullOrWhiteSpace(AreasRootFolderName)
                         ? Path.Combine(AreasRootFolderName, staticContentConfig.Area, staticContentConfig.FolderRelativePath)

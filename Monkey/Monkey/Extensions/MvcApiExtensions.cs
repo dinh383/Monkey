@@ -17,6 +17,7 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -44,8 +45,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using Monkey.Controllers;
+using Puppy.Web.HttpUtils;
 
 namespace Monkey.Extensions
 {
@@ -85,7 +89,7 @@ namespace Monkey.Extensions
                 .AddSingleton<ITempDataProvider, CookieTempDataProvider>()
 
                 // [MVC] Anti Forgery
-                .AddAntiforgeryToken()
+                //.AddAntiforgeryToken()
 
                 // [DataTable]
                 .AddDataTable(configurationRoot, typeof(SharedResources))
@@ -167,14 +171,59 @@ namespace Monkey.Extensions
                 // [DataTable]
                 .UseDataTable()
 
-                // Status Code Handle
+                  // Status Code Handle
                 .UseStatusCodePages(context =>
                 {
-                    string requestPath = context.HttpContext.Request.Path;
+                    string requestPath = context.HttpContext.Request.Path.Value.Trim('/');
 
-                    string apiAreaRootPath = $"/{Areas.Api.Controllers.ApiController.AreaName}";
+                    // Handle static resource in advance
 
-                    string portalAreaRootPath = $"/{Areas.Portal.Controllers.MvcController.AreaName}";
+                    var staticResourceRelativeUrl = SystemConfig.MvcPath.GetStaticFilesRelativeUrl();
+
+                    List<string> listStaticResourceExtension = new List<string>
+                    {
+                        ".css",
+                        ".scss",
+                        ".less",
+                        ".js",
+                        ".js.map",
+                        ".json",
+                        ".rss",
+                        ".xml",
+                        ".mp3",
+                        ".mp4",
+                        ".ogg",
+                        ".ogv",
+                        ".webm",
+                        ".svg",
+                        ".svgz",
+                        ".eot",
+                        ".tff",
+                        ".otf",
+                        ".woff",
+                        ".woff2",
+                        ".crx",
+                        ".xpi",
+                        ".safariextz",
+                        ".flv",
+                        ".f4v",
+                        ".png",
+                        ".jpeg",
+                        ".jpg",
+                        ".bmp"
+                    };
+
+                    bool isRequestForExistingStaticResource =
+                        context.HttpContext.Request.Method.Equals(HttpMethod.Get.Method, StringComparison.OrdinalIgnoreCase)
+                        && staticResourceRelativeUrl.Any(x => context.HttpContext.Request.IsRequestFor(x));
+
+                    bool isRequestForStaticResourceByExtension =
+                        context.HttpContext.Request.Method.Equals(HttpMethod.Get.Method, StringComparison.OrdinalIgnoreCase)
+                        && listStaticResourceExtension.Any(x => requestPath.EndsWith(x, StringComparison.OrdinalIgnoreCase));
+
+                    string apiAreaRootPath = Areas.Api.Controllers.ApiController.AreaName.Trim('/');
+
+                    string portalAreaRootPath = Areas.Portal.Controllers.MvcController.AreaName.Trim('/');
 
                     if (requestPath.StartsWith(apiAreaRootPath))
                     {
@@ -186,19 +235,38 @@ namespace Monkey.Extensions
                     {
                         // Portal Area
 
+                        if (isRequestForExistingStaticResource || isRequestForStaticResourceByExtension)
+                        {
+                            context.HttpContext.Response.ContentType = $"{ContentType.Html}; charset=UTF-8";
+
+                            context.HttpContext.Response.WriteAsync($@"Not Found <br /><a href='{context.HttpContext.Request.GetDomain()}/{portalAreaRootPath}'>Back to Eat Up.</a>");
+
+                            return Task.CompletedTask;
+                        }
+
                         // Redirect to error page
-                        context.HttpContext.Response.Redirect($"{portalAreaRootPath}/{Areas.Portal.Controllers.HomeController.OopsEndpoint}/{context.HttpContext.Response.StatusCode}");
+                        context.HttpContext.Response.Redirect($"{context.HttpContext.Request.GetDomain()}/{portalAreaRootPath}/{Areas.Portal.Controllers.HomeController.OopsEndpoint}/{context.HttpContext.Response.StatusCode}");
                     }
                     else
                     {
                         // Root
 
+                        if (isRequestForExistingStaticResource || isRequestForStaticResourceByExtension)
+                        {
+                            context.HttpContext.Response.ContentType = $"{ContentType.Html}; charset=UTF-8";
+
+                            context.HttpContext.Response.WriteAsync($@"Not Found <br /><a href='{context.HttpContext.Request.GetDomain()}'>Back to Eat Up.</a>");
+
+                            return Task.CompletedTask;
+                        }
+
                         // Redirect to error page
-                        context.HttpContext.Response.Redirect("/");
+                        context.HttpContext.Response.Redirect($"{context.HttpContext.Request.GetDomain()}/{HomeController.OopsEndpoint}/{context.HttpContext.Response.StatusCode}");
                     }
 
                     return Task.CompletedTask;
                 })
+
 
                 // Root Path and GZip
                 .UseStaticFiles(new StaticFileOptions
