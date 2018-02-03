@@ -17,7 +17,6 @@
 //------------------------------------------------------------------------------------------------
 #endregion License
 
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -31,6 +30,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Monkey.Binders;
+using Monkey.Controllers;
 using Monkey.Core.Configs;
 using Monkey.Core.Localization;
 using Monkey.Core.Validators;
@@ -39,8 +39,10 @@ using Monkey.Filters.ModelValidation;
 using Puppy.Core.EnvironmentUtils;
 using Puppy.DataTable;
 using Puppy.Web.Constants;
+using Puppy.Web.HttpUtils;
 using Puppy.Web.Middlewares;
 using Puppy.Web.Render;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -48,8 +50,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using Monkey.Controllers;
-using Puppy.Web.HttpUtils;
 
 namespace Monkey.Extensions
 {
@@ -171,7 +171,7 @@ namespace Monkey.Extensions
                 // [DataTable]
                 .UseDataTable()
 
-                  // Status Code Handle
+                // Status Code Handle
                 .UseStatusCodePages(context =>
                 {
                     string requestPath = context.HttpContext.Request.Path.Value.Trim('/');
@@ -266,7 +266,6 @@ namespace Monkey.Extensions
 
                     return Task.CompletedTask;
                 })
-
 
                 // Root Path and GZip
                 .UseStaticFiles(new StaticFileOptions
