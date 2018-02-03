@@ -53,6 +53,9 @@ namespace Monkey.Areas.Portal.TagHelpers
         [HtmlAttributeName("menu-has-sub")]
         public bool IsHasSubItem { get; set; }
 
+        [HtmlAttributeName("menu-tooltip")]
+        public string MenuTooltip { get; set; }
+
         [HtmlAttributeName("menu-permissions")]
         public IEnumerable<Enums.Permission> Permissions { get; set; }
 
@@ -60,6 +63,8 @@ namespace Monkey.Areas.Portal.TagHelpers
         {
             if (Permissions?.Any() == true && !LoggedInUser.Current.IsHaveAnyPermissions(Permissions))
             {
+                output.TagName = string.Empty;
+                output.Content.Clear();
                 return;
             }
 
@@ -69,7 +74,7 @@ namespace Monkey.Areas.Portal.TagHelpers
 
             output.TagName = "li";
 
-            output.Attributes.Add("class", $"site-menu-item {(IsHasSubItem ? "has-sub" : string.Empty)} {(isActive ? "active" : string.Empty)}");
+            output.Attributes.Add("class", $"site-menu-item{(IsHasSubItem ? " has-sub" : string.Empty)}{(isActive ? " active" : string.Empty)}");
 
             var anchor = new TagBuilder("a");
 
@@ -91,6 +96,15 @@ namespace Monkey.Areas.Portal.TagHelpers
 
             anchor.InnerHtml.AppendHtml(spanTitle);
 
+            if (!string.IsNullOrWhiteSpace(MenuTooltip))
+            {
+                anchor.Attributes.AddOrUpdate("data-toggle", "tooltip");
+
+                anchor.Attributes.AddOrUpdate("data-placement", "right");
+
+                anchor.Attributes.AddOrUpdate("data-original-title", MenuTooltip);
+            }
+
             if (IsHasSubItem)
             {
                 var spanArrow = new TagBuilder("span");
@@ -105,6 +119,7 @@ namespace Monkey.Areas.Portal.TagHelpers
             if (IsHasSubItem)
             {
                 var ul = new TagBuilder("ul");
+
                 ul.AddCssClass("site-menu-sub");
 
                 var childContent = await output.GetChildContentAsync().ConfigureAwait(true);
@@ -127,6 +142,9 @@ namespace Monkey.Areas.Portal.TagHelpers
         [HtmlAttributeName("sub-menu-url")]
         public string SubMenuUrl { get; set; }
 
+        [HtmlAttributeName("sub-menu-tooltip")]
+        public string SubMenuTooltip { get; set; }
+
         [HtmlAttributeName("sub-menu-permissions")]
         public IEnumerable<Enums.Permission> Permissions { get; set; }
 
@@ -134,6 +152,8 @@ namespace Monkey.Areas.Portal.TagHelpers
         {
             if (Permissions?.Any() == true && !LoggedInUser.Current.IsHaveAnyPermissions(Permissions))
             {
+                output.TagName = string.Empty;
+                output.Content.Clear();
                 return;
             }
 
@@ -143,7 +163,7 @@ namespace Monkey.Areas.Portal.TagHelpers
 
             bool isActive = !string.IsNullOrWhiteSpace(SubMenuUrl) && System.Web.HttpContext.Current?.Request.GetDisplayUrl().Contains(SubMenuUrl) == true;
 
-            output.Attributes.Add("class", $"site-menu-item {(isActive ? "active" : string.Empty)}");
+            output.Attributes.Add("class", $"site-menu-item{(isActive ? " active" : string.Empty)}");
 
             var anchor = new TagBuilder("a");
 
@@ -158,6 +178,15 @@ namespace Monkey.Areas.Portal.TagHelpers
             spanTitle.InnerHtml.Append(SubMenuName);
 
             anchor.InnerHtml.AppendHtml(spanTitle);
+
+            if (!string.IsNullOrWhiteSpace(SubMenuTooltip))
+            {
+                anchor.Attributes.AddOrUpdate("data-toggle", "tooltip");
+
+                anchor.Attributes.AddOrUpdate("data-placement", "right");
+
+                anchor.Attributes.AddOrUpdate("data-original-title", SubMenuTooltip);
+            }
 
             output.Content.SetHtmlContent(anchor);
         }
