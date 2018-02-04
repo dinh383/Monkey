@@ -37,6 +37,7 @@ using Monkey.Core.Validators;
 using Monkey.Filters.Exception;
 using Monkey.Filters.ModelValidation;
 using Puppy.Core.EnvironmentUtils;
+using Puppy.Core.StringUtils;
 using Puppy.DataTable;
 using Puppy.Web.Constants;
 using Puppy.Web.HttpUtils;
@@ -48,7 +49,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Monkey.Extensions
@@ -281,33 +281,23 @@ namespace Monkey.Extensions
                 });
 
             // Path and GZip for Statics Content
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string executedAssemblyDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
             if (SystemConfig.MvcPath.StaticsContents?.Any() == true)
             {
                 foreach (var staticsContent in SystemConfig.MvcPath.StaticsContents)
                 {
-                    string fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
-                        ? Path.Combine(currentDirectory, staticsContent.FolderRelativePath)
-                        : Path.Combine(currentDirectory, SystemConfig.MvcPath.AreasRootFolderName,
-                            staticsContent.Area,
-                            staticsContent.FolderRelativePath);
+                    string fileProviderPath = Path.Combine(staticsContent.Area, staticsContent.FolderRelativePath);
 
+                    fileProviderPath =
+                        string.IsNullOrWhiteSpace(SystemConfig.MvcPath.AreasRootFolderName)
+                            ? fileProviderPath
+                            : Path.Combine(SystemConfig.MvcPath.AreasRootFolderName, fileProviderPath);
+
+                    fileProviderPath = fileProviderPath.GetFullPath();
+
+                    // Skip if Directory is not exists
                     if (!Directory.Exists(fileProviderPath))
                     {
-                        // Try to get folder in executed assembly
-                        fileProviderPath = string.IsNullOrWhiteSpace(staticsContent.Area)
-                            ? Path.Combine(executedAssemblyDirectory, staticsContent.FolderRelativePath)
-                            : Path.Combine(executedAssemblyDirectory, SystemConfig.MvcPath.AreasRootFolderName,
-                                staticsContent.Area,
-                                staticsContent.FolderRelativePath);
-
-                        // Skip if Directory is not exists
-                        if (!Directory.Exists(fileProviderPath))
-                        {
-                            continue;
-                        }
+                        continue;
                     }
 
                     PhysicalFileProvider fileProvider = new PhysicalFileProvider(fileProviderPath);
@@ -329,7 +319,6 @@ namespace Monkey.Extensions
                     });
                 }
             }
-
             // [Localizer]
             var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
 

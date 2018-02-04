@@ -36,7 +36,7 @@ namespace Monkey.Core.Configs.Models
         ///     Max Age in Cache Control Header 
         /// </summary>
         /// <remarks> Use the . separator between days and hours, see more: https://msdn.microsoft.com/en-us/library/system.timespan.aspx </remarks>
-        public TimeSpan? MaxAgeResponseHeader { get; set; }
+        public TimeSpan? MaxAgeResponseHeader { get; set; } = new TimeSpan(30, 0, 0, 0);
 
         public List<StaticsContentConfigModel> StaticsContents { get; set; }
 
